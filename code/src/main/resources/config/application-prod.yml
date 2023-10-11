@@ -31,19 +31,23 @@ spring:
       enabled: false
     livereload:
       enabled: false
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:oracle:thin:@localhost:1521:oracledb
+    username: cata
+    password: cata
+    hikari:
+      poolName: Hikari
+      auto-commit: false
+  jpa:
   # Replace by 'prod, faker' to add the faker context and have sample data loaded in production
   liquibase:
     contexts: prod
-    url: jdbc:sqlserver://localhost:1433;database=diabo;encrypt=false
   mail:
     host: localhost
     port: 25
     username:
     password:
-  r2dbc:
-    url: r2dbc:mssql://localhost:1433/diabo
-    username: SA
-    password: yourStrong(!)Password
   thymeleaf:
     cache: true
 
@@ -84,6 +88,10 @@ jhipster:
   http:
     cache: # Used by the CachingHttpHeadersFilter
       timeToLiveInDays: 1461
+  cache: # Cache configuration
+    ehcache: # Ehcache configuration
+      time-to-live-seconds: 3600 # By default objects stay 1 hour in the cache
+      max-entries: 1000 # Number of objects in each cache entry
   security:
     authentication:
       jwt:
@@ -92,7 +100,7 @@ jhipster:
         # - In the JHipster Registry (which includes a Spring Cloud Config server)
         # - In a separate `application-prod.yml` file, in the same folder as your executable JAR file
         # - In the `JHIPSTER_SECURITY_AUTHENTICATION_JWT_BASE64_SECRET` environment variable
-        base64-secret: ZTJlYmNiMWYzN2Q5MmVmZGQ2MGYzZjhhZWQ5MzkwMjgyMjk4NDcxOWI0ODljYjcyZDczNDQxNTRlODg5M2E0M2JlZTdlNDBiZWQ5OTM4OTZjNjJhMzk1ZDE5NWZkZjBiOTQ0MDdlZDVjYzNjMTFiYzc3Yjk4MmUyMGQwY2JiM2Y=
+        base64-secret: M2MwMTViZmNiMmRlYWZhYWFhMTY0ZDAzN2Q2MDJmMDRiYzc5ZGUzNjg2OWI5NzUwZDVmNDRlZDQ4NGU3MGFhNWVjMzBlZDZjNDBkOGE4MmFlYjA3NjYzZDNmOWQ4MDBmZDhmNDUxNzMxZDc1NWNjMDRmNTIzM2RiOTk1Y2U1NWQ=
         # Token is valid 24 hours
         token-validity-in-seconds: 86400
         token-validity-in-seconds-for-remember-me: 2592000

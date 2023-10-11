@@ -1,25 +1,25 @@
 package com.bosch.diabo.domain;
 
 import java.io.Serializable;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Transient;
-import org.springframework.data.relational.core.mapping.Column;
-import org.springframework.data.relational.core.mapping.Table;
+import javax.persistence.*;
 
 /**
  * A Region.
  */
-@Table("region")
+@Entity
+@Table(name = "region")
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class Region implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
-    @Column("id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
+    @SequenceGenerator(name = "sequenceGenerator")
+    @Column(name = "id")
     private Long id;
 
-    @Column("region_name")
+    @Column(name = "region_name")
     private String regionName;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here

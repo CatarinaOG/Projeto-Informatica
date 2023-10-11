@@ -24,20 +24,24 @@ spring:
   devtools:
     restart:
       enabled: true
-      additional-exclude: static/**,.h2.server.properties
+      additional-exclude: static/**
     livereload:
       enabled: false # we use Webpack dev server + BrowserSync for livereload
   jackson:
     serialization:
       indent-output: true
-  h2:
-    console:
-      # disable spring boot built-in h2-console since we start it manually with correct configuration
-      enabled: false
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:oracle:thin:@localhost:1521:oracledb
+    username: cata
+    password: cata
+    hikari:
+      poolName: Hikari
+      auto-commit: false
+  jpa:
   liquibase:
     # Remove 'faker' if you do not want the sample data to be loaded automatically
     contexts: dev, faker
-    url: jdbc:h2:file:./target/h2db/db/diabo;DB_CLOSE_DELAY=-1;MODE=LEGACY
   mail:
     host: localhost
     port: 25
@@ -45,10 +49,6 @@ spring:
     password:
   messages:
     cache-duration: PT1S # 1 second, see the ISO 8601 standard
-  r2dbc:
-    url: r2dbc:h2:file://././target/h2db/db/diabo;DB_CLOSE_DELAY=-1;MODE=LEGACY
-    username: diabo
-    password:
   thymeleaf:
     cache: false
 
@@ -62,6 +62,10 @@ server:
 # ===================================================================
 
 jhipster:
+  cache: # Cache configuration
+    ehcache: # Ehcache configuration
+      time-to-live-seconds: 3600 # By default objects stay 1 hour in the cache
+      max-entries: 100 # Number of objects in each cache entry
   # CORS is only enabled by default with the "dev" profile
   cors:
     # Allow Ionic for JHipster by default (* no longer allowed in Spring Boot 2.4+)
@@ -77,7 +81,7 @@ jhipster:
     authentication:
       jwt:
         # This token must be encoded using Base64 and be at least 256 bits long (you can type `openssl rand -base64 64` on your command line to generate a 512 bits one)
-        base64-secret: ZTJlYmNiMWYzN2Q5MmVmZGQ2MGYzZjhhZWQ5MzkwMjgyMjk4NDcxOWI0ODljYjcyZDczNDQxNTRlODg5M2E0M2JlZTdlNDBiZWQ5OTM4OTZjNjJhMzk1ZDE5NWZkZjBiOTQ0MDdlZDVjYzNjMTFiYzc3Yjk4MmUyMGQwY2JiM2Y=
+        base64-secret: M2MwMTViZmNiMmRlYWZhYWFhMTY0ZDAzN2Q2MDJmMDRiYzc5ZGUzNjg2OWI5NzUwZDVmNDRlZDQ4NGU3MGFhNWVjMzBlZDZjNDBkOGE4MmFlYjA3NjYzZDNmOWQ4MDBmZDhmNDUxNzMxZDc1NWNjMDRmNTIzM2RiOTk1Y2U1NWQ=
         # Token is valid 24 hours
         token-validity-in-seconds: 86400
         token-validity-in-seconds-for-remember-me: 2592000

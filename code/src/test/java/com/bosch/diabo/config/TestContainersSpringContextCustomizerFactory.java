@@ -18,8 +18,6 @@ public class TestContainersSpringContextCustomizerFactory implements ContextCust
 
     private Logger log = LoggerFactory.getLogger(TestContainersSpringContextCustomizerFactory.class);
 
-    private static SqlTestContainer prodTestContainer;
-
     @Override
     public ContextCustomizer createContextCustomizer(Class<?> testClass, List<ContextConfigurationAttributes> configAttributes) {
         return (context, mergedConfig) -> {
@@ -29,33 +27,6 @@ public class TestContainersSpringContextCustomizerFactory implements ContextCust
             if (null != sqlAnnotation) {
                 log.debug("detected the EmbeddedSQL annotation on class {}", testClass.getName());
                 log.info("Warming up the sql database");
-                if (
-                    Arrays
-                        .asList(context.getEnvironment().getActiveProfiles())
-                        .contains("test" + JHipsterConstants.SPRING_PROFILE_PRODUCTION)
-                ) {
-                    if (null == prodTestContainer) {
-                        try {
-                            Class<? extends SqlTestContainer> containerClass = (Class<? extends SqlTestContainer>) Class.forName(
-                                this.getClass().getPackageName() + ".MsSqlTestContainer"
-                            );
-                            prodTestContainer = beanFactory.createBean(containerClass);
-                            beanFactory.registerSingleton(containerClass.getName(), prodTestContainer);
-                            // ((DefaultListableBeanFactory)beanFactory).registerDisposableBean(containerClass.getName(), prodTestContainer);
-                        } catch (ClassNotFoundException e) {
-                            throw new RuntimeException(e);
-                        }
-                    }
-                    testValues =
-                        testValues.and(
-                            "spring.r2dbc.url=" +
-                            prodTestContainer.getTestContainer().getJdbcUrl().replace("jdbc", "r2dbc").replace(";encrypt=false", "") +
-                            ""
-                        );
-                    testValues = testValues.and("spring.r2dbc.username=" + prodTestContainer.getTestContainer().getUsername());
-                    testValues = testValues.and("spring.r2dbc.password=" + prodTestContainer.getTestContainer().getPassword());
-                    testValues = testValues.and("spring.liquibase.url=" + prodTestContainer.getTestContainer().getJdbcUrl() + "");
-                }
             }
             testValues.applyTo(context);
         };
