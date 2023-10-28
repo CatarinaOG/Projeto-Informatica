@@ -274,3 +274,7 @@ angular-cli removes postcss-rtl processed inline css, processed rules must be ad
   border: 0; 
   background-color:inherit;
 }
+
+.flexGrow {
+  flex-grow: 1;
+}

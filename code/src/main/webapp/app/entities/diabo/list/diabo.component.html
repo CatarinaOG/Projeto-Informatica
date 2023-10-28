@@ -34,7 +34,7 @@
         <tr style="background-color: #B8B8B8;">
           <th [attr.colspan]="visibility.get('materialInfo') ? 3 : 1" style="border-color: black; border-width: 2px;">
             <div class="d-flex" style="place-content: center;">
-              <span>Material Info</span>
+              <span class="flexGrow">Material Info</span>
               <button class="buttonNoBorder" (click)="switchVisibility($event,'materialInfo')">
                 <fa-icon [icon]="visibility.get('materialInfo') ? 'compress-alt' : 'expand-alt'"></fa-icon>
               </button>
@@ -42,7 +42,7 @@
           </th>
           <th [attr.colspan]="visibility.get('supplierDelay') ? 2 : 1" style="border-color: black; border-width: 2px;">
             <div class="d-flex" style="place-content: center;"> 
-              <span>Supplier Delay Info</span>
+              <span class="flexGrow">Supplier Delay Info</span>
               <button class="buttonNoBorder" (click)="switchVisibility($event,'supplierDelay')">
                 <fa-icon [icon]="visibility.get('supplierDelay') ? 'compress-alt' : 'expand-alt'"></fa-icon>
               </button>
@@ -50,7 +50,7 @@
           </th>
           <th [attr.colspan]="visibility.get('safetyStock') ? 3 : 1" style="border-color: black; border-width: 2px;">
             <div class="d-flex" style="place-content: center;">
-              <span>Safety Stock Info</span>
+              <span class="flexGrow">Safety Stock Info</span>
               <button class="buttonNoBorder" (click)="switchVisibility($event,'safetyStock')">
                 <fa-icon [icon]="visibility.get('safetyStock') ? 'compress-alt' : 'expand-alt'"></fa-icon>
               </button>
@@ -58,7 +58,7 @@
           </th>
           <th [attr.colspan]="visibility.get('safetyTime') ? 3 : 1" style="border-color: black; border-width: 2px;">
             <div class="d-flex" style="place-content: center;">
-              <span>Safety Time Info</span>
+              <span class="flexGrow">Safety Time Info</span>
               <button class="buttonNoBorder" (click)="switchVisibility($event,'safetyTime')">
                 <fa-icon [icon]="visibility.get('safetyTime') ? 'compress-alt' : 'expand-alt'"></fa-icon>
               </button>
@@ -66,7 +66,7 @@
           </th>
           <th [attr.colspan]="visibility.get('inventory') ? 4 : 1" style="border-color: black; border-width: 2px;">
             <div class="d-flex" style="place-content: center;">
-              <span>Inventory Info & Service Level</span>
+              <span class="flexGrow">Inventory Info & Service Level</span>
               <button class="buttonNoBorder" (click)="switchVisibility($event,'inventory')">
                 <fa-icon [icon]="visibility.get('inventory') ? 'compress-alt' : 'expand-alt'"></fa-icon>
               </button>
@@ -74,7 +74,7 @@
           </th>
           <th [attr.colspan]="visibility.get('edit') ? 5 : 1" style="border-color: black; border-width: 2px;">
             <div class="d-flex" style="place-content: center;">
-              <span>Edit</span>
+              <span class="flexGrow">Edit</span>
               <button class="buttonNoBorder" (click)="switchVisibility($event,'edit')">
                 <fa-icon [icon]="visibility.get('edit') ? 'compress-alt' : 'expand-alt'"></fa-icon>
               </button>
