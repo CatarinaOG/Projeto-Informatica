@@ -1,0 +1,97 @@
+{
+  "applications": "*",
+  "changelogDate": "20231028140241",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "diabo",
+  "fields": [
+    {
+      "fieldName": "material",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "materialDescription",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "abcClassification",
+      "fieldType": "ABCClassification",
+      "fieldValues": "A,B,C"
+    },
+    {
+      "fieldName": "avgSupplierDelayLast90Days",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "maxSupplierDelayLast90Days",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "serviceLevel",
+      "fieldType": "Float"
+    },
+    {
+      "fieldName": "currentSapSafetyStock",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "proposedSafetyStock",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "deltaSafetyStock",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "currentSapSafetyTime",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "proposedSafetyTime",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "deltaSafetyTime",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "openSapMd04",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "currentInventoryValue",
+      "fieldType": "Float"
+    },
+    {
+      "fieldName": "averageInventoryEffectAfterChange",
+      "fieldType": "Float"
+    },
+    {
+      "fieldName": "newSapSafetyStock",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "newSapSafetyTime",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "selectEntriesForChangeInSap",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "flagMaterialAsSpecialCase",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "commentary",
+      "fieldType": "String"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Diabo",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [],
+  "service": "no"
+}

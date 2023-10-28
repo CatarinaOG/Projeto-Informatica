@@ -1,4 +1,29 @@
+enum ABCClassification {
+  A
+  B
+  C
+}
 
-entity Region {
-	regionName String
+
+entity Diabo {
+	material String
+	materialDescription String
+	abcClassification ABCClassification
+	avgSupplierDelayLast90Days Integer
+	maxSupplierDelayLast90Days Integer
+	serviceLevel Float
+	currentSapSafetyStock Integer
+	proposedSafetyStock Integer
+	deltaSafetyStock Integer
+	currentSapSafetyTime Integer
+	proposedSafetyTime Integer
+	deltaSafetyTime Integer
+	openSapMd04 String
+	currentInventoryValue Float
+	averageInventoryEffectAfterChange Float
+	newSapSafetyStock Integer
+	newSapSafetyTime Integer
+	selectEntriesForChangeInSap Boolean
+	flagMaterialAsSpecialCase Boolean
+	commentary String
 }

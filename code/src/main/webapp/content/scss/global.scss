@@ -2,6 +2,10 @@
 @import '~bootstrap/scss/functions';
 @import '~bootstrap/scss/variables';
 
+
+
+
+
 /* ==============================================================
 Bootstrap tweaks
 ===============================================================*/
@@ -12,7 +16,20 @@ h2,
 h3,
 h4 {
   font-weight: 300;
+  font-family: 'Open_Sans';
+  font-size: 13;
+  max-lines: 3;
 }
+
+.logo-export {
+  height: 30px;
+  width: 30px;
+  display: inline-block;
+  vertical-align: middle;
+  background: url('../images/logo-jhipster.png') no-repeat center center;
+  background-size: contain;
+}
+
 
 /* Increase contrast of links to get 100% on Lighthouse Accessability Audit. Override this color if you want to change the link color, or use a Bootswatch theme */
 a {
@@ -163,6 +180,17 @@ entity list page css
 
 .table-entities thead th .d-flex > * {
   margin: auto 0;
+}
+
+@font-face {
+  font-family: 'Open_Sans';
+  src: url('../fonts/Open_Sans/OpenSans-VariableFont_wdth,wght.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.greyHead{
+  background: #C2C2C2;
 }
 
 /* ==========================================================================
