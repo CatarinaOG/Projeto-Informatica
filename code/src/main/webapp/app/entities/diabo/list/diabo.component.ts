@@ -16,6 +16,17 @@ import { SortService } from 'app/shared/sort/sort.service';
 export class DiaboComponent implements OnInit {
   diabos?: IDiabo[];
   isLoading = false;
+  isVisible = true;
+
+  visibility = new Map<string, boolean>([
+    ["materialInfo", true],
+    ["supplierDelay", true],
+    ["safetyStock", true],
+    ["safetyTime", true],
+    ["inventory", true],
+    ["edit", false]
+  ]);  
+  
 
   predicate = 'id';
   ascending = true;
@@ -49,6 +60,30 @@ export class DiaboComponent implements OnInit {
         },
       });
   }
+
+
+  
+
+  switchVisibility(event: Event, col_name :any) : void {
+    var cl = document.getElementsByClassName(col_name)
+    if (this.visibility.get(col_name) == false){
+      this.visibility.set(col_name, true)
+      console.log("Is visible equals to " , this.visibility.get(col_name))
+      for(let i = 0; i<cl.length;i++){
+        cl[i].classList.remove("tableHide")
+      }
+    }
+    else {
+      this.visibility.set(col_name, false)
+      console.log("Is visible equals to " , this.visibility.get(col_name))
+      for(let i = 0; i<cl.length;i++){
+        cl[i].classList.add("tableHide")
+      }
+    }
+    event.stopPropagation();
+  }
+
+
 
   load(): void {
     this.loadFromBackendWithRouteInformations().subscribe({

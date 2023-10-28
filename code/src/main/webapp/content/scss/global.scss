@@ -19,6 +19,7 @@ h4 {
   font-family: 'Open_Sans';
   font-size: 13;
   max-lines: 3;
+  text-align: center;
 }
 
 .logo-export {
@@ -189,10 +190,6 @@ entity list page css
   font-style: normal;
 }
 
-.greyHead{
-  background: #C2C2C2;
-}
-
 /* ==========================================================================
 entity detail page css
 ========================================================================== */
@@ -265,3 +262,15 @@ angular-cli removes postcss-rtl processed inline css, processed rules must be ad
   }
 }
 /* jhipster-needle-scss-add-main JHipster will add new css style */
+
+
+
+
+.tableHide{
+  display: none;
+}
+
+.buttonNoBorder{
+  border: 0; 
+  background-color:inherit;
+}
