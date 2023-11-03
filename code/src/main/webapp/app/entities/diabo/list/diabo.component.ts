@@ -17,6 +17,8 @@ export class DiaboComponent implements OnInit {
   diabos?: IDiabo[];
   isLoading = false;
   isVisible = true;
+  masterSelected=false;
+
 
   visibility = new Map<string, boolean>([
     ["materialInfo", true],
@@ -27,6 +29,7 @@ export class DiaboComponent implements OnInit {
     ["edit", false]
   ]);  
   
+  fileName = '';
 
   predicate = 'id';
   ascending = true;
@@ -44,6 +47,25 @@ export class DiaboComponent implements OnInit {
   ngOnInit(): void {
     this.load();
   }
+
+  onFileSelected(event:any) {
+
+    const file:File = event.target.files[0];
+
+    if (file) {
+
+        this.fileName = file.name;
+
+        const formData = new FormData();
+
+        formData.append("thumbnail", file);
+
+        console.log("The filename is " , this.fileName);
+
+    }
+  }
+
+
 
   delete(diabo: IDiabo): void {
     const modalRef = this.modalService.open(DiaboDeleteDialogComponent, { size: 'lg', backdrop: 'static' });

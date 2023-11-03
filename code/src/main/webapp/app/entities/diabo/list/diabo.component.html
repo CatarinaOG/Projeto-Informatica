@@ -8,6 +8,19 @@
         <span>Refresh list</span>
       </button>
 
+      <input type="file" class="file-input" (change)="onFileSelected($event)" #fileUpload>
+
+        <div class="file-upload">
+
+          {{fileName || "No file uploaded yet."}}
+
+            <button color="primary" class="upload-btn"
+              (click)="fileUpload.click()">
+                <fa-icon icon="upload"></fa-icon>
+            </button>
+        </div>
+      
+      
       <button
         id="jh-create-entity"
         data-cy="entityCreateButton"
@@ -205,9 +218,13 @@
             </div>
           </th>
           <th scope="col" jhiSortBy="selectEntriesForChangeInSap" class="edit tableHide">
-            <div class="d-flex" style="place-content: center;">
-              <span>Select Entries For Change In Sap</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
+            <div  >
+              <div class="d-flex" style="place-content: center;">
+                <span>Select Entries For Change In Sap</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+              <input type="checkbox">
+
             </div>
           </th>
           <th scope="col" jhiSortBy="flagMaterialAsSpecialCase" class="edit tableHide">
@@ -272,7 +289,7 @@
           </th>
           <td class ="edit tableHide">{{ diabo.newSapSafetyStock }}</td>
           <td class ="edit tableHide">{{ diabo.newSapSafetyTime }}</td>
-          <td class ="edit tableHide">{{ diabo.selectEntriesForChangeInSap }}</td>
+          <td class ="edit tableHide"><input type = "checkbox"></td>
           <td class ="edit tableHide">{{ diabo.flagMaterialAsSpecialCase }}</td>
           <td class ="edit tableHide">{{ diabo.commentary }}</td>
           <th *ngIf = "!visibility.get('edit')">
