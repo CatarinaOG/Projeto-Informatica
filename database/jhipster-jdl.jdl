@@ -1,29 +1,40 @@
+
+
+
+entity Material {
+	material Long
+    description String
+    abcClassification ABCClassification
+    avgSupplierDelay Float
+    maxSupplierDelay Float
+    serviceLevel Float
+    currSAPSafetyStock Integer
+	propsedSST Integer
+    deltaSST Integer
+    currentSAPSafeTime Integer
+    proposedST Integer
+    deltaST Integer
+    openSAPmd04 String
+    currentInventoryValue Float
+    unitCost Float
+    avgDemand Integer
+    avgInventoryEffectAfterChange Float
+    flagMaterial Boolean
+    comment String
+}
+
 enum ABCClassification {
-  A
-  B
-  C
+    A, B, C
 }
 
+// Set pagination options
+paginate Material with pagination
 
-entity Diabo {
-	material String
-	materialDescription String
-	abcClassification ABCClassification
-	avgSupplierDelayLast90Days Integer
-	maxSupplierDelayLast90Days Integer
-	serviceLevel Float
-	currentSapSafetyStock Integer
-	proposedSafetyStock Integer
-	deltaSafetyStock Integer
-	currentSapSafetyTime Integer
-	proposedSafetyTime Integer
-	deltaSafetyTime Integer
-	openSapMd04 String
-	currentInventoryValue Float
-	averageInventoryEffectAfterChange Float
-	newSapSafetyStock Integer
-	newSapSafetyTime Integer
-	selectEntriesForChangeInSap Boolean
-	flagMaterialAsSpecialCase Boolean
-	commentary String
-}
+// Use Data Transfer Objects (DTO)
+// dto * with mapstruct
+
+// Set service options to all except few
+service all with serviceImpl
+
+// Set an angular suffix
+// angularSuffix * with mySuffix

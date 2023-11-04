@@ -1,6 +1,6 @@
 <div>
-  <h2 id="page-heading" data-cy="DiaboHeading">
-    <span>Diabos</span>
+  <h2 id="page-heading" data-cy="MaterialHeading">
+    <span>Materials</span>
 
     <div class="d-flex justify-content-end">
       <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
@@ -11,11 +11,11 @@
       <button
         id="jh-create-entity"
         data-cy="entityCreateButton"
-        class="btn btn-primary jh-create-entity create-diabo"
-        [routerLink]="['/diabo/new']"
+        class="btn btn-primary jh-create-entity create-material"
+        [routerLink]="['/material/new']"
       >
         <fa-icon icon="plus"></fa-icon>
-        <span> Create a new Diabo </span>
+        <span> Create a new Material </span>
       </button>
     </div>
   </h2>
@@ -24,11 +24,11 @@
 
   <jhi-alert></jhi-alert>
 
-  <div class="alert alert-warning" id="no-result" *ngIf="diabos?.length === 0">
-    <span>No Diabos found</span>
+  <div class="alert alert-warning" id="no-result" *ngIf="materials?.length === 0">
+    <span>No Materials found</span>
   </div>
 
-  <div class="table-responsive table-entities" id="entities" *ngIf="diabos && diabos.length > 0">
+  <div class="table-responsive table-entities" id="entities" *ngIf="materials && materials.length > 0">
     <table class="table table-striped" aria-describedby="page-heading">
       <thead>
         <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
@@ -44,9 +44,9 @@
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="materialDescription">
+          <th scope="col" jhiSortBy="description">
             <div class="d-flex">
-              <span>Material Description</span>
+              <span>Description</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
@@ -56,15 +56,15 @@
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="avgSupplierDelayLast90Days">
+          <th scope="col" jhiSortBy="avgSupplierDelay">
             <div class="d-flex">
-              <span>Avg Supplier Delay Last 90 Days</span>
+              <span>Avg Supplier Delay</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="maxSupplierDelayLast90Days">
+          <th scope="col" jhiSortBy="maxSupplierDelay">
             <div class="d-flex">
-              <span>Max Supplier Delay Last 90 Days</span>
+              <span>Max Supplier Delay</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
@@ -74,45 +74,45 @@
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="currentSapSafetyStock">
+          <th scope="col" jhiSortBy="currSAPSafetyStock">
             <div class="d-flex">
-              <span>Current Sap Safety Stock</span>
+              <span>Curr SAP Safety Stock</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="proposedSafetyStock">
+          <th scope="col" jhiSortBy="propsedSST">
             <div class="d-flex">
-              <span>Proposed Safety Stock</span>
+              <span>Propsed SST</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="deltaSafetyStock">
+          <th scope="col" jhiSortBy="deltaSST">
             <div class="d-flex">
-              <span>Delta Safety Stock</span>
+              <span>Delta SST</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="currentSapSafetyTime">
+          <th scope="col" jhiSortBy="currentSAPSafeTime">
             <div class="d-flex">
-              <span>Current Sap Safety Time</span>
+              <span>Current SAP Safe Time</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="proposedSafetyTime">
+          <th scope="col" jhiSortBy="proposedST">
             <div class="d-flex">
-              <span>Proposed Safety Time</span>
+              <span>Proposed ST</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="deltaSafetyTime">
+          <th scope="col" jhiSortBy="deltaST">
             <div class="d-flex">
-              <span>Delta Safety Time</span>
+              <span>Delta ST</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="openSapMd04">
+          <th scope="col" jhiSortBy="openSAPmd04">
             <div class="d-flex">
-              <span>Open Sap Md 04</span>
+              <span>Open SA Pmd 04</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
@@ -122,39 +122,33 @@
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="averageInventoryEffectAfterChange">
+          <th scope="col" jhiSortBy="unitCost">
             <div class="d-flex">
-              <span>Average Inventory Effect After Change</span>
+              <span>Unit Cost</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="newSapSafetyStock">
+          <th scope="col" jhiSortBy="avgDemand">
             <div class="d-flex">
-              <span>New Sap Safety Stock</span>
+              <span>Avg Demand</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="newSapSafetyTime">
+          <th scope="col" jhiSortBy="avgInventoryEffectAfterChange">
             <div class="d-flex">
-              <span>New Sap Safety Time</span>
+              <span>Avg Inventory Effect After Change</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="selectEntriesForChangeInSap">
+          <th scope="col" jhiSortBy="flagMaterial">
             <div class="d-flex">
-              <span>Select Entries For Change In Sap</span>
+              <span>Flag Material</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="flagMaterialAsSpecialCase">
+          <th scope="col" jhiSortBy="comment">
             <div class="d-flex">
-              <span>Flag Material As Special Case</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="commentary">
-            <div class="d-flex">
-              <span>Commentary</span>
+              <span>Comment</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
@@ -162,43 +156,52 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let diabo of diabos; trackBy: trackId" data-cy="entityTable">
+        <tr *ngFor="let material of materials; trackBy: trackId" data-cy="entityTable">
           <td>
-            <a [routerLink]="['/diabo', diabo.id, 'view']">{{ diabo.id }}</a>
+            <a [routerLink]="['/material', material.id, 'view']">{{ material.id }}</a>
           </td>
-          <td>{{ diabo.material }}</td>
-          <td>{{ diabo.materialDescription }}</td>
-          <td>{{ diabo.abcClassification }}</td>
-          <td>{{ diabo.avgSupplierDelayLast90Days }}</td>
-          <td>{{ diabo.maxSupplierDelayLast90Days }}</td>
-          <td>{{ diabo.serviceLevel }}</td>
-          <td>{{ diabo.currentSapSafetyStock }}</td>
-          <td>{{ diabo.proposedSafetyStock }}</td>
-          <td>{{ diabo.deltaSafetyStock }}</td>
-          <td>{{ diabo.currentSapSafetyTime }}</td>
-          <td>{{ diabo.proposedSafetyTime }}</td>
-          <td>{{ diabo.deltaSafetyTime }}</td>
-          <td>{{ diabo.openSapMd04 }}</td>
-          <td>{{ diabo.currentInventoryValue }}</td>
-          <td>{{ diabo.averageInventoryEffectAfterChange }}</td>
-          <td>{{ diabo.newSapSafetyStock }}</td>
-          <td>{{ diabo.newSapSafetyTime }}</td>
-          <td>{{ diabo.selectEntriesForChangeInSap }}</td>
-          <td>{{ diabo.flagMaterialAsSpecialCase }}</td>
-          <td>{{ diabo.commentary }}</td>
+          <td>{{ material.material }}</td>
+          <td>{{ material.description }}</td>
+          <td>{{ material.abcClassification }}</td>
+          <td>{{ material.avgSupplierDelay }}</td>
+          <td>{{ material.maxSupplierDelay }}</td>
+          <td>{{ material.serviceLevel }}</td>
+          <td>{{ material.currSAPSafetyStock }}</td>
+          <td>{{ material.propsedSST }}</td>
+          <td>{{ material.deltaSST }}</td>
+          <td>{{ material.currentSAPSafeTime }}</td>
+          <td>{{ material.proposedST }}</td>
+          <td>{{ material.deltaST }}</td>
+          <td>{{ material.openSAPmd04 }}</td>
+          <td>{{ material.currentInventoryValue }}</td>
+          <td>{{ material.unitCost }}</td>
+          <td>{{ material.avgDemand }}</td>
+          <td>{{ material.avgInventoryEffectAfterChange }}</td>
+          <td>{{ material.flagMaterial }}</td>
+          <td>{{ material.comment }}</td>
           <td class="text-end">
             <div class="btn-group">
-              <button type="submit" [routerLink]="['/diabo', diabo.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+              <button
+                type="submit"
+                [routerLink]="['/material', material.id, 'view']"
+                class="btn btn-info btn-sm"
+                data-cy="entityDetailsButton"
+              >
                 <fa-icon icon="eye"></fa-icon>
                 <span class="d-none d-md-inline">View</span>
               </button>
 
-              <button type="submit" [routerLink]="['/diabo', diabo.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+              <button
+                type="submit"
+                [routerLink]="['/material', material.id, 'edit']"
+                class="btn btn-primary btn-sm"
+                data-cy="entityEditButton"
+              >
                 <fa-icon icon="pencil-alt"></fa-icon>
                 <span class="d-none d-md-inline">Edit</span>
               </button>
 
-              <button type="submit" (click)="delete(diabo)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+              <button type="submit" (click)="delete(material)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
                 <fa-icon icon="times"></fa-icon>
                 <span class="d-none d-md-inline">Delete</span>
               </button>
@@ -207,5 +210,23 @@
         </tr>
       </tbody>
     </table>
+  </div>
+
+  <div *ngIf="materials && materials.length > 0">
+    <div class="d-flex justify-content-center">
+      <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+    </div>
+
+    <div class="d-flex justify-content-center">
+      <ngb-pagination
+        [collectionSize]="totalItems"
+        [page]="page"
+        [pageSize]="itemsPerPage"
+        [maxSize]="5"
+        [rotate]="true"
+        [boundaryLinks]="true"
+        (pageChange)="navigateToPage($event)"
+      ></ngb-pagination>
+    </div>
   </div>
 </div>
