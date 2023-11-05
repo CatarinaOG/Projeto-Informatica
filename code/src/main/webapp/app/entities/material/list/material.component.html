@@ -8,6 +8,17 @@
         <span>Refresh list</span>
       </button>
 
+      <input type="file" class="file-input"  accept=".csv"  (change)="onFileSelected($event)" #fileUpload>
+      <div class="file-upload">
+
+        {{fileName || "No file uploaded yet."}}
+
+          <button color="primary" class="upload-btn"
+            (click)="fileUpload.click()">Upload File
+              <fa-icon icon="upload"></fa-icon>
+          </button>
+      </div>
+
       <button
         id="jh-create-entity"
         data-cy="entityCreateButton"
@@ -28,157 +39,291 @@
     <span>No Materials found</span>
   </div>
 
-  <div class="table-responsive table-entities" id="entities" *ngIf="materials && materials.length > 0">
+  <div class="table-responsive table-entities table-bordered" id="entities" *ngIf="materials && materials.length > 0" style="border: 1px solid black;">
     <table class="table table-striped" aria-describedby="page-heading">
       <thead>
-        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
-          <th scope="col" jhiSortBy="id">
-            <div class="d-flex">
-              <span>ID</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
+        <tr style="background-color: #B8B8B8;">
+          <th [attr.colspan]="visibility.get('materialInfo') ? 3 : 1" style="border-color: black; border-width: 2px;">
+            <div class="d-flex" style="place-content: center;">
+              <span class="flexGrow">Material Info</span>
+              <button class="buttonNoBorder" (click)="switchVisibility($event,'materialInfo')">
+                <fa-icon [icon]="visibility.get('materialInfo') ? 'compress-alt' : 'expand-alt'"></fa-icon>
+              </button>
             </div>
           </th>
-          <th scope="col" jhiSortBy="material">
-            <div class="d-flex">
+          <th [attr.colspan]="visibility.get('supplierDelay') ? 2 : 1" style="border-color: black; border-width: 2px;">
+            <div class="d-flex" style="place-content: center;"> 
+              <span class="flexGrow">Supplier Delay Info</span>
+              <button class="buttonNoBorder" (click)="switchVisibility($event,'supplierDelay')">
+                <fa-icon [icon]="visibility.get('supplierDelay') ? 'compress-alt' : 'expand-alt'"></fa-icon>
+              </button>
+            </div>
+          </th>
+          <th [attr.colspan]="visibility.get('safetyStock') ? 3 : 1" style="border-color: black; border-width: 2px;">
+            <div class="d-flex" style="place-content: center;">
+              <span class="flexGrow">Safety Stock Info</span>
+              <button class="buttonNoBorder" (click)="switchVisibility($event,'safetyStock')">
+                <fa-icon [icon]="visibility.get('safetyStock') ? 'compress-alt' : 'expand-alt'"></fa-icon>
+              </button>
+            </div>
+          </th>
+          <th [attr.colspan]="visibility.get('safetyTime') ? 3 : 1" style="border-color: black; border-width: 2px;">
+            <div class="d-flex" style="place-content: center;">
+              <span class="flexGrow">Safety Time Info</span>
+              <button class="buttonNoBorder" (click)="switchVisibility($event,'safetyTime')">
+                <fa-icon [icon]="visibility.get('safetyTime') ? 'compress-alt' : 'expand-alt'"></fa-icon>
+              </button>
+            </div>
+          </th>
+          <th [attr.colspan]="visibility.get('inventory') ? 4 : 1" style="border-color: black; border-width: 2px;">
+            <div class="d-flex" style="place-content: center;">
+              <span class="flexGrow">Inventory Info & Service Level</span>
+              <button class="buttonNoBorder" (click)="switchVisibility($event,'inventory')">
+                <fa-icon [icon]="visibility.get('inventory') ? 'compress-alt' : 'expand-alt'"></fa-icon>
+              </button>
+            </div>
+          </th>
+          <th [attr.colspan]="visibility.get('edit') ? 5 : 1" style="border-color: black; border-width: 2px;">
+            <div class="d-flex" style="place-content: center;">
+              <span class="flexGrow">Edit</span>
+              <button class="buttonNoBorder" (click)="switchVisibility($event,'edit')">
+                <fa-icon [icon]="visibility.get('edit') ? 'compress-alt' : 'expand-alt'"></fa-icon>
+              </button>
+            </div>
+          </th>
+        </tr>
+
+        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()" style="background-color: #DADADA; border-bottom: black; border-width: 2px;" >
+          <th scope="col" jhiSortBy="material" class ="materialInfo" style="border-left-color: black; border-width: 1px;">
+            <div class="d-flex" style="place-content: center;">
               <span>Material</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="description">
-            <div class="d-flex">
-              <span>Description</span>
+
+          <th scope="col" jhiSortBy="description" class ="materialInfo">
+            <div class="d-flex" style="place-content: center;">
+              <span>Material Description</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="abcClassification">
-            <div class="d-flex">
+
+          <th scope="col" jhiSortBy="abcClassification" class ="materialInfo" style="border-right-color: black; border-width: 1px;">
+            <div class="d-flex" style="place-content: center;">
               <span>Abc Classification</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="avgSupplierDelay">
-            <div class="d-flex">
+
+          <th *ngIf = "!visibility.get('materialInfo')" style="border-right-color: black; border-width: 1px;">
+            ...
+          </th>
+          
+          <th scope="col" jhiSortBy="avgSupplierDelay" class ="supplierDelay">
+            <div class="d-flex" style="place-content: center;">
               <span>Avg Supplier Delay</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="maxSupplierDelay">
-            <div class="d-flex">
+          
+          <th scope="col" jhiSortBy="maxSupplierDelay" class ="supplierDelay" style="border-right-color: black; border-width: 1px;">
+            <div class="d-flex" style="place-content: center;">
               <span>Max Supplier Delay</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="serviceLevel">
-            <div class="d-flex">
+          <th *ngIf = "!visibility.get('supplierDelay')" style="border-right-color: black; border-width: 1px;">
+            ...
+          </th>
+
+          <th scope="col" jhiSortBy="currSAPSafetyStock" class ="safetyStock">
+            <div class="d-flex" style="place-content: center;">
+              <span>Current Sap Safety Stock</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          
+          <th scope="col" jhiSortBy="propsedSST" class = "safetyStock">
+            <div class="d-flex" style="place-content: center;">
+              <span>Proposed Safety Stock</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+
+          <th scope="col" jhiSortBy="deltaSST" class = "safetyStock" style="border-right-color: black; border-width: 1px;">
+            <div class="d-flex" style="place-content: center;">
+              <span>Delta Safety Stock</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+
+          <th *ngIf = "!visibility.get('safetyStock')" style="border-right-color: black; border-width: 1px;">
+            ...
+          </th>
+
+          <th scope="col" jhiSortBy="currentSAPSafeTime" class = "safetyTime">
+            <div class="d-flex" style="place-content: center;">
+              <span>Current SAP Safety Time</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+
+          <th scope="col" jhiSortBy="proposedST" class = "safetyTime">
+            <div class="d-flex" style="place-content: center;">
+              <span>Proposed Safety Time</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+
+          <th scope="col" jhiSortBy="deltaST" class = "safetyTime" style="border-right-color: black; border-width: 1px;">
+            <div class="d-flex" style="place-content: center;">
+              <span>Delta Safety Time</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          
+          <th *ngIf = "!visibility.get('safetyTime')" style="border-right-color: black; border-width: 1px;">
+            ...
+          </th>
+          
+          <th scope="col" jhiSortBy="serviceLevel" class = "inventory">
+            <div class="d-flex" style="place-content: center;">
               <span>Service Level</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="currSAPSafetyStock">
-            <div class="d-flex">
-              <span>Curr SAP Safety Stock</span>
+
+          <th scope="col" jhiSortBy="openSAPmd04" class = "inventory">
+            <div class="d-flex" style="place-content: center;">
+              <span>Open SAP Md 04</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="propsedSST">
-            <div class="d-flex">
-              <span>Propsed SST</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="deltaSST">
-            <div class="d-flex">
-              <span>Delta SST</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="currentSAPSafeTime">
-            <div class="d-flex">
-              <span>Current SAP Safe Time</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="proposedST">
-            <div class="d-flex">
-              <span>Proposed ST</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="deltaST">
-            <div class="d-flex">
-              <span>Delta ST</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="openSAPmd04">
-            <div class="d-flex">
-              <span>Open SA Pmd 04</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="currentInventoryValue">
-            <div class="d-flex">
+
+          <th scope="col" jhiSortBy="currentInventoryValue" class="inventory">
+            <div class="d-flex" style="place-content: center;">
               <span>Current Inventory Value</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="unitCost">
-            <div class="d-flex">
-              <span>Unit Cost</span>
+          
+          <th scope="col" jhiSortBy="avgInventoryEffectAfterChange" class="inventory" style="border-right-color: black; border-width: 1px;">
+            <div class="d-flex" style="place-content: center;">
+              <span>Average Inventory Effect After Change</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="avgDemand">
-            <div class="d-flex">
-              <span>Avg Demand</span>
+          
+          <th *ngIf = "!visibility.get('inventory')" style="border-right-color: black; border-width: 1px;">
+            ...
+          </th>
+          <th scope="col" jhiSortBy="newSapSafetyStock" class="edit ">
+            <div class="d-flex" style="place-content: center;">
+              <span>New Sap Safety Stock</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="avgInventoryEffectAfterChange">
-            <div class="d-flex">
-              <span>Avg Inventory Effect After Change</span>
+          <th scope="col" jhiSortBy="newSapSafetyTime" class="edit">
+            <div class="d-flex" style="place-content: center;">
+              <span>New Sap Safety Time</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="flagMaterial">
-            <div class="d-flex">
-              <span>Flag Material</span>
+          <th scope="col" jhiSortBy="selectEntriesForChangeInSap" class="edit">
+            <div  >
+              <div class="d-flex" style="place-content: center;">
+                <span>Select Entries For Change In Sap</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+              <input type="checkbox">
+
+            </div>
+          </th>
+
+          <th scope="col" jhiSortBy="flagMaterial" class="edit">
+            <div class="d-flex" style="place-content: center;">
+              <span>Flag Material As Special Case</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="comment">
-            <div class="d-flex">
+
+          <th scope="col" jhiSortBy="comment" class="edit " style="border-right-color: black; border-width: 1px;">
+            <div class="d-flex" style="place-content: center;">
               <span>Comment</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col"></th>
+          <th *ngIf = "!visibility.get('edit')" style="border-right-color: black; border-width: 1px;">
+            ...
+          </th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let material of materials; trackBy: trackId" data-cy="entityTable">
-          <td>
+          <!--<td>
             <a [routerLink]="['/material', material.id, 'view']">{{ material.id }}</a>
+          </td>-->
+          <td class ="materialInfo">{{ material.material }}</td>
+          <td class ="materialInfo">{{ material.description }}</td>
+          <td class ="materialInfo">{{ material.abcClassification }}</td>
+          <td *ngIf = "!visibility.get('materialInfo')">
+            ...
           </td>
-          <td>{{ material.material }}</td>
-          <td>{{ material.description }}</td>
-          <td>{{ material.abcClassification }}</td>
-          <td>{{ material.avgSupplierDelay }}</td>
-          <td>{{ material.maxSupplierDelay }}</td>
-          <td>{{ material.serviceLevel }}</td>
-          <td>{{ material.currSAPSafetyStock }}</td>
-          <td>{{ material.propsedSST }}</td>
-          <td>{{ material.deltaSST }}</td>
-          <td>{{ material.currentSAPSafeTime }}</td>
-          <td>{{ material.proposedST }}</td>
-          <td>{{ material.deltaST }}</td>
-          <td>{{ material.openSAPmd04 }}</td>
-          <td>{{ material.currentInventoryValue }}</td>
-          <td>{{ material.unitCost }}</td>
-          <td>{{ material.avgDemand }}</td>
-          <td>{{ material.avgInventoryEffectAfterChange }}</td>
-          <td>{{ material.flagMaterial }}</td>
-          <td>{{ material.comment }}</td>
+
+          <td class ="supplierDelay">{{ material.avgSupplierDelay }}</td>
+          <td class ="supplierDelay">{{ material.maxSupplierDelay }}</td>
+          <th *ngIf = "!visibility.get('supplierDelay')">
+            ...
+          </th>
+
+          <td class ="safetyStock">{{ material.currSAPSafetyStock }}</td>
+          <td class ="safetyStock">{{ material.propsedSST }}</td>
+          <td class ="safetyStock">{{ material.deltaSST }}</td>
+          <th *ngIf = "!visibility.get('safetyStock')">
+            ...
+          </th>
+
+          <td class ="safetyTime">{{ material.currentSAPSafeTime }}</td>
+          <td class ="safetyTime">{{ material.proposedST }}</td>
+          <td class ="safetyTime">{{ material.deltaST }}</td>
+          <th *ngIf = "!visibility.get('safetyTime')">
+            ...
+          </th>
+
+          <td  class ="inventory">{{ material.serviceLevel }}</td>
+          <td class ="inventory"><button class="buttonNoBorder">
+            <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"><fa-icon icon="external-link" style="color: #2D8DFF;"></fa-icon></a>
+            </button> <!--{{ diabo.openSapMd04 }}-->
+          </td>
+          <td  class ="inventory">{{ material.currentInventoryValue }}</td>
+          <td  class ="inventory">{{ material.avgInventoryEffectAfterChange }}</td>
+          <th *ngIf = "!visibility.get('inventory')">
+            ...
+          </th>
+
+          <td class ="edit" *ngIf="!(isEditable[0] === material.id && isEditable[1] === 0) && (!linhas.has(material.id) || linhas.get(material.id)?.newSSS === -1)" (click)="makeEditable(material.id,0)" >{{material.propsedSST}}</td>
+          <td class ="edit" *ngIf="isEditable[0] === material.id && isEditable[1] === 0 "><input placeholder="{{material.propsedSST}}" (change)="input($event,'newSSS',material.id)"></td>
+          <td class ="edit" *ngIf="linhas.has(material.id) && (linhas.get(material.id)?.newSSS !== -1)" style="color:blue" >{{linhas.get(material.id)?.newSSS}}</td>
+
+          <td class ="edit" *ngIf="!(isEditable[0] === material.id && isEditable[1] === 1) && (!linhas.has(material.id) || linhas.get(material.id)?.newSST === -1)" (click)="makeEditable(material.id,1)">{{ material.proposedST }}</td>
+          <td class ="edit" *ngIf="isEditable[0] === material.id && isEditable[1] === 1"><input placeholder="{{material.proposedST}}" (change)="input($event,'newSST',material.id)"></td>
+          <td class ="edit" *ngIf="linhas.has(material.id) && (linhas.get(material.id)?.newSST !== -1)" style="color:blue" >{{linhas.get(material.id)?.newSST}}</td>
+
+          <td class ="edit"><input type = "checkbox" [disabled]="!linhas.has(material.id)" (click)="input($event,'selected',material.id)"></td>
+
+
+          <td class ="edit">{{ material.flagMaterial }}</td>
+
+          <td class ="edit" *ngIf="!(isEditable[0] === material.id && isEditable[1] === 2) && (!linhas.has(material.id) || linhas.get(material.id)?.newComment === 'n/a')" (click)="makeEditable(material.id,2)">{{ material.comment }}</td>
+          <td class ="edit" *ngIf="isEditable[0] === material.id && isEditable[1] === 2"><input placeholder="{{material.comment}}" (change)="input($event,'newComment',material.id)"></td>
+          <td class ="edit" *ngIf="linhas.has(material.id) && (linhas.get(material.id)?.newComment !== 'n/a')" style="color:blue" >{{linhas.get(material.id)?.newComment}}</td>
+          <th *ngIf = "!visibility.get('edit')">
+            ...
+          </th>
+
+
+
+          <!--
           <td class="text-end">
             <div class="btn-group">
               <button
@@ -207,6 +352,7 @@
               </button>
             </div>
           </td>
+          -->
         </tr>
       </tbody>
     </table>
