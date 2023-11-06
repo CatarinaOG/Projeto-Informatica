@@ -78,15 +78,9 @@ export class MaterialComponent implements OnInit , AfterContentInit{
     const file:File = event.target.files[0];
 
     if (file) {
-
-        this.fileName = file.name;
-
-        const formData = new FormData();
-
-        formData.append("thumbnail", file);
-
-        console.log("The filename is " , this.fileName);
-
+        this.materialService.uploadFile(file).subscribe(() => {
+          // handle response here
+        });
     }
   }
 

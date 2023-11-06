@@ -3,6 +3,8 @@ package com.bosch.diabo.service.impl;
 import com.bosch.diabo.domain.Material;
 import com.bosch.diabo.repository.MaterialRepository;
 import com.bosch.diabo.service.MaterialService;
+
+import java.io.File;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -126,5 +128,11 @@ public class MaterialServiceImpl implements MaterialService {
     public void delete(Long id) {
         log.debug("Request to delete Material : {}", id);
         materialRepository.deleteById(id);
+    }
+
+
+    @Override
+    public void uploadFile(File file){
+        log.debug("Request to new source file : {}", file.getName());
     }
 }

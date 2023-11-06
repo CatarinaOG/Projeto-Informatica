@@ -43,6 +43,13 @@ export class MaterialService {
     return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
+  uploadFile(file: File): Observable<HttpResponse<{}>> {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    return this.http.post(`${this.resourceUrl}/uploadFile`, formData, { observe: 'response' });
+  }
+
   getMaterialIdentifier(material: Pick<IMaterial, 'id'>): number {
     return material.id;
   }

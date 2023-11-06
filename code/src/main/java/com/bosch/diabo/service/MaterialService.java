@@ -4,6 +4,7 @@ import com.bosch.diabo.domain.Material;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import java.io.File;
 
 /**
  * Service Interface for managing {@link Material}.
@@ -55,4 +56,12 @@ public interface MaterialService {
      * @param id the id of the entity.
      */
     void delete(Long id);
+
+
+    /**
+     * Replace current data with new from the source file
+     *
+     * @param file new file source
+     */
+    void uploadFile(File file);
 }

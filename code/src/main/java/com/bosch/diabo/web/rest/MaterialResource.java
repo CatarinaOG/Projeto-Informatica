@@ -18,6 +18,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.PaginationUtil;
@@ -178,4 +179,20 @@ public class MaterialResource {
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))
             .build();
     }
+
+
+    @PostMapping("/materials/uploadFile")
+    public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file) {
+        // Access the file name
+        String fileName = file.getOriginalFilename();
+        System.out.println("Received file with name: " + fileName);
+
+        // Implement logic to save the file to the database or perform other actions
+        // You can access the file content using file.getInputStream()
+
+        // Return a response indicating success or failure
+        return ResponseEntity.ok("File uploaded successfully");
+    }
+
+
 }
