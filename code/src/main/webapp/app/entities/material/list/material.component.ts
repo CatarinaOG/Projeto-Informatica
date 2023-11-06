@@ -63,6 +63,22 @@ export class MaterialComponent implements OnInit , AfterContentInit{
     this.load();
   }
 
+  checkUncheckAll(event:any) {
+    this.linhas.forEach(function(value,key) {
+      value.selected = event.target.checked
+    })
+
+    event.stopPropagation();
+
+  }
+
+  func(id :number): String{
+    if (this.linhas.has(id) && this.linhas.get(id)?.selected){
+      return "selected-row"
+    }
+    else return "normal-row"
+  }
+
   ngAfterContentInit(){
     var cl = document.getElementsByClassName('edit')
     console.log("CL is ", cl)
