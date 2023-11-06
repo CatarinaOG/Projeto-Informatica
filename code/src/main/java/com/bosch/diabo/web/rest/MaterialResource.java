@@ -4,11 +4,14 @@ import com.bosch.diabo.domain.Material;
 import com.bosch.diabo.repository.MaterialRepository;
 import com.bosch.diabo.service.MaterialService;
 import com.bosch.diabo.web.rest.errors.BadRequestAlertException;
+
+import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,6 +26,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * REST controller for managing {@link com.bosch.diabo.domain.Material}.
@@ -182,13 +187,16 @@ public class MaterialResource {
 
 
     @PostMapping("/materials/uploadFile")
-    public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file) {
-        // Access the file name
-        String fileName = file.getOriginalFilename();
-        System.out.println("Received file with name: " + fileName);
+    public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile multipartFile) {
+        File convertedFile = new File(multipartFile.getOriginalFilename());
 
-        // Implement logic to save the file to the database or perform other actions
-        // You can access the file content using file.getInputStream()
+        try {
+            multipartFile.transferTo(convertedFile);
+            materialService.uploadFile(convertedFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body("Error uploading file: " + e.getMessage());
+        }
 
         // Return a response indicating success or failure
         return ResponseEntity.ok("File uploaded successfully");

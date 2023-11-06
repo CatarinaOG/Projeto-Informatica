@@ -4,7 +4,14 @@ import com.bosch.diabo.domain.Material;
 import com.bosch.diabo.repository.MaterialRepository;
 import com.bosch.diabo.service.MaterialService;
 
+import io.micrometer.core.instrument.MultiGauge.Row;
+
 import java.io.File;
+import java.io.IOException;
+import java.io.FileInputStream;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +19,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.formula.functions.T;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /**
  * Service Implementation for managing {@link Material}.
@@ -133,6 +146,34 @@ public class MaterialServiceImpl implements MaterialService {
 
     @Override
     public void uploadFile(File file){
-        log.debug("Request to new source file : {}", file.getName());
+        log.debug("Request to new source file : {}", file.getName());   
+        try {
+            readExcelFile(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
+
+    }
+
+
+    public void readExcelFile(File file) throws IOException {
+
+        FileInputStream fis = new FileInputStream(file);
+        XSSFWorkbook wb = new XSSFWorkbook(fis);   
+        XSSFSheet sheet = wb.getSheetAt(0);  
+        Iterator<org.apache.poi.ss.usermodel.Row> itr = sheet.iterator();    
+        
+        System.out.println("started here ---------------");
+
+        while (itr.hasNext()){  
+            Row row = (Row) itr.next();  
+            Iterator<Cell> cellIterator = ((org.apache.poi.ss.usermodel.Row) row).cellIterator();   
+            
+            while (cellIterator.hasNext()){  
+                Cell cell = cellIterator.next();
+                System.out.println("this---------"+cell.getCellType());
+            }  
+        }
     }
 }
