@@ -4,8 +4,6 @@ import com.bosch.diabo.domain.Material;
 import com.bosch.diabo.repository.MaterialRepository;
 import com.bosch.diabo.service.MaterialService;
 
-import io.micrometer.core.instrument.MultiGauge.Row;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.FileInputStream;
@@ -25,7 +23,6 @@ import org.apache.poi.ss.formula.functions.T;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
 /**
  * Service Implementation for managing {@link Material}.
  */
@@ -159,21 +156,31 @@ public class MaterialServiceImpl implements MaterialService {
 
     public void readExcelFile(File file) throws IOException {
 
-        FileInputStream fis = new FileInputStream(file);
-        XSSFWorkbook wb = new XSSFWorkbook(fis);   
-        XSSFSheet sheet = wb.getSheetAt(0);  
-        Iterator<org.apache.poi.ss.usermodel.Row> itr = sheet.iterator();    
-        
-        System.out.println("started here ---------------");
+        if(file.exists()){
+            System.out.println("EXISTS");
+        }
 
-        while (itr.hasNext()){  
-            Row row = (Row) itr.next();  
-            Iterator<Cell> cellIterator = ((org.apache.poi.ss.usermodel.Row) row).cellIterator();   
-            
-            while (cellIterator.hasNext()){  
-                Cell cell = cellIterator.next();
-                System.out.println("this---------"+cell.getCellType());
-            }  
+        File file2 = new File("C:\\Users\\catarina\\Desktop\\source.xlsx"); 
+
+        try (FileInputStream fis = new FileInputStream(file2);
+            Workbook workbook = new XSSFWorkbook(fis)) {
+
+            Sheet sheet = workbook.getSheetAt(0);
+            Iterator<Row> rowIterator = sheet.iterator();
+
+            while (rowIterator.hasNext()) {
+                Row row = rowIterator.next();
+                Iterator<Cell> cellIterator = row.cellIterator();
+
+                while (cellIterator.hasNext()) {
+                    Cell cell = cellIterator.next();
+                    System.out.println(cell.toString());
+                }
+
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
+
 }
