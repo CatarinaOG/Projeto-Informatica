@@ -36,6 +36,9 @@ import java.io.IOException;
 @RequestMapping("/api")
 public class MaterialResource {
 
+    @Value("${file.upload.directory}")
+    private String uploadDirectory;
+
     private final Logger log = LoggerFactory.getLogger(MaterialResource.class);
 
     private static final String ENTITY_NAME = "material";
@@ -185,14 +188,50 @@ public class MaterialResource {
             .build();
     }
 
-
-    @PostMapping("/materials/uploadFile")
-    public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile multipartFile) {
-        File convertedFile = new File(multipartFile.getOriginalFilename());
-
+    /**
+     * {@code POST  /materials/uploadFileReplace} : upload file to replace current database
+     *
+     * @param multipartFile the file with data to add to the database.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} or with status {@code 500 (Internal Server Error)} if the server can't read the file.
+     * @throws IOException if file reading failed
+     */
+    @PostMapping("/materials/uploadFileReplace")
+    public ResponseEntity<String> uploadFileReplace(@RequestParam("file") MultipartFile multipartFile) {
+        log.debug("REST request to upload file");
+        
+        File convertedFile = new File(uploadDirectory+multipartFile.getOriginalFilename());
+        
         try {
             multipartFile.transferTo(convertedFile);
-            materialService.uploadFile(convertedFile);
+            materialService.uploadFileReplace(convertedFile);
+            convertedFile.delete();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body("Error uploading file: " + e.getMessage());
+        }
+
+        // Return a response indicating success or failure
+        return ResponseEntity.ok("File uploaded successfully");
+    }
+
+
+    /**
+     * {@code POST  /materials/uploadFileReplace} : upload file to add or update current database
+     *
+     * @param multipartFile the file with data to add or update the database.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} or with status {@code 500 (Internal Server Error)} if the server can't read the file.
+     * @throws IOException if file reading failed
+     */
+    @PostMapping("/materials/uploadFileAddOrUpdate")
+    public ResponseEntity<String> uploadFileAddOrUpdate(@RequestParam("file") MultipartFile multipartFile) {
+        log.debug("REST request to upload file");
+        
+        File convertedFile = new File(uploadDirectory+multipartFile.getOriginalFilename());
+        
+        try {
+            multipartFile.transferTo(convertedFile);
+            materialService.uploadFileAddOrUpdate(convertedFile);
+            convertedFile.delete();
         } catch (IOException e) {
             e.printStackTrace();
             return ResponseEntity.status(500).body("Error uploading file: " + e.getMessage());

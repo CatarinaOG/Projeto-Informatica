@@ -1,6 +1,7 @@
 package com.bosch.diabo.service.impl;
 
 import com.bosch.diabo.domain.Material;
+import com.bosch.diabo.domain.enumeration.ABCClassification;
 import com.bosch.diabo.repository.MaterialRepository;
 import com.bosch.diabo.service.MaterialService;
 
@@ -140,29 +141,112 @@ public class MaterialServiceImpl implements MaterialService {
         materialRepository.deleteById(id);
     }
 
+    public void deleteAll() {
+        materialRepository.deleteAll();
+    }
+
 
     @Override
-    public void uploadFile(File file){
+    public void uploadFileReplace(File file){
         log.debug("Request to new source file : {}", file.getName());   
-        try {
-            readExcelFile(file);
+        deleteAll();
+
+        try (FileInputStream fis = new FileInputStream(file);
+            Workbook workbook = new XSSFWorkbook(fis)) {
+
+            Sheet sheet = workbook.getSheetAt(0);
+            Iterator<Row> rowIterator = sheet.iterator();
+        
+            rowIterator.next(); // Ignore header row
+
+            while (rowIterator.hasNext()) {
+                
+                Row row = rowIterator.next();
+                Iterator<Cell> cellIterator = row.cellIterator();
+                Material material = parseMaterial(cellIterator);
+                materialRepository.save(material);
+
+            }
+
+
         } catch (IOException e) {
             e.printStackTrace();
         }
         
-
     }
 
 
-    public void readExcelFile(File file) throws IOException {
+    public Material parseMaterial(Iterator<Cell> cellIterator){
 
-        if(file.exists()){
-            System.out.println("EXISTS");
+        Material material = new Material();
+
+        material.setMaterial(Long.getLong(cellIterator.next().getStringCellValue()));
+        //System.out.println(Long.parseLong(cellIterator.next().getStringCellValue()));
+
+        material.setDescription(cellIterator.next().getStringCellValue());
+        material.setAbcClassification(ABCClassification.fromString(cellIterator.next().getStringCellValue()));
+
+        material.setAvgSupplierDelay((float) cellIterator.next().getNumericCellValue());
+        material.setMaxSupplierDelay((float) cellIterator.next().getNumericCellValue());
+        material.setServiceLevel((float) cellIterator.next().getNumericCellValue());
+
+        int currSAPSafetyStock = (int) cellIterator.next().getNumericCellValue();
+        material.setCurrSAPSafetyStock(currSAPSafetyStock);
+
+        int proposedSST = (int) cellIterator.next().getNumericCellValue();
+        material.setPropsedSST(proposedSST);
+
+        int deltaSST = proposedSST - currSAPSafetyStock;
+        material.setDeltaSST(deltaSST);
+        cellIterator.next();
+
+        material.setCurrentSAPSafeTime((int) cellIterator.next().getNumericCellValue());
+        material.setProposedST((int) cellIterator.next().getNumericCellValue());
+
+        int deltaST = material.getProposedST() - material.getCurrentSAPSafeTime();
+        material.setDeltaST(deltaST);
+        cellIterator.next();
+
+        material.setOpenSAPmd04(cellIterator.next().getStringCellValue());
+        material.setCurrentInventoryValue((float) cellIterator.next().getNumericCellValue());
+
+        Float unitCost = (float) cellIterator.next().getNumericCellValue();
+        material.setUnitCost(unitCost);
+
+        int avgDemand = (int) cellIterator.next().getNumericCellValue();
+        material.setAvgDemand(avgDemand);
+        material.setAvgInventoryEffectAfterChange(deltaSST * unitCost + deltaST * avgDemand * unitCost);
+        cellIterator.next();
+        
+        if(cellIterator.hasNext())
+            material.setFlagMaterial(getFlagValue(cellIterator.next()));
+        else {
+            material.setFlagMaterial(false);
+            material.setComment("");
         }
 
-        File file2 = new File("C:\\Users\\catarina\\Desktop\\source.xlsx"); 
+        if(cellIterator.hasNext())
+            material.setComment(cellIterator.next().getStringCellValue());
+        else
+            material.setComment("");
 
-        try (FileInputStream fis = new FileInputStream(file2);
+        return material;
+    }
+
+
+    public Boolean getFlagValue(Cell cell){
+        if(cell.getCellType() == CellType.BOOLEAN)
+            return cell.getBooleanCellValue();
+        else
+            return false;
+    }
+
+    
+    @Override
+    public void uploadFileAddOrUpdate(File file){
+        log.debug("Request to new source file : {}", file.getName());   
+        
+        try (FileInputStream fis = new FileInputStream(file);
             Workbook workbook = new XSSFWorkbook(fis)) {
 
             Sheet sheet = workbook.getSheetAt(0);
@@ -181,6 +265,7 @@ public class MaterialServiceImpl implements MaterialService {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        
     }
 
 }

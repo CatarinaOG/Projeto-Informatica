@@ -94,10 +94,17 @@ export class MaterialComponent implements OnInit , AfterContentInit{
     const file:File = event.target.files[0];
 
     if (file) {
-        this.materialService.uploadFile(file).subscribe(() => {
+        this.materialService.uploadFileReplace(file).subscribe(() => {
           // handle response here
         });
     }
+
+    // para o add or update usar: 
+    //if (file) {
+    //  this.materialService.uploadFileAddOrUpdate(file).subscribe(() => {
+    //    // handle response here
+    //  });
+    //}
   }
 
   makeEditable(a: number, b: number){

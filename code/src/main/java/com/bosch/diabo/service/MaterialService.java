@@ -57,11 +57,18 @@ public interface MaterialService {
      */
     void delete(Long id);
 
-
     /**
      * Replace current data with new from the source file
      *
      * @param file new file source
      */
-    void uploadFile(File file);
+    void uploadFileReplace(File file);
+
+
+    /**
+     * Add new data or update current one from the source file
+     *
+     * @param file new file source
+     */
+    void uploadFileAddOrUpdate(File file);
 }

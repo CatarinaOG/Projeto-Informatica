@@ -14,6 +14,11 @@
 # http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
 # ===================================================================
 
+
+file:
+  upload:
+    directory: C:\Users\catarina\Desktop\catarina\5ano\Projeto-Informatica\code\
+
 ---
 # Conditionally disable springdoc on missing api-docs profile
 spring:
