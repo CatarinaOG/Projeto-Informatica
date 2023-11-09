@@ -8,7 +8,6 @@ public enum ABCClassification {
     B,
     C;
 
-
     public static ABCClassification fromString(String value) {
         switch (value) {
             case "A":
@@ -21,5 +20,4 @@ public enum ABCClassification {
                 return A;
         }
     }
-
 }

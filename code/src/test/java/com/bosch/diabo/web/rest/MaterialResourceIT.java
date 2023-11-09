@@ -30,8 +30,8 @@ import org.springframework.transaction.annotation.Transactional;
 @WithMockUser
 class MaterialResourceIT {
 
-    private static final Long DEFAULT_MATERIAL = 1L;
-    private static final Long UPDATED_MATERIAL = 2L;
+    private static final String DEFAULT_MATERIAL = "AAAAAAAAAA";
+    private static final String UPDATED_MATERIAL = "BBBBBBBBBB";
 
     private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
     private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
@@ -51,8 +51,8 @@ class MaterialResourceIT {
     private static final Integer DEFAULT_CURR_SAP_SAFETY_STOCK = 1;
     private static final Integer UPDATED_CURR_SAP_SAFETY_STOCK = 2;
 
-    private static final Integer DEFAULT_PROPSED_SST = 1;
-    private static final Integer UPDATED_PROPSED_SST = 2;
+    private static final Integer DEFAULT_PROPOSED_SST = 1;
+    private static final Integer UPDATED_PROPOSED_SST = 2;
 
     private static final Integer DEFAULT_DELTA_SST = 1;
     private static final Integer UPDATED_DELTA_SST = 2;
@@ -119,7 +119,7 @@ class MaterialResourceIT {
             .maxSupplierDelay(DEFAULT_MAX_SUPPLIER_DELAY)
             .serviceLevel(DEFAULT_SERVICE_LEVEL)
             .currSAPSafetyStock(DEFAULT_CURR_SAP_SAFETY_STOCK)
-            .propsedSST(DEFAULT_PROPSED_SST)
+            .proposedSST(DEFAULT_PROPOSED_SST)
             .deltaSST(DEFAULT_DELTA_SST)
             .currentSAPSafeTime(DEFAULT_CURRENT_SAP_SAFE_TIME)
             .proposedST(DEFAULT_PROPOSED_ST)
@@ -149,7 +149,7 @@ class MaterialResourceIT {
             .maxSupplierDelay(UPDATED_MAX_SUPPLIER_DELAY)
             .serviceLevel(UPDATED_SERVICE_LEVEL)
             .currSAPSafetyStock(UPDATED_CURR_SAP_SAFETY_STOCK)
-            .propsedSST(UPDATED_PROPSED_SST)
+            .proposedSST(UPDATED_PROPOSED_SST)
             .deltaSST(UPDATED_DELTA_SST)
             .currentSAPSafeTime(UPDATED_CURRENT_SAP_SAFE_TIME)
             .proposedST(UPDATED_PROPOSED_ST)
@@ -189,7 +189,7 @@ class MaterialResourceIT {
         assertThat(testMaterial.getMaxSupplierDelay()).isEqualTo(DEFAULT_MAX_SUPPLIER_DELAY);
         assertThat(testMaterial.getServiceLevel()).isEqualTo(DEFAULT_SERVICE_LEVEL);
         assertThat(testMaterial.getCurrSAPSafetyStock()).isEqualTo(DEFAULT_CURR_SAP_SAFETY_STOCK);
-        assertThat(testMaterial.getPropsedSST()).isEqualTo(DEFAULT_PROPSED_SST);
+        assertThat(testMaterial.getProposedSST()).isEqualTo(DEFAULT_PROPOSED_SST);
         assertThat(testMaterial.getDeltaSST()).isEqualTo(DEFAULT_DELTA_SST);
         assertThat(testMaterial.getCurrentSAPSafeTime()).isEqualTo(DEFAULT_CURRENT_SAP_SAFE_TIME);
         assertThat(testMaterial.getProposedST()).isEqualTo(DEFAULT_PROPOSED_ST);
@@ -233,14 +233,14 @@ class MaterialResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(material.getId().intValue())))
-            .andExpect(jsonPath("$.[*].material").value(hasItem(DEFAULT_MATERIAL.intValue())))
+            .andExpect(jsonPath("$.[*].material").value(hasItem(DEFAULT_MATERIAL)))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
             .andExpect(jsonPath("$.[*].abcClassification").value(hasItem(DEFAULT_ABC_CLASSIFICATION.toString())))
             .andExpect(jsonPath("$.[*].avgSupplierDelay").value(hasItem(DEFAULT_AVG_SUPPLIER_DELAY.doubleValue())))
             .andExpect(jsonPath("$.[*].maxSupplierDelay").value(hasItem(DEFAULT_MAX_SUPPLIER_DELAY.doubleValue())))
             .andExpect(jsonPath("$.[*].serviceLevel").value(hasItem(DEFAULT_SERVICE_LEVEL.doubleValue())))
             .andExpect(jsonPath("$.[*].currSAPSafetyStock").value(hasItem(DEFAULT_CURR_SAP_SAFETY_STOCK)))
-            .andExpect(jsonPath("$.[*].propsedSST").value(hasItem(DEFAULT_PROPSED_SST)))
+            .andExpect(jsonPath("$.[*].proposedSST").value(hasItem(DEFAULT_PROPOSED_SST)))
             .andExpect(jsonPath("$.[*].deltaSST").value(hasItem(DEFAULT_DELTA_SST)))
             .andExpect(jsonPath("$.[*].currentSAPSafeTime").value(hasItem(DEFAULT_CURRENT_SAP_SAFE_TIME)))
             .andExpect(jsonPath("$.[*].proposedST").value(hasItem(DEFAULT_PROPOSED_ST)))
@@ -268,14 +268,14 @@ class MaterialResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(material.getId().intValue()))
-            .andExpect(jsonPath("$.material").value(DEFAULT_MATERIAL.intValue()))
+            .andExpect(jsonPath("$.material").value(DEFAULT_MATERIAL))
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION))
             .andExpect(jsonPath("$.abcClassification").value(DEFAULT_ABC_CLASSIFICATION.toString()))
             .andExpect(jsonPath("$.avgSupplierDelay").value(DEFAULT_AVG_SUPPLIER_DELAY.doubleValue()))
             .andExpect(jsonPath("$.maxSupplierDelay").value(DEFAULT_MAX_SUPPLIER_DELAY.doubleValue()))
             .andExpect(jsonPath("$.serviceLevel").value(DEFAULT_SERVICE_LEVEL.doubleValue()))
             .andExpect(jsonPath("$.currSAPSafetyStock").value(DEFAULT_CURR_SAP_SAFETY_STOCK))
-            .andExpect(jsonPath("$.propsedSST").value(DEFAULT_PROPSED_SST))
+            .andExpect(jsonPath("$.proposedSST").value(DEFAULT_PROPOSED_SST))
             .andExpect(jsonPath("$.deltaSST").value(DEFAULT_DELTA_SST))
             .andExpect(jsonPath("$.currentSAPSafeTime").value(DEFAULT_CURRENT_SAP_SAFE_TIME))
             .andExpect(jsonPath("$.proposedST").value(DEFAULT_PROPOSED_ST))
@@ -316,7 +316,7 @@ class MaterialResourceIT {
             .maxSupplierDelay(UPDATED_MAX_SUPPLIER_DELAY)
             .serviceLevel(UPDATED_SERVICE_LEVEL)
             .currSAPSafetyStock(UPDATED_CURR_SAP_SAFETY_STOCK)
-            .propsedSST(UPDATED_PROPSED_SST)
+            .proposedSST(UPDATED_PROPOSED_SST)
             .deltaSST(UPDATED_DELTA_SST)
             .currentSAPSafeTime(UPDATED_CURRENT_SAP_SAFE_TIME)
             .proposedST(UPDATED_PROPOSED_ST)
@@ -348,7 +348,7 @@ class MaterialResourceIT {
         assertThat(testMaterial.getMaxSupplierDelay()).isEqualTo(UPDATED_MAX_SUPPLIER_DELAY);
         assertThat(testMaterial.getServiceLevel()).isEqualTo(UPDATED_SERVICE_LEVEL);
         assertThat(testMaterial.getCurrSAPSafetyStock()).isEqualTo(UPDATED_CURR_SAP_SAFETY_STOCK);
-        assertThat(testMaterial.getPropsedSST()).isEqualTo(UPDATED_PROPSED_SST);
+        assertThat(testMaterial.getProposedSST()).isEqualTo(UPDATED_PROPOSED_SST);
         assertThat(testMaterial.getDeltaSST()).isEqualTo(UPDATED_DELTA_SST);
         assertThat(testMaterial.getCurrentSAPSafeTime()).isEqualTo(UPDATED_CURRENT_SAP_SAFE_TIME);
         assertThat(testMaterial.getProposedST()).isEqualTo(UPDATED_PROPOSED_ST);
@@ -435,7 +435,7 @@ class MaterialResourceIT {
             .description(UPDATED_DESCRIPTION)
             .maxSupplierDelay(UPDATED_MAX_SUPPLIER_DELAY)
             .currSAPSafetyStock(UPDATED_CURR_SAP_SAFETY_STOCK)
-            .propsedSST(UPDATED_PROPSED_SST)
+            .proposedSST(UPDATED_PROPOSED_SST)
             .deltaSST(UPDATED_DELTA_SST)
             .proposedST(UPDATED_PROPOSED_ST)
             .deltaST(UPDATED_DELTA_ST)
@@ -463,7 +463,7 @@ class MaterialResourceIT {
         assertThat(testMaterial.getMaxSupplierDelay()).isEqualTo(UPDATED_MAX_SUPPLIER_DELAY);
         assertThat(testMaterial.getServiceLevel()).isEqualTo(DEFAULT_SERVICE_LEVEL);
         assertThat(testMaterial.getCurrSAPSafetyStock()).isEqualTo(UPDATED_CURR_SAP_SAFETY_STOCK);
-        assertThat(testMaterial.getPropsedSST()).isEqualTo(UPDATED_PROPSED_SST);
+        assertThat(testMaterial.getProposedSST()).isEqualTo(UPDATED_PROPOSED_SST);
         assertThat(testMaterial.getDeltaSST()).isEqualTo(UPDATED_DELTA_SST);
         assertThat(testMaterial.getCurrentSAPSafeTime()).isEqualTo(DEFAULT_CURRENT_SAP_SAFE_TIME);
         assertThat(testMaterial.getProposedST()).isEqualTo(UPDATED_PROPOSED_ST);
@@ -497,7 +497,7 @@ class MaterialResourceIT {
             .maxSupplierDelay(UPDATED_MAX_SUPPLIER_DELAY)
             .serviceLevel(UPDATED_SERVICE_LEVEL)
             .currSAPSafetyStock(UPDATED_CURR_SAP_SAFETY_STOCK)
-            .propsedSST(UPDATED_PROPSED_SST)
+            .proposedSST(UPDATED_PROPOSED_SST)
             .deltaSST(UPDATED_DELTA_SST)
             .currentSAPSafeTime(UPDATED_CURRENT_SAP_SAFE_TIME)
             .proposedST(UPDATED_PROPOSED_ST)
@@ -529,7 +529,7 @@ class MaterialResourceIT {
         assertThat(testMaterial.getMaxSupplierDelay()).isEqualTo(UPDATED_MAX_SUPPLIER_DELAY);
         assertThat(testMaterial.getServiceLevel()).isEqualTo(UPDATED_SERVICE_LEVEL);
         assertThat(testMaterial.getCurrSAPSafetyStock()).isEqualTo(UPDATED_CURR_SAP_SAFETY_STOCK);
-        assertThat(testMaterial.getPropsedSST()).isEqualTo(UPDATED_PROPSED_SST);
+        assertThat(testMaterial.getProposedSST()).isEqualTo(UPDATED_PROPOSED_SST);
         assertThat(testMaterial.getDeltaSST()).isEqualTo(UPDATED_DELTA_SST);
         assertThat(testMaterial.getCurrentSAPSafeTime()).isEqualTo(UPDATED_CURRENT_SAP_SAFE_TIME);
         assertThat(testMaterial.getProposedST()).isEqualTo(UPDATED_PROPOSED_ST);

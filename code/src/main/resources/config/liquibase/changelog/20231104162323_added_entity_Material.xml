@@ -14,7 +14,7 @@
             <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="material" type="bigint">
+            <column name="material" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
             <column name="description" type="varchar(255)">
@@ -35,7 +35,7 @@
             <column name="curr_sap_safety_stock" type="integer">
                 <constraints nullable="true" />
             </column>
-            <column name="propsed_sst" type="integer">
+            <column name="proposed_sst" type="integer">
                 <constraints nullable="true" />
             </column>
             <column name="delta_sst" type="integer">
@@ -92,14 +92,14 @@
                   tableName="material"
                   usePreparedStatements="true">
             <column name="id" type="numeric"/>
-            <column name="material" type="numeric"/>
+            <column name="material" type="string"/>
             <column name="description" type="string"/>
             <column name="abc_classification" type="string"/>
             <column name="avg_supplier_delay" type="numeric"/>
             <column name="max_supplier_delay" type="numeric"/>
             <column name="service_level" type="numeric"/>
             <column name="curr_sap_safety_stock" type="numeric"/>
-            <column name="propsed_sst" type="numeric"/>
+            <column name="proposed_sst" type="numeric"/>
             <column name="delta_sst" type="numeric"/>
             <column name="current_sap_safe_time" type="numeric"/>
             <column name="proposed_st" type="numeric"/>

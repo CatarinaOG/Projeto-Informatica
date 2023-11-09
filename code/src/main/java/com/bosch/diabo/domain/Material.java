@@ -21,7 +21,7 @@ public class Material implements Serializable {
     private Long id;
 
     @Column(name = "material")
-    private Long material;
+    private String material;
 
     @Column(name = "description")
     private String description;
@@ -42,8 +42,8 @@ public class Material implements Serializable {
     @Column(name = "curr_sap_safety_stock")
     private Integer currSAPSafetyStock;
 
-    @Column(name = "propsed_sst")
-    private Integer propsedSST;
+    @Column(name = "proposed_sst")
+    private Integer proposedSST;
 
     @Column(name = "delta_sst")
     private Integer deltaSST;
@@ -93,16 +93,16 @@ public class Material implements Serializable {
         this.id = id;
     }
 
-    public Long getMaterial() {
+    public String getMaterial() {
         return this.material;
     }
 
-    public Material material(Long material) {
+    public Material material(String material) {
         this.setMaterial(material);
         return this;
     }
 
-    public void setMaterial(Long material) {
+    public void setMaterial(String material) {
         this.material = material;
     }
 
@@ -184,17 +184,17 @@ public class Material implements Serializable {
         this.currSAPSafetyStock = currSAPSafetyStock;
     }
 
-    public Integer getPropsedSST() {
-        return this.propsedSST;
+    public Integer getProposedSST() {
+        return this.proposedSST;
     }
 
-    public Material propsedSST(Integer propsedSST) {
-        this.setPropsedSST(propsedSST);
+    public Material proposedSST(Integer proposedSST) {
+        this.setProposedSST(proposedSST);
         return this;
     }
 
-    public void setPropsedSST(Integer propsedSST) {
-        this.propsedSST = propsedSST;
+    public void setProposedSST(Integer proposedSST) {
+        this.proposedSST = proposedSST;
     }
 
     public Integer getDeltaSST() {
@@ -364,14 +364,14 @@ public class Material implements Serializable {
     public String toString() {
         return "Material{" +
             "id=" + getId() +
-            ", material=" + getMaterial() +
+            ", material='" + getMaterial() + "'" +
             ", description='" + getDescription() + "'" +
             ", abcClassification='" + getAbcClassification() + "'" +
             ", avgSupplierDelay=" + getAvgSupplierDelay() +
             ", maxSupplierDelay=" + getMaxSupplierDelay() +
             ", serviceLevel=" + getServiceLevel() +
             ", currSAPSafetyStock=" + getCurrSAPSafetyStock() +
-            ", propsedSST=" + getPropsedSST() +
+            ", proposedSST=" + getProposedSST() +
             ", deltaSST=" + getDeltaSST() +
             ", currentSAPSafeTime=" + getCurrentSAPSafeTime() +
             ", proposedST=" + getProposedST() +

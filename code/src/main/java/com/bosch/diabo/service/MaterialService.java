@@ -1,10 +1,11 @@
 package com.bosch.diabo.service;
 
 import com.bosch.diabo.domain.Material;
+
+import java.io.File;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import java.io.File;
 
 /**
  * Service Interface for managing {@link Material}.
@@ -63,8 +64,6 @@ public interface MaterialService {
      * @param file new file source
      */
     void uploadFileReplace(File file);
-
-
     /**
      * Add new data or update current one from the source file
      *

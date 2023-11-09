@@ -7,7 +7,7 @@
   "fields": [
     {
       "fieldName": "material",
-      "fieldType": "Long"
+      "fieldType": "String"
     },
     {
       "fieldName": "description",
@@ -35,7 +35,7 @@
       "fieldType": "Integer"
     },
     {
-      "fieldName": "propsedSST",
+      "fieldName": "proposedSST",
       "fieldType": "Integer"
     },
     {

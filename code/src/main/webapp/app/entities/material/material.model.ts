@@ -2,14 +2,14 @@ import { ABCClassification } from 'app/entities/enumerations/abc-classification.
 
 export interface IMaterial {
   id: number;
-  material?: number | null;
+  material?: string | null;
   description?: string | null;
   abcClassification?: ABCClassification | null;
   avgSupplierDelay?: number | null;
   maxSupplierDelay?: number | null;
   serviceLevel?: number | null;
   currSAPSafetyStock?: number | null;
-  propsedSST?: number | null;
+  proposedSST?: number | null;
   deltaSST?: number | null;
   currentSAPSafeTime?: number | null;
   proposedST?: number | null;

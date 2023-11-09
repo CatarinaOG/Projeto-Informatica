@@ -5,13 +5,17 @@ import com.bosch.diabo.domain.enumeration.ABCClassification;
 import com.bosch.diabo.repository.MaterialRepository;
 import com.bosch.diabo.service.MaterialService;
 
-import java.io.File;
 import java.io.IOException;
+import java.io.File;
 import java.io.FileInputStream;
+import java.util.Optional;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Optional;
+
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -23,7 +27,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.formula.functions.T;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
 /**
  * Service Implementation for managing {@link Material}.
  */
@@ -79,8 +83,8 @@ public class MaterialServiceImpl implements MaterialService {
                 if (material.getCurrSAPSafetyStock() != null) {
                     existingMaterial.setCurrSAPSafetyStock(material.getCurrSAPSafetyStock());
                 }
-                if (material.getPropsedSST() != null) {
-                    existingMaterial.setPropsedSST(material.getPropsedSST());
+                if (material.getProposedSST() != null) {
+                    existingMaterial.setProposedSST(material.getProposedSST());
                 }
                 if (material.getDeltaSST() != null) {
                     existingMaterial.setDeltaSST(material.getDeltaSST());
@@ -141,6 +145,7 @@ public class MaterialServiceImpl implements MaterialService {
         materialRepository.deleteById(id);
     }
 
+
     public void deleteAll() {
         materialRepository.deleteAll();
     }
@@ -150,42 +155,29 @@ public class MaterialServiceImpl implements MaterialService {
     public void uploadFileReplace(File file){
         log.debug("Request to new source file : {}", file.getName());   
         deleteAll();
-
         try (FileInputStream fis = new FileInputStream(file);
             Workbook workbook = new XSSFWorkbook(fis)) {
-
             Sheet sheet = workbook.getSheetAt(0);
             Iterator<Row> rowIterator = sheet.iterator();
         
             rowIterator.next(); // Ignore header row
-
             while (rowIterator.hasNext()) {
                 
                 Row row = rowIterator.next();
                 Iterator<Cell> cellIterator = row.cellIterator();
                 Material material = parseMaterial(cellIterator);
                 materialRepository.save(material);
-
             }
-
-
         } catch (IOException e) {
             e.printStackTrace();
         }
         
     }
-
-
     public Material parseMaterial(Iterator<Cell> cellIterator){
-
         Material material = new Material();
-
-        material.setMaterial(Long.getLong(cellIterator.next().getStringCellValue()));
-        //System.out.println(Long.parseLong(cellIterator.next().getStringCellValue()));
-
+        material.setMaterial(cellIterator.next().getStringCellValue());
         material.setDescription(cellIterator.next().getStringCellValue());
         material.setAbcClassification(ABCClassification.fromString(cellIterator.next().getStringCellValue()));
-
         material.setAvgSupplierDelay((float) cellIterator.next().getNumericCellValue());
         material.setMaxSupplierDelay((float) cellIterator.next().getNumericCellValue());
         material.setServiceLevel((float) cellIterator.next().getNumericCellValue());
@@ -194,19 +186,17 @@ public class MaterialServiceImpl implements MaterialService {
         material.setCurrSAPSafetyStock(currSAPSafetyStock);
 
         int proposedSST = (int) cellIterator.next().getNumericCellValue();
-        material.setPropsedSST(proposedSST);
+        material.setProposedSST(proposedSST);
 
         int deltaSST = proposedSST - currSAPSafetyStock;
         material.setDeltaSST(deltaSST);
         cellIterator.next();
-
         material.setCurrentSAPSafeTime((int) cellIterator.next().getNumericCellValue());
         material.setProposedST((int) cellIterator.next().getNumericCellValue());
 
         int deltaST = material.getProposedST() - material.getCurrentSAPSafeTime();
         material.setDeltaST(deltaST);
         cellIterator.next();
-
         material.setOpenSAPmd04(cellIterator.next().getStringCellValue());
         material.setCurrentInventoryValue((float) cellIterator.next().getNumericCellValue());
 
@@ -224,23 +214,20 @@ public class MaterialServiceImpl implements MaterialService {
             material.setFlagMaterial(false);
             material.setComment("");
         }
-
         if(cellIterator.hasNext())
             material.setComment(cellIterator.next().getStringCellValue());
         else
             material.setComment("");
-
         return material;
     }
 
-
+    
     public Boolean getFlagValue(Cell cell){
         if(cell.getCellType() == CellType.BOOLEAN)
             return cell.getBooleanCellValue();
         else
             return false;
     }
-
     
     @Override
     public void uploadFileAddOrUpdate(File file){
@@ -248,24 +235,19 @@ public class MaterialServiceImpl implements MaterialService {
         
         try (FileInputStream fis = new FileInputStream(file);
             Workbook workbook = new XSSFWorkbook(fis)) {
-
             Sheet sheet = workbook.getSheetAt(0);
             Iterator<Row> rowIterator = sheet.iterator();
-
             while (rowIterator.hasNext()) {
                 Row row = rowIterator.next();
                 Iterator<Cell> cellIterator = row.cellIterator();
-
                 while (cellIterator.hasNext()) {
                     Cell cell = cellIterator.next();
                     System.out.println(cell.toString());
                 }
-
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
         
     }
-
 }

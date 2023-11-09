@@ -11,7 +11,6 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,6 +25,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -188,6 +188,7 @@ public class MaterialResource {
             .build();
     }
 
+
     /**
      * {@code POST  /materials/uploadFileReplace} : upload file to replace current database
      *
@@ -209,12 +210,9 @@ public class MaterialResource {
             e.printStackTrace();
             return ResponseEntity.status(500).body("Error uploading file: " + e.getMessage());
         }
-
         // Return a response indicating success or failure
         return ResponseEntity.ok("File uploaded successfully");
     }
-
-
     /**
      * {@code POST  /materials/uploadFileReplace} : upload file to add or update current database
      *
@@ -236,10 +234,7 @@ public class MaterialResource {
             e.printStackTrace();
             return ResponseEntity.status(500).body("Error uploading file: " + e.getMessage());
         }
-
         // Return a response indicating success or failure
         return ResponseEntity.ok("File uploaded successfully");
     }
-
-
 }

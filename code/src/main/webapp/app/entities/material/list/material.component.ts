@@ -1,9 +1,9 @@
-import { AfterContentInit, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { HttpHeaders } from '@angular/common/http';
 import { ActivatedRoute, Data, ParamMap, Router } from '@angular/router';
 import { combineLatest, filter, Observable, switchMap, tap } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import {IEditCell} from '../editCell.model'
+
 import { IMaterial } from '../material.model';
 
 import { ITEMS_PER_PAGE, PAGE_HEADER, TOTAL_COUNT_RESPONSE_HEADER } from 'app/config/pagination.constants';
@@ -15,7 +15,7 @@ import { MaterialDeleteDialogComponent } from '../delete/material-delete-dialog.
   selector: 'jhi-material',
   templateUrl: './material.component.html',
 })
-export class MaterialComponent implements OnInit , AfterContentInit{
+export class MaterialComponent implements OnInit {
   materials?: IMaterial[];
   isLoading = false;
 
@@ -25,30 +25,6 @@ export class MaterialComponent implements OnInit , AfterContentInit{
   itemsPerPage = ITEMS_PER_PAGE;
   totalItems = 0;
   page = 1;
-
-  isVisible = true;
-  masterSelected=false;
-  private _isEditable : number[] = [-1,-1];
-  fileName = '';
-
-  get isEditable(): number[] {
-    return this._isEditable;
-  }
-  set isEditable(value: number[]) {
-    this._isEditable = [value[0], value[1]]
-  }
-
-  visibility = new Map<string, boolean>([
-    ["materialInfo", true],
-    ["supplierDelay", true],
-    ["safetyStock", true],
-    ["safetyTime", true],
-    ["inventory", true],
-    ["edit", false]
-  ]);
-  
-  
-  linhas = new Map<number,IEditCell>();
 
   constructor(
     protected materialService: MaterialService,
@@ -61,120 +37,6 @@ export class MaterialComponent implements OnInit , AfterContentInit{
 
   ngOnInit(): void {
     this.load();
-  }
-
-  checkUncheckAll(event:any) {
-    this.linhas.forEach(function(value,key) {
-      value.selected = event.target.checked
-    })
-
-    event.stopPropagation();
-
-  }
-
-  func(id :number): String{
-    if (this.linhas.has(id) && this.linhas.get(id)?.selected){
-      return "selected-row"
-    }
-    else return "normal-row"
-  }
-
-  ngAfterContentInit(){
-    var cl = document.getElementsByClassName('edit')
-    console.log("CL is ", cl)
-
-    for(let i = 0; i<cl.length;i++){
-      cl[i].classList.add("tableHide")
-    }
-    console.log("Class list is:",cl)
-  }
-
-  onFileSelected(event:any) {
-
-    const file:File = event.target.files[0];
-
-    if (file) {
-        this.materialService.uploadFileReplace(file).subscribe(() => {
-          // handle response here
-        });
-    }
-
-    // para o add or update usar: 
-    //if (file) {
-    //  this.materialService.uploadFileAddOrUpdate(file).subscribe(() => {
-    //    // handle response here
-    //  });
-    //}
-  }
-
-  makeEditable(a: number, b: number){
-    var cl = document.getElementsByClassName('edit tableHide')
-    console.log("Cl is :", cl)
-    if(cl){
-      if (cl[0]){
-        cl[0].classList.remove("tableHide")
-      }
-    }
-    this._isEditable = [a,b];
-    
-  }
-  
-  selectRow(checked : boolean, id : number) : boolean {
-    var editCell: IEditCell | undefined;
-    if (checked) {
-      // get row with id and change background color
-      return true
-    }
-    else {
-      // get row with id and reset background color
-      return false
-    }
-  }
-
-  input(event: any, col_name : string, id: number) {
-
-    var editCell: IEditCell | undefined;
-
-    if (this.linhas.has(id)){
-      editCell = this.linhas.get(id);
-    } 
-    else{
-      editCell = <IEditCell>{};
-      editCell.newSSS = -1;
-      editCell.newSST = -1;
-      editCell.newComment = "n/a";
-      editCell.selected = false;
-    }
-    if (editCell){
-      if (col_name == "newSSS") editCell.newSSS = event.target.value;
-      if (col_name == "newSST") editCell.newSST = event.target.value;
-      if (col_name == "newComment") editCell.newComment = event.target.value;
-      if (col_name == "selected") editCell.selected = this.selectRow(event.target.checked, id);
-      console.log("value " + col_name + "changed")
-      console.log(editCell)
-      this.linhas.set(id, editCell)
-      this._isEditable = [-1,-1]
-    }
-    
-  }
-  
-  switchVisibility(event: Event, col_name :any) : void {
-    var cl = document.getElementsByClassName(col_name)
-    if (this.visibility.get(col_name) == false){
-      this.visibility.set(col_name, true)
-      console.log("Is visible equals to " , this.visibility.get(col_name))
-      for(let i = 0; i<cl.length;i++){
-        cl[i].classList.remove("tableHide")
-      }
-    }
-    else {
-      this.visibility.set(col_name, false)
-      console.log("Is visible equals to " , this.visibility.get(col_name))
-      for(let i = 0; i<cl.length;i++){
-        cl[i].classList.add("tableHide")
-      }
-    }
-    event.stopPropagation();
   }
 
   delete(material: IMaterial): void {

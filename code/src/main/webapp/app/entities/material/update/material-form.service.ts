@@ -25,7 +25,7 @@ type MaterialFormGroupContent = {
   maxSupplierDelay: FormControl<IMaterial['maxSupplierDelay']>;
   serviceLevel: FormControl<IMaterial['serviceLevel']>;
   currSAPSafetyStock: FormControl<IMaterial['currSAPSafetyStock']>;
-  propsedSST: FormControl<IMaterial['propsedSST']>;
+  proposedSST: FormControl<IMaterial['proposedSST']>;
   deltaSST: FormControl<IMaterial['deltaSST']>;
   currentSAPSafeTime: FormControl<IMaterial['currentSAPSafeTime']>;
   proposedST: FormControl<IMaterial['proposedST']>;
@@ -63,7 +63,7 @@ export class MaterialFormService {
       maxSupplierDelay: new FormControl(materialRawValue.maxSupplierDelay),
       serviceLevel: new FormControl(materialRawValue.serviceLevel),
       currSAPSafetyStock: new FormControl(materialRawValue.currSAPSafetyStock),
-      propsedSST: new FormControl(materialRawValue.propsedSST),
+      proposedSST: new FormControl(materialRawValue.proposedSST),
       deltaSST: new FormControl(materialRawValue.deltaSST),
       currentSAPSafeTime: new FormControl(materialRawValue.currentSAPSafeTime),
       proposedST: new FormControl(materialRawValue.proposedST),
