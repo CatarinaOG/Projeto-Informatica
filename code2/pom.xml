@@ -295,6 +295,16 @@
             <artifactId>metrics-core</artifactId>
         </dependency>
         <!-- jhipster-needle-maven-add-dependency -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>5.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>5.0.0</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -966,10 +976,10 @@
                                 <changeLogFile>${project.basedir}/src/main/resources/config/liquibase/master.xml</changeLogFile>
                                 <diffChangeLogFile>${project.basedir}/src/main/resources/config/liquibase/changelog/${maven.build.timestamp}_changelog.xml</diffChangeLogFile>
                                 <driver>oracle.jdbc.OracleDriver</driver>
-                                <url>jdbc:oracle:thin:@localhost:1521:xe</url>
+                                <url>jdbc:oracle:thin:@localhost:1521:oracledb</url>
                                 <defaultSchemaName></defaultSchemaName>
-                                <username></username>
-                                <password></password>
+                                <username>cata</username>
+                                <password>cata</password>
                                 <referenceUrl>hibernate:spring:com.bosch.diabo.domain?dialect=org.hibernate.dialect.Oracle12cDialect&amp;hibernate.physical_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy&amp;hibernate.implicit_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy</referenceUrl>
                                 <verbose>true</verbose>
                                 <logging>debug</logging>
@@ -1061,10 +1071,10 @@
                                 <changeLogFile>${project.basedir}/src/main/resources/config/liquibase/master.xml</changeLogFile>
                                 <diffChangeLogFile>${project.basedir}/src/main/resources/config/liquibase/changelog/${maven.build.timestamp}_changelog.xml</diffChangeLogFile>
                                 <driver>oracle.jdbc.OracleDriver</driver>
-                                <url>jdbc:oracle:thin:@localhost:1521:xe</url>
+                                <url>jdbc:oracle:thin:@localhost:1521:oracledb</url>
                                 <defaultSchemaName></defaultSchemaName>
-                                <username></username>
-                                <password></password>
+                                <username>cata</username>
+                                <password>cata</password>
                                 <referenceUrl>hibernate:spring:com.bosch.diabo.domain?dialect=org.hibernate.dialect.Oracle12cDialect&amp;hibernate.physical_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy&amp;hibernate.implicit_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy</referenceUrl>
                                 <verbose>true</verbose>
                                 <logging>debug</logging>
@@ -1091,6 +1101,7 @@
                                     <artifactId>validation-api</artifactId>
                                     <version>${validation-api.version}</version>
                                 </dependency>
+                                
                             </dependencies>
                         </plugin>
                     </plugins>

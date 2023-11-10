@@ -1,0 +1,220 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-material-heading" data-cy="MaterialCreateUpdateHeading">Create or edit a Material</h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="row mb-3" *ngIf="editForm.controls.id.value !== null">
+          <label class="form-label" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_material">Material</label>
+          <input type="text" class="form-control" name="material" id="field_material" data-cy="material" formControlName="material" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_description">Description</label>
+          <input
+            type="text"
+            class="form-control"
+            name="description"
+            id="field_description"
+            data-cy="description"
+            formControlName="description"
+          />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_abcClassification">Abc Classification</label>
+          <select
+            class="form-control"
+            name="abcClassification"
+            formControlName="abcClassification"
+            id="field_abcClassification"
+            data-cy="abcClassification"
+          >
+            <option [ngValue]="null"></option>
+            <option *ngFor="let aBCClassification of aBCClassificationValues" [value]="aBCClassification">aBCClassification</option>
+          </select>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_avgSupplierDelay">Avg Supplier Delay</label>
+          <input
+            type="number"
+            class="form-control"
+            name="avgSupplierDelay"
+            id="field_avgSupplierDelay"
+            data-cy="avgSupplierDelay"
+            formControlName="avgSupplierDelay"
+          />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_maxSupplierDelay">Max Supplier Delay</label>
+          <input
+            type="number"
+            class="form-control"
+            name="maxSupplierDelay"
+            id="field_maxSupplierDelay"
+            data-cy="maxSupplierDelay"
+            formControlName="maxSupplierDelay"
+          />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_serviceLevel">Service Level</label>
+          <input
+            type="number"
+            class="form-control"
+            name="serviceLevel"
+            id="field_serviceLevel"
+            data-cy="serviceLevel"
+            formControlName="serviceLevel"
+          />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_currSAPSafetyStock">Curr SAP Safety Stock</label>
+          <input
+            type="number"
+            class="form-control"
+            name="currSAPSafetyStock"
+            id="field_currSAPSafetyStock"
+            data-cy="currSAPSafetyStock"
+            formControlName="currSAPSafetyStock"
+          />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_proposedSST">Proposed SST</label>
+          <input
+            type="number"
+            class="form-control"
+            name="proposedSST"
+            id="field_proposedSST"
+            data-cy="proposedSST"
+            formControlName="proposedSST"
+          />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_deltaSST">Delta SST</label>
+          <input type="number" class="form-control" name="deltaSST" id="field_deltaSST" data-cy="deltaSST" formControlName="deltaSST" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_currentSAPSafeTime">Current SAP Safe Time</label>
+          <input
+            type="number"
+            class="form-control"
+            name="currentSAPSafeTime"
+            id="field_currentSAPSafeTime"
+            data-cy="currentSAPSafeTime"
+            formControlName="currentSAPSafeTime"
+          />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_proposedST">Proposed ST</label>
+          <input
+            type="number"
+            class="form-control"
+            name="proposedST"
+            id="field_proposedST"
+            data-cy="proposedST"
+            formControlName="proposedST"
+          />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_deltaST">Delta ST</label>
+          <input type="number" class="form-control" name="deltaST" id="field_deltaST" data-cy="deltaST" formControlName="deltaST" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_openSAPmd04">Open SA Pmd 04</label>
+          <input
+            type="text"
+            class="form-control"
+            name="openSAPmd04"
+            id="field_openSAPmd04"
+            data-cy="openSAPmd04"
+            formControlName="openSAPmd04"
+          />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_currentInventoryValue">Current Inventory Value</label>
+          <input
+            type="number"
+            class="form-control"
+            name="currentInventoryValue"
+            id="field_currentInventoryValue"
+            data-cy="currentInventoryValue"
+            formControlName="currentInventoryValue"
+          />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_unitCost">Unit Cost</label>
+          <input type="number" class="form-control" name="unitCost" id="field_unitCost" data-cy="unitCost" formControlName="unitCost" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_avgDemand">Avg Demand</label>
+          <input type="number" class="form-control" name="avgDemand" id="field_avgDemand" data-cy="avgDemand" formControlName="avgDemand" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_avgInventoryEffectAfterChange">Avg Inventory Effect After Change</label>
+          <input
+            type="number"
+            class="form-control"
+            name="avgInventoryEffectAfterChange"
+            id="field_avgInventoryEffectAfterChange"
+            data-cy="avgInventoryEffectAfterChange"
+            formControlName="avgInventoryEffectAfterChange"
+          />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_flagMaterial">Flag Material</label>
+          <input
+            type="checkbox"
+            class="form-check"
+            name="flagMaterial"
+            id="field_flagMaterial"
+            data-cy="flagMaterial"
+            formControlName="flagMaterial"
+          />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_comment">Comment</label>
+          <input type="text" class="form-control" name="comment" id="field_comment" data-cy="comment" formControlName="comment" />
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span>Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,40 @@
+
+
+
+entity Material {
+	material String
+    description String
+    abcClassification ABCClassification
+    avgSupplierDelay Float
+    maxSupplierDelay Float
+    serviceLevel Float
+    currSAPSafetyStock Integer
+	proposedSST Integer
+    deltaSST Integer
+    currentSAPSafeTime Integer
+    proposedST Integer
+    deltaST Integer
+    openSAPmd04 String
+    currentInventoryValue Float
+    unitCost Float
+    avgDemand Integer
+    avgInventoryEffectAfterChange Float
+    flagMaterial Boolean
+    comment String
+}
+
+enum ABCClassification {
+    A, B, C
+}
+
+// Set pagination options
+paginate Material with pagination
+
+// Use Data Transfer Objects (DTO)
+// dto * with mapstruct
+
+// Set service options to all except few
+service all with serviceImpl
+
+// Set an angular suffix
+// angularSuffix * with mySuffix

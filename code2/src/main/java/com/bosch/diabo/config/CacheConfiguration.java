@@ -48,6 +48,7 @@ public class CacheConfiguration {
             createCache(cm, com.bosch.diabo.domain.User.class.getName());
             createCache(cm, com.bosch.diabo.domain.Authority.class.getName());
             createCache(cm, com.bosch.diabo.domain.User.class.getName() + ".authorities");
+            createCache(cm, com.bosch.diabo.domain.Material.class.getName());
             // jhipster-needle-ehcache-add-entry
         };
     }
