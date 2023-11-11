@@ -171,6 +171,7 @@ export class MaterialComponent implements OnInit {
     } 
     else{
       editCell = <IEditCell>{};
+      editCell.materialId = this.materials?.find(e => e.id == id)?.id ?? -1;
       editCell.newSST = this.materials?.find(e => e.id === id)?.proposedSST ?? -1;
       editCell.newST = this.materials?.find(e => e.id === id)?.proposedST ?? -1;
       editCell.newComment = this.materials?.find(e => e.id === id)?.comment ?? "n/a";

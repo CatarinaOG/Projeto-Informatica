@@ -1,5 +1,5 @@
 export interface IEditCell {
-    id : number,
+    materialId : number,
     newSST: number,
     newST: number,
     newComment: string,
