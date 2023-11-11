@@ -28,12 +28,30 @@ public interface MaterialService {
     Material update(Material material);
 
     /**
+     * Updates a material identified by the name.
+     *
+     * @param material the entity to update.
+     * @return the persisted entity.
+     */
+    Optional<Material> updateByMaterialName(Material material);
+
+    /**
      * Partially updates a material.
      *
      * @param material the entity to update partially.
      * @return the persisted entity.
      */
     Optional<Material> partialUpdate(Material material);
+
+
+    /**
+     * Get all the materials.
+     *
+     * @param material the pagination information.
+     * @return the list of entities.
+     */
+    Optional<Material> findByMaterial(String material);
+
 
     /**
      * Get all the materials.
@@ -64,6 +82,7 @@ public interface MaterialService {
      * @param file new file source
      */
     void uploadFileReplace(File file);
+    
     /**
      * Add new data or update current one from the source file
      *
@@ -71,4 +90,6 @@ public interface MaterialService {
      */
     void uploadFileAddOrUpdate(File file);
     
+
+
 }

@@ -17,8 +17,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /**
@@ -46,6 +44,39 @@ public class MaterialServiceImpl implements MaterialService {
     public Material update(Material material) {
         log.debug("Request to update Material : {}", material);
         return materialRepository.save(material);
+    }
+
+    @Override
+    public Optional<Material> updateByMaterialName(Material material){
+        log.debug("Request to update Material by the name : {}", material);
+        return materialRepository
+            .findByMaterial(material.getMaterial())
+            .map(existingMaterial -> {
+                existingMaterial.setMaterial(material.getMaterial());
+                existingMaterial.setDescription(material.getDescription());
+                existingMaterial.setAbcClassification(material.getAbcClassification());
+                existingMaterial.setAvgSupplierDelay(material.getAvgSupplierDelay());
+                existingMaterial.setMaxSupplierDelay(material.getMaxSupplierDelay());
+                existingMaterial.setServiceLevel(material.getServiceLevel());
+                existingMaterial.setCurrSAPSafetyStock(material.getCurrSAPSafetyStock());
+                existingMaterial.setProposedSST(material.getProposedSST());
+                existingMaterial.setDeltaSST(material.getDeltaSST());
+                existingMaterial.setCurrentSAPSafeTime(material.getCurrentSAPSafeTime());
+                existingMaterial.setProposedST(material.getProposedST());
+                existingMaterial.setDeltaST(material.getDeltaST());
+                existingMaterial.setOpenSAPmd04(material.getOpenSAPmd04());
+                existingMaterial.setCurrentInventoryValue(material.getCurrentInventoryValue());
+                existingMaterial.setUnitCost(material.getUnitCost());
+                existingMaterial.setAvgDemand(material.getAvgDemand());
+                existingMaterial.setAvgInventoryEffectAfterChange(material.getAvgInventoryEffectAfterChange());
+                existingMaterial.setFlagMaterial(material.getFlagMaterial());
+                existingMaterial.setComment(material.getComment());
+                
+                System.out.println("-----------------new name: "+material.getDescription()+"-----------------");
+
+                return existingMaterial;
+            })
+            .map(materialRepository::save);
     }
 
     @Override
@@ -138,6 +169,12 @@ public class MaterialServiceImpl implements MaterialService {
         materialRepository.deleteById(id);
     }
 
+    @Override
+    public Optional<Material> findByMaterial(String material){
+        log.debug("Request to find Material by name");
+        return materialRepository.findByMaterial(material);
+    }
+
     public void deleteAll() {
         materialRepository.deleteAll();
     }
@@ -147,24 +184,61 @@ public class MaterialServiceImpl implements MaterialService {
     public void uploadFileReplace(File file){
         log.debug("Request to new source file : {}", file.getName());   
         deleteAll();
+        int rownr = 0;
+        
         try (FileInputStream fis = new FileInputStream(file);
             Workbook workbook = new XSSFWorkbook(fis)) {
             Sheet sheet = workbook.getSheetAt(0);
             Iterator<Row> rowIterator = sheet.iterator();
-        
             rowIterator.next(); // Ignore header row
-            while (rowIterator.hasNext()) {
-                
+
+            while (rowIterator.hasNext() && rownr < 3) {
                 Row row = rowIterator.next();
                 Iterator<Cell> cellIterator = row.cellIterator();
                 Material material = parseMaterial(cellIterator);
                 materialRepository.save(material);
+                rownr++;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    
+    @Override
+    public void uploadFileAddOrUpdate(File file){
+        log.debug("Request to new source file : {}", file.getName());   
+        
+        try (FileInputStream fis = new FileInputStream(file);
+            Workbook workbook = new XSSFWorkbook(fis)) {
+            Sheet sheet = workbook.getSheetAt(0);
+            Iterator<Row> rowIterator = sheet.iterator();
+            rowIterator.next();
+
+            int rownr = 0;
+
+            while (rowIterator.hasNext() && rownr < 3) {
+
+                Row row = rowIterator.next();
+                Iterator<Cell> cellIterator = row.cellIterator();
+                Material material = parseMaterial(cellIterator);
+                Optional<Material> opcMaterial = materialRepository.findByMaterial(material.getMaterial());
+                
+                if (opcMaterial.isPresent()) {
+                    updateByMaterialName(material);
+                } else {
+                    save(material);
+                }
+                rownr++;
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
         
     }
+
+
     public Material parseMaterial(Iterator<Cell> cellIterator){
         Material material = new Material();
         material.setMaterial(cellIterator.next().getStringCellValue());
@@ -219,27 +293,5 @@ public class MaterialServiceImpl implements MaterialService {
             return cell.getBooleanCellValue();
         else
             return false;
-    }
-    
-    @Override
-    public void uploadFileAddOrUpdate(File file){
-        log.debug("Request to new source file : {}", file.getName());   
-        
-        try (FileInputStream fis = new FileInputStream(file);
-            Workbook workbook = new XSSFWorkbook(fis)) {
-            Sheet sheet = workbook.getSheetAt(0);
-            Iterator<Row> rowIterator = sheet.iterator();
-            while (rowIterator.hasNext()) {
-                Row row = rowIterator.next();
-                Iterator<Cell> cellIterator = row.cellIterator();
-                while (cellIterator.hasNext()) {
-                    Cell cell = cellIterator.next();
-                    System.out.println(cell.toString());
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        
     }
 }
