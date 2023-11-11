@@ -1,6 +1,8 @@
 export interface IEditCell {
-    newSSS: number,
+    id : number,
     newSST: number,
+    newST: number,
     newComment: string,
     selected: boolean,
+    flag: boolean,
 }

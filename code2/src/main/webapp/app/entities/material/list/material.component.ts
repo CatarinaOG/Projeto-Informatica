@@ -93,22 +93,56 @@ export class MaterialComponent implements OnInit {
     }
   }
 
-  onFileSelected(event:any) {
 
+  mapToSubmit() : IEditCell[]{
+
+    let list : IEditCell[] = [];
+    
+    this.linhas.forEach(function(value,key) {
+      if (value.selected){
+        list.push(value)
+      }
+    })
+
+    return list;
+  }
+
+  submitToSAP() : any {
+
+      let list = this.mapToSubmit();
+      this.materialService.submitChanges(list).subscribe({
+        next: (res: any) => {       
+          this.load()
+        },error:(error:any) =>{
+          alert("Error Uploading Values")
+        }
+      });
+
+    return;
+  }
+
+  onFileSelected(event:any, typeReplace : boolean) {
+    //true -> replace
+    //false -> add
     const file:File = event.target.files[0];
-
-    if (file) {
-        this.materialService.uploadFileReplace(file).subscribe(() => {
-          // handle response here
-        });
+    if (file && typeReplace) {
+      this.materialService.uploadFileReplace(file).subscribe({
+        next: (res: any) => {       
+          this.load()
+        },error:(error:any) =>{
+          alert("Error Uploading File")
+        }
+      });
     }
-
-    // para o add or update usar: 
-    //if (file) {
-    //  this.materialService.uploadFileAddOrUpdate(file).subscribe(() => {
-    //    // handle response here
-    //  });
-    //}
+    else if (file && !typeReplace){
+      this.materialService.uploadFileAddOrUpdate(file).subscribe({
+        next: (res: any) => {
+          this.load()
+        },error:(error:any) =>{
+          alert("Error Uploading File")
+        }
+      });
+    }
   }
 
   makeEditable(a: number, b: number){
@@ -137,16 +171,18 @@ export class MaterialComponent implements OnInit {
     } 
     else{
       editCell = <IEditCell>{};
-      editCell.newSSS = -1;
-      editCell.newSST = -1;
-      editCell.newComment = "n/a";
+      editCell.newSST = this.materials?.find(e => e.id === id)?.proposedSST ?? -1;
+      editCell.newST = this.materials?.find(e => e.id === id)?.proposedST ?? -1;
+      editCell.newComment = this.materials?.find(e => e.id === id)?.comment ?? "n/a";
       editCell.selected = false;
+      editCell.flag = this.materials?.find(e => e.id === id)?.flagMaterial ?? false;
     }
     if (editCell){
-      if (col_name == "newSSS") editCell.newSSS = event.target.value;
       if (col_name == "newSST") editCell.newSST = event.target.value;
+      if (col_name == "newSS") editCell.newST = event.target.value;
       if (col_name == "newComment") editCell.newComment = event.target.value;
       if (col_name == "selected") editCell.selected = this.selectRow(event.target.checked, id);
+      if (col_name == "flag") editCell.flag = !editCell.flag
       console.log("value " + col_name + "changed")
       console.log(editCell)
       this.linhas.set(id, editCell)

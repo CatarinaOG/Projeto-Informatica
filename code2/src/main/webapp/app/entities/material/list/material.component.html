@@ -2,32 +2,62 @@
   <h2 id="page-heading" data-cy="MaterialHeading">
     <span>Materials</span>
 
-    <div class="d-flex justify-content-end">
-      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+    <div class="d-flex justify-content-end" style="margin: 20px;">
+      
+      <button class="btn btn-info me-2" style="margin-left: 8px;" (click)="load()" [disabled]="isLoading">
         <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
         <span>Refresh list</span>
       </button>
 
-      <input type="file" class="file-input"  accept=".csv"  (change)="onFileSelected($event)" #fileUpload>
-      <div class="file-upload">
+      
+      <input type="file" class="file-input" accept=".csv,.ods,.xlsx,.xls"  (change)="onFileSelected($event,true)" #importReplace>
+      <input type="file" class="file-input" accept=".csv,.ods,.xlsx,.xls"  (change)="onFileSelected($event,false)" #importAdd>
 
-        {{fileName || "No file uploaded yet."}}
-
-          <button color="primary" class="upload-btn"
-            (click)="fileUpload.click()">Upload File
+      <div ngbDropdown class="dropdown">
+        <button ngbDropdownToggle class="btn btn-white"  type="button" id="dropdownMenuButton" aria-expanded="false"> 
+          <fa-icon icon="file"></fa-icon>
+          <span>File Options</span>
+        </button>
+        <ul ngbDropdownMenu aria-labelledby="dropdownMenuButton">
+          <li> 
+            <button ngbDropdownItem color="primary" class="btn btn-primary" (click)="importReplace.click()">
               <fa-icon icon="upload"></fa-icon>
-          </button>
+              <span>Replace Data</span>
+            </button>
+          </li>
+          <li> 
+            <button ngbDropdownItem color="primary" class="btn btn-primary" (click)="importAdd.click()">
+              <fa-icon icon="upload"></fa-icon>
+              <span>Add Data</span>
+            </button>
+          </li>
+          <div class="dropdown-divider"></div>
+          <li> 
+            <button ngbDropdownItem color="primary" class="btn btn-primary">
+              <fa-icon icon="download"></fa-icon>
+              <span>Download Data</span>
+            </button>
+          </li>
+        </ul>
       </div>
 
-      <button
+
+      <button class="btn btn-primary me-2" style="margin-left: 8px; color: white;" (click) = "submitToSAP()">
+        <fa-icon icon="paper-plane"></fa-icon>
+        <span>Submit Changes to SAP</span>
+      </button>
+
+      <!-- <button
         id="jh-create-entity"
         data-cy="entityCreateButton"
         class="btn btn-primary jh-create-entity create-material"
+        style="margin-left: 8px;"
         [routerLink]="['/material/new']"
       >
         <fa-icon icon="plus"></fa-icon>
         <span> Create a new Material </span>
-      </button>
+      </button> -->
+
     </div>
   </h2>
 
@@ -303,28 +333,27 @@
 
          
           
-          <td class ="edit" *ngIf="isEditable[0] === material.id && isEditable[1] === 0 " ><input placeholder="{{(linhas.get(material.id) && (linhas.get(material.id)?.newSSS !== -1 )) ? linhas.get(material.id)?.newSSS : material.proposedSST}}" (change)="input($event,'newSSS',material.id)"></td>
-
-          <td class ="edit" *ngIf="!(isEditable[0] === material.id && isEditable[1] === 0) " (click)="makeEditable(material.id,0)" [ngStyle]="{'color': (linhas.has(material.id) && (linhas.get(material.id)?.newSSS !== -1)) ? 'blue' : 'black'}" [ngClass] ="func2()">{{(linhas.get(material.id) && (linhas.get(material.id)?.newSSS !== -1 )) ? linhas.get(material.id)?.newSSS : material.proposedSST}}</td>
-
+          <td class ="edit" *ngIf="isEditable[0] === material.id && isEditable[1] === 0 " ><input class = "inputWidth" placeholder="{{(linhas.get(material.id) && (linhas.get(material.id)?.newSST !== -1 )) ? linhas.get(material.id)?.newSST : material.proposedSST}}" (change)="input($event,'newSST',material.id)"></td>
+          <td class ="edit" *ngIf="!(isEditable[0] === material.id && isEditable[1] === 0) " (click)="makeEditable(material.id,0)" [ngStyle]="{'color': (linhas.has(material.id) && (linhas.get(material.id)?.newSST !== -1)) ? 'blue' : 'black'}" [ngClass] ="func2()">{{(linhas.get(material.id) && (linhas.get(material.id)?.newSST !== -1 )) ? linhas.get(material.id)?.newSST : material.proposedSST}}</td>
 
 
-          <td class ="edit " *ngIf="isEditable[0] === material.id && isEditable[1] === 1"><input placeholder="{{ (linhas.get(material.id) && (linhas.get(material.id)?.newSST !== -1 )) ? linhas.get(material.id)?.newSST :material.proposedST}}" (change)="input($event,'newSST',material.id)"></td>
-          <td class ="edit " *ngIf="!(isEditable[0] === material.id && isEditable[1] === 1)" (click)="makeEditable(material.id,1)" [ngStyle]="{'color': (linhas.has(material.id) && (linhas.get(material.id)?.newSST !== -1)) ? 'blue' : 'black'}" [ngClass] ="func2()">{{(linhas.get(material.id) && (linhas.get(material.id)?.newSST !== -1 )) ? linhas.get(material.id)?.newSST : material.proposedST}}</td>
+
+          <td class ="edit " *ngIf="isEditable[0] === material.id && isEditable[1] === 1"><input class = "inputWidth" placeholder="{{ (linhas.get(material.id) && (linhas.get(material.id)?.newST !== -1 )) ? linhas.get(material.id)?.newST :material.proposedST}}" (change)="input($event,'newST',material.id)"></td>
+
+          <td class ="edit " *ngIf="!(isEditable[0] === material.id && isEditable[1] === 1)" (click)="makeEditable(material.id,1)" [ngStyle]="{'color': (linhas.has(material.id) && (linhas.get(material.id)?.newST !== -1)) ? 'blue' : 'black'}" [ngClass] ="func2()">{{(linhas.get(material.id) && (linhas.get(material.id)?.newST !== -1 )) ? linhas.get(material.id)?.newST : material.proposedST}}</td>
 
 
 
           <td class ="edit tableHide"><input type = "checkbox" [checked]="linhas.get(material.id)?.selected" [disabled]="!linhas.has(material.id)" (click)="input($event,'selected',material.id)"></td>
 
           <td class ="edit tableHide">
-            <button class="buttonNoBorder">
-              <fa-icon *ngIf="material.flagMaterial" class="p-1" style="color: #ff0000;" icon="flag"></fa-icon>
-              <fa-icon *ngIf="!material.flagMaterial" class="p-1" style="color: #999999;" icon="flag"></fa-icon>
+            <button class="buttonNoBorder" (click)="input($event, 'flag', material.id)">
+              <fa-icon class="p-1" icon="flag" [ngStyle]="{'color': (linhas.get(material.id) ? linhas.get(material.id)?.flag : material.flagMaterial)  ? '#ff0000' : '#999999'}"></fa-icon>
             </button>
           </td>
 
           
-          <td class ="edit setWidth" *ngIf="isEditable[0] === material.id && isEditable[1] === 2"><input placeholder="{{ linhas.get(material.id) ? linhas.get(material.id)?.newComment : material.comment}}" (change)="input($event,'newComment',material.id)"></td>
+          <td class ="edit setWidth" *ngIf="isEditable[0] === material.id && isEditable[1] === 2"><input class = "inputWidth" placeholder="{{ linhas.get(material.id) ? linhas.get(material.id)?.newComment : material.comment}}" (change)="input($event,'newComment',material.id)"></td>
          
           <td class ="edit setWidth" *ngIf="!(isEditable[0] === material.id && isEditable[1] === 2)" (click)="makeEditable(material.id,2)" [ngStyle]="{'color': (linhas.has(material.id) && (linhas.get(material.id)?.newComment !== 'n/a')) ? 'blue' : 'black'}" [ngClass] ="func2()" >{{((linhas.has(material.id) && (linhas.get(material.id)?.newComment !== 'n/a'))) ? linhas.get(material.id)?.newComment : material.comment }}</td>
 

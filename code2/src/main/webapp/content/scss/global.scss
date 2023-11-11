@@ -280,13 +280,29 @@ angular-cli removes postcss-rtl processed inline css, processed rules must be ad
 }
 
 .setWidth{
-  min-width: 15rem;
+  min-width: 20rem;
+}
+
+.inputWidth{
+  width: 100%;
 }
 
 .buttonNoBorder{
   border: 0; 
   background-color:inherit;
 }
+
+.btn-white{
+  background-color: white; 
+  border: gray; 
+  border-width: 2px; 
+  border-style: solid; 
+}
+
+.btn-white:hover {
+  background-color: #e1e1e1;
+}
+
 
 .flexGrow {
   flex-grow: 1;
