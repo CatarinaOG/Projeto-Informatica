@@ -211,6 +211,8 @@ public class MaterialResource {
         // Return a response indicating success or failure
         return ResponseEntity.ok("File uploaded successfully");
     }
+
+
     /**
      * {@code POST  /materials/uploadFileReplace} : upload file to add or update current database
      *
@@ -233,6 +235,26 @@ public class MaterialResource {
             return ResponseEntity.status(500).body("Error uploading file: " + e.getMessage());
         }
         // Return a response indicating success or failure
-        return ResponseEntity.ok("File uploaded successfully");
+        return ResponseEntity.ok("");
+    }
+
+
+    /**
+     * {@code POST  /materials/submitChanges} : submit new changes to the database
+     *
+     * @param data new data to be submited
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} or with status {@code 500 (Internal Server Error)} if the server can't read the file.
+     * @throws IOException if file reading failed
+     */
+    @PostMapping("/materials/submitChanges")
+    public ResponseEntity<String> submitChanges(@RequestBody List<Object> data) {
+        log.debug("REST request to upload file");
+
+        for (Object item : data) {
+            // Perform operations with each item in the list
+            System.out.println("Received data: " + item.toString());
+        }
+
+        return ResponseEntity.ok("");
     }
 }

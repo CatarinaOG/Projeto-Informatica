@@ -43,6 +43,10 @@ export class MaterialService {
     return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
+  submitChanges(data : any[]): Observable<HttpResponse<{}>> {
+    return this.http.post(`${this.resourceUrl}/submitChanges`,data, { observe: 'response' });
+  }
+
   uploadFileReplace(file: File): Observable<HttpResponse<{}>> {
     const formData = new FormData();
     formData.append('file', file);
