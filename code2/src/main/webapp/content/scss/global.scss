@@ -2,6 +2,10 @@
 @import '~bootstrap/scss/functions';
 @import '~bootstrap/scss/variables';
 
+
+
+
+
 /* ==============================================================
 Bootstrap tweaks
 ===============================================================*/
@@ -12,7 +16,21 @@ h2,
 h3,
 h4 {
   font-weight: 300;
+  font-family: 'Open_Sans';
+  font-size: 13;
+  max-lines: 3;
+  text-align: center;
 }
+
+.logo-export {
+  height: 30px;
+  width: 30px;
+  display: inline-block;
+  vertical-align: middle;
+  background: url('../images/logo-jhipster.png') no-repeat center center;
+  background-size: contain;
+}
+
 
 /* Increase contrast of links to get 100% on Lighthouse Accessability Audit. Override this color if you want to change the link color, or use a Bootswatch theme */
 a {
@@ -165,6 +183,13 @@ entity list page css
   margin: auto 0;
 }
 
+@font-face {
+  font-family: 'Open_Sans';
+  src: url('../fonts/Open_Sans/OpenSans-VariableFont_wdth,wght.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 /* ==========================================================================
 entity detail page css
 ========================================================================== */
@@ -237,3 +262,40 @@ angular-cli removes postcss-rtl processed inline css, processed rules must be ad
   }
 }
 /* jhipster-needle-scss-add-main JHipster will add new css style */
+
+
+.file-input {
+  display: none;
+}
+
+.tableHide{
+  display: none;
+}
+
+.selected-row{
+  background-color: #AED3FF;
+}
+.normal-row{
+  background-color:inherit;
+}
+
+.setWidth{
+  min-width: 15rem;
+}
+
+.buttonNoBorder{
+  border: 0; 
+  background-color:inherit;
+}
+
+.flexGrow {
+  flex-grow: 1;
+}
+
+.textBlue {
+  color: blue;
+}
+
+.textBlack{
+  color: black;
+}
