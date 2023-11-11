@@ -34,8 +34,8 @@ spring:
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
     url: jdbc:oracle:thin:@localhost:1521:oracledb
-    username: c##ftoldy
-    password: 12345
+    username: cata
+    password: cata
     hikari:
       poolName: Hikari
       auto-commit: false

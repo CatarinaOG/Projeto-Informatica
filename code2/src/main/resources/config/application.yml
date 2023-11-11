@@ -16,7 +16,7 @@
 
 file:
   upload:
-    directory: C:\Users\chico\Documents\PI-Work\Projeto-Informatica\code2\
+    directory: C:\Users\catarina\Desktop\catarina\5ano\Projeto-Informatica\code2\
 
 
 ---
@@ -28,6 +28,7 @@ spring:
 springdoc:
   api-docs:
     enabled: false
+    
 ---
 management:
   endpoints:
