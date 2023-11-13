@@ -323,7 +323,7 @@ public class MaterialServiceImpl implements MaterialService {
         .findById(materialId)
         .map(existingMaterial -> {
             existingMaterial.setCurrSAPSafetyStock(newSST);
-            existingMaterial.setCurrSAPSafetyStock(newST);
+            existingMaterial.setCurrentSAPSafeTime(newST);
             existingMaterial.setComment(newComment);
             existingMaterial.setFlagMaterial(flag);
             return existingMaterial;
