@@ -324,6 +324,8 @@ public class MaterialServiceImpl implements MaterialService {
         .map(existingMaterial -> {
             existingMaterial.setCurrSAPSafetyStock(newSST);
             existingMaterial.setCurrentSAPSafeTime(newST);
+            existingMaterial.setDeltaSST(existingMaterial.getProposedSST() - newSST);
+            existingMaterial.setDeltaST(existingMaterial.getProposedST() - newST);
             existingMaterial.setComment(newComment);
             existingMaterial.setFlagMaterial(flag);
             return existingMaterial;
