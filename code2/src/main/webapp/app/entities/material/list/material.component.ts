@@ -10,7 +10,7 @@ import { ITEMS_PER_PAGE, PAGE_HEADER, TOTAL_COUNT_RESPONSE_HEADER } from 'app/co
 import { ASC, DESC, SORT, ITEM_DELETED_EVENT, DEFAULT_SORT_DATA } from 'app/config/navigation.constants';
 import { EntityArrayResponseType, MaterialService } from '../service/material.service';
 import { MaterialDeleteDialogComponent } from '../delete/material-delete-dialog.component';
-import { forkJoin } from 'rxjs';
+
 
 @Component({
   selector: 'jhi-material',
@@ -110,15 +110,22 @@ export class MaterialComponent implements OnInit {
   submitToSAP() : any {
 
       let list = this.mapToSubmit();
+      console.log("Lista : " , list)
       this.materialService.submitChanges(list).subscribe({
         next: (res: any) => {       
           this.load()
+          console.log("Estamos a recarregar")
+          this.cleanList();
         },error:(error:any) =>{
           alert("Error Uploading Values")
         }
       });
 
     return;
+  }
+
+  cleanList() {
+    this.linhas.clear();
   }
 
   onFileSelected(event:any, typeReplace : boolean) {
@@ -162,6 +169,25 @@ export class MaterialComponent implements OnInit {
     }
   }
 
+
+  calcNewValueAvg(material : IMaterial) : number {
+    var editCell: IEditCell | undefined;
+    editCell = this.linhas.get(material.id)
+    
+    if (editCell){
+      var newDeltaSST = (editCell.newSST ?? 1) - (material.currSAPSafetyStock ?? 1);
+      var newDeltaST = (editCell.newST ?? 1) - (material.currentSAPSafeTime ?? 1);
+      var unitCost = material.unitCost ?? 1
+      return Number((newDeltaSST * unitCost + newDeltaST * unitCost * (material.avgDemand ?? 1)).toFixed(2));
+    }
+
+    else {
+      return Number((material.avgInventoryEffectAfterChange ?? 1).toFixed(2));
+    }
+   
+  }
+
+
   input(event: any, col_name : string, id: number) {
 
     var editCell: IEditCell | undefined;
@@ -174,13 +200,13 @@ export class MaterialComponent implements OnInit {
       editCell.materialId = this.materials?.find(e => e.id == id)?.id ?? -1;
       editCell.newSST = this.materials?.find(e => e.id === id)?.proposedSST ?? -1;
       editCell.newST = this.materials?.find(e => e.id === id)?.proposedST ?? -1;
-      editCell.newComment = this.materials?.find(e => e.id === id)?.comment ?? "n/a";
+      editCell.newComment = this.materials?.find(e => e.id === id)?.comment ?? "";
       editCell.selected = false;
       editCell.flag = this.materials?.find(e => e.id === id)?.flagMaterial ?? false;
     }
     if (editCell){
-      if (col_name == "newSST") editCell.newSST = event.target.value;
-      if (col_name == "newSS") editCell.newST = event.target.value;
+      if (col_name == "newSST") editCell.newSST = Math.round(event.target.value);
+      if (col_name == "newST") editCell.newST = Math.round(event.target.value);
       if (col_name == "newComment") editCell.newComment = event.target.value;
       if (col_name == "selected") editCell.selected = this.selectRow(event.target.checked, id);
       if (col_name == "flag") editCell.flag = !editCell.flag
