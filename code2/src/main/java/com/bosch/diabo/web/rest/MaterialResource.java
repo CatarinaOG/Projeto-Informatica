@@ -5,11 +5,13 @@ import com.bosch.diabo.repository.MaterialRepository;
 import com.bosch.diabo.service.MaterialService;
 import com.bosch.diabo.web.rest.errors.BadRequestAlertException;
 
+
 import java.io.IOException;
 import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import org.slf4j.Logger;
@@ -208,8 +210,9 @@ public class MaterialResource {
             e.printStackTrace();
             return ResponseEntity.status(500).body("Error uploading file: " + e.getMessage());
         }
+
         // Return a response indicating success or failure
-        return ResponseEntity.ok("File uploaded successfully");
+        return ResponseEntity.ok("");
     }
 
 
@@ -248,12 +251,9 @@ public class MaterialResource {
      */
     @PostMapping("/materials/submitChanges")
     public ResponseEntity<String> submitChanges(@RequestBody List<Object> data) {
-        log.debug("REST request to upload file");
+        log.debug("REST request submit changes");
+        materialService.submitChanges(data);
 
-        for (Object item : data) {
-            // Perform operations with each item in the list
-            System.out.println("Received data: " + item.toString());
-        }
 
         return ResponseEntity.ok("");
     }

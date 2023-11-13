@@ -10,6 +10,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.util.Optional;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -225,17 +228,16 @@ public class MaterialServiceImpl implements MaterialService {
                 Material material = parseMaterial(cellIterator);
                 Optional<Material> opcMaterial = materialRepository.findByMaterial(material.getMaterial());
                 
-                if (opcMaterial.isPresent()) {
+                if (opcMaterial.isPresent())
                     updateByMaterialName(material);
-                } else {
+                else
                     save(material);
-                }
+                
                 rownr++;
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        
     }
 
 
@@ -293,5 +295,61 @@ public class MaterialServiceImpl implements MaterialService {
             return cell.getBooleanCellValue();
         else
             return false;
+    }
+
+
+
+    @Override
+    public void submitChanges(List<Object> data){
+
+        for (Object item : data) {
+            if (item instanceof Map) {
+                Map<String, Object> dataMap = (Map<String, Object>) item;
+
+                updateObject(
+                    extractLong(dataMap.get("materialId")),
+                    extractInt(dataMap.get("newSST")),
+                    extractInt(dataMap.get("newST")),
+                    (String) dataMap.get("newComment"),
+                    (Boolean) dataMap.get("flag")
+                );
+            }
+        }
+    }
+
+    public void updateObject(Long materialId, int newSST, int newST, String newComment, Boolean flag){
+
+        materialRepository
+        .findById(materialId)
+        .map(existingMaterial -> {
+            existingMaterial.setDeltaSST(newSST);
+            existingMaterial.setDeltaST(newST);
+            existingMaterial.setComment(newComment);
+            existingMaterial.setFlagMaterial(flag);
+            return existingMaterial;
+        })
+        .map(materialRepository::save);
+
+    }
+
+
+    private Long extractLong(Object value) {
+
+        if (value instanceof Number) {
+            return ((Number) value).longValue();
+        } else if (value instanceof String) {
+            return Long.parseLong((String) value);
+        }
+        throw new IllegalArgumentException("Invalid type for key " + value);
+    }
+    
+    private int extractInt(Object value) {
+
+        if (value instanceof Number) {
+            return ((Number) value).intValue();
+        } else if (value instanceof String) {
+            return Integer.parseInt((String) value);
+        }
+        throw new IllegalArgumentException("Invalid type for key " + value);
     }
 }

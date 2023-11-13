@@ -3,6 +3,7 @@ package com.bosch.diabo.service;
 import com.bosch.diabo.domain.Material;
 
 import java.io.File;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -90,6 +91,11 @@ public interface MaterialService {
      */
     void uploadFileAddOrUpdate(File file);
     
-
+    /**
+     * Change materials given a list of the updated values
+     *
+     * @param data list of the updated values
+     */
+    void submitChanges(List<Object> data);
 
 }
