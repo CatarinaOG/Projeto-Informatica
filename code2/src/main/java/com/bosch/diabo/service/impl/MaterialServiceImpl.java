@@ -322,8 +322,8 @@ public class MaterialServiceImpl implements MaterialService {
         materialRepository
         .findById(materialId)
         .map(existingMaterial -> {
-            existingMaterial.setDeltaSST(newSST);
-            existingMaterial.setDeltaST(newST);
+            existingMaterial.setCurrSAPSafetyStock(newSST);
+            existingMaterial.setCurrSAPSafetyStock(newST);
             existingMaterial.setComment(newComment);
             existingMaterial.setFlagMaterial(flag);
             return existingMaterial;
