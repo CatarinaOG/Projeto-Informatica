@@ -1,6 +1,6 @@
 {
   "applications": "*",
-  "changelogDate": "20231104162323",
+  "changelogDate": "20231114190645",
   "dto": "no",
   "embedded": false,
   "entityTableName": "material",
@@ -73,6 +73,14 @@
     {
       "fieldName": "avgInventoryEffectAfterChange",
       "fieldType": "Float"
+    },
+    {
+      "fieldName": "newSAPSafetyStock",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "newSAPSafetyTime",
+      "fieldType": "Integer"
     },
     {
       "fieldName": "flagMaterial",

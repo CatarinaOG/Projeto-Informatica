@@ -1,8 +1,6 @@
 package com.bosch.diabo.service;
 
 import com.bosch.diabo.domain.Material;
-
-import java.io.File;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -57,17 +55,4 @@ public interface MaterialService {
      * @param id the id of the entity.
      */
     void delete(Long id);
-
-    /**
-     * Replace current data with new from the source file
-     *
-     * @param file new file source
-     */
-    void uploadFileReplace(File file);
-    /**
-     * Add new data or update current one from the source file
-     *
-     * @param file new file source
-     */
-    void uploadFileAddOrUpdate(File file);
 }

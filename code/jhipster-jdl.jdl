@@ -19,6 +19,8 @@ entity Material {
     unitCost Float
     avgDemand Integer
     avgInventoryEffectAfterChange Float
+    newSAPSafetyStock Integer
+    newSAPSafetyTime Integer
     flagMaterial Boolean
     comment String
 }

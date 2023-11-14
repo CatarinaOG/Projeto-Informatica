@@ -81,6 +81,12 @@ class MaterialResourceIT {
     private static final Float DEFAULT_AVG_INVENTORY_EFFECT_AFTER_CHANGE = 1F;
     private static final Float UPDATED_AVG_INVENTORY_EFFECT_AFTER_CHANGE = 2F;
 
+    private static final Integer DEFAULT_NEW_SAP_SAFETY_STOCK = 1;
+    private static final Integer UPDATED_NEW_SAP_SAFETY_STOCK = 2;
+
+    private static final Integer DEFAULT_NEW_SAP_SAFETY_TIME = 1;
+    private static final Integer UPDATED_NEW_SAP_SAFETY_TIME = 2;
+
     private static final Boolean DEFAULT_FLAG_MATERIAL = false;
     private static final Boolean UPDATED_FLAG_MATERIAL = true;
 
@@ -129,6 +135,8 @@ class MaterialResourceIT {
             .unitCost(DEFAULT_UNIT_COST)
             .avgDemand(DEFAULT_AVG_DEMAND)
             .avgInventoryEffectAfterChange(DEFAULT_AVG_INVENTORY_EFFECT_AFTER_CHANGE)
+            .newSAPSafetyStock(DEFAULT_NEW_SAP_SAFETY_STOCK)
+            .newSAPSafetyTime(DEFAULT_NEW_SAP_SAFETY_TIME)
             .flagMaterial(DEFAULT_FLAG_MATERIAL)
             .comment(DEFAULT_COMMENT);
         return material;
@@ -159,6 +167,8 @@ class MaterialResourceIT {
             .unitCost(UPDATED_UNIT_COST)
             .avgDemand(UPDATED_AVG_DEMAND)
             .avgInventoryEffectAfterChange(UPDATED_AVG_INVENTORY_EFFECT_AFTER_CHANGE)
+            .newSAPSafetyStock(UPDATED_NEW_SAP_SAFETY_STOCK)
+            .newSAPSafetyTime(UPDATED_NEW_SAP_SAFETY_TIME)
             .flagMaterial(UPDATED_FLAG_MATERIAL)
             .comment(UPDATED_COMMENT);
         return material;
@@ -199,6 +209,8 @@ class MaterialResourceIT {
         assertThat(testMaterial.getUnitCost()).isEqualTo(DEFAULT_UNIT_COST);
         assertThat(testMaterial.getAvgDemand()).isEqualTo(DEFAULT_AVG_DEMAND);
         assertThat(testMaterial.getAvgInventoryEffectAfterChange()).isEqualTo(DEFAULT_AVG_INVENTORY_EFFECT_AFTER_CHANGE);
+        assertThat(testMaterial.getNewSAPSafetyStock()).isEqualTo(DEFAULT_NEW_SAP_SAFETY_STOCK);
+        assertThat(testMaterial.getNewSAPSafetyTime()).isEqualTo(DEFAULT_NEW_SAP_SAFETY_TIME);
         assertThat(testMaterial.getFlagMaterial()).isEqualTo(DEFAULT_FLAG_MATERIAL);
         assertThat(testMaterial.getComment()).isEqualTo(DEFAULT_COMMENT);
     }
@@ -252,6 +264,8 @@ class MaterialResourceIT {
             .andExpect(
                 jsonPath("$.[*].avgInventoryEffectAfterChange").value(hasItem(DEFAULT_AVG_INVENTORY_EFFECT_AFTER_CHANGE.doubleValue()))
             )
+            .andExpect(jsonPath("$.[*].newSAPSafetyStock").value(hasItem(DEFAULT_NEW_SAP_SAFETY_STOCK)))
+            .andExpect(jsonPath("$.[*].newSAPSafetyTime").value(hasItem(DEFAULT_NEW_SAP_SAFETY_TIME)))
             .andExpect(jsonPath("$.[*].flagMaterial").value(hasItem(DEFAULT_FLAG_MATERIAL.booleanValue())))
             .andExpect(jsonPath("$.[*].comment").value(hasItem(DEFAULT_COMMENT)));
     }
@@ -285,6 +299,8 @@ class MaterialResourceIT {
             .andExpect(jsonPath("$.unitCost").value(DEFAULT_UNIT_COST.doubleValue()))
             .andExpect(jsonPath("$.avgDemand").value(DEFAULT_AVG_DEMAND))
             .andExpect(jsonPath("$.avgInventoryEffectAfterChange").value(DEFAULT_AVG_INVENTORY_EFFECT_AFTER_CHANGE.doubleValue()))
+            .andExpect(jsonPath("$.newSAPSafetyStock").value(DEFAULT_NEW_SAP_SAFETY_STOCK))
+            .andExpect(jsonPath("$.newSAPSafetyTime").value(DEFAULT_NEW_SAP_SAFETY_TIME))
             .andExpect(jsonPath("$.flagMaterial").value(DEFAULT_FLAG_MATERIAL.booleanValue()))
             .andExpect(jsonPath("$.comment").value(DEFAULT_COMMENT));
     }
@@ -326,6 +342,8 @@ class MaterialResourceIT {
             .unitCost(UPDATED_UNIT_COST)
             .avgDemand(UPDATED_AVG_DEMAND)
             .avgInventoryEffectAfterChange(UPDATED_AVG_INVENTORY_EFFECT_AFTER_CHANGE)
+            .newSAPSafetyStock(UPDATED_NEW_SAP_SAFETY_STOCK)
+            .newSAPSafetyTime(UPDATED_NEW_SAP_SAFETY_TIME)
             .flagMaterial(UPDATED_FLAG_MATERIAL)
             .comment(UPDATED_COMMENT);
 
@@ -358,6 +376,8 @@ class MaterialResourceIT {
         assertThat(testMaterial.getUnitCost()).isEqualTo(UPDATED_UNIT_COST);
         assertThat(testMaterial.getAvgDemand()).isEqualTo(UPDATED_AVG_DEMAND);
         assertThat(testMaterial.getAvgInventoryEffectAfterChange()).isEqualTo(UPDATED_AVG_INVENTORY_EFFECT_AFTER_CHANGE);
+        assertThat(testMaterial.getNewSAPSafetyStock()).isEqualTo(UPDATED_NEW_SAP_SAFETY_STOCK);
+        assertThat(testMaterial.getNewSAPSafetyTime()).isEqualTo(UPDATED_NEW_SAP_SAFETY_TIME);
         assertThat(testMaterial.getFlagMaterial()).isEqualTo(UPDATED_FLAG_MATERIAL);
         assertThat(testMaterial.getComment()).isEqualTo(UPDATED_COMMENT);
     }
@@ -442,7 +462,8 @@ class MaterialResourceIT {
             .openSAPmd04(UPDATED_OPEN_SA_PMD_04)
             .currentInventoryValue(UPDATED_CURRENT_INVENTORY_VALUE)
             .avgDemand(UPDATED_AVG_DEMAND)
-            .flagMaterial(UPDATED_FLAG_MATERIAL);
+            .newSAPSafetyStock(UPDATED_NEW_SAP_SAFETY_STOCK)
+            .comment(UPDATED_COMMENT);
 
         restMaterialMockMvc
             .perform(
@@ -473,8 +494,10 @@ class MaterialResourceIT {
         assertThat(testMaterial.getUnitCost()).isEqualTo(DEFAULT_UNIT_COST);
         assertThat(testMaterial.getAvgDemand()).isEqualTo(UPDATED_AVG_DEMAND);
         assertThat(testMaterial.getAvgInventoryEffectAfterChange()).isEqualTo(DEFAULT_AVG_INVENTORY_EFFECT_AFTER_CHANGE);
-        assertThat(testMaterial.getFlagMaterial()).isEqualTo(UPDATED_FLAG_MATERIAL);
-        assertThat(testMaterial.getComment()).isEqualTo(DEFAULT_COMMENT);
+        assertThat(testMaterial.getNewSAPSafetyStock()).isEqualTo(UPDATED_NEW_SAP_SAFETY_STOCK);
+        assertThat(testMaterial.getNewSAPSafetyTime()).isEqualTo(DEFAULT_NEW_SAP_SAFETY_TIME);
+        assertThat(testMaterial.getFlagMaterial()).isEqualTo(DEFAULT_FLAG_MATERIAL);
+        assertThat(testMaterial.getComment()).isEqualTo(UPDATED_COMMENT);
     }
 
     @Test
@@ -507,6 +530,8 @@ class MaterialResourceIT {
             .unitCost(UPDATED_UNIT_COST)
             .avgDemand(UPDATED_AVG_DEMAND)
             .avgInventoryEffectAfterChange(UPDATED_AVG_INVENTORY_EFFECT_AFTER_CHANGE)
+            .newSAPSafetyStock(UPDATED_NEW_SAP_SAFETY_STOCK)
+            .newSAPSafetyTime(UPDATED_NEW_SAP_SAFETY_TIME)
             .flagMaterial(UPDATED_FLAG_MATERIAL)
             .comment(UPDATED_COMMENT);
 
@@ -539,6 +564,8 @@ class MaterialResourceIT {
         assertThat(testMaterial.getUnitCost()).isEqualTo(UPDATED_UNIT_COST);
         assertThat(testMaterial.getAvgDemand()).isEqualTo(UPDATED_AVG_DEMAND);
         assertThat(testMaterial.getAvgInventoryEffectAfterChange()).isEqualTo(UPDATED_AVG_INVENTORY_EFFECT_AFTER_CHANGE);
+        assertThat(testMaterial.getNewSAPSafetyStock()).isEqualTo(UPDATED_NEW_SAP_SAFETY_STOCK);
+        assertThat(testMaterial.getNewSAPSafetyTime()).isEqualTo(UPDATED_NEW_SAP_SAFETY_TIME);
         assertThat(testMaterial.getFlagMaterial()).isEqualTo(UPDATED_FLAG_MATERIAL);
         assertThat(testMaterial.getComment()).isEqualTo(UPDATED_COMMENT);
     }

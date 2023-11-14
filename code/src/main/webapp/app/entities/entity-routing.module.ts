@@ -5,16 +5,6 @@ import { RouterModule } from '@angular/router';
   imports: [
     RouterModule.forChild([
       {
-        path: 'region',
-        data: { pageTitle: 'Regions' },
-        loadChildren: () => import('./region/region.module').then(m => m.RegionModule),
-      },
-      {
-        path: 'diabo',
-        data: { pageTitle: 'Diabos' },
-        loadChildren: () => import('./diabo/diabo.module').then(m => m.DiaboModule),
-      },
-      {
         path: 'material',
         data: { pageTitle: 'Materials' },
         loadChildren: () => import('./material/material.module').then(m => m.MaterialModule),

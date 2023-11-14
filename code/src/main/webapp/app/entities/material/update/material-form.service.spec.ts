@@ -37,6 +37,8 @@ describe('Material Form Service', () => {
             unitCost: expect.any(Object),
             avgDemand: expect.any(Object),
             avgInventoryEffectAfterChange: expect.any(Object),
+            newSAPSafetyStock: expect.any(Object),
+            newSAPSafetyTime: expect.any(Object),
             flagMaterial: expect.any(Object),
             comment: expect.any(Object),
           })
@@ -66,6 +68,8 @@ describe('Material Form Service', () => {
             unitCost: expect.any(Object),
             avgDemand: expect.any(Object),
             avgInventoryEffectAfterChange: expect.any(Object),
+            newSAPSafetyStock: expect.any(Object),
+            newSAPSafetyTime: expect.any(Object),
             flagMaterial: expect.any(Object),
             comment: expect.any(Object),
           })

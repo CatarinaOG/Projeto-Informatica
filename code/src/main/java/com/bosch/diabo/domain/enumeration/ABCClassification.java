@@ -6,18 +6,5 @@ package com.bosch.diabo.domain.enumeration;
 public enum ABCClassification {
     A,
     B,
-    C;
-
-    public static ABCClassification fromString(String value) {
-        switch (value) {
-            case "A":
-                return A;
-            case "B":
-                return B;
-            case "C":
-                return C;
-            default:
-                return A;
-        }
-    }
+    C,
 }

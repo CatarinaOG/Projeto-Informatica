@@ -19,6 +19,8 @@ export interface IMaterial {
   unitCost?: number | null;
   avgDemand?: number | null;
   avgInventoryEffectAfterChange?: number | null;
+  newSAPSafetyStock?: number | null;
+  newSAPSafetyTime?: number | null;
   flagMaterial?: boolean | null;
   comment?: string | null;
 }

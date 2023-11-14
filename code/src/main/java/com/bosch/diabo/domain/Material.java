@@ -3,12 +3,15 @@ package com.bosch.diabo.domain;
 import com.bosch.diabo.domain.enumeration.ABCClassification;
 import java.io.Serializable;
 import javax.persistence.*;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * A Material.
  */
 @Entity
 @Table(name = "material")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class Material implements Serializable {
 
@@ -71,6 +74,12 @@ public class Material implements Serializable {
 
     @Column(name = "avg_inventory_effect_after_change")
     private Float avgInventoryEffectAfterChange;
+
+    @Column(name = "new_sap_safety_stock")
+    private Integer newSAPSafetyStock;
+
+    @Column(name = "new_sap_safety_time")
+    private Integer newSAPSafetyTime;
 
     @Column(name = "flag_material")
     private Boolean flagMaterial;
@@ -314,6 +323,32 @@ public class Material implements Serializable {
         this.avgInventoryEffectAfterChange = avgInventoryEffectAfterChange;
     }
 
+    public Integer getNewSAPSafetyStock() {
+        return this.newSAPSafetyStock;
+    }
+
+    public Material newSAPSafetyStock(Integer newSAPSafetyStock) {
+        this.setNewSAPSafetyStock(newSAPSafetyStock);
+        return this;
+    }
+
+    public void setNewSAPSafetyStock(Integer newSAPSafetyStock) {
+        this.newSAPSafetyStock = newSAPSafetyStock;
+    }
+
+    public Integer getNewSAPSafetyTime() {
+        return this.newSAPSafetyTime;
+    }
+
+    public Material newSAPSafetyTime(Integer newSAPSafetyTime) {
+        this.setNewSAPSafetyTime(newSAPSafetyTime);
+        return this;
+    }
+
+    public void setNewSAPSafetyTime(Integer newSAPSafetyTime) {
+        this.newSAPSafetyTime = newSAPSafetyTime;
+    }
+
     public Boolean getFlagMaterial() {
         return this.flagMaterial;
     }
@@ -381,6 +416,8 @@ public class Material implements Serializable {
             ", unitCost=" + getUnitCost() +
             ", avgDemand=" + getAvgDemand() +
             ", avgInventoryEffectAfterChange=" + getAvgInventoryEffectAfterChange() +
+            ", newSAPSafetyStock=" + getNewSAPSafetyStock() +
+            ", newSAPSafetyTime=" + getNewSAPSafetyTime() +
             ", flagMaterial='" + getFlagMaterial() + "'" +
             ", comment='" + getComment() + "'" +
             "}";

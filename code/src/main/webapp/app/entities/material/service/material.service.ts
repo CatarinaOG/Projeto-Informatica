@@ -43,18 +43,6 @@ export class MaterialService {
     return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
-  uploadFileReplace(file: File): Observable<HttpResponse<{}>> {
-    const formData = new FormData();
-    formData.append('file', file);
-    return this.http.post(`${this.resourceUrl}/uploadFileReplace`, formData, { observe: 'response' });
-  }
-  
-  uploadFileAddOrUpdate(file: File): Observable<HttpResponse<{}>> {
-    const formData = new FormData();
-    formData.append('file', file);
-    return this.http.post(`${this.resourceUrl}/uploadFileAddOrUpdate`, formData, { observe: 'response' });
-  }
-
   getMaterialIdentifier(material: Pick<IMaterial, 'id'>): number {
     return material.id;
   }

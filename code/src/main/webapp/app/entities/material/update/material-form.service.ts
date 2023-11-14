@@ -35,6 +35,8 @@ type MaterialFormGroupContent = {
   unitCost: FormControl<IMaterial['unitCost']>;
   avgDemand: FormControl<IMaterial['avgDemand']>;
   avgInventoryEffectAfterChange: FormControl<IMaterial['avgInventoryEffectAfterChange']>;
+  newSAPSafetyStock: FormControl<IMaterial['newSAPSafetyStock']>;
+  newSAPSafetyTime: FormControl<IMaterial['newSAPSafetyTime']>;
   flagMaterial: FormControl<IMaterial['flagMaterial']>;
   comment: FormControl<IMaterial['comment']>;
 };
@@ -73,6 +75,8 @@ export class MaterialFormService {
       unitCost: new FormControl(materialRawValue.unitCost),
       avgDemand: new FormControl(materialRawValue.avgDemand),
       avgInventoryEffectAfterChange: new FormControl(materialRawValue.avgInventoryEffectAfterChange),
+      newSAPSafetyStock: new FormControl(materialRawValue.newSAPSafetyStock),
+      newSAPSafetyTime: new FormControl(materialRawValue.newSAPSafetyTime),
       flagMaterial: new FormControl(materialRawValue.flagMaterial),
       comment: new FormControl(materialRawValue.comment),
     });

@@ -1,11 +1,11 @@
-id;material;description;abc_classification;avg_supplier_delay;max_supplier_delay;service_level;curr_sap_safety_stock;proposed_sst;delta_sst;current_sap_safe_time;proposed_st;delta_st;open_sa_pmd_04;current_inventory_value;unit_cost;avg_demand;avg_inventory_effect_after_change;flag_material;jhi_comment
-1;Ergonomic District;exploit system aggregate;A;37699;21626;37208;97716;97619;74176;58906;23723;29534;Wyoming Soap pixel;88070;82178;44532;18713;false;Lead Seychelles disintermediate
-2;Soap e-services array;generation Buckinghamshire Pa'anga;B;64816;38262;59768;56097;60171;72311;13953;56530;76770;Estonia Minnesota;69825;61494;8989;92676;false;Dollar Intelligent Global
-3;engage transmit Dollar;Pizza FTP Car;C;71577;21663;15481;1681;13395;39496;41998;32699;19712;Concrete hacking;62735;18712;81879;85137;true;West invoice
-4;Coordinator Chair;override payment hacking;C;30642;36679;85183;21550;90566;24195;15282;46127;43209;AI Engineer;16019;44007;70061;4147;true;Ergonomic
-5;Stand-alone;payment Alabama;B;17566;66630;15578;87507;84458;65215;77626;58228;7272;Gloves;83199;68075;71839;69548;false;Data
-6;Steel bypass 1080p;disintermediate Solutions;A;55098;54893;82069;99020;62928;77211;37208;20788;78180;Wooden markets;32360;54084;16992;91656;true;programming
-7;Developer neural;Chair;A;60273;603;38185;78770;36662;66673;63347;76465;51984;deliver;55760;51882;9214;44819;true;target Ghana
-8;Refined Bedfordshire;Steel Research;B;8582;57059;90671;32078;8433;56800;48352;47348;95640;payment Organic pink;41427;26903;67771;11677;false;Keyboard
-9;bluetooth Dollar Clothing;Buckinghamshire;B;60458;38568;99181;88887;95178;70411;3986;87727;96579;wireless Steel;39786;76190;94067;17899;true;bleeding-edge
-10;Designer;West methodologies Garden;C;52438;38314;49995;35494;38443;55071;51916;43942;9449;context-sensitive AGP pink;83613;26429;35534;39877;true;Manager payment
+id;material;description;abc_classification;avg_supplier_delay;max_supplier_delay;service_level;curr_sap_safety_stock;proposed_sst;delta_sst;current_sap_safe_time;proposed_st;delta_st;open_sa_pmd_04;current_inventory_value;unit_cost;avg_demand;avg_inventory_effect_after_change;new_sap_safety_stock;new_sap_safety_time;flag_material;jhi_comment
+1;Ergonomic District;exploit system aggregate;A;37699;21626;37208;97716;97619;74176;58906;23723;29534;Wyoming Soap pixel;88070;82178;44532;18713;15142;86570;true;cross-media
+2;disintermediate Corporate;e-services array;C;28832;4069;81113;48668;72044;73609;67097;79602;81640;withdrawal Mexico;13953;56530;76770;41660;51998;27040;true;Overpass Account
+3;wireless;Intelligent Global navigating;C;75861;79291;94112;69386;99438;61601;98323;16558;84936;FTP Car;84242;71577;21663;15481;1681;13395;false;complexity Concrete
+4;Fish gold Branding;Fresh Coordinator Chair;C;76796;18533;52612;66138;60980;88526;81631;13236;58837;framework azure Shoes;43168;86099;39374;85119;97816;27433;false;models
+5;Steel Cambridgeshire;Stand-alone;B;63076;71112;94095;56821;699;77779;59596;17566;66630;IB;77626;58228;7272;20755;15279;30532;false;Dollar orchestrate back-end
+6;Soft;card disintermediate Solutions;A;55098;54893;82069;99020;62928;77211;37208;20788;78180;Wooden markets;32360;54084;16992;91656;80793;11234;true;interface capacitor compressing
+7;Health;Tools open-source;C;51984;18686;39554;54756;64623;55760;51882;9214;44819;withdrawal EXE violet;85808;13840;47762;5986;51290;22555;false;Steel Research
+8;Awesome architecture;Ville payment;A;56530;91368;20540;34570;23718;41427;26903;67771;11677;Keyboard;53890;67592;78826;61831;24841;68931;false;Clothing Granite
+9;Place Agent driver;Station innovative AI;C;17899;72463;8567;35146;46070;77711;15778;98224;55967;Customer Lakes;83151;641;34314;13259;93688;52438;false;dynamic Japan
+10;context-sensitive AGP pink;even-keeled Administrator azure;C;62196;85662;73702;86352;96885;55457;71117;53145;29134;Gorgeous SSL Unbranded;68727;90426;15920;36230;36238;56988;true;Creative
