@@ -1,15 +1,28 @@
 package com.bosch.diabo.service.impl;
 
 import com.bosch.diabo.domain.Material;
+import com.bosch.diabo.domain.enumeration.ABCClassification;
 import com.bosch.diabo.repository.MaterialRepository;
 import com.bosch.diabo.service.MaterialService;
+
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.Optional;
+import java.io.IOException;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.apache.poi.ss.usermodel.*;
+
+
 
 /**
  * Service Implementation for managing {@link Material}.
@@ -36,6 +49,39 @@ public class MaterialServiceImpl implements MaterialService {
     public Material update(Material material) {
         log.debug("Request to update Material : {}", material);
         return materialRepository.save(material);
+    }
+
+    @Override
+    public Optional<Material> updateByMaterialName(Material material){
+        log.debug("Request to update Material by the name : {}", material);
+        return materialRepository
+            .findByMaterial(material.getMaterial())
+            .map(existingMaterial -> {
+                existingMaterial.setMaterial(material.getMaterial());
+                existingMaterial.setDescription(material.getDescription());
+                existingMaterial.setAbcClassification(material.getAbcClassification());
+                existingMaterial.setAvgSupplierDelay(material.getAvgSupplierDelay());
+                existingMaterial.setMaxSupplierDelay(material.getMaxSupplierDelay());
+                existingMaterial.setServiceLevel(material.getServiceLevel());
+                existingMaterial.setCurrSAPSafetyStock(material.getCurrSAPSafetyStock());
+                existingMaterial.setProposedSST(material.getProposedSST());
+                existingMaterial.setDeltaSST(material.getDeltaSST());
+                existingMaterial.setCurrentSAPSafeTime(material.getCurrentSAPSafeTime());
+                existingMaterial.setProposedST(material.getProposedST());
+                existingMaterial.setDeltaST(material.getDeltaST());
+                existingMaterial.setOpenSAPmd04(material.getOpenSAPmd04());
+                existingMaterial.setCurrentInventoryValue(material.getCurrentInventoryValue());
+                existingMaterial.setUnitCost(material.getUnitCost());
+                existingMaterial.setAvgDemand(material.getAvgDemand());
+                existingMaterial.setAvgInventoryEffectAfterChange(material.getAvgInventoryEffectAfterChange());
+                existingMaterial.setFlagMaterial(material.getFlagMaterial());
+                existingMaterial.setComment(material.getComment());
+                
+                System.out.println("-----------------new name: "+material.getDescription()+"-----------------");
+
+                return existingMaterial;
+            })
+            .map(materialRepository::save);
     }
 
     @Override
@@ -132,5 +178,188 @@ public class MaterialServiceImpl implements MaterialService {
     public void delete(Long id) {
         log.debug("Request to delete Material : {}", id);
         materialRepository.deleteById(id);
+    }
+
+    @Override
+    public Optional<Material> findByMaterial(String material){
+        log.debug("Request to find Material by name");
+        return materialRepository.findByMaterial(material);
+    }
+
+    public void deleteAll() {
+        materialRepository.deleteAll();
+    }
+
+
+    @Override
+    public void uploadFileReplace(File file){
+        log.debug("Request to new source file : {}", file.getName());   
+        deleteAll();
+        int rownr = 0;
+        
+        try (FileInputStream fis = new FileInputStream(file);
+            Workbook workbook = new XSSFWorkbook(fis)) {
+            Sheet sheet = workbook.getSheetAt(0);
+            Iterator<Row> rowIterator = sheet.iterator();
+            rowIterator.next(); // Ignore header row
+
+            while (rowIterator.hasNext() && rownr < 3) {
+                Row row = rowIterator.next();
+                Iterator<Cell> cellIterator = row.cellIterator();
+                Material material = parseMaterial(cellIterator);
+                materialRepository.save(material);
+                rownr++;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    
+    @Override
+    public void uploadFileAddOrUpdate(File file){
+        log.debug("Request to new source file : {}", file.getName());   
+        
+        try (FileInputStream fis = new FileInputStream(file);
+            Workbook workbook = new XSSFWorkbook(fis)) {
+            Sheet sheet = workbook.getSheetAt(0);
+            Iterator<Row> rowIterator = sheet.iterator();
+            rowIterator.next();
+
+            int rownr = 0;
+
+            while (rowIterator.hasNext() && rownr < 3) {
+
+                Row row = rowIterator.next();
+                Iterator<Cell> cellIterator = row.cellIterator();
+                Material material = parseMaterial(cellIterator);
+                Optional<Material> opcMaterial = materialRepository.findByMaterial(material.getMaterial());
+                
+                if (opcMaterial.isPresent())
+                    updateByMaterialName(material);
+                else
+                    save(material);
+                
+                rownr++;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public Material parseMaterial(Iterator<Cell> cellIterator){
+        Material material = new Material();
+        material.setMaterial(cellIterator.next().getStringCellValue());
+        material.setDescription(cellIterator.next().getStringCellValue());
+        material.setAbcClassification(ABCClassification.fromString(cellIterator.next().getStringCellValue()));
+        material.setAvgSupplierDelay((float) cellIterator.next().getNumericCellValue());
+        material.setMaxSupplierDelay((float) cellIterator.next().getNumericCellValue());
+        material.setServiceLevel((float) cellIterator.next().getNumericCellValue());
+
+        int currSAPSafetyStock = (int) cellIterator.next().getNumericCellValue();
+        material.setCurrSAPSafetyStock(currSAPSafetyStock);
+
+        int proposedSST = (int) cellIterator.next().getNumericCellValue();
+        material.setProposedSST(proposedSST);
+
+        int deltaSST = proposedSST - currSAPSafetyStock;
+        material.setDeltaSST(deltaSST);
+        cellIterator.next();
+        material.setCurrentSAPSafeTime((int) cellIterator.next().getNumericCellValue());
+        material.setProposedST((int) cellIterator.next().getNumericCellValue());
+
+        int deltaST = material.getProposedST() - material.getCurrentSAPSafeTime();
+        material.setDeltaST(deltaST);
+        cellIterator.next();
+        material.setOpenSAPmd04(cellIterator.next().getStringCellValue());
+        material.setCurrentInventoryValue((float) cellIterator.next().getNumericCellValue());
+
+        Float unitCost = (float) cellIterator.next().getNumericCellValue();
+        material.setUnitCost(unitCost);
+
+        int avgDemand = (int) cellIterator.next().getNumericCellValue();
+        material.setAvgDemand(avgDemand);
+        material.setAvgInventoryEffectAfterChange(deltaSST * unitCost + deltaST * avgDemand * unitCost);
+        cellIterator.next();
+        
+        if(cellIterator.hasNext())
+            material.setFlagMaterial(getFlagValue(cellIterator.next()));
+        else {
+            material.setFlagMaterial(false);
+            material.setComment("");
+        }
+        if(cellIterator.hasNext())
+            material.setComment(cellIterator.next().getStringCellValue());
+        else
+            material.setComment("");
+        return material;
+    }
+
+    
+    public Boolean getFlagValue(Cell cell){
+        if(cell.getCellType() == CellType.BOOLEAN)
+            return cell.getBooleanCellValue();
+        else
+            return false;
+    }
+
+
+
+    @Override
+    public void submitChanges(List<Object> data){
+
+        for (Object item : data) {
+            if (item instanceof Map) {
+                Map<String, Object> dataMap = (Map<String, Object>) item;
+
+                updateObject(
+                    extractLong(dataMap.get("materialId")),
+                    extractInt(dataMap.get("newSST")),
+                    extractInt(dataMap.get("newST")),
+                    (String) dataMap.get("newComment"),
+                    (Boolean) dataMap.get("flag")
+                );
+            }
+        }
+    }
+
+    public void updateObject(Long materialId, int newSST, int newST, String newComment, Boolean flag){
+
+        materialRepository
+        .findById(materialId)
+        .map(existingMaterial -> {
+            existingMaterial.setCurrSAPSafetyStock(newSST);
+            existingMaterial.setCurrentSAPSafeTime(newST);
+            existingMaterial.setDeltaSST(existingMaterial.getProposedSST() - newSST);
+            existingMaterial.setDeltaST(existingMaterial.getProposedST() - newST);
+            existingMaterial.setComment(newComment);
+            existingMaterial.setFlagMaterial(flag);
+            return existingMaterial;
+        })
+        .map(materialRepository::save);
+
+    }
+
+
+    private Long extractLong(Object value) {
+
+        if (value instanceof Number) {
+            return ((Number) value).longValue();
+        } else if (value instanceof String) {
+            return Long.parseLong((String) value);
+        }
+        throw new IllegalArgumentException("Invalid type for key " + value);
+    }
+    
+    private int extractInt(Object value) {
+
+        if (value instanceof Number) {
+            return ((Number) value).intValue();
+        } else if (value instanceof String) {
+            return Integer.parseInt((String) value);
+        }
+        throw new IllegalArgumentException("Invalid type for key " + value);
     }
 }

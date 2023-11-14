@@ -4,6 +4,9 @@ import com.bosch.diabo.domain.Material;
 import com.bosch.diabo.repository.MaterialRepository;
 import com.bosch.diabo.service.MaterialService;
 import com.bosch.diabo.web.rest.errors.BadRequestAlertException;
+
+import java.io.IOException;
+import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -18,6 +21,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.PaginationUtil;
@@ -29,6 +33,9 @@ import tech.jhipster.web.util.ResponseUtil;
 @RestController
 @RequestMapping("/api")
 public class MaterialResource {
+
+    @Value("${file.upload.directory}")
+    private String uploadDirectory;
 
     private final Logger log = LoggerFactory.getLogger(MaterialResource.class);
 
@@ -177,5 +184,76 @@ public class MaterialResource {
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+
+
+    /**
+     * {@code POST  /materials/uploadFileReplace} : upload file to replace current database
+     *
+     * @param multipartFile the file with data to add to the database.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} or with status {@code 500 (Internal Server Error)} if the server can't read the file.
+     * @throws IOException if file reading failed
+     */
+    @PostMapping("/materials/uploadFileReplace")
+    public ResponseEntity<String> uploadFileReplace(@RequestParam("file") MultipartFile multipartFile) {
+        log.debug("REST request to upload file");
+        
+        File convertedFile = new File(uploadDirectory+multipartFile.getOriginalFilename());
+        
+        try {
+            multipartFile.transferTo(convertedFile);
+            materialService.uploadFileReplace(convertedFile);
+            convertedFile.delete();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body("Error uploading file: " + e.getMessage());
+        }
+
+        // Return a response indicating success or failure
+        return ResponseEntity.ok("");
+    }
+
+
+    /**
+     * {@code POST  /materials/uploadFileReplace} : upload file to add or update current database
+     *
+     * @param multipartFile the file with data to add or update the database.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} or with status {@code 500 (Internal Server Error)} if the server can't read the file.
+     * @throws IOException if file reading failed
+     */
+    @PostMapping("/materials/uploadFileAddOrUpdate")
+    public ResponseEntity<String> uploadFileAddOrUpdate(@RequestParam("file") MultipartFile multipartFile) {
+        log.debug("REST request to upload file");
+        
+        File convertedFile = new File(uploadDirectory+multipartFile.getOriginalFilename());
+        
+        try {
+            multipartFile.transferTo(convertedFile);
+            materialService.uploadFileAddOrUpdate(convertedFile);
+            convertedFile.delete();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body("Error uploading file: " + e.getMessage());
+        }
+        // Return a response indicating success or failure
+        return ResponseEntity.ok("");
+    }
+
+
+    /**
+     * {@code POST  /materials/submitChanges} : submit new changes to the database
+     *
+     * @param data new data to be submited
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} or with status {@code 500 (Internal Server Error)} if the server can't read the file.
+     * @throws IOException if file reading failed
+     */
+    @PostMapping("/materials/submitChanges")
+    public ResponseEntity<String> submitChanges(@RequestBody List<Object> data) {
+        log.debug("REST request submit changes");
+        materialService.submitChanges(data);
+
+
+        return ResponseEntity.ok("");
     }
 }
