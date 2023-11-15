@@ -253,7 +253,6 @@ public class MaterialResource {
         log.debug("REST request submit changes");
         materialService.submitChanges(data);
 
-
         return ResponseEntity.ok("");
     }
 }
