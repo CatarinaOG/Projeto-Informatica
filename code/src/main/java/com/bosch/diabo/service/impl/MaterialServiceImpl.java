@@ -4,9 +4,11 @@ import com.bosch.diabo.domain.Material;
 import com.bosch.diabo.domain.enumeration.ABCClassification;
 import com.bosch.diabo.repository.MaterialRepository;
 import com.bosch.diabo.service.MaterialService;
+import com.opencsv.exceptions.CsvValidationException;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileReader;
 import java.util.Optional;
 import java.io.IOException;
 import java.util.Iterator;
@@ -22,7 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.apache.poi.ss.usermodel.*;
 
-
+import com.opencsv.CSVReader;
 
 /**
  * Service Implementation for managing {@link Material}.
@@ -195,32 +197,53 @@ public class MaterialServiceImpl implements MaterialService {
     public void uploadFileReplace(File file){
         log.debug("Request to new source file : {}", file.getName());   
         deleteAll();
-        int rownr = 0;
-        
-        try (FileInputStream fis = new FileInputStream(file);
-            Workbook workbook = new XSSFWorkbook(fis)) {
-            Sheet sheet = workbook.getSheetAt(0);
-            Iterator<Row> rowIterator = sheet.iterator();
-            rowIterator.next(); // Ignore header row
 
-            while (rowIterator.hasNext() && rownr < 3) {
-                Row row = rowIterator.next();
-                Iterator<Cell> cellIterator = row.cellIterator();
-                Material material = parseMaterial(cellIterator);
-                materialRepository.save(material);
-                rownr++;
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+        String fileName = file.getName();
+        int lastDotIndex = fileName.lastIndexOf('.');
+        String fileExtension = lastDotIndex == -1 ? "" : fileName.substring(lastDotIndex + 1);
+        
+
+        switch (fileExtension.toLowerCase()) {
+            case "xlsx":
+                uploadFileXLSX(file,false);
+                break;
+            case "csv":
+                uploadFileCSV(file,false);
+                break;
+            default:
+                break;
         }
+
     }
 
 
-    
     @Override
     public void uploadFileAddOrUpdate(File file){
         log.debug("Request to new source file : {}", file.getName());   
         
+        String fileName = file.getName();
+        int lastDotIndex = fileName.lastIndexOf('.');
+        String fileExtension = lastDotIndex == -1 ? "" : fileName.substring(lastDotIndex + 1);
+        
+
+        switch (fileExtension.toLowerCase()) {
+            case "xlsx":
+                uploadFileXLSX(file,true);
+                break;
+            case "csv":
+                uploadFileCSV(file,true);
+                break;
+            default:
+                break;
+        }
+        
+    }
+
+
+    // ---------- > XLSX < ----------
+
+    public void uploadFileXLSX(File file, Boolean toUpdate){
+
         try (FileInputStream fis = new FileInputStream(file);
             Workbook workbook = new XSSFWorkbook(fis)) {
             Sheet sheet = workbook.getSheetAt(0);
@@ -233,10 +256,10 @@ public class MaterialServiceImpl implements MaterialService {
 
                 Row row = rowIterator.next();
                 Iterator<Cell> cellIterator = row.cellIterator();
-                Material material = parseMaterial(cellIterator);
+                Material material = parseMaterialXLSX(cellIterator);
                 Optional<Material> opcMaterial = materialRepository.findByMaterial(material.getMaterial());
                 
-                if (opcMaterial.isPresent())
+                if (toUpdate && opcMaterial.isPresent())
                     updateByMaterialName(material);
                 else
                     save(material);
@@ -246,10 +269,10 @@ public class MaterialServiceImpl implements MaterialService {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
 
-
-    public Material parseMaterial(Iterator<Cell> cellIterator){
+    public Material parseMaterialXLSX(Iterator<Cell> cellIterator){
         Material material = new Material();
         material.setMaterial(cellIterator.next().getStringCellValue());
         material.setDescription(cellIterator.next().getStringCellValue());
@@ -260,6 +283,7 @@ public class MaterialServiceImpl implements MaterialService {
 
         int currSAPSafetyStock = (int) cellIterator.next().getNumericCellValue();
         material.setCurrSAPSafetyStock(currSAPSafetyStock);
+        material.setNewSAPSafetyStock(material.getCurrSAPSafetyStock());
 
         int proposedSST = (int) cellIterator.next().getNumericCellValue();
         material.setProposedSST(proposedSST);
@@ -268,6 +292,7 @@ public class MaterialServiceImpl implements MaterialService {
         material.setDeltaSST(deltaSST);
         cellIterator.next();
         material.setCurrentSAPSafeTime((int) cellIterator.next().getNumericCellValue());
+        material.setNewSAPSafetyTime(material.getCurrentSAPSafeTime());
         material.setProposedST((int) cellIterator.next().getNumericCellValue());
 
         int deltaST = material.getProposedST() - material.getCurrentSAPSafeTime();
@@ -296,7 +321,6 @@ public class MaterialServiceImpl implements MaterialService {
             material.setComment("");
         return material;
     }
-
     
     public Boolean getFlagValue(Cell cell){
         if(cell.getCellType() == CellType.BOOLEAN)
@@ -306,6 +330,103 @@ public class MaterialServiceImpl implements MaterialService {
     }
 
 
+    // ---------- > CSV < ----------
+
+    public void uploadFileCSV(File file, Boolean toUpdate) {
+        try (CSVReader csvReader = new CSVReader(new FileReader(file))) {
+            String[] header = csvReader.readNext(); // Assuming the first row is the header
+
+            int rownr = 0;
+            String[] nextRecord;
+
+            while ((nextRecord = csvReader.readNext()) != null && rownr < 3) {
+                Material material = parseMaterialCSV(header, nextRecord);
+                Optional<Material> opcMaterial = materialRepository.findByMaterial(material.getMaterial());
+
+                if (toUpdate && opcMaterial.isPresent())
+                    updateByMaterialName(material);
+                else
+                    save(material);
+
+                rownr++;
+            }
+        } catch (IOException | CsvValidationException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Material parseMaterialCSV(String[] header, String[] nextRecord) {
+        Material material = new Material();
+
+        material.setMaterial(nextRecord[getIndex(header, "Material")]);
+        material.setDescription(nextRecord[getIndex(header, "Material Description")]);
+        material.setAbcClassification(ABCClassification.fromString(nextRecord[getIndex(header, "ABC Classification")]));
+        material.setAvgSupplierDelay(Float.parseFloat(nextRecord[getIndex(header, "Avg. Supplier Delay")]));
+        material.setMaxSupplierDelay(Float.parseFloat(nextRecord[getIndex(header, "Max Supplier delay")]));
+        material.setServiceLevel(Float.parseFloat(nextRecord[getIndex(header, "Service Level")]));
+        material.setCurrSAPSafetyStock(Integer.parseInt(nextRecord[getIndex(header, "Current SAP Safety Stock")]));
+        material.setProposedSST(Integer.parseInt(nextRecord[getIndex(header, "Proposed SST")]));
+        material.setDeltaSST(Integer.parseInt(nextRecord[getIndex(header, "Delta SST")]));
+        material.setCurrentSAPSafeTime(Integer.parseInt(nextRecord[getIndex(header, "Current SAP Safety Time")]));
+        material.setProposedST(Integer.parseInt(nextRecord[getIndex(header, "Proposed ST")]));
+        material.setDeltaST(Integer.parseInt(nextRecord[getIndex(header, "delta ST")]));
+        material.setOpenSAPmd04(nextRecord[getIndex(header, "Open SAP md04")]);
+
+        material.setCurrentInventoryValue(parseNumericValue(nextRecord[getIndex(header, "Current Inventory Value")]));
+        material.setUnitCost(parseNumericValue(nextRecord[getIndex(header, "Unit Cost")]));
+        material.setAvgDemand(Integer.parseInt(nextRecord[getIndex(header, "Avg Demand")]));
+        material.setAvgInventoryEffectAfterChange(parseNumericValue(nextRecord[getIndex(header, "Average inventory effect after change")]));
+        
+        if(getIndex(header, "New SAP SS") >= 0){
+            try {
+                material.setNewSAPSafetyStock(Integer.parseInt(nextRecord[getIndex(header, "New SAP SS")]));
+            } catch (NumberFormatException e) {
+                material.setNewSAPSafetyStock(material.getCurrSAPSafetyStock());
+            }
+        }
+
+        if(getIndex(header, "New SAP Safety Time") >= 0){
+            try {
+                material.setNewSAPSafetyTime(Integer.parseInt(nextRecord[getIndex(header, "New SAP Safety Time")]));
+            } catch (NumberFormatException e) {
+                material.setNewSAPSafetyTime(material.getCurrentSAPSafeTime());
+            }
+        }
+
+        if(getIndex(header, "Flag material") >= 0){
+            material.setFlagMaterial(getFlagValue(nextRecord[getIndex(header, "Flag material")]));
+        }
+
+        if(getIndex(header, "Comment") >= 0){
+            material.setComment(nextRecord[getIndex(header, "Comment")]);
+        }
+
+        return material;
+    }
+
+    private Boolean getFlagValue(String cellValue) {
+        if (cellValue != null && !cellValue.isEmpty()) {
+            return Boolean.parseBoolean(cellValue);
+        }
+        return false;
+    }
+
+    private int getIndex(String[] header, String columnName) {
+        for (int i = 0; i < header.length; i++) {
+            if (header[i].equals(columnName)) {
+                return i;
+            }
+        }
+        return -1; // Column not found
+    }
+
+    private float parseNumericValue(String cellValue) {
+        String numericValue = cellValue.replaceAll("[^\\d.]", "");
+        return Float.parseFloat(numericValue);
+    }
+
+
+    /* --------------------------- SUBMIT CHANGES --------------------------- */
 
     @Override
     public void submitChanges(List<Object> data){
@@ -341,7 +462,6 @@ public class MaterialServiceImpl implements MaterialService {
         .map(materialRepository::save);
 
     }
-
 
     private Long extractLong(Object value) {
 
