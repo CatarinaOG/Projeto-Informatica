@@ -11,6 +11,7 @@ import java.io.FileInputStream;
 import java.io.FileReader;
 import java.util.Optional;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +23,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 
 import com.opencsv.CSVReader;
@@ -202,13 +204,15 @@ public class MaterialServiceImpl implements MaterialService {
         int lastDotIndex = fileName.lastIndexOf('.');
         String fileExtension = lastDotIndex == -1 ? "" : fileName.substring(lastDotIndex + 1);
         
-
         switch (fileExtension.toLowerCase()) {
             case "xlsx":
                 uploadFileXLSX(file,false);
                 break;
             case "csv":
                 uploadFileCSV(file,false);
+                break;
+            case "xls":
+                uploadFileXLS(file,false);
                 break;
             default:
                 break;
@@ -225,13 +229,15 @@ public class MaterialServiceImpl implements MaterialService {
         int lastDotIndex = fileName.lastIndexOf('.');
         String fileExtension = lastDotIndex == -1 ? "" : fileName.substring(lastDotIndex + 1);
         
-
         switch (fileExtension.toLowerCase()) {
             case "xlsx":
                 uploadFileXLSX(file,true);
                 break;
             case "csv":
                 uploadFileCSV(file,true);
+                break;
+            case "xls":
+                uploadFileXLS(file,true);
                 break;
             default:
                 break;
@@ -245,25 +251,26 @@ public class MaterialServiceImpl implements MaterialService {
     public void uploadFileXLSX(File file, Boolean toUpdate){
 
         try (FileInputStream fis = new FileInputStream(file);
-            Workbook workbook = new XSSFWorkbook(fis)) {
+             Workbook workbook = new XSSFWorkbook(fis)) {
             Sheet sheet = workbook.getSheetAt(0);
             Iterator<Row> rowIterator = sheet.iterator();
-            rowIterator.next();
+            Row headerRow = rowIterator.next();
+
+            // Get header names and their column indices
+            Map<String, Integer> headerMap = getHeaderMap(headerRow);
 
             int rownr = 0;
 
             while (rowIterator.hasNext() && rownr < 3) {
-
                 Row row = rowIterator.next();
-                Iterator<Cell> cellIterator = row.cellIterator();
-                Material material = parseMaterialXLSX(cellIterator);
+                Material material = parseMaterialXLSX(row, headerMap);
                 Optional<Material> opcMaterial = materialRepository.findByMaterial(material.getMaterial());
-                
+
                 if (toUpdate && opcMaterial.isPresent())
                     updateByMaterialName(material);
                 else
                     save(material);
-                
+
                 rownr++;
             }
         } catch (IOException e) {
@@ -272,61 +279,123 @@ public class MaterialServiceImpl implements MaterialService {
 
     }
 
-    public Material parseMaterialXLSX(Iterator<Cell> cellIterator){
-        Material material = new Material();
-        material.setMaterial(cellIterator.next().getStringCellValue());
-        material.setDescription(cellIterator.next().getStringCellValue());
-        material.setAbcClassification(ABCClassification.fromString(cellIterator.next().getStringCellValue()));
-        material.setAvgSupplierDelay((float) cellIterator.next().getNumericCellValue());
-        material.setMaxSupplierDelay((float) cellIterator.next().getNumericCellValue());
-        material.setServiceLevel((float) cellIterator.next().getNumericCellValue());
+    private Map<String, Integer> getHeaderMap(Row headerRow) {
+        Map<String, Integer> headerMap = new HashMap<>();
+        Iterator<Cell> cellIterator = headerRow.cellIterator();
 
-        int currSAPSafetyStock = (int) cellIterator.next().getNumericCellValue();
-        material.setCurrSAPSafetyStock(currSAPSafetyStock);
-        material.setNewSAPSafetyStock(material.getCurrSAPSafetyStock());
-
-        int proposedSST = (int) cellIterator.next().getNumericCellValue();
-        material.setProposedSST(proposedSST);
-
-        int deltaSST = proposedSST - currSAPSafetyStock;
-        material.setDeltaSST(deltaSST);
-        cellIterator.next();
-        material.setCurrentSAPSafeTime((int) cellIterator.next().getNumericCellValue());
-        material.setNewSAPSafetyTime(material.getCurrentSAPSafeTime());
-        material.setProposedST((int) cellIterator.next().getNumericCellValue());
-
-        int deltaST = material.getProposedST() - material.getCurrentSAPSafeTime();
-        material.setDeltaST(deltaST);
-        cellIterator.next();
-        material.setOpenSAPmd04(cellIterator.next().getStringCellValue());
-        material.setCurrentInventoryValue((float) cellIterator.next().getNumericCellValue());
-
-        Float unitCost = (float) cellIterator.next().getNumericCellValue();
-        material.setUnitCost(unitCost);
-
-        int avgDemand = (int) cellIterator.next().getNumericCellValue();
-        material.setAvgDemand(avgDemand);
-        material.setAvgInventoryEffectAfterChange(deltaSST * unitCost + deltaST * avgDemand * unitCost);
-        cellIterator.next();
-        
-        if(cellIterator.hasNext())
-            material.setFlagMaterial(getFlagValue(cellIterator.next()));
-        else {
-            material.setFlagMaterial(false);
-            material.setComment("");
+        int columnIndex = 0;
+        while (cellIterator.hasNext()) {
+            Cell cell = cellIterator.next();
+            headerMap.put(cell.getStringCellValue(), columnIndex);
+            columnIndex++;
         }
-        if(cellIterator.hasNext())
-            material.setComment(cellIterator.next().getStringCellValue());
-        else
-            material.setComment("");
+
+        return headerMap;
+    }
+
+    private Material parseMaterialXLSX(Row row, Map<String, Integer> headerMap){
+        Material material = new Material();
+        System.out.println("column: Material ");
+        material.setMaterial(getStringCellValue(row, headerMap, "Material"));
+        System.out.println("Material Description ");
+        material.setDescription(getStringCellValue(row, headerMap, "Material Description"));
+        System.out.println("ABC Classification");
+        material.setAbcClassification(ABCClassification.fromString(getStringCellValue(row, headerMap, "ABC Classification")));
+        material.setAvgSupplierDelay(getFloatCellValue(row, headerMap, "Avg. Supplier Delay"));
+        material.setMaxSupplierDelay(getFloatCellValue(row, headerMap, "Max Supplier delay"));
+        material.setServiceLevel(getFloatCellValue(row, headerMap, "Service Level"));
+        material.setCurrSAPSafetyStock(getIntCellValue(row, headerMap, "Current SAP Safety Stock"));
+        material.setProposedSST(getIntCellValue(row, headerMap, "Proposed SST"));
+        material.setDeltaSST(getIntCellValue(row, headerMap, "Delta SST"));
+        material.setCurrentSAPSafeTime(getIntCellValue(row, headerMap, "Current SAP Safety Time"));
+        material.setProposedST(getIntCellValue(row, headerMap, "Proposed ST"));
+        material.setDeltaST(getIntCellValue(row, headerMap, "delta ST"));
+        material.setOpenSAPmd04(getStringCellValue(row, headerMap, "Open SAP md04"));
+
+        material.setCurrentInventoryValue(getFloatCellValue(row, headerMap, "Current Inventory Value"));
+        material.setUnitCost(getFloatCellValue(row, headerMap, "Unit Cost"));
+        material.setAvgDemand(getIntCellValue(row, headerMap, "Avg Demand"));
+        material.setAvgInventoryEffectAfterChange(getFloatCellValue(row, headerMap, "Average inventory effect after change"));
+
+        if (headerMap.containsKey("New SAP SS")) {
+            try {
+                material.setNewSAPSafetyStock(Integer.parseInt(getStringCellValue(row, headerMap, "New SAP SS")));
+            } catch (NumberFormatException e) {
+                material.setNewSAPSafetyStock(material.getCurrSAPSafetyStock());
+            }
+        }
+
+        if (headerMap.containsKey("New SAP Safety Time")) {
+            try {
+                material.setNewSAPSafetyTime(Integer.parseInt(getStringCellValue(row, headerMap, "New SAP Safety Time")));
+            } catch (NumberFormatException e) {
+                material.setNewSAPSafetyTime(material.getCurrentSAPSafeTime());
+            }
+        }
+
+        if (headerMap.containsKey("Flag material")) {
+            material.setFlagMaterial(getFlagValue(getStringCellValue(row, headerMap, "Flag material")));
+        }
+
+        if (headerMap.containsKey("Comment")) {
+            material.setComment(getStringCellValue(row, headerMap, "Comment"));
+        }
+
         return material;
+
     }
     
-    public Boolean getFlagValue(Cell cell){
-        if(cell.getCellType() == CellType.BOOLEAN)
-            return cell.getBooleanCellValue();
-        else
-            return false;
+    private String getStringCellValue(Row row, Map<String, Integer> headerMap, String headerName) {
+        int columnIndex = headerMap.get(headerName);
+        Cell cell = row.getCell(columnIndex);
+        return cell != null ? cell.getStringCellValue() : null;
+    }
+    
+    private float getFloatCellValue(Row row, Map<String, Integer> headerMap, String headerName) {
+        int columnIndex = headerMap.get(headerName);
+        Cell cell = row.getCell(columnIndex);
+        return cell != null ? (float) cell.getNumericCellValue() : 0.0f; // Set a default value if the cell is null
+    }
+    
+    private int getIntCellValue(Row row, Map<String, Integer> headerMap, String headerName) {
+        int columnIndex = headerMap.get(headerName);
+        Cell cell = row.getCell(columnIndex);
+        return cell != null ? (int) cell.getNumericCellValue() : 0; // Set a default value if the cell is null
+    }
+    
+    private Boolean getFlagValue(String cellValue) {
+        return cellValue != null && cellValue.equalsIgnoreCase("true");
+    }
+
+    // ---------- > XLS < ----------
+
+    public void uploadFileXLS(File file, Boolean toUpdate) {
+        try (FileInputStream fis = new FileInputStream(file);
+            Workbook workbook = new HSSFWorkbook(fis)) {
+            Sheet sheet = workbook.getSheetAt(0);
+            Iterator<Row> rowIterator = sheet.iterator();
+            Row headerRow = rowIterator.next();
+
+            // Get header names and their column indices
+            Map<String, Integer> headerMap = getHeaderMap(headerRow);
+
+            int rownr = 0;
+
+            while (rowIterator.hasNext() && rownr < 3) {
+                Row row = rowIterator.next();
+                Material material = parseMaterialXLSX(row, headerMap);
+                Optional<Material> opcMaterial = materialRepository.findByMaterial(material.getMaterial());
+
+                if (toUpdate && opcMaterial.isPresent())
+                    updateByMaterialName(material);
+                else
+                    save(material);
+
+                rownr++;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -394,7 +463,7 @@ public class MaterialServiceImpl implements MaterialService {
         }
 
         if(getIndex(header, "Flag material") >= 0){
-            material.setFlagMaterial(getFlagValue(nextRecord[getIndex(header, "Flag material")]));
+            material.setFlagMaterial(getFlagValueCSV(nextRecord[getIndex(header, "Flag material")]));
         }
 
         if(getIndex(header, "Comment") >= 0){
@@ -404,7 +473,7 @@ public class MaterialServiceImpl implements MaterialService {
         return material;
     }
 
-    private Boolean getFlagValue(String cellValue) {
+    private Boolean getFlagValueCSV(String cellValue) {
         if (cellValue != null && !cellValue.isEmpty()) {
             return Boolean.parseBoolean(cellValue);
         }
