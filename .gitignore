@@ -1,8 +1,8 @@
 code/pom.xml
 code/src/main/resources/config/application-dev.yml
 code/src/main/resources/config/application-prod.yml
+code/src/main/resources/config/application.yml
 code2/pom.xml
-code2/src/main/resources/config/application-dev.yml
 code2/src/main/resources/config/application-dev.yml
 code2/src/main/resources/config/application-prod.yml
 code2/src/main/resources/config/application.yml
