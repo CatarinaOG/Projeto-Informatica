@@ -10,7 +10,7 @@ import java.util.Optional;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface MaterialRepository extends JpaRepository<Material, Long> {
+public interface MaterialRepository extends JpaRepository<Material, Long>, JpaSpecificationExecutor<Material> {
 
     Optional<Material> findByMaterial(String material);
 

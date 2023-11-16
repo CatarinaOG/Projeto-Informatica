@@ -2,10 +2,11 @@ package com.bosch.diabo.web.rest;
 
 import com.bosch.diabo.domain.Material;
 import com.bosch.diabo.repository.MaterialRepository;
+import com.bosch.diabo.service.MaterialQueryService;
 import com.bosch.diabo.service.MaterialService;
+import com.bosch.diabo.service.criteria.MaterialCriteria;
 import com.bosch.diabo.web.rest.errors.BadRequestAlertException;
 
-import java.io.IOException;
 import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -18,7 +19,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,6 +26,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
+import java.io.IOException;
 
 /**
  * REST controller for managing {@link com.bosch.diabo.domain.Material}.
@@ -48,9 +49,16 @@ public class MaterialResource {
 
     private final MaterialRepository materialRepository;
 
-    public MaterialResource(MaterialService materialService, MaterialRepository materialRepository) {
+    private final MaterialQueryService materialQueryService;
+
+    public MaterialResource(
+        MaterialService materialService,
+        MaterialRepository materialRepository,
+        MaterialQueryService materialQueryService
+    ) {
         this.materialService = materialService;
         this.materialRepository = materialRepository;
+        this.materialQueryService = materialQueryService;
     }
 
     /**
@@ -147,14 +155,30 @@ public class MaterialResource {
      * {@code GET  /materials} : get all the materials.
      *
      * @param pageable the pagination information.
+     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of materials in body.
      */
     @GetMapping("/materials")
-    public ResponseEntity<List<Material>> getAllMaterials(@org.springdoc.api.annotations.ParameterObject Pageable pageable) {
-        log.debug("REST request to get a page of Materials");
-        Page<Material> page = materialService.findAll(pageable);
+    public ResponseEntity<List<Material>> getAllMaterials(
+        MaterialCriteria criteria,
+        @org.springdoc.api.annotations.ParameterObject Pageable pageable
+    ) {
+        log.debug("REST request to get Materials by criteria: {}", criteria);
+        Page<Material> page = materialQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /materials/count} : count all the materials.
+     *
+     * @param criteria the criteria which the requested entities should match.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
+     */
+    @GetMapping("/materials/count")
+    public ResponseEntity<Long> countMaterials(MaterialCriteria criteria) {
+        log.debug("REST request to count Materials by criteria: {}", criteria);
+        return ResponseEntity.ok().body(materialQueryService.countByCriteria(criteria));
     }
 
     /**
@@ -186,8 +210,6 @@ public class MaterialResource {
             .build();
     }
 
-
-
     /**
      * {@code POST  /materials/uploadFileReplace} : upload file to replace current database
      *
@@ -209,12 +231,9 @@ public class MaterialResource {
             e.printStackTrace();
             return ResponseEntity.status(500).body("Error uploading file: " + e.getMessage());
         }
-
         // Return a response indicating success or failure
         return ResponseEntity.ok("");
     }
-
-
     /**
      * {@code POST  /materials/uploadFileReplace} : upload file to add or update current database
      *
@@ -239,8 +258,6 @@ public class MaterialResource {
         // Return a response indicating success or failure
         return ResponseEntity.ok("");
     }
-
-
     /**
      * {@code POST  /materials/submitChanges} : submit new changes to the database
      *
@@ -252,7 +269,6 @@ public class MaterialResource {
     public ResponseEntity<String> submitChanges(@RequestBody List<Object> data) {
         log.debug("REST request submit changes");
         materialService.submitChanges(data);
-
         return ResponseEntity.ok("");
     }
 }
