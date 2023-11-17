@@ -288,68 +288,67 @@ public class MaterialResource {
     public ResponseEntity<File> downloadExcel() throws IOException {
 
     // Query database and get result set
-    List<Material> materials;
+    Page<Material> materials = materialService.findAll(null);
     
-    try (
-        // Create blank workbook
-        XSSFWorkbook workbook = new XSSFWorkbook()) {
-        // Create sheet
-        XSSFSheet sheet = workbook.createSheet("Data");
-
-        // Add headers
-        XSSFRow headerRow = sheet.createRow(0);
-        headerRow.createCell(0).setCellValue("ID");
-        headerRow.createCell(1).setCellValue("Material");
-        headerRow.createCell(2).setCellValue("Description");
-        headerRow.createCell(3).setCellValue("ABC Classification");
-        headerRow.createCell(4).setCellValue("Average Supplier Delay");
-        headerRow.createCell(5).setCellValue("Maximum Supplier Delay");
-        headerRow.createCell(6).setCellValue("Service Level");
-        headerRow.createCell(7).setCellValue("Current SAP Safety Stock");
-        headerRow.createCell(8).setCellValue("Proposed SST");
-        headerRow.createCell(9).setCellValue("Delta SST");
-        headerRow.createCell(10).setCellValue("Current SAP Safety Time");
-        headerRow.createCell(11).setCellValue("Proposed ST");
-        headerRow.createCell(12).setCellValue("Delta ST");
-        headerRow.createCell(13).setCellValue("Open SAP md04");
-        headerRow.createCell(14).setCellValue("Current Inventory Value");
-        headerRow.createCell(15).setCellValue("Unit Cost");
-        headerRow.createCell(16).setCellValue("Average Demand");
-        headerRow.createCell(17).setCellValue("Average Inventory Effect After Change");
-        headerRow.createCell(18).setCellValue("New SAP Safety Stock");
-        headerRow.createCell(19).setCellValue("New SAP Safety Time");
-        headerRow.createCell(20).setCellValue("Flag");
-        headerRow.createCell(21).setCellValue("Comments");
+        try {
+            XSSFWorkbook workbook = new XSSFWorkbook();
+            // Create sheet
+            XSSFSheet sheet = workbook.createSheet("Data");
+            // Add headers
+            XSSFRow headerRow = sheet.createRow(0);
+            headerRow.createCell(0).setCellValue("ID");
+            headerRow.createCell(1).setCellValue("Material");
+            headerRow.createCell(2).setCellValue("Description");
+            headerRow.createCell(3).setCellValue("ABC Classification");
+            headerRow.createCell(4).setCellValue("Average Supplier Delay");
+            headerRow.createCell(5).setCellValue("Maximum Supplier Delay");
+            headerRow.createCell(6).setCellValue("Service Level");
+            headerRow.createCell(7).setCellValue("Current SAP Safety Stock");
+            headerRow.createCell(8).setCellValue("Proposed SST");
+            headerRow.createCell(9).setCellValue("Delta SST");
+            headerRow.createCell(10).setCellValue("Current SAP Safety Time");
+            headerRow.createCell(11).setCellValue("Proposed ST");
+            headerRow.createCell(12).setCellValue("Delta ST");
+            headerRow.createCell(13).setCellValue("Open SAP md04");
+            headerRow.createCell(14).setCellValue("Current Inventory Value");
+            headerRow.createCell(15).setCellValue("Unit Cost");
+            headerRow.createCell(16).setCellValue("Average Demand");
+            headerRow.createCell(17).setCellValue("Average Inventory Effect After Change");
+            headerRow.createCell(18).setCellValue("New SAP Safety Stock");
+            headerRow.createCell(19).setCellValue("New SAP Safety Time");
+            headerRow.createCell(20).setCellValue("Flag");
+            headerRow.createCell(21).setCellValue("Comments");
 
 
-        // Add data 
-        int rowNum = 0;
-        for (Material mat : materials) {
-            XSSFRow row = sheet.createRow(++rowNum);
-            row.createCell(0).setCellValue(mat.getId());
-            row.createCell(1).setCellValue(mat.getMaterial());
-            row.createCell(2).setCellValue(mat.getDescription());
-            row.createCell(3).setCellValue(mat.getAbcClassification().toString());
-            row.createCell(4).setCellValue(mat.getAvgSupplierDelay());
-            row.createCell(5).setCellValue(mat.getMaxSupplierDelay());
-            row.createCell(6).setCellValue(mat.getServiceLevel());
-            row.createCell(7).setCellValue(mat.getCurrSAPSafetyStock());
-            row.createCell(8).setCellValue(mat.getProposedSST());
-            row.createCell(9).setCellValue(mat.getDeltaSST());
-            row.createCell(10).setCellValue(mat.getCurrentSAPSafeTime());
-            row.createCell(11).setCellValue(mat.getProposedST());
-            row.createCell(12).setCellValue(mat.getDeltaST());
-            row.createCell(13).setCellValue(mat.getOpenSAPmd04());
-            row.createCell(14).setCellValue(mat.getCurrentInventoryValue());
-            row.createCell(15).setCellValue(mat.getUnitCost());
-            row.createCell(16).setCellValue(mat.getAvgDemand());
-            row.createCell(17).setCellValue(mat.getAvgInventoryEffectAfterChange());
-            row.createCell(18).setCellValue(mat.getNewSAPSafetyStock());
-            row.createCell(19).setCellValue(mat.getNewSAPSafetyTime());
-            row.createCell(20).setCellValue(mat.getFlagMaterial());
-            row.createCell(21).setCellValue(mat.getComment());
+            // Add data 
+            int rowNum = 0;
+            for (Material mat : materials) {
+                XSSFRow row = sheet.createRow(++rowNum);
+                row.createCell(0).setCellValue(mat.getId());
+                row.createCell(1).setCellValue(mat.getMaterial());
+                row.createCell(2).setCellValue(mat.getDescription());
+                row.createCell(3).setCellValue(mat.getAbcClassification().toString());
+                row.createCell(4).setCellValue(mat.getAvgSupplierDelay());
+                row.createCell(5).setCellValue(mat.getMaxSupplierDelay());
+                row.createCell(6).setCellValue(mat.getServiceLevel());
+                row.createCell(7).setCellValue(mat.getCurrSAPSafetyStock());
+                row.createCell(8).setCellValue(mat.getProposedSST());
+                row.createCell(9).setCellValue(mat.getDeltaSST());
+                row.createCell(10).setCellValue(mat.getCurrentSAPSafeTime());
+                row.createCell(11).setCellValue(mat.getProposedST());
+                row.createCell(12).setCellValue(mat.getDeltaST());
+                row.createCell(13).setCellValue(mat.getOpenSAPmd04());
+                row.createCell(14).setCellValue(mat.getCurrentInventoryValue());
+                row.createCell(15).setCellValue(mat.getUnitCost());
+                row.createCell(16).setCellValue(mat.getAvgDemand());
+                row.createCell(17).setCellValue(mat.getAvgInventoryEffectAfterChange());
+                row.createCell(18).setCellValue(mat.getNewSAPSafetyStock());
+                row.createCell(19).setCellValue(mat.getNewSAPSafetyTime());
+                row.createCell(20).setCellValue(mat.getFlagMaterial());
+                row.createCell(21).setCellValue(mat.getComment());
+            }
         }
-    }
+
     /*
         HttpServletResponse response;
 
