@@ -155,6 +155,9 @@ receiveStringEvent(messageText : string) : void{
   if (this.message === "FilterReset"){
     this.nuke()
   }
+  if (this.message === "Submit"){
+    this.submitToSAP()
+  }
 }
 
 receiveTextFilter(event : any) : void{

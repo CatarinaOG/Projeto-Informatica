@@ -75,4 +75,8 @@ export class OptionsBar implements OnInit {
     sendABCFilter(event : any,  value: string) : void {
         this.abcFilterEmitter.emit({opType: event.target.checked, filterValue : value})
     }
+
+    submitToSAP(){
+        this.stringEmitter.emit("Submit")
+    }
 };
