@@ -5,9 +5,10 @@ import { MaterialDetailComponent } from './detail/material-detail.component';
 import { MaterialUpdateComponent } from './update/material-update.component';
 import { MaterialDeleteDialogComponent } from './delete/material-delete-dialog.component';
 import { MaterialRoutingModule } from './route/material-routing.module';
+import { OptionsBar} from './options-bar/optionsBar'
 
 @NgModule({
   imports: [SharedModule, MaterialRoutingModule],
-  declarations: [MaterialComponent, MaterialDetailComponent, MaterialUpdateComponent, MaterialDeleteDialogComponent],
+  declarations: [MaterialComponent, MaterialDetailComponent, MaterialUpdateComponent, MaterialDeleteDialogComponent,OptionsBar],
 })
 export class MaterialModule {}

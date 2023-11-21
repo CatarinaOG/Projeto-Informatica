@@ -9,6 +9,7 @@ export interface IFilterOptions {
   initializeFromParams(params: ParamMap): boolean;
   addFilter(name: string, ...values: string[]): boolean;
   removeFilter(name: string, value: string): boolean;
+  removeAllFiltersName(name: string): void;
 }
 
 export interface IFilterOption {
@@ -108,7 +109,7 @@ export class FilterOptions implements IFilterOptions {
     }
     return true;
   }
-
+  
   addFilter(name: string, ...values: string[]): boolean {
     if (this.getFilterOptionByName(name, true).addValue(...values)) {
       this.changed();
@@ -124,6 +125,18 @@ export class FilterOptions implements IFilterOptions {
     }
     return false;
   }
+
+  removeAllFiltersName(name: string) : void{
+    let i = 0;
+    for(let filter of this._filterOptions){
+      if(filter.name === name){
+        this._filterOptions.splice(i, 1);
+      }
+      i++;
+    }
+
+  }
+
 
   protected changed(): void {
     this.filterChanges.next(this.filterOptions.map(option => option.clone()));
@@ -153,4 +166,8 @@ export class FilterOptions implements IFilterOptions {
 
     return this._filterOptions.find(thisOption => thisOption.name === name) ?? (add ? addOption(new FilterOption(name)) : null);
   }
+
+  
+
+
 }

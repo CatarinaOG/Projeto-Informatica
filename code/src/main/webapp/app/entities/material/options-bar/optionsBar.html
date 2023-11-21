@@ -1,0 +1,180 @@
+<div class="d-flex justify-content-end" style="margin: 20px;">
+      
+    <button class="btn btn-info me-2" style="margin-left: 8px;" (click)="sendLoad()" >
+      <fa-icon icon="sync"></fa-icon>
+      <span class="font-weight-bold">Refresh list</span>
+    </button>
+
+
+    
+    <button class="btn btn-info me-2" style="margin-left: 8px;" (click)="sendFilterReset()" >
+      <fa-icon icon="sync"></fa-icon>
+      <span>Reset Filters</span>
+    </button>
+
+    <input type="file" class="file-input" accept=".csv,.ods,.xlsx,.xls"  (change)="sendFileMessage($event,true)" (click)="importReplaceInput.value=''" #importReplaceInput>
+    <input type="file" class="file-input" accept=".csv,.ods,.xlsx,.xls"  (change)="sendFileMessage($event,false)" (click)="importAdd.value=''" #importAdd>
+
+    <div ngbDropdown class="dropdown d-flex justify-content-end ">
+      <button ngbDropdownToggle class="btn btn-white"  style="margin-right: 8px;" type="button" id="dropdownMenuButton" aria-expanded="false"> 
+        <fa-icon icon="file"></fa-icon>
+        <span>File Options</span>
+      </button>
+      <ul ngbDropdownMenu aria-labelledby="dropdownMenuButton">
+        <li> 
+          <button ngbDropdownItem color="primary" class="btn btn-primary" (click)="importReplaceInput.click()">
+            <fa-icon icon="upload"></fa-icon>
+            <span>Replace Data</span>
+          </button>
+        </li>
+        <li> 
+          <button ngbDropdownItem color="primary" class="btn btn-primary" (click)="importAdd.click()">
+            <fa-icon icon="upload"></fa-icon>
+            <span>Add Data</span>
+          </button>
+        </li>
+        <div class="dropdown-divider"></div>
+        <li> 
+          <button ngbDropdownItem color="primary" class="btn btn-primary">
+            <fa-icon icon="download"></fa-icon>
+            <span>Download Data</span>
+          </button>
+        </li>
+      </ul>
+    </div>
+
+
+<!--
+    <div ngbDropdown class="dropdown d-flex justify-content-end" autoClose = "outside">
+      <button ngbDropdownToggle class="btn btn-white"  type="button" id="dropdownMenuButton" aria-expanded="false"> 
+        <fa-icon icon="filter"></fa-icon>
+        <span >Filter Options</span>
+      </button>
+      <ul ngbDropdownMenu  aria-labelledby="dropdownMenuButton" >
+        
+        <h6 class="dropdown-header">Column names</h6>
+        <div *ngFor="let filterName of filterStatus.keys()">
+            <button ngbDropdownItem color="primary" class="btn btn-primary" (click)="clearStatus(filterName)">
+              <span>{{filterName}}</span>
+            </button>
+        </div>
+
+        <div class="dropdown-divider" [ngClass] = "checkStatus() ? 'searchInputShow' : 'searchInputHide'"></div>
+        <h6 class="dropdown-header" [ngClass] = "this.filterStatus.get('Material Name') || this.filterStatus.get('Material Description') ? 'searchInputShow' : 'searchInputHide'"> Search in Column</h6>
+        <li [ngClass] = "this.filterStatus.get('Material Name') || this.filterStatus.get('Material Description') ? 'searchInputShow' : 'searchInputHide'"> 
+          <input type="text" class="inputWidth" (change)="filterSearchInput($event)">
+        </li>
+        
+        <h6 class="dropdown-header" [ngClass] = "this.filterStatus.get('ABC Classification') ? 'searchInputShow' : 'searchInputHide'"> Select categories</h6>
+        <li  [ngClass] = "this.filterStatus.get('ABC Classification') ? 'searchInputShow' : 'searchInputHide'"> 
+          <input type="checkbox"  (click)="filterABCClassif($event,'A')"><span> Category A</span>
+        </li>
+        <li [ngClass] = "this.filterStatus.get('ABC Classification') ? 'searchInputShow' : 'searchInputHide'">          
+          <input type="checkbox"  (click)="filterABCClassif($event,'B')"><span> Category B</span>
+        </li>
+        <li [ngClass] = "this.filterStatus.get('ABC Classification') ? 'searchInputShow' : 'searchInputHide'">
+          <input type="checkbox"  (click)="filterABCClassif($event,'C')"><span> Category C</span>              
+        </li>
+
+        <li>
+          <div>
+            <form [formGroup]="numberFilterForm" (ngSubmit)="onSubmit()">
+              <select required formControlName="selectOption">
+                <option value="'lessThan'"> &lt; </option>
+                <option value="'greaterThan'"> &gt; </option>
+                <option value="'lessEqual'"> &le; </option>
+                <option value="'greaterThan'"> &ge; </option>
+                <option value="'different'"> != </option>
+                <option value="'equals'"> == </option>
+              </select>
+              <input type="number" formControlName="filterValue">
+            </form>
+            
+          </div>
+        </li>
+
+      </ul>
+    </div>
+
+
+    <div ngbDropdown class="dropdown d-flex justify-content-end" autoClose="outside">
+      <button ngbDropdownToggle class="btn btn-white" type="button" id="dropdownMenuButton" aria-expanded="false">
+        <fa-icon icon="filter"></fa-icon>
+        <span>Filter Options</span>
+      </button>
+      <ul ngbDropdownMenu aria-labelledby="dropdownMenuButton">
+        <li>
+          <div ngbDropdown class="dropdown d-flex" placement="right">
+            <button ngbDropdownToggle class="btn btn-white " type="button" id="nestedDropdownButton" aria-expanded="false"> 
+              <span>Material Info</span>
+            </button>
+            <ul ngbDropdownMenu aria-labelledby="nestedDropdownButton">
+              <li>
+                <button ngbDropdownItem color="primary" class="btn btn-primary">
+                  <span>Material Name</span>
+                </button>
+              </li>
+              <li>
+                <button ngbDropdownItem color="primary" class="btn btn-primary">
+                  <span>Material Description</span>
+                </button>
+              </li>
+            </ul>
+          </div>
+          
+          <div ngbDropdown class="dropdown d-flex" placement="right">
+            <button ngbDropdownToggle class="btn btn-white " type="button" id="nestedDropdownButton" aria-expanded="false"> 
+              <span>Supplier Delay Info</span>
+            </button>
+            <ul ngbDropdownMenu aria-labelledby="nestedDropdownButton">
+              <li>
+                <button ngbDropdownItem  class="btn btn-primary">
+                  <span>Avg Supplier Delay</span>
+                </button>
+              </li>
+              <li>
+                <button ngbDropdownItem class="btn btn-primary">
+                  <span>Max Supplier Delay</span>
+                </button>
+              </li>
+            </ul>
+          </div>
+
+          <div ngbDropdown class="dropdown d-flex" placement="right">
+            <button ngbDropdownToggle class="btn btn-white " type="button" id="nestedDropdownButton" aria-expanded="false"> 
+              <span>Safety Stock Info</span>
+            </button>
+            <ul ngbDropdownMenu aria-labelledby="nestedDropdownButton">
+              <li>
+                <button ngbDropdownItem  class="btn btn-primary">
+                  <span>Cur. SAP Safety Supplier Delay</span>
+                </button>
+              </li>
+              <li>
+                <button ngbDropdownItem class="btn btn-primary">
+                  <span>Max Supplier Delay</span>
+                </button>
+              </li>
+            </ul>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <button class="btn btn-primary me-2" style="margin-left: 8px; color: white;" (click) = "submitToSAP()">
+      <fa-icon icon="paper-plane"></fa-icon>
+      <span>Submit Changes to SAP</span>
+    </button> -->
+
+    <!-- <button
+      id="jh-create-entity"
+      data-cy="entityCreateButton"
+      class="btn btn-primary jh-create-entity create-material"
+      style="margin-left: 8px;"
+      [routerLink]="['/material/new']"
+    >
+      <fa-icon icon="plus"></fa-icon>
+      <span> Create a new Material </span>
+    </button> -->
+
+  </div>
