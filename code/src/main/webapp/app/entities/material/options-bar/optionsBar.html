@@ -1,47 +1,6 @@
 <div class="d-flex justify-content-end" style="margin: 20px;">
       
-    <button class="btn btn-info me-2" style="margin-left: 8px;" (click)="sendLoad()" >
-      <fa-icon icon="sync"></fa-icon>
-      <span class="font-weight-bold">Refresh list</span>
-    </button>
-
-
     
-    <button class="btn btn-info me-2" style="margin-left: 8px;" (click)="sendFilterReset()" >
-      <fa-icon icon="sync"></fa-icon>
-      <span>Reset Filters</span>
-    </button>
-
-    <input type="file" class="file-input" accept=".csv,.ods,.xlsx,.xls"  (change)="sendFileMessage($event,true)" (click)="importReplaceInput.value=''" #importReplaceInput>
-    <input type="file" class="file-input" accept=".csv,.ods,.xlsx,.xls"  (change)="sendFileMessage($event,false)" (click)="importAdd.value=''" #importAdd>
-
-    <div ngbDropdown class="dropdown d-flex justify-content-end ">
-      <button ngbDropdownToggle class="btn btn-white"  style="margin-right: 8px;" type="button" id="dropdownMenuButton" aria-expanded="false"> 
-        <fa-icon icon="file"></fa-icon>
-        <span>File Options</span>
-      </button>
-      <ul ngbDropdownMenu aria-labelledby="dropdownMenuButton">
-        <li> 
-          <button ngbDropdownItem color="primary" class="btn btn-primary" (click)="importReplaceInput.click()">
-            <fa-icon icon="upload"></fa-icon>
-            <span>Replace Data</span>
-          </button>
-        </li>
-        <li> 
-          <button ngbDropdownItem color="primary" class="btn btn-primary" (click)="importAdd.click()">
-            <fa-icon icon="upload"></fa-icon>
-            <span>Add Data</span>
-          </button>
-        </li>
-        <div class="dropdown-divider"></div>
-        <li> 
-          <button ngbDropdownItem color="primary" class="btn btn-primary">
-            <fa-icon icon="download"></fa-icon>
-            <span>Download Data</span>
-          </button>
-        </li>
-      </ul>
-    </div>
 
 
 <!--
@@ -95,35 +54,58 @@
 
       </ul>
     </div>
-
+-->
 
     <div ngbDropdown class="dropdown d-flex justify-content-end" autoClose="outside">
-      <button ngbDropdownToggle class="btn btn-white" type="button" id="dropdownMenuButton" aria-expanded="false">
+      <button ngbDropdownToggle class="btn btn-white" type="button"  id="dropdownMenuButton" aria-expanded="false">
         <fa-icon icon="filter"></fa-icon>
         <span>Filter Options</span>
       </button>
       <ul ngbDropdownMenu aria-labelledby="dropdownMenuButton">
         <li>
-          <div ngbDropdown class="dropdown d-flex" placement="right">
-            <button ngbDropdownToggle class="btn btn-white " type="button" id="nestedDropdownButton" aria-expanded="false"> 
+          <div ngbDropdown class="dropdown d-flex" placement="right" autoClose = "outside">
+            <button ngbDropdownToggle class="btn btn-white inputWidth" type="button" id="nestedDropdownButton" aria-expanded="false" > 
               <span>Material Info</span>
             </button>
             <ul ngbDropdownMenu aria-labelledby="nestedDropdownButton">
               <li>
-                <button ngbDropdownItem color="primary" class="btn btn-primary">
+                <button ngbDropdownItem color="primary" class="btn btn-primary" (click)="changeStatus('Material Name')">
                   <span>Material Name</span>
                 </button>
               </li>
               <li>
-                <button ngbDropdownItem color="primary" class="btn btn-primary">
+                <button ngbDropdownItem color="primary" class="btn btn-primary" (click)="changeStatus('Material Description')">
                   <span>Material Description</span>
                 </button>
+              </li>
+              <li>
+                <button ngbDropdownItem color="primary" class="btn btn-primary" (click)="changeStatus('ABC Classification')">
+                  <span>ABC Classification</span>
+                </button>
+              </li>
+
+
+              <div class="dropdown-divider"  [ngClass] = "checkStatus() ? 'searchInputShow' : 'searchInputHide'"></div>
+              <h6 class="dropdown-header" [ngClass] = "this.filterStatus.get('Material Name') || this.filterStatus.get('Material Description') ? 'searchInputShow' : 'searchInputHide'"> Search in Column</h6>
+              <li [ngClass] = "this.filterStatus.get('Material Name') || this.filterStatus.get('Material Description') ? 'searchInputShow' : 'searchInputHide'"> 
+                <input type="text" class="inputWidth" (change)="sendFilterText($event)">
+              </li>
+
+              <h6 class="dropdown-header" [ngClass] = "this.filterStatus.get('ABC Classification') ? 'searchInputShow' : 'searchInputHide'"> Select categories</h6>
+              <li  [ngClass] = "this.filterStatus.get('ABC Classification') ? 'searchInputShow' : 'searchInputHide'"> 
+                <input type="checkbox"  (click)="sendABCFilter($event,'A')"><span> Category A</span>
+              </li>
+              <li [ngClass] = "this.filterStatus.get('ABC Classification') ? 'searchInputShow' : 'searchInputHide'">          
+                <input type="checkbox"  (click)="sendABCFilter($event,'B')"><span> Category B</span>
+              </li>
+              <li [ngClass] = "this.filterStatus.get('ABC Classification') ? 'searchInputShow' : 'searchInputHide'">
+                <input type="checkbox"  (click)="sendABCFilter($event,'C')"><span> Category C</span>              
               </li>
             </ul>
           </div>
           
-          <div ngbDropdown class="dropdown d-flex" placement="right">
-            <button ngbDropdownToggle class="btn btn-white " type="button" id="nestedDropdownButton" aria-expanded="false"> 
+          <div ngbDropdown class="dropdown d-flex" placement="right" autoClose = "outside">
+            <button ngbDropdownToggle class="btn btn-white inputWidth text-left" type="button" id="nestedDropdownButton" aria-expanded="false"> 
               <span>Supplier Delay Info</span>
             </button>
             <ul ngbDropdownMenu aria-labelledby="nestedDropdownButton">
@@ -140,19 +122,70 @@
             </ul>
           </div>
 
-          <div ngbDropdown class="dropdown d-flex" placement="right">
-            <button ngbDropdownToggle class="btn btn-white " type="button" id="nestedDropdownButton" aria-expanded="false"> 
+          <div ngbDropdown class="dropdown d-flex" placement="right" autoClose = "outside">
+            <button ngbDropdownToggle class="btn btn-white inputWidth text-left" type="button" id="nestedDropdownButton" aria-expanded="false"> 
               <span>Safety Stock Info</span>
             </button>
             <ul ngbDropdownMenu aria-labelledby="nestedDropdownButton">
               <li>
                 <button ngbDropdownItem  class="btn btn-primary">
-                  <span>Cur. SAP Safety Supplier Delay</span>
+                  <span>Current SAP Safety Stock</span>
                 </button>
               </li>
               <li>
                 <button ngbDropdownItem class="btn btn-primary">
-                  <span>Max Supplier Delay</span>
+                  <span>Proposed Safety Stock</span>
+                </button>
+              </li>
+              <li>
+                <button ngbDropdownItem class="btn btn-primary">
+                  <span>Delta Safety Stock</span>
+                </button>
+              </li>
+            </ul>
+          </div>
+
+          <div ngbDropdown class="dropdown d-flex" placement="right" autoClose = "outside">
+            <button ngbDropdownToggle class="btn btn-white inputWidth text-left" type="button" id="nestedDropdownButton" aria-expanded="false"> 
+              <span>Safety Time Info</span>
+            </button>
+            <ul ngbDropdownMenu aria-labelledby="nestedDropdownButton">
+              <li>
+                <button ngbDropdownItem  class="btn btn-primary">
+                  <span>Current SAP Safety Time</span>
+                </button>
+              </li>
+              <li>
+                <button ngbDropdownItem class="btn btn-primary">
+                  <span>Proposed Safety Time</span>
+                </button>
+              </li>
+              <li>
+                <button ngbDropdownItem class="btn btn-primary">
+                  <span>Delta Safety Time</span>
+                </button>
+              </li>
+            </ul>
+          </div>
+
+          <div ngbDropdown class="dropdown d-flex" placement="right">
+            <button ngbDropdownToggle class="btn btn-white inputWidth text-left" type="button" id="nestedDropdownButton" aria-expanded="false"> 
+              <span>Inv. Info & Service Lvl</span>
+            </button>
+            <ul ngbDropdownMenu aria-labelledby="nestedDropdownButton">
+              <li>
+                <button ngbDropdownItem  class="btn btn-primary">
+                  <span>Service Level</span>
+                </button>
+              </li>
+              <li>
+                <button ngbDropdownItem class="btn btn-primary">
+                  <span>Current Inventory Value</span>
+                </button>
+              </li>
+              <li>
+                <button ngbDropdownItem class="btn btn-primary">
+                  <span>Avg Inv. Effect After Change</span>
                 </button>
               </li>
             </ul>
@@ -161,12 +194,56 @@
       </ul>
     </div>
 
+    <button class="btn btn-info me-2" style="margin-left: 8px;" (click)="sendLoad()" >
+        <fa-icon icon="sync"></fa-icon>
+        <span class="font-weight-bold">Refresh list</span>
+      </button>
+  
+  
+      
+      <button class="btn btn-info me-2" style="margin-left: 8px;" (click)="sendFilterReset()" >
+        <fa-icon icon="sync"></fa-icon>
+        <span>Reset Filters</span>
+      </button>
+  
+      <input type="file" class="file-input" accept=".csv,.ods,.xlsx,.xls"  (change)="sendFileMessage($event,true)" (click)="importReplaceInput.value=''" #importReplaceInput>
+      <input type="file" class="file-input" accept=".csv,.ods,.xlsx,.xls"  (change)="sendFileMessage($event,false)" (click)="importAdd.value=''" #importAdd>
+  
+      <div ngbDropdown class="dropdown d-flex justify-content-end ">
+        <button ngbDropdownToggle class="btn btn-white"  style="margin-right: 8px;" type="button" id="dropdownMenuButton" aria-expanded="false"> 
+          <fa-icon icon="file"></fa-icon>
+          <span>File Options</span>
+        </button>
+        <ul ngbDropdownMenu aria-labelledby="dropdownMenuButton">
+          <li> 
+            <button ngbDropdownItem color="primary" class="btn btn-primary" (click)="importReplaceInput.click()">
+              <fa-icon icon="upload"></fa-icon>
+              <span>Replace Data</span>
+            </button>
+          </li>
+          <li> 
+            <button ngbDropdownItem color="primary" class="btn btn-primary" (click)="importAdd.click()">
+              <fa-icon icon="upload"></fa-icon>
+              <span>Add Data</span>
+            </button>
+          </li>
+          <div class="dropdown-divider"></div>
+          <li> 
+            <button ngbDropdownItem color="primary" class="btn btn-primary">
+              <fa-icon icon="download"></fa-icon>
+              <span>Download Data</span>
+            </button>
+          </li>
+        </ul>
+      </div>
+
+    <!--
     <button class="btn btn-primary me-2" style="margin-left: 8px; color: white;" (click) = "submitToSAP()">
       <fa-icon icon="paper-plane"></fa-icon>
       <span>Submit Changes to SAP</span>
-    </button> -->
+    </button> 
 
-    <!-- <button
+     <button
       id="jh-create-entity"
       data-cy="entityCreateButton"
       class="btn btn-primary jh-create-entity create-material"

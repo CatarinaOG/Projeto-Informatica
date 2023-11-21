@@ -60,23 +60,6 @@ export class MaterialComponent implements OnInit {
   ]);
 
   firstTime = true;
-
-  filterStatus = new Map<string,boolean>([
-    ["Material Name", false],
-    ["Material Description",false],
-    ["ABC Classification", false],
-    ["Avg Supplier Delay",false],
-    ["Max Supplier Delay", false],
-    ["Current SAP Safety Stock", false],
-    ["Proposed Safety Stock",false],
-    ["Delta Safety Stock", false],
-    ["Current SAP Safety Time", false],
-    ["Proposed Safety Time",false],
-    ["Delta Safety Time", false],
-    ["Service Level", false],
-    ["Current Inventory", false],
-    ["Avg. Inv. Effect After Change", false]
-  ]);
   
   
   linhas = new Map<number,IEditCell>();
@@ -162,11 +145,58 @@ cleanList() {
   this.linhas.clear();
 }
 
-onFileSelected(event:any, typeReplace : boolean) {
+message:string | undefined;
+
+receiveStringEvent(messageText : string) : void{
+  this.message = messageText;
+  if (this.message === "load"){
+    this.load();
+  } 
+  if (this.message === "FilterReset"){
+    this.nuke()
+  }
+}
+
+receiveTextFilter(event : any) : void{
+  const filterName :string = event.filterName;
+  const filterValue : string = event.filterText;
+  if(filterValue === ''){
+    this.filters.removeAllFiltersName("material.contains");
+    this.filters.removeAllFiltersName("description.contains");
+  } 
+  else{
+    if (filterName === "Material Name"){
+      this.filters.removeAllFiltersName("material.contains")
+      this.filters.addFilter("material.contains", filterValue);
+    }
+    else{
+      this.filters.removeAllFiltersName("description.contains")
+      this.filters.addFilter("description.contains",filterValue);
+    }
+  }
+  this.load();
+}
+
+/*
+
+filterSearchInput(event : any) : void{
+  console.log(event.target.value)
+  
+}
+
+*/
+
+
+
+
+
+
+onFileSelected(event:any) {
   //true -> replace
   //false -> add
   console.log("Entrou na função")
-  const file:File = event.target.files[0];
+  const file : File = event.file ;
+  const typeReplace : boolean = event.opType;
   if (file && typeReplace) {
     this.materialService.uploadFileReplace(file).subscribe({
       next: (res: any) => {       
@@ -293,48 +323,15 @@ filter_load_test() : void {
 }
 
 
-filterSearchInput(event : any) : void{
-  console.log(event.target.value)
-  if(event.target.value === '') this.filters.removeAllFiltersName("material.contains");
-  else{
-    if (this.filterStatus.get("Material Name")){
-      this.filters.removeAllFiltersName("material.contains")
-      this.filters.addFilter("material.contains", event.target.value);
-    }
-    else{
-      this.filters.removeAllFiltersName("description.contains")
-      this.filters.addFilter("description.contains", event.target.value);
-
-    }
-
-  }
-  
-  this.load();
-}
 
 
-filterABCClassif(event : any, value: string): void{
-  if(event.target.checked){
-    this.filters.addFilter("abcClassification.in", value);
+filterABCClassif(event : any): void{
+  if(event.opType){
+    this.filters.addFilter("abcClassification.in", event.filterValue);
   }
   else{
-    this.filters.removeFilter("abcClassification.in", value);
+    this.filters.removeFilter("abcClassification.in", event.filterValue);
   }
-}
-
-clearStatus(name : string) : void{
-  for(let pair of this.filterStatus){
-    this.filterStatus.set(pair[0], false);
-  }
-  this.filterStatus.set(name, true);
-}
-
-checkStatus(): boolean {
-  let res = false
-  this.filterStatus.forEach((value, key) => {
-    if (value) res = true
-  })
-  return res
 }
 
 
@@ -343,19 +340,6 @@ nuke(): void{
   this.filters.clear();
   this.load();
 }
-
-message:string | undefined;
-receiveEvent(mensagem : string){
-  this.message = mensagem;
-  if (this.message === "load"){
-    this.load();
-  } 
-  if (this.message === "FilterReset"){
-    this.nuke()
-  }
-}
-
-
 
 
   delete(material: IMaterial): void {

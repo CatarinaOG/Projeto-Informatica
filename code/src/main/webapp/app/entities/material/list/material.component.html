@@ -3,57 +3,8 @@
     <span>Materials</span>
   </h2>
 
-    <options-bar (messageEvent) = "receiveEvent($event)"></options-bar>
-    <!-- <div class="d-flex justify-content-end" style="margin: 20px;">
-      
-      <button class="btn btn-info me-2" style="margin-left: 8px;" (click)="load()" [disabled]="isLoading">
-        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
-        <span class="font-weight-bold">Refresh list</span>
-      </button>
-
-
-      
-      <button class="btn btn-info me-2" style="margin-left: 8px;" (click)="nuke()" [disabled]="isLoading">
-        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
-        <span>Reset Filters</span>
-      </button>
-
-      
-      
-      <input type="file" class="file-input" accept=".csv,.ods,.xlsx,.xls"  (change)="onFileSelected($event,true)" (click)="importReplaceInput.value=''" #importReplaceInput>
-      <input type="file" class="file-input" accept=".csv,.ods,.xlsx,.xls"  (change)="onFileSelected($event,false)" (click)="importAdd.value=''" #importAdd>
-
-      <div ngbDropdown class="dropdown d-flex justify-content-end ">
-        <button ngbDropdownToggle class="btn btn-white"  style="margin-right: 8px;" type="button" id="dropdownMenuButton" aria-expanded="false"> 
-          <fa-icon icon="file"></fa-icon>
-          <span>File Options</span>
-        </button>
-        <ul ngbDropdownMenu aria-labelledby="dropdownMenuButton">
-          <li> 
-            <button ngbDropdownItem color="primary" class="btn btn-primary" (click)="importReplaceInput.click()">
-              <fa-icon icon="upload"></fa-icon>
-              <span>Replace Data</span>
-            </button>
-          </li>
-          <li> 
-            <button ngbDropdownItem color="primary" class="btn btn-primary" (click)="importAdd.click()">
-              <fa-icon icon="upload"></fa-icon>
-              <span>Add Data</span>
-            </button>
-          </li>
-          <div class="dropdown-divider"></div>
-          <li> 
-            <button ngbDropdownItem color="primary" class="btn btn-primary">
-              <fa-icon icon="download"></fa-icon>
-              <span>Download Data</span>
-            </button>
-          </li>
-        </ul>
-
-        
-      </div>
-
-
+    <options-bar (stringEmitter) = "receiveStringEvent($event)" (fileEmitter) = "onFileSelected($event)" (textFilterEmitter) = "receiveTextFilter($event)" (abcFilterEmitter) = "filterABCClassif($event)"></options-bar>
+    <!--
       <div ngbDropdown class="dropdown d-flex justify-content-end" autoClose = "outside">
         <button ngbDropdownToggle class="btn btn-white"  type="button" id="dropdownMenuButton" aria-expanded="false"> 
           <fa-icon icon="filter"></fa-icon>
