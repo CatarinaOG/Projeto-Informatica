@@ -11,12 +11,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.sql.ResultSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -24,9 +21,12 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -45,9 +45,6 @@ public class MaterialResource {
 
     @Value("${file.upload.directory}")
     private String uploadDirectory;
-
-    @Value("${file.download.directory}")
-    private String downloadDirectory;
 
     private final Logger log = LoggerFactory.getLogger(MaterialResource.class);
 
@@ -283,47 +280,64 @@ public class MaterialResource {
         return ResponseEntity.ok("");
     }
 
-    
     @GetMapping("/download") 
-    public ResponseEntity<File> downloadExcel() throws IOException {
+    public ResponseEntity<ByteArrayResource> downloadExcel() throws IOException {
 
     // Query database and get result set
-    Page<Material> materials = materialService.findAll(null);
-    
-        try {
-            XSSFWorkbook workbook = new XSSFWorkbook();
-            // Create sheet
-            XSSFSheet sheet = workbook.createSheet("Data");
-            // Add headers
-            XSSFRow headerRow = sheet.createRow(0);
-            headerRow.createCell(0).setCellValue("ID");
-            headerRow.createCell(1).setCellValue("Material");
-            headerRow.createCell(2).setCellValue("Description");
-            headerRow.createCell(3).setCellValue("ABC Classification");
-            headerRow.createCell(4).setCellValue("Average Supplier Delay");
-            headerRow.createCell(5).setCellValue("Maximum Supplier Delay");
-            headerRow.createCell(6).setCellValue("Service Level");
-            headerRow.createCell(7).setCellValue("Current SAP Safety Stock");
-            headerRow.createCell(8).setCellValue("Proposed SST");
-            headerRow.createCell(9).setCellValue("Delta SST");
-            headerRow.createCell(10).setCellValue("Current SAP Safety Time");
-            headerRow.createCell(11).setCellValue("Proposed ST");
-            headerRow.createCell(12).setCellValue("Delta ST");
-            headerRow.createCell(13).setCellValue("Open SAP md04");
-            headerRow.createCell(14).setCellValue("Current Inventory Value");
-            headerRow.createCell(15).setCellValue("Unit Cost");
-            headerRow.createCell(16).setCellValue("Average Demand");
-            headerRow.createCell(17).setCellValue("Average Inventory Effect After Change");
-            headerRow.createCell(18).setCellValue("New SAP Safety Stock");
-            headerRow.createCell(19).setCellValue("New SAP Safety Time");
-            headerRow.createCell(20).setCellValue("Flag");
-            headerRow.createCell(21).setCellValue("Comments");
+    String fileName = "Data.xlsx";
+    MaterialCriteria mc = new MaterialCriteria();
+    List<Material> materials = materialQueryService.findByCriteria(mc);
+    byte[] data;
 
+    try{
+        data = generateExcelFile(materials);
+    }
+    catch (Exception e){
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    }
 
-            // Add data 
-            int rowNum = 0;
-            for (Material mat : materials) {
-                XSSFRow row = sheet.createRow(++rowNum);
+    return ResponseEntity.ok()
+        .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName)
+        .contentType(MediaType.parseMediaType("application/vnd.ms-excel"))
+        .body(new ByteArrayResource(data));
+    }
+
+    public byte[] generateExcelFile(List<Material> materials) throws IOException{
+        System.out.println("Creating Workbook");
+        XSSFWorkbook workbook = new XSSFWorkbook();
+        XSSFSheet sheet = workbook.createSheet("Data");
+        // Add headers
+        XSSFRow headerRow = sheet.createRow(0);
+        System.out.println("Adding Headers");
+        headerRow.createCell(0).setCellValue("ID");
+        headerRow.createCell(1).setCellValue("Material");
+        headerRow.createCell(2).setCellValue("Description");
+        headerRow.createCell(3).setCellValue("ABC Classification");
+        headerRow.createCell(4).setCellValue("Average Supplier Delay");
+        headerRow.createCell(5).setCellValue("Maximum Supplier Delay");
+        headerRow.createCell(6).setCellValue("Service Level");
+        headerRow.createCell(7).setCellValue("Current SAP Safety Stock");
+        headerRow.createCell(8).setCellValue("Proposed SST");
+        headerRow.createCell(9).setCellValue("Delta SST");
+        headerRow.createCell(10).setCellValue("Current SAP Safety Time");
+        headerRow.createCell(11).setCellValue("Proposed ST");
+        headerRow.createCell(12).setCellValue("Delta ST");
+        headerRow.createCell(13).setCellValue("Open SAP md04");
+        headerRow.createCell(14).setCellValue("Current Inventory Value");
+        headerRow.createCell(15).setCellValue("Unit Cost");
+        headerRow.createCell(16).setCellValue("Average Demand");
+        headerRow.createCell(17).setCellValue("Average Inventory Effect After Change");
+        headerRow.createCell(18).setCellValue("New SAP Safety Stock");
+        headerRow.createCell(19).setCellValue("New SAP Safety Time");
+        headerRow.createCell(20).setCellValue("Flag");
+        headerRow.createCell(21).setCellValue("Comments");
+        // Add data 
+        System.out.println("Adding Data");
+        int rowNum = 1;
+        for (Material mat : materials) {
+            System.out.println("Added Material: " + rowNum);
+            try{
+                XSSFRow row = sheet.createRow(rowNum++);
                 row.createCell(0).setCellValue(mat.getId());
                 row.createCell(1).setCellValue(mat.getMaterial());
                 row.createCell(2).setCellValue(mat.getDescription());
@@ -347,28 +361,23 @@ public class MaterialResource {
                 row.createCell(20).setCellValue(mat.getFlagMaterial());
                 row.createCell(21).setCellValue(mat.getComment());
             }
+            catch (Exception e){
+                System.out.println("No Material for row " + rowNum);
+            }
         }
-
-    /*
-        HttpServletResponse response;
-
-        // Create output stream
+        System.out.println("Ended Adding DATA");
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         workbook.write(outputStream);
+        System.out.println("Workbook write outputstream");
+        byte[] r = outputStream.toByteArray();
+        System.out.println("outputstream to byte []");
+        outputStream.close();
+        System.out.println("OutputStream closed");
+        workbook.close();
+        System.out.println("Workbook closed");
 
-        // Set response headers
-        byte[] bytes = outputStream.toByteArray();
-        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-        response.setContentLength(bytes.length);    
-        response.setHeader("Content-Disposition", "attachment; filename=data.xlsx");
-
-        // Write workbook to response
-        OutputStream out = response.getOutputStream();
-        out.write(bytes);
-        out.close();
-     */
-    
-    File file = new File(downloadDirectory+"data.csv");
-    return ResponseEntity.ok(file);
+        return r;
     }
+
+    
 }
