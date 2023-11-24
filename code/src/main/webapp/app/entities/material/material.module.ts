@@ -8,9 +8,10 @@ import { MaterialRoutingModule } from './route/material-routing.module';
 import { OptionsBar} from './options-bar/optionsBar'
 import { FilterDisplayCell } from './filter-display-cell/filterDisplayCell'
 import { FilterForm} from './filter-form/filterForm'
+import { FlagModal } from './flag-modal/flagModal'
 
 @NgModule({
   imports: [SharedModule, MaterialRoutingModule],
-  declarations: [MaterialComponent, MaterialDetailComponent, MaterialUpdateComponent, MaterialDeleteDialogComponent, OptionsBar, FilterDisplayCell,FilterForm],
+  declarations: [MaterialComponent, MaterialDetailComponent, MaterialUpdateComponent, MaterialDeleteDialogComponent, OptionsBar, FilterDisplayCell, FilterForm,FlagModal],
 })
 export class MaterialModule {}

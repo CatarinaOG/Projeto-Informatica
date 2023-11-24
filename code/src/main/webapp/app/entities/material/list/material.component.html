@@ -15,72 +15,16 @@
         <div style="flex-grow: 1;"></div> 
         
         <div>
-          <button class="btn btn-info me-2 " style="margin-left: 8px;" (click)="nukeFilters()">
+          <button class="btn btn-info me-2 " style="margin-left: 8px;">
             <fa-icon icon="trash-alt"></fa-icon>
-            <span>Reset Filters</span>
-          </button>
-        </div>
-
-      </div>
-
-    </div>
-    <!--
-      <div ngbDropdown class="dropdown d-flex justify-content-end" autoClose = "outside">
-        <button ngbDropdownToggle class="btn btn-white"  type="button" id="dropdownMenuButton" aria-expanded="false"> 
-          <fa-icon icon="filter"></fa-icon>
-          <span >Filter Options</span>
+          <span>Reset Filters</span>
         </button>
-        <ul ngbDropdownMenu  aria-labelledby="dropdownMenuButton" >
-          
-          <h6 class="dropdown-header">Column names</h6>
-          <div *ngFor="let filterName of filterStatus.keys()">
-              <button ngbDropdownItem color="primary" class="btn btn-primary" (click)="clearStatus(filterName)">
-                <span>{{filterName}}</span>
-              </button>
-          </div>
-
-          <div class="dropdown-divider" [ngClass] = "checkStatus() ? 'searchInputShow' : 'searchInputHide'"></div>
-          <h6 class="dropdown-header" [ngClass] = "this.filterStatus.get('Material Name') || this.filterStatus.get('Material Description') ? 'searchInputShow' : 'searchInputHide'"> Search in Column</h6>
-          <li [ngClass] = "this.filterStatus.get('Material Name') || this.filterStatus.get('Material Description') ? 'searchInputShow' : 'searchInputHide'"> 
-            <input type="text" class="inputWidth" (change)="filterSearchInput($event)">
-          </li>
-          
-          <h6 class="dropdown-header" [ngClass] = "this.filterStatus.get('ABC Classification') ? 'searchInputShow' : 'searchInputHide'"> Select categories</h6>
-          <li  [ngClass] = "this.filterStatus.get('ABC Classification') ? 'searchInputShow' : 'searchInputHide'"> 
-            <input type="checkbox"  (click)="filterABCClassif($event,'A')"><span> Category A</span>
-          </li>
-          <li [ngClass] = "this.filterStatus.get('ABC Classification') ? 'searchInputShow' : 'searchInputHide'">          
-            <input type="checkbox"  (click)="filterABCClassif($event,'B')"><span> Category B</span>
-          </li>
-          <li [ngClass] = "this.filterStatus.get('ABC Classification') ? 'searchInputShow' : 'searchInputHide'">
-            <input type="checkbox"  (click)="filterABCClassif($event,'C')"><span> Category C</span>              
-          </li>
-
-          <li>
-            <div>
-              <form [formGroup]="numberFilterForm" (ngSubmit)="onSubmit()">
-                <select required formControlName="selectOption">
-                  <option value="'lessThan'"> &lt; </option>
-                  <option value="'greaterThan'"> &gt; </option>
-                  <option value="'lessEqual'"> &le; </option>
-                  <option value="'greaterThan'"> &ge; </option>
-                  <option value="'different'"> != </option>
-                  <option value="'equals'"> == </option>
-                </select>
-                <input type="number" formControlName="filterValue">
-              </form>
-              
-            </div>
-          </li>
-
-        </ul>
+        </div>
       </div>
+    </div>
 
-      <button class="btn btn-primary me-2" style="margin-left: 8px; color: white;" (click) = "submitToSAP()">
-        <fa-icon icon="paper-plane"></fa-icon>
-        <span>Submit Changes to SAP</span>
-      </button>
-
+    
+    <!--
       <button
         id="jh-create-entity"
         data-cy="entityCreateButton"
@@ -91,7 +35,6 @@
         <fa-icon icon="plus"></fa-icon>
         <span> Create a new Material </span>
       </button>
-
     </div> -->
 
   
@@ -386,9 +329,10 @@
           <td class ="edit tableHide"><input type="checkbox" [checked]="linhas.get(material.id)?.selected" [disabled]="!linhas.has(material.id)" (click)="input($event,'selected',material.id)"></td>
 
           <td class ="edit tableHide">
-            <button class="buttonNoBorder" (click)="input($event, 'flag', material.id)">
+            <!-- <button class="buttonNoBorder" (click)="input($event, 'flag', material.id)">  
               <fa-icon class="p-1" icon="flag" [ngStyle]="{'color': (linhas.get(material.id) ? linhas.get(material.id)?.flag : material.flagMaterial)  ? '#ff0000' : '#999999'}"></fa-icon>
-            </button>
+            </button> -->
+            <flag-modal [material]="material"></flag-modal>
           </td>
 
           
