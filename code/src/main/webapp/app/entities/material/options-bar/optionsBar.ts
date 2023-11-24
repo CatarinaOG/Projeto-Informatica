@@ -1,16 +1,10 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
-import { FilterForm } from '../filter-form/filterForm'
 
 @Component({
   selector: 'options-bar',
   templateUrl: './optionsBar.html',
 })
 export class OptionsBar implements OnInit {
-
-
-  constructor( ) { }
-  ngOnInit(): void { }
 
   @Output() stringEmitter = new EventEmitter<string>();
   @Output() fileEmitter = new EventEmitter<{opType :boolean, file : File}>();
@@ -35,12 +29,12 @@ export class OptionsBar implements OnInit {
     ["Avg. Inv. Effect After Change", false]
   ]);
 
-    sendLoad() {
-        this.stringEmitter.emit("load");
-    }
+  
+  constructor( ) { }
+  ngOnInit(): void { }
 
-    sendFilterReset() {
-        this.stringEmitter.emit("FilterReset")
+    sendLoad(): void{
+        this.stringEmitter.emit("load");
     }
 
     sendFileMessage(event : any,opType : boolean) : void {

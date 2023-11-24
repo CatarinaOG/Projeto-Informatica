@@ -5,10 +5,24 @@
 
     <options-bar (stringEmitter) = "receiveStringEvent($event)" (fileEmitter) = "onFileSelected($event)" (textFilterEmitter) = "receiveTextFilter($event)" (abcFilterEmitter) = "filterABCClassif($event)" (numberFilterEmitter) ="receiveNumberFilter($event)"></options-bar>
     
-    <div class="d-flex">
-      <div *ngFor="let filter of this.filters.filterOptions" class="activeFilterCell">
-        <filter-display-cell [filter]=filter  (filterRemoveMessage)="receiveFilterRemoveMessage($event)"></filter-display-cell>
-      </div> 
+    <div *ngIf="this.filters.filterOptions.length > 0" >
+      <div style="font-weight: bold; text-align: start;">Active Filters:</div>
+      <div class="d-flex">
+        <div *ngFor="let filter of this.filters.filterOptions" class="activeFilterCell">
+          <filter-display-cell [filter]=filter  (filterRemoveMessage)="receiveFilterRemoveMessage($event)"></filter-display-cell>
+        </div> 
+
+        <div style="flex-grow: 1;"></div> 
+        
+        <div>
+          <button class="btn btn-info me-2 " style="margin-left: 8px;" (click)="nukeFilters()">
+            <fa-icon icon="trash-alt"></fa-icon>
+            <span>Reset Filters</span>
+          </button>
+        </div>
+
+      </div>
+
     </div>
     <!--
       <div ngbDropdown class="dropdown d-flex justify-content-end" autoClose = "outside">
@@ -109,7 +123,7 @@
               </button>
             </div>
           </th>
-          <th [attr.colspan]="visibility.get('safetyStock') ? 3 : 1" style="border-color: black; border-width: 2px;">
+          <th [attr.colspan]="visibility.get('safetyStock') ? 2 : 1" style="border-color: black; border-width: 2px;">
             <div class="d-flex" style="place-content: center;">
               <span class="flexGrow">Safety Stock Info</span>
               <button class="buttonNoBorder" (click)="switchVisibility($event,'safetyStock')">
@@ -117,7 +131,7 @@
               </button>
             </div>
           </th>
-          <th [attr.colspan]="visibility.get('safetyTime') ? 3 : 1" style="border-color: black; border-width: 2px;">
+          <th [attr.colspan]="visibility.get('safetyTime') ? 2 : 1" style="border-color: black; border-width: 2px;">
             <div class="d-flex" style="place-content: center;">
               <span class="flexGrow">Safety Time Info</span>
               <button class="buttonNoBorder" (click)="switchVisibility($event,'safetyTime')">
@@ -125,7 +139,7 @@
               </button>
             </div>
           </th>
-          <th [attr.colspan]="visibility.get('inventory') ? 4 : 1" style="border-color: black; border-width: 2px;">
+          <th [attr.colspan]="visibility.get('inventory') ? 6 : 1" style="border-color: black; border-width: 2px;">
             <div class="d-flex" style="place-content: center;">
               <span class="flexGrow">Inventory Info & Service Level</span>
               <button class="buttonNoBorder" (click)="switchVisibility($event,'inventory')">
@@ -193,19 +207,14 @@
             </div>
           </th>
           
-          <th scope="col" jhiSortBy="proposedSST" class = "safetyStock">
+          <th scope="col" jhiSortBy="proposedSST" class = "safetyStock" style="border-right-color: black; border-width: 1px;">
             <div class="d-flex" style="place-content: center;">
               <span>Proposed Safety Stock</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
 
-          <th scope="col" jhiSortBy="deltaSST" class = "safetyStock" style="border-right-color: black; border-width: 1px;">
-            <div class="d-flex" style="place-content: center;">
-              <span>Delta Safety Stock</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
+         
 
           <th *ngIf = "!visibility.get('safetyStock')" style="border-right-color: black; border-width: 1px;">
             ...
@@ -218,19 +227,14 @@
             </div>
           </th>
 
-          <th scope="col" jhiSortBy="proposedST" class = "safetyTime">
+          <th scope="col" jhiSortBy="proposedST" class = "safetyTime" style="border-right-color: black; border-width: 1px;">
             <div class="d-flex" style="place-content: center;">
               <span>Proposed Safety Time</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
 
-          <th scope="col" jhiSortBy="deltaST" class = "safetyTime" style="border-right-color: black; border-width: 1px;">
-            <div class="d-flex" style="place-content: center;">
-              <span>Delta Safety Time</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
+          
           
           <th *ngIf = "!visibility.get('safetyTime')" style="border-right-color: black; border-width: 1px;">
             ...
@@ -253,6 +257,20 @@
           <th scope="col" jhiSortBy="currentInventoryValue" class="inventory">
             <div class="d-flex" style="place-content: center;">
               <span>Current Inventory Value</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+
+          <th scope="col" jhiSortBy="deltaSST" class = "inventory" >
+            <div class="d-flex" style="place-content: center;">
+              <span>Delta Safety Stock</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+
+          <th scope="col" jhiSortBy="deltaST" class = "inventory" >
+            <div class="d-flex" style="place-content: center;">
+              <span>Delta Safety Time</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
@@ -328,14 +346,12 @@
 
           <td class ="safetyStock">{{ material.currSAPSafetyStock }}</td>
           <td class ="safetyStock">{{ material.proposedSST }}</td>
-          <td class ="safetyStock">{{ material.deltaSST }}</td>
           <th *ngIf = "!visibility.get('safetyStock')">
             ...
           </th>
 
           <td class ="safetyTime">{{ material.currentSAPSafeTime }}</td>
           <td class ="safetyTime">{{ material.proposedST }}</td>
-          <td class ="safetyTime">{{ material.deltaST }}</td>
           <th *ngIf = "!visibility.get('safetyTime')">
             ...
           </th>
@@ -346,6 +362,9 @@
             </button> <!--{{ diabo.openSapMd04 }}-->
           </td>
           <td  class ="inventory">{{ material.currentInventoryValue }}</td>
+          <td class ="inventory">{{ material.deltaSST }}</td>
+          <td class ="inventory">{{ material.deltaST }}</td>
+
           <td  class ="inventory">{{ calcNewValueAvg(material) }}</td>
           <th *ngIf = "!visibility.get('inventory')">
             ...

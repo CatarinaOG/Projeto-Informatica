@@ -1,6 +1,5 @@
 import { Component, EventEmitter, OnInit, Input, Output } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { FilterOptions, IFilterOptions, IFilterOption } from 'app/shared/filter/filter.model';
 
 @Component({
   selector: 'filter-form',
@@ -12,12 +11,12 @@ export class FilterForm implements OnInit {
   @Input() filterName!: string; 
   @Output() numberFilterEmitter = new EventEmitter<{filterName : string, operator : string, value : number}>();
 
-  constructor(private formBuilder: FormBuilder) { }
-     
   numberFilterForm = this.formBuilder.group({
-    selectOption: '==',
+    selectOption: 'equals',
     filterValue: 0
   });
+
+  constructor(private formBuilder: FormBuilder) { }
    
   ngOnInit(): void { }
   onSubmit(): void {

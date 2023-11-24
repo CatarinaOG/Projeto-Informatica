@@ -1,85 +1,31 @@
-<div class="d-flex justify-content-end" style="margin-left: 20px; margin-top: 20px; margin-bottom: 20px;">
-      
+<div class="d-flex" style=" margin-bottom: 20px;">
     
-
-
-<!--
-    <div ngbDropdown class="dropdown d-flex justify-content-end" autoClose = "outside">
-      <button ngbDropdownToggle class="btn btn-white"  type="button" id="dropdownMenuButton" aria-expanded="false"> 
-        <fa-icon icon="filter"></fa-icon>
-        <span >Filter Options</span>
-      </button>
-      <ul ngbDropdownMenu  aria-labelledby="dropdownMenuButton" >
-        
-        <h6 class="dropdown-header">Column names</h6>
-        <div *ngFor="let filterName of filterStatus.keys()">
-            <button ngbDropdownItem color="primary" class="btn btn-primary" (click)="clearStatus(filterName)">
-              <span>{{filterName}}</span>
-            </button>
-        </div>
-
-        <div class="dropdown-divider" [ngClass] = "checkStatus() ? 'searchInputShow' : 'searchInputHide'"></div>
-        <h6 class="dropdown-header" [ngClass] = "this.filterStatus.get('Material Name') || this.filterStatus.get('Material Description') ? 'searchInputShow' : 'searchInputHide'"> Search in Column</h6>
-        <li [ngClass] = "this.filterStatus.get('Material Name') || this.filterStatus.get('Material Description') ? 'searchInputShow' : 'searchInputHide'"> 
-          <input type="text" class="inputWidth" (change)="filterSearchInput($event)">
-        </li>
-        
-        <h6 class="dropdown-header" [ngClass] = "this.filterStatus.get('ABC Classification') ? 'searchInputShow' : 'searchInputHide'"> Select categories</h6>
-        <li  [ngClass] = "this.filterStatus.get('ABC Classification') ? 'searchInputShow' : 'searchInputHide'"> 
-          <input type="checkbox"  (click)="filterABCClassif($event,'A')"><span> Category A</span>
-        </li>
-        <li [ngClass] = "this.filterStatus.get('ABC Classification') ? 'searchInputShow' : 'searchInputHide'">          
-          <input type="checkbox"  (click)="filterABCClassif($event,'B')"><span> Category B</span>
-        </li>
-        <li [ngClass] = "this.filterStatus.get('ABC Classification') ? 'searchInputShow' : 'searchInputHide'">
-          <input type="checkbox"  (click)="filterABCClassif($event,'C')"><span> Category C</span>              
-        </li>
-
-        <li>
-          <div>
-            <form [formGroup]="numberFilterForm" (ngSubmit)="onSubmit()">
-              <select required formControlName="selectOption">
-                <option value="'lessThan'"> &lt; </option>
-                <option value="'greaterThan'"> &gt; </option>
-                <option value="'lessEqual'"> &le; </option>
-                <option value="'greaterThan'"> &ge; </option>
-                <option value="'different'"> != </option>
-                <option value="'equals'"> == </option>
-              </select>
-              <input type="number" formControlName="filterValue">
-            </form>
-            
-          </div>
-        </li>
-
-      </ul>
-    </div>
--->
-
     <div ngbDropdown class="dropdown d-flex justify-content-end" autoClose="outside">
       <button ngbDropdownToggle class="btn btn-white" type="button"  id="dropdownMenuButton" aria-expanded="false">
         <fa-icon icon="filter"></fa-icon>
         <span>Filter Options</span>
+        <fa-icon icon="caret-down" style="margin-left: 5px;"></fa-icon>
       </button>
       <ul ngbDropdownMenu aria-labelledby="dropdownMenuButton">
         <li>
-          <div ngbDropdown class="dropdown d-flex" placement="right" autoClose = "outside">
-            <button ngbDropdownToggle class="btn btn-white inputWidth" type="button" id="nestedDropdownButton" aria-expanded="false" > 
-              <span>Material Info</span>
+          <div ngbDropdown class="d-flex dropleft" placement="right-top" autoClose = "outside">
+            <button ngbDropdownToggle style="display: flex;" class="btn btn-primary buttonNoBorder inputWidth text-left" type="button" id="nestedDropdownButton" aria-expanded="false">
+              <span style="flex-grow: 1; text-align: left;">Material Info</span>
+              <fa-icon icon="caret-right"></fa-icon>
             </button>
             <ul ngbDropdownMenu aria-labelledby="nestedDropdownButton">
               <li>
-                <button ngbDropdownItem color="primary" class="btn btn-primary" (click)="changeStatus('Material Name')">
+                <button ngbDropdownItem color="primary" class="btn btn-primary" [ngStyle]="{'background-color': this.filterStatus.get('Material Name') ? '#3e8acc' : ''}" (click)="changeStatus('Material Name')">
                   <span>Material Name</span>
                 </button>
               </li>
               <li>
-                <button ngbDropdownItem color="primary" class="btn btn-primary" (click)="changeStatus('Material Description')">
+                <button ngbDropdownItem color="primary" class="btn btn-primary" [ngStyle]="{'background-color': this.filterStatus.get('Material Description') ? '#3e8acc' : ''}" (click)="changeStatus('Material Description')">
                   <span>Material Description</span>
                 </button>
               </li>
               <li>
-                <button ngbDropdownItem color="primary" class="btn btn-primary" (click)="changeStatus('ABC Classification')">
+                <button ngbDropdownItem color="primary" class="btn btn-primary" [ngStyle]="{'background-color': this.filterStatus.get('ABC Classification') ? '#3e8acc' : ''}" (click)="changeStatus('ABC Classification')">
                   <span>ABC Classification</span>
                 </button>
               </li>
@@ -87,35 +33,36 @@
 
               <div class="dropdown-divider"  [ngClass] = "checkStatus() ? 'searchInputShow' : 'searchInputHide'"></div>
               <h6 class="dropdown-header" [ngClass] = "this.filterStatus.get('Material Name') || this.filterStatus.get('Material Description') ? 'searchInputShow' : 'searchInputHide'"> Search in Column</h6>
-              <li [ngClass] = "this.filterStatus.get('Material Name') || this.filterStatus.get('Material Description') ? 'searchInputShow' : 'searchInputHide'"> 
-                <input type="text" class="inputWidth" (change)="sendFilterText($event)">
+              <li class="paddingLeftRight" [ngClass] = "this.filterStatus.get('Material Name') || this.filterStatus.get('Material Description') ? 'searchInputShow' : 'searchInputHide'"> 
+                <input type="text" class="inputWidth paddingFive" (change)="sendFilterText($event)">
               </li>
 
               <h6 class="dropdown-header" [ngClass] = "this.filterStatus.get('ABC Classification') ? 'searchInputShow' : 'searchInputHide'"> Select categories</h6>
-              <li  [ngClass] = "this.filterStatus.get('ABC Classification') ? 'searchInputShow' : 'searchInputHide'"> 
+              <li class="paddingLeftRight" [ngClass] = "this.filterStatus.get('ABC Classification') ? 'searchInputShow' : 'searchInputHide'"> 
                 <input type="checkbox"  (click)="sendABCFilter($event,'A')"><span> Category A</span>
               </li>
-              <li [ngClass] = "this.filterStatus.get('ABC Classification') ? 'searchInputShow' : 'searchInputHide'">          
+              <li class="paddingLeftRight" [ngClass] = "this.filterStatus.get('ABC Classification') ? 'searchInputShow' : 'searchInputHide'">          
                 <input type="checkbox"  (click)="sendABCFilter($event,'B')"><span> Category B</span>
               </li>
-              <li [ngClass] = "this.filterStatus.get('ABC Classification') ? 'searchInputShow' : 'searchInputHide'">
+              <li class="paddingLeftRight" [ngClass] = "this.filterStatus.get('ABC Classification') ? 'searchInputShow' : 'searchInputHide'">
                 <input type="checkbox"  (click)="sendABCFilter($event,'C')"><span> Category C</span>              
               </li>
             </ul>
           </div>
           
-          <div ngbDropdown class="dropdown d-flex" placement="right" autoClose = "outside">
-            <button ngbDropdownToggle class="btn btn-white inputWidth text-left" type="button" id="nestedDropdownButton" aria-expanded="false"> 
-              <span>Supplier Delay Info</span>
+          <div ngbDropdown class="dropdown d-flex" placement="right-top" autoClose = "outside">
+            <button ngbDropdownToggle style="display: flex;" class="btn btn-primary buttonNoBorder inputWidth text-left dropdown-toggle" type="button" id="nestedDropdownButton" aria-expanded="false">
+              <span style="flex-grow: 1; text-align: left;">Supplier Delay Info</span>
+              <fa-icon icon="caret-right"></fa-icon>
             </button>
             <ul ngbDropdownMenu aria-labelledby="nestedDropdownButton">
               <li>
-                <button ngbDropdownItem  class="btn btn-primary" (click)="changeStatus('Avg Supplier Delay')">
+                <button ngbDropdownItem  class="btn btn-primary" [ngStyle]="{'background-color': this.filterStatus.get('Avg Supplier Delay') ? '#3e8acc' : ''}" (click)="changeStatus('Avg Supplier Delay')">
                   <span>Avg Supplier Delay</span>
                 </button>
               </li>
               <li>
-                <button ngbDropdownItem class="btn btn-primary" (click)="changeStatus('Max Supplier Delay')">
+                <button ngbDropdownItem class="btn btn-primary" [ngStyle]="{'background-color': this.filterStatus.get('Max Supplier Delay') ? '#3e8acc' : ''}" (click)="changeStatus('Max Supplier Delay')">
                   <span>Max Supplier Delay</span>
                 </button>
               </li> 
@@ -128,30 +75,25 @@
           </div>
           
 
-          <div ngbDropdown class="dropdown d-flex" placement="right" autoClose = "outside">
-            <button ngbDropdownToggle class="btn btn-white inputWidth text-left" type="button" id="nestedDropdownButton" aria-expanded="false"> 
-              <span>Safety Stock Info</span>
+          <div ngbDropdown class="dropdown d-flex" placement="right-top" autoClose = "outside">
+            <button ngbDropdownToggle style="display: flex;" class="btn btn-primary buttonNoBorder inputWidth text-left" type="button" id="nestedDropdownButton" aria-expanded="false"> 
+              <span style="flex-grow: 1; text-align: left;">Safety Stock Info</span>
+              <fa-icon icon="caret-right"></fa-icon>
             </button>
             <ul ngbDropdownMenu aria-labelledby="nestedDropdownButton">
               <li>
-                <button ngbDropdownItem  class="btn btn-primary" (click)="changeStatus('Current SAP Safety Stock')">
+                <button ngbDropdownItem  class="btn btn-primary" [ngStyle]="{'background-color': this.filterStatus.get('Current SAP Safety Stock') ? '#3e8acc' : ''}" (click)="changeStatus('Current SAP Safety Stock')">
                   <span>Current SAP Safety Stock</span>
                 </button>
               </li>
               <li>
-                <button ngbDropdownItem class="btn btn-primary" (click)="changeStatus('Proposed Safety Stock')">
+                <button ngbDropdownItem class="btn btn-primary" [ngStyle]="{'background-color': this.filterStatus.get('Proposed Safety Stock') ? '#3e8acc' : ''}" (click)="changeStatus('Proposed Safety Stock')">
                   <span>Proposed Safety Stock</span>
                 </button>
               </li>
               <li>
-                <button ngbDropdownItem class="btn btn-primary" (click)="changeStatus('Delta Safety Stock')">
-                  <span>Delta Safety Stock</span>
-                </button>
-              </li>
-              <li>
                 <filter-form *ngIf="this.filterStatus.get('Current SAP Safety Stock')" [filterName] = "'currSAPSafetyStock'" (numberFilterEmitter)="receiveFilterNumberMessage($event)"></filter-form>
-                <filter-form *ngIf="this.filterStatus.get('Proposed Safety Stock')" [filterName] = "'proposedSST'" (numberFilterEmitter)="receiveFilterNumberMessage($event)"></filter-form> 
-                <filter-form *ngIf="this.filterStatus.get('Delta Safety Stock')" [filterName] = "'deltaSST'" (numberFilterEmitter)="receiveFilterNumberMessage($event)"></filter-form>   
+                <filter-form *ngIf="this.filterStatus.get('Proposed Safety Stock')" [filterName] = "'proposedSST'" (numberFilterEmitter)="receiveFilterNumberMessage($event)"></filter-form>  
               </li>
             </ul>
           </div>
@@ -161,53 +103,59 @@
 
 
 
-          <div ngbDropdown class="dropdown d-flex" placement="right" autoClose = "outside">
-            <button ngbDropdownToggle class="btn btn-white inputWidth text-left" type="button" id="nestedDropdownButton" aria-expanded="false"> 
-              <span>Safety Time Info</span>
+          <div ngbDropdown class="dropdown d-flex" placement="right-top" autoClose = "outside">
+            <button ngbDropdownToggle style="display: flex;" class="btn btn-primary buttonNoBorder inputWidth text-left" type="button" id="nestedDropdownButton" aria-expanded="false"> 
+              <span style="flex-grow: 1; text-align: left;">Safety Time Info</span>
+              <fa-icon icon="caret-right"></fa-icon>
             </button>
             <ul ngbDropdownMenu aria-labelledby="nestedDropdownButton">
               <li>
-                <button ngbDropdownItem  class="btn btn-primary" (click)="changeStatus('Current SAP Safety Time')">
+                <button ngbDropdownItem  class="btn btn-primary" [ngStyle]="{'background-color': this.filterStatus.get('Current SAP Safety Time') ? '#3e8acc' : ''}" (click)="changeStatus('Current SAP Safety Time')">
                   <span>Current SAP Safety Time</span>
                 </button>
               </li>
               <li>
-                <button ngbDropdownItem class="btn btn-primary" (click)="changeStatus('Proposed Safety Time')">
+                <button ngbDropdownItem class="btn btn-primary" [ngStyle]="{'background-color': this.filterStatus.get('Proposed Safety Time') ? '#3e8acc' : ''}" (click)="changeStatus('Proposed Safety Time')">
                   <span>Proposed Safety Time</span>
-                </button>
-              </li>
-              <li>
-                <button ngbDropdownItem class="btn btn-primary" (click)="changeStatus('Delta Safety Time')">
-                  <span>Delta Safety Time</span>
                 </button>
               </li>
               <li>
                 <filter-form *ngIf="this.filterStatus.get('Current SAP Safety Time')" [filterName] = "'currentSAPSafeTime'" (numberFilterEmitter)="receiveFilterNumberMessage($event)"></filter-form>
                 <filter-form *ngIf="this.filterStatus.get('Proposed Safety Time')" [filterName] = "'proposedST'" (numberFilterEmitter)="receiveFilterNumberMessage($event)"></filter-form>
-                <filter-form *ngIf="this.filterStatus.get('Delta Safety Time')" [filterName] = "'deltaST'" (numberFilterEmitter)="receiveFilterNumberMessage($event)"></filter-form>
               </li>
             </ul>
           </div>
 
           
 
-          <div ngbDropdown class="dropdown d-flex" placement="right">
-            <button ngbDropdownToggle class="btn btn-white inputWidth text-left" type="button" id="nestedDropdownButton" aria-expanded="false"> 
-              <span>Inv. Info & Service Lvl</span>
+          <div ngbDropdown class="dropdown d-flex" placement="right-top" autoClose = "outside">
+            <button ngbDropdownToggle style="display: flex;" class="btn btn-primary buttonNoBorder inputWidth text-left" type="button" id="nestedDropdownButton" aria-expanded="false"> 
+              <span style="flex-grow: 1; text-align: left;">Inv. Info & Service Lvl</span>
+              <fa-icon icon="caret-right" style="margin-left: 10px;"></fa-icon>
             </button>
             <ul ngbDropdownMenu aria-labelledby="nestedDropdownButton">
               <li>
-                <button ngbDropdownItem  class="btn btn-primary" (click)="changeStatus('Service Level')">
+                <button ngbDropdownItem  class="btn btn-primary" [ngStyle]="{'background-color': this.filterStatus.get('Service Level') ? '#3e8acc' : ''}" (click)="changeStatus('Service Level')">
                   <span>Service Level</span>
                 </button>
               </li>
               <li>
-                <button ngbDropdownItem class="btn btn-primary" (click)="changeStatus('Current Inventory Value')">
+                <button ngbDropdownItem class="btn btn-primary" [ngStyle]="{'background-color': this.filterStatus.get('Current Inventory Value') ? '#3e8acc' : ''}" (click)="changeStatus('Current Inventory Value')">
                   <span>Current Inventory Value</span>
                 </button>
               </li>
               <li>
-                <button ngbDropdownItem class="btn btn-primary" (click)="changeStatus('Avg Inv. Effect After Change')">
+                <button ngbDropdownItem class="btn btn-primary" [ngStyle]="{'background-color': this.filterStatus.get('Delta Safety Stock') ? '#3e8acc' : ''}" (click)="changeStatus('Delta Safety Stock')">
+                  <span>Delta Safety Stock</span>
+                </button>
+              </li>
+              <li>
+                <button ngbDropdownItem class="btn btn-primary" [ngStyle]="{'background-color': this.filterStatus.get('Delta Safety Time') ? '#3e8acc' : ''}" (click)="changeStatus('Delta Safety Time')">
+                  <span>Delta Safety Time</span>
+                </button>
+              </li>
+              <li>
+                <button ngbDropdownItem class="btn btn-primary" [ngStyle]="{'background-color': this.filterStatus.get('Avg Inv. Effect After Change') ? '#3e8acc' : ''}" (click)="changeStatus('Avg Inv. Effect After Change')">
                   <span>Avg Inv. Effect After Change</span>
                 </button>
               </li>
@@ -215,32 +163,23 @@
                 <filter-form *ngIf="this.filterStatus.get('Service Level')" [filterName] = "'serviceLevel'" (numberFilterEmitter)="receiveFilterNumberMessage($event)"></filter-form>
                 <filter-form *ngIf="this.filterStatus.get('Current Inventory Value')" [filterName] = "'currentInventoryValue'" (numberFilterEmitter)="receiveFilterNumberMessage($event)"></filter-form> 
                 <filter-form *ngIf="this.filterStatus.get('Avg Inv. Effect After Change')" [filterName] = "'avgInventoryEffectAfterChange'" (numberFilterEmitter)="receiveFilterNumberMessage($event)"></filter-form>   
+                <filter-form *ngIf="this.filterStatus.get('Delta Safety Stock')" [filterName] = "'deltaSST'" (numberFilterEmitter)="receiveFilterNumberMessage($event)"></filter-form>  
+                <filter-form *ngIf="this.filterStatus.get('Delta Safety Time')" [filterName] = "'deltaST'" (numberFilterEmitter)="receiveFilterNumberMessage($event)"></filter-form>
               </li>
             </ul>
           </div>
         </li>
       </ul>
     </div>
-
-    <button class="btn btn-info me-2" style="margin-left: 8px;" (click)="sendLoad()" >
-        <fa-icon icon="sync"></fa-icon>
-        <span class="font-weight-bold">Refresh list</span>
-      </button>
-  
-  
-      
-      <button class="btn btn-info me-2" style="margin-left: 8px;" (click)="sendFilterReset()" >
-        <fa-icon icon="sync"></fa-icon>
-        <span>Reset Filters</span>
-      </button>
   
       <input type="file" class="file-input" accept=".csv,.ods,.xlsx,.xls"  (change)="sendFileMessage($event,true)" (click)="importReplaceInput.value=''" #importReplaceInput>
       <input type="file" class="file-input" accept=".csv,.ods,.xlsx,.xls"  (change)="sendFileMessage($event,false)" (click)="importAdd.value=''" #importAdd>
   
-      <div ngbDropdown class="dropdown d-flex justify-content-end ">
+      <div ngbDropdown class="dropdown d-flex justify-content-end" style="margin-left: 8px;">
         <button ngbDropdownToggle class="btn btn-white"  style="margin-right: 8px;" type="button" id="dropdownMenuButton" aria-expanded="false"> 
           <fa-icon icon="file"></fa-icon>
           <span>File Options</span>
+          <fa-icon icon="caret-down" style="margin-left: 5px;"></fa-icon>
         </button>
         <ul ngbDropdownMenu aria-labelledby="dropdownMenuButton">
           <li> 
@@ -265,6 +204,12 @@
         </ul>
       </div>
 
+    <button class="btn btn-info me-2" style="margin-left: 8px;" (click)="sendLoad()" >
+      <fa-icon icon="sync"></fa-icon>
+      <span class="font-weight-bold">Refresh list</span>
+    </button>
+
+    <div style="flex-grow: 1;"></div> 
     
     <button class="btn btn-primary me-2" style="margin-left: 8px; color: white;" (click) = "submitToSAP()">
       <fa-icon icon="paper-plane"></fa-icon>

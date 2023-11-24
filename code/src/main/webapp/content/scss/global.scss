@@ -330,6 +330,14 @@ angular-cli removes postcss-rtl processed inline css, processed rules must be ad
   margin-bottom: 12px;
 }
 
+.paddingLeftRight {
+  padding-right: 10px;
+  padding-left: 10px;
+}
+
+.paddingFive {
+  padding: 5px;
+}
 /* Chrome, Safari, Edge, Opera */
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
@@ -340,4 +348,8 @@ input::-webkit-inner-spin-button {
 /* Firefox */
 input[type=number] {
   -moz-appearance: textfield;
+}
+
+.dropdown-toggle::after {
+  display: none;
 }

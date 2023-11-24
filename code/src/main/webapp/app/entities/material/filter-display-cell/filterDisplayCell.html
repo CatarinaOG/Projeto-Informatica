@@ -1,11 +1,11 @@
 <div>
-    <span style="font-weight: bold;"> {{ filter.name.split('.')[0] }} </span> 
+    <span style="font-weight: bold;"> {{ filterName }} </span> 
     <span>: </span>
     <span *ngIf="filter.name.split('.')[1] == 'greaterThan'">&gt;</span>
     <span *ngIf="filter.name.split('.')[1] == 'lessThan'">&lt;</span>
     <span *ngIf="filter.name.split('.')[1] == 'greaterThanOrEqual'">&ge;</span>
     <span *ngIf="filter.name.split('.')[1] == 'lessThanOrEqual'">&le;</span>    
-    <span *ngIf="filter.name.split('.')[1] == 'equals'">=</span>
+    <span *ngIf="filter.name.split('.')[1] == 'equals'">==</span>
     <span *ngIf="filter.name.split('.')[1] == 'notEquals'">!=</span>
     <span> {{ filter.values }} </span>
     

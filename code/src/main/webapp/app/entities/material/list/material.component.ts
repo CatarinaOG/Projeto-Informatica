@@ -33,18 +33,6 @@ export class MaterialComponent implements OnInit {
 
   isVisible = true;
   masterSelected=false;
-  private _isEditable : number[] = [-1,-1];
-  fileName = '';
-
-  get isEditable(): number[] {
-    return this._isEditable;
-  }
-  set isEditable(value: number[]) {
-    this._isEditable = [value[0], value[1]]
-    
-  }
-
-  
   visibility = new Map<string, boolean>([
     ["materialInfo", true],
     ["supplierDelay", true],
@@ -53,13 +41,18 @@ export class MaterialComponent implements OnInit {
     ["inventory", true],
     ["edit", false]
   ]);
-
+  fileName = '';
   firstTime = true;
-  
-  
   linhas = new Map<number,IEditCell>();
 
-  
+  private _isEditable : number[] = [-1,-1];
+  get isEditable(): number[] {
+    return this._isEditable;
+  }
+  set isEditable(value: number[]) {
+    this._isEditable = [value[0], value[1]]
+    
+  }
   
 
   constructor(
@@ -76,12 +69,10 @@ export class MaterialComponent implements OnInit {
   ngOnInit(): void {
     this.load();
     this.filters.filterChanges.subscribe(filterOptions => this.handleNavigation(1, this.predicate, this.ascending, filterOptions));
-
-    
   }
 
  
-  checkUncheckAll(event:any) {
+  checkUncheckAll(event:any): void {
     this.linhas.forEach(function(value,key) {
       value.selected = event.target.checked
     })
@@ -89,14 +80,16 @@ export class MaterialComponent implements OnInit {
 
   }
 
-  func(id :number): String{
-    if (this.linhas.has(id) && this.linhas.get(id)?.selected){
+  func(id :number): string {
+    if (this.linhas.has(id) && this.linhas.get(id)?.selected) {
       return "selected-row"
     }
-    else return "normal-row"
+    else {
+      return "normal-row"
+    } 
   }
 
-  func2() : String{
+  func2() : string {
     if (this.visibility.get('edit') === false){
       return " tableHide"
     }
@@ -106,17 +99,16 @@ export class MaterialComponent implements OnInit {
   }
 
 
-  mapToSubmit() : IEditCell[]{
+  mapToSubmit(): IEditCell[] {
 
-    let list : IEditCell[] = [];
+    const list : IEditCell[] = [];
     
     this.linhas.forEach(function(value,key) {
       if (value.selected){
         list.push(value)
       }
     })
-
-    return list;
+    return list
   }
 
   submitToSAP() : any {
@@ -136,7 +128,7 @@ export class MaterialComponent implements OnInit {
   return;
 }
 
-cleanList() {
+cleanList(): void {
   this.linhas.clear();
 }
 
@@ -147,9 +139,6 @@ receiveStringEvent(messageText : string) : void{
   if (this.message === "load"){
     this.load();
   } 
-  if (this.message === "FilterReset"){
-    this.nuke()
-  }
   if (this.message === "Submit"){
     this.submitToSAP()
   }
@@ -194,7 +183,7 @@ receiveNumberFilter(event : any) : void{
 }
 
 
-onFileSelected(event:any) {
+onFileSelected(event:any): void {
   //true -> replace
   //false -> add
   console.log("Entrou na função")
@@ -240,13 +229,13 @@ selectRow(checked : boolean, id : number) : boolean {
 
 
 calcNewValueAvg(material : IMaterial) : number {
-  var editCell: IEditCell | undefined;
+  let editCell: IEditCell | undefined;
   editCell = this.linhas.get(material.id)
   
   if (editCell){
-    var newDeltaSST = (editCell.newSST ?? 1) - (material.currSAPSafetyStock ?? 1);
-    var newDeltaST = (editCell.newST ?? 1) - (material.currentSAPSafeTime ?? 1);
-    var unitCost = material.unitCost ?? 1
+    const newDeltaSST = (editCell.newSST ?? 1) - (material.currSAPSafetyStock ?? 1);
+    const newDeltaST = (editCell.newST ?? 1) - (material.currentSAPSafeTime ?? 1);
+    const unitCost = material.unitCost ?? 1
     return Number((newDeltaSST * unitCost + newDeltaST * unitCost * (material.avgDemand ?? 1)).toFixed(2));
   }
 
@@ -257,9 +246,9 @@ calcNewValueAvg(material : IMaterial) : number {
 }
 
 
-input(event: any, col_name : string, id: number) {
+input(event: any, col_name : string, id: number): void {
 
-  var editCell: IEditCell | undefined;
+  let editCell: IEditCell | undefined;
 
   if (this.linhas.has(id)){
     editCell = this.linhas.get(id);
@@ -274,11 +263,11 @@ input(event: any, col_name : string, id: number) {
     editCell.flag = this.materials?.find(e => e.id === id)?.flagMaterial ?? false;
   }
   if (editCell){
-    if (col_name == "newSST") editCell.newSST = Math.round(event.target.value);
-    if (col_name == "newST") editCell.newST = Math.round(event.target.value);
-    if (col_name == "newComment") editCell.newComment = event.target.value;
-    if (col_name == "selected") editCell.selected = this.selectRow(event.target.checked, id);
-    if (col_name == "flag") editCell.flag = !editCell.flag
+    if (col_name === "newSST") editCell.newSST = Math.round(event.target.value);
+    if (col_name === "newST") editCell.newST = Math.round(event.target.value);
+    if (col_name === "newComment") editCell.newComment = event.target.value;
+    if (col_name === "selected") editCell.selected = this.selectRow(event.target.checked, id);
+    if (col_name === "flag") editCell.flag = !editCell.flag
     console.log("value " + col_name + "changed")
     console.log(editCell)
     this.linhas.set(id, editCell)
@@ -334,7 +323,7 @@ filterABCClassif(event : any): void{
 
 
 
-nuke(): void{
+nukeFilters(): void{
   this.filters.clear();
   this.load();
 }
