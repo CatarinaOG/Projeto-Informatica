@@ -4,7 +4,6 @@ import { ActivatedRoute, Data, ParamMap, Router } from '@angular/router';
 import { combineLatest, filter, Observable, switchMap, tap } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { IEditCell } from '../editCell.model'
-import { FormBuilder, FormGroup } from '@angular/forms';
 
 import { IMaterial } from '../material.model';
 
@@ -45,11 +44,7 @@ export class MaterialComponent implements OnInit {
     
   }
 
-  numberFilterForm = this.formBuilder.group({
-    selectOption: '==',
-    filterValue: 0
-  });
-
+  
   visibility = new Map<string, boolean>([
     ["materialInfo", true],
     ["supplierDelay", true],
@@ -72,7 +67,6 @@ export class MaterialComponent implements OnInit {
     protected activatedRoute: ActivatedRoute,
     public router: Router,
     protected modalService: NgbModal,
-    private formBuilder: FormBuilder,
   ) {}
 
 
@@ -81,8 +75,9 @@ export class MaterialComponent implements OnInit {
 
   ngOnInit(): void {
     this.load();
-    
     this.filters.filterChanges.subscribe(filterOptions => this.handleNavigation(1, this.predicate, this.ascending, filterOptions));
+
+    
   }
 
  
@@ -160,6 +155,13 @@ receiveStringEvent(messageText : string) : void{
   }
 }
 
+receiveFilterRemoveMessage (filter : IFilterOption) : void{
+  console.log(filter.values)
+  for(let value of filter.values){
+    this.filters.removeFilter(filter.name, value);
+  }
+}
+
 receiveTextFilter(event : any) : void{
   const filterName :string = event.filterName;
   const filterValue : string = event.filterText;
@@ -180,18 +182,16 @@ receiveTextFilter(event : any) : void{
   this.load();
 }
 
-/*
-
-filterSearchInput(event : any) : void{
-  console.log(event.target.value)
+receiveNumberFilter(event : any) : void{
+  const filterName :string = event.filterName;
   
+  const submitName : string = filterName + "." + event.operator
+  console.log("submitted name : " ,submitName);
+  this.filters.removeAllFiltersName(submitName)
+  this.filters.addFilter(submitName, event.value);
+  
+  this.load();
 }
-
-*/
-
-
-
-
 
 
 onFileSelected(event:any) {
@@ -289,11 +289,6 @@ input(event: any, col_name : string, id: number) {
 
 
 
-onSubmit(): void {
-  // Process checkout data here
-  console.log("Formulario: " , this.numberFilterForm);
-  this.numberFilterForm.reset();
-}
 
 
 

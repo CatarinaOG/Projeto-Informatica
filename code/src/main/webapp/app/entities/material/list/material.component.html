@@ -3,7 +3,13 @@
     <span>Materials</span>
   </h2>
 
-    <options-bar (stringEmitter) = "receiveStringEvent($event)" (fileEmitter) = "onFileSelected($event)" (textFilterEmitter) = "receiveTextFilter($event)" (abcFilterEmitter) = "filterABCClassif($event)"></options-bar>
+    <options-bar (stringEmitter) = "receiveStringEvent($event)" (fileEmitter) = "onFileSelected($event)" (textFilterEmitter) = "receiveTextFilter($event)" (abcFilterEmitter) = "filterABCClassif($event)" (numberFilterEmitter) ="receiveNumberFilter($event)"></options-bar>
+    
+    <div class="d-flex">
+      <div *ngFor="let filter of this.filters.filterOptions" class="activeFilterCell">
+        <filter-display-cell [filter]=filter  (filterRemoveMessage)="receiveFilterRemoveMessage($event)"></filter-display-cell>
+      </div> 
+    </div>
     <!--
       <div ngbDropdown class="dropdown d-flex justify-content-end" autoClose = "outside">
         <button ngbDropdownToggle class="btn btn-white"  type="button" id="dropdownMenuButton" aria-expanded="false"> 

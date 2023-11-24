@@ -1,0 +1,13 @@
+<div>
+    <form [formGroup]="numberFilterForm" (ngSubmit)="onSubmit()">
+    <select required formControlName="selectOption" style="align-self: center;">
+        <option value="lessThan"> &lt; </option>
+        <option value="greaterThan"> &gt; </option>
+        <option value="lessThanOrEqual"> &le; </option>
+        <option value="greaterThanOrEqual"> &ge; </option>
+        <option value="notEquals"> != </option>
+        <option value="equals"> == </option>
+    </select>
+    <input type="number" formControlName="filterValue">
+    </form>
+</div>

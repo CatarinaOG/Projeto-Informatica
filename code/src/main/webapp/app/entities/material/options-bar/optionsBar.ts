@@ -1,16 +1,22 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
+import { FilterForm } from '../filter-form/filterForm'
+
 @Component({
   selector: 'options-bar',
   templateUrl: './optionsBar.html',
 })
 export class OptionsBar implements OnInit {
-  constructor() { }
+
+
+  constructor( ) { }
   ngOnInit(): void { }
 
   @Output() stringEmitter = new EventEmitter<string>();
   @Output() fileEmitter = new EventEmitter<{opType :boolean, file : File}>();
   @Output() textFilterEmitter = new EventEmitter<{filterName : string, filterText : string}>();
   @Output() abcFilterEmitter = new EventEmitter<{opType : boolean, filterValue : string}>();
+  @Output() numberFilterEmitter = new EventEmitter<{filterName : string, operator : string, value : number}>();
 
   filterStatus = new Map<string,boolean>([
     ["Material Name", false],
@@ -71,6 +77,29 @@ export class OptionsBar implements OnInit {
             this.textFilterEmitter.emit({filterName : "Material Description", filterText : event.target.value})      
         }
     }
+
+    receiveFilterNumberMessage(event : any) : void{
+        for(let pair of this.filterStatus){
+            this.filterStatus.set(pair[0], false)
+        }
+
+        this.numberFilterEmitter.emit({filterName : event.filterName,  operator : event.operator, value : event.value})
+        
+    }
+
+    
+    // onSubmit(): void {
+    //     // Process checkout data here
+    //     console.log("Formulario: " , this.numberFilterForm.value);
+    //     switch (){
+    //         case 'Avg Supplier Delay':
+    //             break;
+    //         default:
+    //             console.log('default');
+    //     }
+    //     this.numberFilterEmitter.emit({filterName : "Material Name", filterText : event.target.value})
+    //     this.numberFilterForm.reset();
+    // }
 
     sendABCFilter(event : any,  value: string) : void {
         this.abcFilterEmitter.emit({opType: event.target.checked, filterValue : value})

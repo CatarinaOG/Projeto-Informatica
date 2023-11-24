@@ -6,9 +6,11 @@ import { MaterialUpdateComponent } from './update/material-update.component';
 import { MaterialDeleteDialogComponent } from './delete/material-delete-dialog.component';
 import { MaterialRoutingModule } from './route/material-routing.module';
 import { OptionsBar} from './options-bar/optionsBar'
+import { FilterDisplayCell } from './filter-display-cell/filterDisplayCell'
+import { FilterForm} from './filter-form/filterForm'
 
 @NgModule({
   imports: [SharedModule, MaterialRoutingModule],
-  declarations: [MaterialComponent, MaterialDetailComponent, MaterialUpdateComponent, MaterialDeleteDialogComponent,OptionsBar],
+  declarations: [MaterialComponent, MaterialDetailComponent, MaterialUpdateComponent, MaterialDeleteDialogComponent, OptionsBar, FilterDisplayCell,FilterForm],
 })
 export class MaterialModule {}

@@ -1,4 +1,4 @@
-<div class="d-flex justify-content-end" style="margin: 20px;">
+<div class="d-flex justify-content-end" style="margin-left: 20px; margin-top: 20px; margin-bottom: 20px;">
       
     
 
@@ -110,17 +110,23 @@
             </button>
             <ul ngbDropdownMenu aria-labelledby="nestedDropdownButton">
               <li>
-                <button ngbDropdownItem  class="btn btn-primary">
+                <button ngbDropdownItem  class="btn btn-primary" (click)="changeStatus('Avg Supplier Delay')">
                   <span>Avg Supplier Delay</span>
                 </button>
               </li>
               <li>
-                <button ngbDropdownItem class="btn btn-primary">
+                <button ngbDropdownItem class="btn btn-primary" (click)="changeStatus('Max Supplier Delay')">
                   <span>Max Supplier Delay</span>
                 </button>
+              </li> 
+
+              <li>
+                <filter-form *ngIf="this.filterStatus.get('Avg Supplier Delay')" [filterName] = "'avgSupplierDelay'" (numberFilterEmitter)="receiveFilterNumberMessage($event)"></filter-form>
+                <filter-form *ngIf="this.filterStatus.get('Max Supplier Delay')" [filterName] = "'maxSupplierDelay'" (numberFilterEmitter)="receiveFilterNumberMessage($event)"></filter-form>  
               </li>
             </ul>
           </div>
+          
 
           <div ngbDropdown class="dropdown d-flex" placement="right" autoClose = "outside">
             <button ngbDropdownToggle class="btn btn-white inputWidth text-left" type="button" id="nestedDropdownButton" aria-expanded="false"> 
@@ -128,22 +134,32 @@
             </button>
             <ul ngbDropdownMenu aria-labelledby="nestedDropdownButton">
               <li>
-                <button ngbDropdownItem  class="btn btn-primary">
+                <button ngbDropdownItem  class="btn btn-primary" (click)="changeStatus('Current SAP Safety Stock')">
                   <span>Current SAP Safety Stock</span>
                 </button>
               </li>
               <li>
-                <button ngbDropdownItem class="btn btn-primary">
+                <button ngbDropdownItem class="btn btn-primary" (click)="changeStatus('Proposed Safety Stock')">
                   <span>Proposed Safety Stock</span>
                 </button>
               </li>
               <li>
-                <button ngbDropdownItem class="btn btn-primary">
+                <button ngbDropdownItem class="btn btn-primary" (click)="changeStatus('Delta Safety Stock')">
                   <span>Delta Safety Stock</span>
                 </button>
               </li>
+              <li>
+                <filter-form *ngIf="this.filterStatus.get('Current SAP Safety Stock')" [filterName] = "'currSAPSafetyStock'" (numberFilterEmitter)="receiveFilterNumberMessage($event)"></filter-form>
+                <filter-form *ngIf="this.filterStatus.get('Proposed Safety Stock')" [filterName] = "'proposedSST'" (numberFilterEmitter)="receiveFilterNumberMessage($event)"></filter-form> 
+                <filter-form *ngIf="this.filterStatus.get('Delta Safety Stock')" [filterName] = "'deltaSST'" (numberFilterEmitter)="receiveFilterNumberMessage($event)"></filter-form>   
+              </li>
             </ul>
           </div>
+
+
+
+
+
 
           <div ngbDropdown class="dropdown d-flex" placement="right" autoClose = "outside">
             <button ngbDropdownToggle class="btn btn-white inputWidth text-left" type="button" id="nestedDropdownButton" aria-expanded="false"> 
@@ -151,22 +167,29 @@
             </button>
             <ul ngbDropdownMenu aria-labelledby="nestedDropdownButton">
               <li>
-                <button ngbDropdownItem  class="btn btn-primary">
+                <button ngbDropdownItem  class="btn btn-primary" (click)="changeStatus('Current SAP Safety Time')">
                   <span>Current SAP Safety Time</span>
                 </button>
               </li>
               <li>
-                <button ngbDropdownItem class="btn btn-primary">
+                <button ngbDropdownItem class="btn btn-primary" (click)="changeStatus('Proposed Safety Time')">
                   <span>Proposed Safety Time</span>
                 </button>
               </li>
               <li>
-                <button ngbDropdownItem class="btn btn-primary">
+                <button ngbDropdownItem class="btn btn-primary" (click)="changeStatus('Delta Safety Time')">
                   <span>Delta Safety Time</span>
                 </button>
               </li>
+              <li>
+                <filter-form *ngIf="this.filterStatus.get('Current SAP Safety Time')" [filterName] = "'currentSAPSafeTime'" (numberFilterEmitter)="receiveFilterNumberMessage($event)"></filter-form>
+                <filter-form *ngIf="this.filterStatus.get('Proposed Safety Time')" [filterName] = "'proposedST'" (numberFilterEmitter)="receiveFilterNumberMessage($event)"></filter-form>
+                <filter-form *ngIf="this.filterStatus.get('Delta Safety Time')" [filterName] = "'deltaST'" (numberFilterEmitter)="receiveFilterNumberMessage($event)"></filter-form>
+              </li>
             </ul>
           </div>
+
+          
 
           <div ngbDropdown class="dropdown d-flex" placement="right">
             <button ngbDropdownToggle class="btn btn-white inputWidth text-left" type="button" id="nestedDropdownButton" aria-expanded="false"> 
@@ -174,19 +197,24 @@
             </button>
             <ul ngbDropdownMenu aria-labelledby="nestedDropdownButton">
               <li>
-                <button ngbDropdownItem  class="btn btn-primary">
+                <button ngbDropdownItem  class="btn btn-primary" (click)="changeStatus('Service Level')">
                   <span>Service Level</span>
                 </button>
               </li>
               <li>
-                <button ngbDropdownItem class="btn btn-primary">
+                <button ngbDropdownItem class="btn btn-primary" (click)="changeStatus('Current Inventory Value')">
                   <span>Current Inventory Value</span>
                 </button>
               </li>
               <li>
-                <button ngbDropdownItem class="btn btn-primary">
+                <button ngbDropdownItem class="btn btn-primary" (click)="changeStatus('Avg Inv. Effect After Change')">
                   <span>Avg Inv. Effect After Change</span>
                 </button>
+              </li>
+              <li>
+                <filter-form *ngIf="this.filterStatus.get('Service Level')" [filterName] = "'serviceLevel'" (numberFilterEmitter)="receiveFilterNumberMessage($event)"></filter-form>
+                <filter-form *ngIf="this.filterStatus.get('Current Inventory Value')" [filterName] = "'currentInventoryValue'" (numberFilterEmitter)="receiveFilterNumberMessage($event)"></filter-form> 
+                <filter-form *ngIf="this.filterStatus.get('Avg Inv. Effect After Change')" [filterName] = "'avgInventoryEffectAfterChange'" (numberFilterEmitter)="receiveFilterNumberMessage($event)"></filter-form>   
               </li>
             </ul>
           </div>
