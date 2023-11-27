@@ -1,0 +1,51 @@
+<button class="buttonNoBorder" (click)="open(content)" > 
+    <fa-icon class="p-1" icon="flag" [ngStyle]="{'color': material.flagMaterial ? '#ff0000' : '#999999'}"></fa-icon>
+</button>
+
+<ng-template #content let-modal>
+	<div class="modal-header">
+		<h4 class="modal-title" id="modal-basic-title">Flag As Special Case</h4>
+		<button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+	</div>
+	<div class="modal-body">
+        
+        <div class="form-check form-switch" style="display: flex;">
+            <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" [checked]="material.flagMaterial" (click)="material.flagMaterial = !material.flagMaterial">
+            <label class="form-check-label" for="flexSwitchCheckChecked" style="margin-left: 10px;">
+                {{ material.flagMaterial ? "Flagged" : "Not Flagged"}}
+            </label>
+        </div>
+
+
+		<form style="margin-top: 20px;">
+			<div class="mb-3">
+				<label for="dateOfBirth">Flag Expiration Date</label>
+				<div class="input-group">
+					<input
+						id="dateOfBirth"
+						class="form-control"
+						placeholder="yyyy-mm-dd"
+						name="dp"
+						ngbDatepicker
+						#dp="ngbDatepicker"
+						[(ngModel)]="model"
+						(ngModelChange)="select(model)"
+					/>
+					<button class="btn btn-outline-secondary bi bi-calendar3" (click)="dp.toggle()" type="button"></button>
+				</div>
+			</div>
+		</form>
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
+	</div>
+</ng-template>
+
+<!-- <button class="btn btn-lg btn-outline-primary" (click)="open(content)">Launch demo modal</button> -->
+
+<!-- 
+<button class="btn btn-lg btn-outline-primary" (click)="open(content)">Launch demo modal</button>
+
+<hr />
+
+<pre>{{ closeResult }}</pre> -->

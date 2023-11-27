@@ -1,53 +1,31 @@
 <div>
   <h2 id="page-heading" data-cy="MaterialHeading">
     <span>Materials</span>
+  </h2>
 
-    <div class="d-flex justify-content-end" style="margin: 20px;">
-      
-      <button class="btn btn-info me-2" style="margin-left: 8px;" (click)="load()" [disabled]="isLoading">
-        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
-        <span>Refresh list</span>
-      </button>
+    <options-bar (stringEmitter) = "receiveStringEvent($event)" (fileEmitter) = "onFileSelected($event)" (textFilterEmitter) = "receiveTextFilter($event)" (abcFilterEmitter) = "filterABCClassif($event)" (numberFilterEmitter) ="receiveNumberFilter($event)"></options-bar>
+    
+    <div *ngIf="this.filters.filterOptions.length > 0" >
+      <div style="font-weight: bold; text-align: start;">Active Filters:</div>
+      <div class="d-flex">
+        <div *ngFor="let filter of this.filters.filterOptions" class="activeFilterCell">
+          <filter-display-cell [filter]=filter  (filterRemoveMessage)="receiveFilterRemoveMessage($event)"></filter-display-cell>
+        </div> 
 
-      
-      <input type="file" class="file-input" accept=".csv,.ods,.xlsx,.xls"  (change)="onFileSelected($event,true)" #importReplace>
-      <input type="file" class="file-input" accept=".csv,.ods,.xlsx,.xls"  (change)="onFileSelected($event,false)" #importAdd>
-
-      <div ngbDropdown class="dropdown">
-        <button ngbDropdownToggle class="btn btn-white"  type="button" id="dropdownMenuButton" aria-expanded="false"> 
-          <fa-icon icon="file"></fa-icon>
-          <span>File Options</span>
+        <div style="flex-grow: 1;"></div> 
+        
+        <div>
+          <button class="btn btn-info me-2 " style="margin-left: 8px;">
+            <fa-icon icon="trash-alt"></fa-icon>
+          <span>Reset Filters</span>
         </button>
-        <ul ngbDropdownMenu aria-labelledby="dropdownMenuButton">
-          <li> 
-            <button ngbDropdownItem color="primary" class="btn btn-primary" (click)="importReplace.click()">
-              <fa-icon icon="upload"></fa-icon>
-              <span>Replace Data</span>
-            </button>
-          </li>
-          <li> 
-            <button ngbDropdownItem color="primary" class="btn btn-primary" (click)="importAdd.click()">
-              <fa-icon icon="upload"></fa-icon>
-              <span>Add Data</span>
-            </button>
-          </li>
-          <div class="dropdown-divider"></div>
-          <li> 
-            <button ngbDropdownItem color="primary" class="btn btn-primary">
-              <fa-icon icon="download"></fa-icon>
-              <span>Download Data</span>
-            </button>
-          </li>
-        </ul>
+        </div>
       </div>
+    </div>
 
-
-      <button class="btn btn-primary me-2" style="margin-left: 8px; color: white;" (click) = "submitToSAP()">
-        <fa-icon icon="paper-plane"></fa-icon>
-        <span>Submit Changes to SAP</span>
-      </button>
-
-      <!-- <button
+    
+    <!--
+      <button
         id="jh-create-entity"
         data-cy="entityCreateButton"
         class="btn btn-primary jh-create-entity create-material"
@@ -56,11 +34,10 @@
       >
         <fa-icon icon="plus"></fa-icon>
         <span> Create a new Material </span>
-      </button> -->
+      </button>
+    </div> -->
 
-    </div>
-  </h2>
-
+  
   <jhi-alert-error></jhi-alert-error>
 
   <jhi-alert></jhi-alert>
@@ -89,7 +66,7 @@
               </button>
             </div>
           </th>
-          <th [attr.colspan]="visibility.get('safetyStock') ? 3 : 1" style="border-color: black; border-width: 2px;">
+          <th [attr.colspan]="visibility.get('safetyStock') ? 2 : 1" style="border-color: black; border-width: 2px;">
             <div class="d-flex" style="place-content: center;">
               <span class="flexGrow">Safety Stock Info</span>
               <button class="buttonNoBorder" (click)="switchVisibility($event,'safetyStock')">
@@ -97,7 +74,7 @@
               </button>
             </div>
           </th>
-          <th [attr.colspan]="visibility.get('safetyTime') ? 3 : 1" style="border-color: black; border-width: 2px;">
+          <th [attr.colspan]="visibility.get('safetyTime') ? 2 : 1" style="border-color: black; border-width: 2px;">
             <div class="d-flex" style="place-content: center;">
               <span class="flexGrow">Safety Time Info</span>
               <button class="buttonNoBorder" (click)="switchVisibility($event,'safetyTime')">
@@ -105,7 +82,7 @@
               </button>
             </div>
           </th>
-          <th [attr.colspan]="visibility.get('inventory') ? 4 : 1" style="border-color: black; border-width: 2px;">
+          <th [attr.colspan]="visibility.get('inventory') ? 6 : 1" style="border-color: black; border-width: 2px;">
             <div class="d-flex" style="place-content: center;">
               <span class="flexGrow">Inventory Info & Service Level</span>
               <button class="buttonNoBorder" (click)="switchVisibility($event,'inventory')">
@@ -173,19 +150,14 @@
             </div>
           </th>
           
-          <th scope="col" jhiSortBy="proposedSST" class = "safetyStock">
+          <th scope="col" jhiSortBy="proposedSST" class = "safetyStock" style="border-right-color: black; border-width: 1px;">
             <div class="d-flex" style="place-content: center;">
               <span>Proposed Safety Stock</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
 
-          <th scope="col" jhiSortBy="deltaSST" class = "safetyStock" style="border-right-color: black; border-width: 1px;">
-            <div class="d-flex" style="place-content: center;">
-              <span>Delta Safety Stock</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
+         
 
           <th *ngIf = "!visibility.get('safetyStock')" style="border-right-color: black; border-width: 1px;">
             ...
@@ -198,19 +170,14 @@
             </div>
           </th>
 
-          <th scope="col" jhiSortBy="proposedST" class = "safetyTime">
+          <th scope="col" jhiSortBy="proposedST" class = "safetyTime" style="border-right-color: black; border-width: 1px;">
             <div class="d-flex" style="place-content: center;">
               <span>Proposed Safety Time</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
 
-          <th scope="col" jhiSortBy="deltaST" class = "safetyTime" style="border-right-color: black; border-width: 1px;">
-            <div class="d-flex" style="place-content: center;">
-              <span>Delta Safety Time</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
+          
           
           <th *ngIf = "!visibility.get('safetyTime')" style="border-right-color: black; border-width: 1px;">
             ...
@@ -233,6 +200,20 @@
           <th scope="col" jhiSortBy="currentInventoryValue" class="inventory">
             <div class="d-flex" style="place-content: center;">
               <span>Current Inventory Value</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+
+          <th scope="col" jhiSortBy="deltaSST" class = "inventory" >
+            <div class="d-flex" style="place-content: center;">
+              <span>Delta Safety Stock</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+
+          <th scope="col" jhiSortBy="deltaST" class = "inventory" >
+            <div class="d-flex" style="place-content: center;">
+              <span>Delta Safety Time</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
@@ -308,14 +289,12 @@
 
           <td class ="safetyStock">{{ material.currSAPSafetyStock }}</td>
           <td class ="safetyStock">{{ material.proposedSST }}</td>
-          <td class ="safetyStock">{{ material.deltaSST }}</td>
           <th *ngIf = "!visibility.get('safetyStock')">
             ...
           </th>
 
           <td class ="safetyTime">{{ material.currentSAPSafeTime }}</td>
           <td class ="safetyTime">{{ material.proposedST }}</td>
-          <td class ="safetyTime">{{ material.deltaST }}</td>
           <th *ngIf = "!visibility.get('safetyTime')">
             ...
           </th>
@@ -326,6 +305,9 @@
             </button> <!--{{ diabo.openSapMd04 }}-->
           </td>
           <td  class ="inventory">{{ material.currentInventoryValue }}</td>
+          <td class ="inventory">{{ material.deltaSST }}</td>
+          <td class ="inventory">{{ material.deltaST }}</td>
+
           <td  class ="inventory">{{ calcNewValueAvg(material) }}</td>
           <th *ngIf = "!visibility.get('inventory')">
             ...
@@ -334,22 +316,24 @@
          
           
           <td class ="edit" *ngIf="isEditable[0] === material.id && isEditable[1] === 0 " ><input class = "inputWidth" type="number" min=0 placeholder="{{(linhas.get(material.id) && (linhas.get(material.id)?.newSST !== material.proposedSST )) ? linhas.get(material.id)?.newSST : material.proposedSST}}" (change)="input($event,'newSST',material.id)"></td>
-          <td class ="edit" *ngIf="!(isEditable[0] === material.id && isEditable[1] === 0) " (click)="makeEditable(material.id,0)" [ngStyle]="{'color': (linhas.has(material.id) && (linhas.get(material.id)?.newSST !== material.proposedSST)) ? 'blue' : 'black'}" [ngClass] ="func2()">{{(linhas.get(material.id) && (linhas.get(material.id)?.newSST !== material.proposedSST )) ? linhas.get(material.id)?.newSST : material.proposedSST}}</td>
+          <td class ="edit" *ngIf="!(isEditable[0] === material.id && isEditable[1] === 0) " (click)="makeEditable(material.id,0)" [ngStyle]="{'color': (linhas.has(material.id) && (linhas.get(material.id)?.newSST !== material.proposedSST)) ? 'blue' : 'black'}" [ngClass] ="func2()">{{(linhas.get(material.id) && (linhas.get(material.id)?.newSST) !== material.proposedSST  ? linhas.get(material.id)?.newSST : ((material.newSAPSafetyStock !== -1 ) ? material.newSAPSafetyStock : material.proposedSST ))}}</td>
 
 
 
           <td class ="edit " *ngIf="isEditable[0] === material.id && isEditable[1] === 1"><input class = "inputWidth" type="number" min=0 placeholder="{{ (linhas.get(material.id) && (linhas.get(material.id)?.newST !== material.proposedST )) ? linhas.get(material.id)?.newST :material.proposedST}}" (change)="input($event,'newST',material.id)"></td>
 
-          <td class ="edit " *ngIf="!(isEditable[0] === material.id && isEditable[1] === 1)" (click)="makeEditable(material.id,1)" [ngStyle]="{'color': (linhas.has(material.id) && (linhas.get(material.id)?.newST !== material.proposedST)) ? 'blue' : 'black'}" [ngClass] ="func2()">{{(linhas.get(material.id) && (linhas.get(material.id)?.newST !== material.proposedST )) ? linhas.get(material.id)?.newST : material.proposedST}}</td>
+          <td class ="edit " *ngIf="!(isEditable[0] === material.id && isEditable[1] === 1)" (click)="makeEditable(material.id,1)" [ngStyle]="{'color': (linhas.has(material.id) && (linhas.get(material.id)?.newST !== material.proposedST)) ? 'blue' : 'black'}" [ngClass] ="func2()">{{(linhas.get(material.id) && (linhas.get(material.id)?.newST) !== material.proposedST  ? linhas.get(material.id)?.newST : ((material.newSAPSafetyTime !== -1 ) ? material.newSAPSafetyTime : material.proposedST ))}}</td>
 
+          
 
 
           <td class ="edit tableHide"><input type="checkbox" [checked]="linhas.get(material.id)?.selected" [disabled]="!linhas.has(material.id)" (click)="input($event,'selected',material.id)"></td>
 
           <td class ="edit tableHide">
-            <button class="buttonNoBorder" (click)="input($event, 'flag', material.id)">
+            <!-- <button class="buttonNoBorder" (click)="input($event, 'flag', material.id)">  
               <fa-icon class="p-1" icon="flag" [ngStyle]="{'color': (linhas.get(material.id) ? linhas.get(material.id)?.flag : material.flagMaterial)  ? '#ff0000' : '#999999'}"></fa-icon>
-            </button>
+            </button> -->
+            <flag-modal [material]="material"></flag-modal>
           </td>
 
           
