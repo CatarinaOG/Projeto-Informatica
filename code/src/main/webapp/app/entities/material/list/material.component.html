@@ -327,9 +327,9 @@
           
 
 
-          <td class ="edit tableHide"><input type="checkbox" [checked]="linhas.get(material.id)?.selected" [disabled]="!linhas.has(material.id)" (click)="input($event,'selected',material.id)"></td>
+          <td class ="edit" [ngClass] ="func2()"><input type="checkbox" [checked]="linhas.get(material.id)?.selected" [disabled]="!linhas.has(material.id)" (click)="input($event,'selected',material.id)"></td>
 
-          <td class ="edit tableHide">
+          <td class ="edit" [ngClass] ="func2()">
             <flag-modal [material]="material" [linhas] = "linhas" (flagDateEmmiter) = "receiveFlagEmission($event)"></flag-modal>
           </td>
 
