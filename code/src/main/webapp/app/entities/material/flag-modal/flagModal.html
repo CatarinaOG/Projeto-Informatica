@@ -1,4 +1,4 @@
-<button class="buttonNoBorder" (click)="open(content)" >  <!-- (click)="input($event, 'flag', material.id)" -->
+<button class="buttonNoBorder" (click)="open(content)" > 
     <fa-icon class="p-1" icon="flag" [ngStyle]="{'color': material.flagMaterial ? '#ff0000' : '#999999'}"></fa-icon>
 </button>
 
@@ -28,6 +28,8 @@
 						name="dp"
 						ngbDatepicker
 						#dp="ngbDatepicker"
+						[(ngModel)]="model"
+						(ngModelChange)="select(model)"
 					/>
 					<button class="btn btn-outline-secondary bi bi-calendar3" (click)="dp.toggle()" type="button"></button>
 				</div>

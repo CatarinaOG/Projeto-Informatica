@@ -316,14 +316,15 @@
          
           
           <td class ="edit" *ngIf="isEditable[0] === material.id && isEditable[1] === 0 " ><input class = "inputWidth" type="number" min=0 placeholder="{{(linhas.get(material.id) && (linhas.get(material.id)?.newSST !== material.proposedSST )) ? linhas.get(material.id)?.newSST : material.proposedSST}}" (change)="input($event,'newSST',material.id)"></td>
-          <td class ="edit" *ngIf="!(isEditable[0] === material.id && isEditable[1] === 0) " (click)="makeEditable(material.id,0)" [ngStyle]="{'color': (linhas.has(material.id) && (linhas.get(material.id)?.newSST !== material.proposedSST)) ? 'blue' : 'black'}" [ngClass] ="func2()">{{(linhas.get(material.id) && (linhas.get(material.id)?.newSST !== material.proposedSST )) ? linhas.get(material.id)?.newSST : material.proposedSST}}</td>
+          <td class ="edit" *ngIf="!(isEditable[0] === material.id && isEditable[1] === 0) " (click)="makeEditable(material.id,0)" [ngStyle]="{'color': (linhas.has(material.id) && (linhas.get(material.id)?.newSST !== material.proposedSST)) ? 'blue' : 'black'}" [ngClass] ="func2()">{{(linhas.get(material.id) && (linhas.get(material.id)?.newSST) !== material.proposedSST  ? linhas.get(material.id)?.newSST : ((material.newSAPSafetyStock !== -1 ) ? material.newSAPSafetyStock : material.proposedSST ))}}</td>
 
 
 
           <td class ="edit " *ngIf="isEditable[0] === material.id && isEditable[1] === 1"><input class = "inputWidth" type="number" min=0 placeholder="{{ (linhas.get(material.id) && (linhas.get(material.id)?.newST !== material.proposedST )) ? linhas.get(material.id)?.newST :material.proposedST}}" (change)="input($event,'newST',material.id)"></td>
 
-          <td class ="edit " *ngIf="!(isEditable[0] === material.id && isEditable[1] === 1)" (click)="makeEditable(material.id,1)" [ngStyle]="{'color': (linhas.has(material.id) && (linhas.get(material.id)?.newST !== material.proposedST)) ? 'blue' : 'black'}" [ngClass] ="func2()">{{(linhas.get(material.id) && (linhas.get(material.id)?.newST !== material.proposedST )) ? linhas.get(material.id)?.newST : material.proposedST}}</td>
+          <td class ="edit " *ngIf="!(isEditable[0] === material.id && isEditable[1] === 1)" (click)="makeEditable(material.id,1)" [ngStyle]="{'color': (linhas.has(material.id) && (linhas.get(material.id)?.newST !== material.proposedST)) ? 'blue' : 'black'}" [ngClass] ="func2()">{{(linhas.get(material.id) && (linhas.get(material.id)?.newST) !== material.proposedST  ? linhas.get(material.id)?.newST : ((material.newSAPSafetyTime !== -1 ) ? material.newSAPSafetyTime : material.proposedST ))}}</td>
 
+          
 
 
           <td class ="edit tableHide"><input type="checkbox" [checked]="linhas.get(material.id)?.selected" [disabled]="!linhas.has(material.id)" (click)="input($event,'selected',material.id)"></td>
