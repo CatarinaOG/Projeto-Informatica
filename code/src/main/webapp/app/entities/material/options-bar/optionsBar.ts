@@ -81,6 +81,9 @@ export class OptionsBar implements OnInit {
         
     }
 
+    downloadExcel() : void{
+        this.stringEmitter.emit("Download");
+    }
 
     sendABCFilter(event : any,  value: string) : void {
         this.abcFilterEmitter.emit({opType: event.target.checked, filterValue : value})

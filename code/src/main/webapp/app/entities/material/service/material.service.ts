@@ -59,6 +59,34 @@ export class MaterialService {
     return this.http.post(`${this.resourceUrl}/uploadFileAddOrUpdate`, formData, { observe: 'response' });
   }
 
+  downloadExcel() {
+    const url = `${this.resourceUrl}/download`;
+  
+    this.http.get(url, { responseType: 'arraybuffer' })
+      .subscribe((data: ArrayBuffer) => {
+        this.saveFile(data, 'Data.xlsx');
+      }, error => {
+        console.error('Error downloading file:', error);
+      });
+  }
+  
+  private saveFile(data: ArrayBuffer, fileName: string) {
+    const blob = new Blob([data], { type: 'application/vnd.ms-excel' });
+    const link = document.createElement('a');
+    link.href = window.URL.createObjectURL(blob);
+    link.download = fileName;
+    link.click();
+  }
+
+  exportFileAsExcel(): Observable<Blob> {
+    return this.http.get<Blob>(`${this.resourceUrl}/download/`, {
+      responseType: 'blob' as 'json',
+      headers: {
+        Accept: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      },
+    });
+  }
+
 
   getMaterialIdentifier(material: Pick<IMaterial, 'id'>): number {
     return material.id;

@@ -147,8 +147,22 @@ receiveStringEvent(messageText : string) : void{
   if (this.message === "Submit"){
     this.submitToSAP()
   }
+  if (this.message === "Download"){
+    this.materialService
+    .exportFileAsExcel()
+    .subscribe((res) =>
+      this.createAndShowDownloadFile(res, "dowload.xlsx", "application/vnd.ms-excel")
+    );  }
 }
 
+createAndShowDownloadFile = (content: any, fileName: string, contentType: string): void => {
+  const a = document.createElement('a');
+  const file = new Blob([content], { type: contentType });
+  a.href = URL.createObjectURL(file);
+  a.download = fileName;
+  a.click();
+  alert("File was downloaded successfully")
+};
 
 
 receiveFilterRemoveMessage (filter : IFilterOption) : void{

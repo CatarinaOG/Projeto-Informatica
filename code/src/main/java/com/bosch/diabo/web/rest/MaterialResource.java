@@ -280,7 +280,7 @@ public class MaterialResource {
         return ResponseEntity.ok("");
     }
 
-    @GetMapping("/download") 
+    @GetMapping("/materials/download") 
     public ResponseEntity<ByteArrayResource> downloadExcel() throws IOException {
 
     // Query database and get result set
