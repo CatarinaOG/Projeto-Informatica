@@ -111,21 +111,26 @@ export class MaterialComponent implements OnInit {
     return list
   }
 
-  submitToSAP() : any {
+  submitToSAP(){
 
     let list = this.mapToSubmit();
-    console.log("Lista : " , list)
-    this.materialService.submitChanges(list).subscribe({
-      next: (res: any) => {       
-        this.load()
-        console.log("Estamos a recarregar")
-        this.cleanList();
-      },error:(error:any) =>{
-        alert("Error Uploading Values")
-      }
-    });
-
-  return;
+    if (list.length == 0) {
+      alert("No lines were selected");
+    }
+    else {
+      console.log("Lista : " , list)
+      this.materialService.submitChanges(list).subscribe({
+        next: (res: any) => {       
+          this.load()
+          console.log("Estamos a recarregar")
+          alert("Dados enviados com sucesso")
+          this.cleanList();
+        },error:(error:any) =>{
+          alert("Erro no upload dos ficheiros")
+          alert("Error Uploading Values")
+        }
+      });
+    }
 }
 
 cleanList(): void {
@@ -143,6 +148,8 @@ receiveStringEvent(messageText : string) : void{
     this.submitToSAP()
   }
 }
+
+
 
 receiveFilterRemoveMessage (filter : IFilterOption) : void{
   console.log(filter.values)
@@ -169,6 +176,34 @@ receiveTextFilter(event : any) : void{
     }
   }
   this.load();
+}
+
+receiveFlagEmission(emission : any){
+  let editCell: IEditCell | undefined;
+
+  console.log("Emission is" , emission);
+
+  if (this.linhas.has(emission.id)){
+    editCell = this.linhas.get(emission.id);
+  } 
+  else{
+    editCell = <IEditCell>{};
+    editCell.materialId = this.materials?.find(e => e.id == emission.id)?.id ?? -1;
+    editCell.newSST = this.materials?.find(e => e.id === emission.id)?.proposedSST ?? -1;
+    editCell.newST = this.materials?.find(e => e.id === emission.id)?.proposedST ?? -1;
+    editCell.newComment = this.materials?.find(e => e.id === emission.id)?.comment ?? "";
+    editCell.selected = false;
+    editCell.flag = this.materials?.find(e => e.id === emission.id)?.flagMaterial ?? false;
+  }
+  if (editCell){
+    editCell.flag = emission.flag
+    if (emission.flag){
+      editCell.dateFlag = emission.date;
+    }
+    this.linhas.set(emission.id, editCell)
+    console.log(editCell);
+  }
+
 }
 
 receiveNumberFilter(event : any) : void{

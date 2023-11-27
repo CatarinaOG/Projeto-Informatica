@@ -330,10 +330,7 @@
           <td class ="edit tableHide"><input type="checkbox" [checked]="linhas.get(material.id)?.selected" [disabled]="!linhas.has(material.id)" (click)="input($event,'selected',material.id)"></td>
 
           <td class ="edit tableHide">
-            <!-- <button class="buttonNoBorder" (click)="input($event, 'flag', material.id)">  
-              <fa-icon class="p-1" icon="flag" [ngStyle]="{'color': (linhas.get(material.id) ? linhas.get(material.id)?.flag : material.flagMaterial)  ? '#ff0000' : '#999999'}"></fa-icon>
-            </button> -->
-            <flag-modal [material]="material"></flag-modal>
+            <flag-modal [material]="material" [linhas] = "linhas" (flagDateEmmiter) = "receiveFlagEmission($event)"></flag-modal>
           </td>
 
           

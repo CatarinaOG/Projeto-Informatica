@@ -81,19 +81,6 @@ export class OptionsBar implements OnInit {
         
     }
 
-    
-    // onSubmit(): void {
-    //     // Process checkout data here
-    //     console.log("Formulario: " , this.numberFilterForm.value);
-    //     switch (){
-    //         case 'Avg Supplier Delay':
-    //             break;
-    //         default:
-    //             console.log('default');
-    //     }
-    //     this.numberFilterEmitter.emit({filterName : "Material Name", filterText : event.target.value})
-    //     this.numberFilterForm.reset();
-    // }
 
     sendABCFilter(event : any,  value: string) : void {
         this.abcFilterEmitter.emit({opType: event.target.checked, filterValue : value})

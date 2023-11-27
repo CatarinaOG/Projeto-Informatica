@@ -5,5 +5,5 @@ export interface IEditCell {
     newComment: string,
     selected: boolean,
     flag: boolean,
-    dateFlag : Date
+    dateFlag : string
 }
