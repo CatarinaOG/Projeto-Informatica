@@ -1,5 +1,6 @@
 import { Component, EventEmitter, OnInit, Input, Output } from '@angular/core';
 import { IFilterOption } from 'app/shared/filter/filter.model';
+import { specialFilter } from '../specialFilters.model'
 
 @Component({
   selector: 'filter-display-cell',
@@ -9,14 +10,17 @@ import { IFilterOption } from 'app/shared/filter/filter.model';
 export class FilterDisplayCell implements OnInit {
 
   @Input() filter!: IFilterOption; 
+  @Input() specialFilter!: specialFilter; 
   @Output() filterRemoveMessage = new EventEmitter<IFilterOption>();
+  @Output() spFilterRemoveMessage = new EventEmitter<specialFilter>();
 
   filterName = "";
+  flagSpecialFilter = false;
   constructor() { }
   
 
   convertName(filterNameOriginal : string) : string {
-    let returnValue ="" ;
+    let returnValue = "na" ;
     switch (filterNameOriginal) {
       case 'material':
         returnValue = "Material";
@@ -65,12 +69,22 @@ export class FilterDisplayCell implements OnInit {
     return returnValue
   }
   ngOnInit(): void {
-    this.filterName = this.convertName(this.filter.name.split('.')[0])
-
+    if(this.filter){
+      this.filterName = this.convertName(this.filter.name.split('.')[0])
+    }
+    if(this.specialFilter){
+      this.flagSpecialFilter = true
+    }
    }
 
   sendFilterRemoveMessage() : void {
-    this.filterRemoveMessage.emit(this.filter)
+    if(this.flagSpecialFilter){
+      this.spFilterRemoveMessage.emit(this.specialFilter)
+    }
+    else{
+      this.filterRemoveMessage.emit(this.filter)
+    }
+    
   }
 
 };

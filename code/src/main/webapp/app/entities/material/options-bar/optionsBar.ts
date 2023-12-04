@@ -67,9 +67,27 @@ export class OptionsBar implements OnInit {
         if (this.filterStatus.get("Material Name")){
             this.textFilterEmitter.emit({filterName : "Material Name", filterText : event.target.value})
         }
-        else{
+        else if (this.filterStatus.get("Material Description")){
             this.textFilterEmitter.emit({filterName : "Material Description", filterText : event.target.value})      
         }
+    }
+
+    sendFilterSpecial(filterNameOp: string) : void {
+
+        switch (filterNameOp) {
+            case 'Selected':
+                this.textFilterEmitter.emit({filterName : "Selected Row", filterText : filterNameOp})
+                break;
+            case 'Unselected':
+                this.textFilterEmitter.emit({filterName : "Selected Row", filterText : filterNameOp})
+                break;
+            case 'Unedited':
+                this.textFilterEmitter.emit({filterName : "Selected Row", filterText : filterNameOp})
+                break;
+            default:
+                break;
+        }
+
     }
 
     receiveFilterNumberMessage(event : any) : void{

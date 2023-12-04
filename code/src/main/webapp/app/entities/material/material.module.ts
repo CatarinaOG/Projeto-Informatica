@@ -9,9 +9,13 @@ import { OptionsBar} from './options-bar/optionsBar'
 import { FilterDisplayCell } from './filter-display-cell/filterDisplayCell'
 import { FilterForm} from './filter-form/filterForm'
 import { FlagModal } from './flag-modal/flagModal'
+import { HeaderGroup } from './header-group/header-group.component'
+import { HeaderColumn} from './header-column/header-column.component'
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+
 
 @NgModule({
-  imports: [SharedModule, MaterialRoutingModule],
-  declarations: [MaterialComponent, MaterialDetailComponent, MaterialUpdateComponent, MaterialDeleteDialogComponent, OptionsBar, FilterDisplayCell, FilterForm,FlagModal],
+  imports: [SharedModule, MaterialRoutingModule,NgbTooltipModule],
+  declarations: [MaterialComponent, MaterialDetailComponent, MaterialUpdateComponent, MaterialDeleteDialogComponent, OptionsBar, FilterDisplayCell, FilterForm,FlagModal,HeaderGroup,HeaderColumn],
 })
 export class MaterialModule {}

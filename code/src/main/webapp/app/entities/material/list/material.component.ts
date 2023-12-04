@@ -4,7 +4,7 @@ import { ActivatedRoute, Data, ParamMap, Router } from '@angular/router';
 import { combineLatest, filter, Observable, switchMap, tap } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { IEditCell } from '../editCell.model'
-
+import { specialFilter } from '../specialFilters.model'
 import { IMaterial } from '../material.model';
 
 import { ITEMS_PER_PAGE, PAGE_HEADER, TOTAL_COUNT_RESPONSE_HEADER } from 'app/config/pagination.constants';
@@ -15,7 +15,7 @@ import { FilterOptions, IFilterOptions, IFilterOption } from 'app/shared/filter/
 
 @Component({
   selector: 'jhi-material',
-  templateUrl: './material.component.html',
+  templateUrl: './material.component.html'
 })
 
 
@@ -27,23 +27,47 @@ export class MaterialComponent implements OnInit {
   ascending = true;
   filters: IFilterOptions = new FilterOptions();
 
-  itemsPerPage = ITEMS_PER_PAGE;
+  msg = new Map<string, string>([
+    ["Material", "Material"],
+    ["Material Description", "Material Description"],
+    ["ABC Classification", "ABC Classification"],
+    ["Avg Supplier Delay", "Avg Supplier Delay"],
+    ["Max Supplier Delay", "Max Supplier Delay"],
+    ["Current Sap Safety Stock", "Current Sap Safety Stock"],
+    ["Proposed Safety Stock", "Proposed Safety Stock"],
+    ["Current Sap Safety Time", "Current Sap Safety Time"],
+    ["Proposed Safety Time", "Proposed Safety Time"],
+    ["Service Level", "Service Level"],
+    ["Open SAP Md 04", "Open SAP Md 04"],
+    ["Current Inventory Value", "Current Inventory Value"],
+    ["Delta Safety Stock", "Delta Safety Stock"],
+    ["Delta Safety Time", "Delta Safety Time"],
+    ["Average Inventory Effect After Change", "Average Inventory Effect After Change"],
+    ["New SAP Safety Stock", "New SAP Safety Stock"],
+    ["New SAP Safety Time", "New SAP Safety Time"],
+    ["Select Entries For Change", "Select Entries For Change"],
+    ["Flag Material as Special Case", "Flag Material as Special Case"],
+    ["Comment", "Comment"],
+  ]);
+  
+  itemsPerPage = 5;//ITEMS_PER_PAGE;
   totalItems = 0;
   page = 1;
+  selectedFilterState = false;
 
   isVisible = true;
   masterSelected=false;
-  visibility = new Map<string, boolean>([
-    ["materialInfo", true],
-    ["supplierDelay", true],
-    ["safetyStock", true],
-    ["safetyTime", true],
-    ["inventory", true],
-    ["edit", false]
-  ]);
+  visibility = new Map<string, boolean>();
   fileName = '';
   firstTime = true;
   linhas = new Map<number,IEditCell>();
+
+  specialFiltersList : specialFilter[] = [
+    {name: "Selected", isActive: false, idList:[]},
+    {name: "Unselected", isActive: false, idList:[]},
+    {name: "Unedited", isActive: false, idList:[]},
+  ]; 
+  
 
   private _isEditable : number[] = [-1,-1];
   get isEditable(): number[] {
@@ -60,7 +84,16 @@ export class MaterialComponent implements OnInit {
     protected activatedRoute: ActivatedRoute,
     public router: Router,
     protected modalService: NgbModal,
-  ) {}
+  ) {
+    this.visibility = new Map<string, boolean>([
+      ["materialInfo", true],
+      ["supplierDelay", true],
+      ["safetyStock", true],
+      ["safetyTime", true],
+      ["inventory", true],
+      ["edit", false]
+    ])
+  }
 
 
 
@@ -124,258 +157,322 @@ export class MaterialComponent implements OnInit {
           this.load()
           console.log("Estamos a recarregar")
           alert("Dados enviados com sucesso")
-          this.cleanList();
-        },error:(error:any) =>{
+          this.materialService
+            .exportFileAsExcel()
+            .subscribe((res) =>
+              this.createAndShowDownloadFile(res, "dowload.xlsx", "application/vnd.ms-excel")
+            ); 
+            this.linhas.clear();
+          },error:(error:any) =>{
           alert("Erro no upload dos ficheiros")
           alert("Error Uploading Values")
         }
       });
     }
+
 }
 
-cleanList(): void {
-  this.linhas.clear();
-}
 
-message:string | undefined;
+  message:string | undefined;
 
-receiveStringEvent(messageText : string) : void{
-  this.message = messageText;
-  if (this.message === "load"){
+  receiveStringEvent(messageText : string) : void{
+    this.message = messageText;
+    if (this.message === "load"){
+      this.load();
+    } 
+    if (this.message === "Submit"){
+      this.submitToSAP()
+    }
+    if (this.message === "DowBid.in%5D=3059nload"){
+      this.materialService
+      .exportFileAsExcel()
+      .subscribe((res) =>
+        this.createAndShowDownloadFile(res, "dowload.xlsx", "application/vnd.ms-excel")
+      );  }
+  }
+
+  createAndShowDownloadFile = (content: any, fileName: string, contentType: string): void => {
+    const a = document.createElement('a');
+    const file = new Blob([content], { type: contentType });
+    a.href = URL.createObjectURL(file);
+    a.download = fileName;
+    a.click();
+    alert("File was downloaded successfully")
+  };
+
+
+  receiveFilterRemoveMessage (filter : IFilterOption) : void{
+    console.log(filter.values)
+    for(let value of filter.values){
+      this.filters.removeFilter(filter.name, value);
+    }
+  }
+
+  receiveSpFilterRemoveMessage(spFilter : specialFilter) : void {
+    this.specialFiltersList.forEach((actSpFilter) => {
+      if (actSpFilter.name === spFilter.name){
+        actSpFilter.isActive = false
+        actSpFilter.idList = []
+        console.log(actSpFilter)
+      }
+    })
+
+    this.applySpecialFilters()
+  }
+
+  receiveTextFilter(event : any) : void{
+    const filterName :string = event.filterName;
+    const filterValue : string = event.filterText;
+    if(filterValue === ''){
+      this.filters.removeAllFiltersName("material.contains");
+      this.filters.removeAllFiltersName("description.contains");
+    } 
+    else{
+      if (filterName === "Material Name"){
+        this.filters.removeAllFiltersName("material.contains")
+        this.filters.addFilter("material.contains", filterValue);
+      }
+      else if (filterName === "Material Description"){
+        this.filters.removeAllFiltersName("description.contains")
+        this.filters.addFilter("description.contains",filterValue);
+      }
+      else if (filterName === "Selected Row"){
+        this.receiveSpecialFilter(filterValue)
+      }
+    }
     this.load();
-  } 
-  if (this.message === "Submit"){
-    this.submitToSAP()
   }
-  if (this.message === "Download"){
-    this.materialService
-    .exportFileAsExcel()
-    .subscribe((res) =>
-      this.createAndShowDownloadFile(res, "dowload.xlsx", "application/vnd.ms-excel")
-    );  }
-}
 
-createAndShowDownloadFile = (content: any, fileName: string, contentType: string): void => {
-  const a = document.createElement('a');
-  const file = new Blob([content], { type: contentType });
-  a.href = URL.createObjectURL(file);
-  a.download = fileName;
-  a.click();
-  alert("File was downloaded successfully")
-};
-
-
-receiveFilterRemoveMessage (filter : IFilterOption) : void{
-  console.log(filter.values)
-  for(let value of filter.values){
-    this.filters.removeFilter(filter.name, value);
+  receiveSpecialFilter(filterOp:string){
+    let index = -1;
+    if(filterOp === "Selected")
+      index = 0;
+    else if(filterOp === "Unselected")
+      index = 1
+    else if(filterOp === "Unedited")
+      index = 2;
+    this.specialFiltersList[index].isActive = true
+    this.specialFiltersList[index].idList = this.getSelectedList(filterOp)
+    
+    this.applySpecialFilters()
   }
-}
 
-receiveTextFilter(event : any) : void{
-  const filterName :string = event.filterName;
-  const filterValue : string = event.filterText;
-  if(filterValue === ''){
-    this.filters.removeAllFiltersName("material.contains");
-    this.filters.removeAllFiltersName("description.contains");
-  } 
-  else{
-    if (filterName === "Material Name"){
-      this.filters.removeAllFiltersName("material.contains")
-      this.filters.addFilter("material.contains", filterValue);
+  applySpecialFilters(){
+    this.filters.removeAllFiltersName("id.in")
+    this.filters.removeAllFiltersName("id.notIn")
+
+    this.specialFiltersList.forEach((spFilter) => {
+      if(spFilter.isActive){
+        
+        let filterStr = "id.in"
+        if(spFilter.name === "Unedited")
+          filterStr = "id.notIn"
+
+        spFilter.idList.forEach((num) => {
+          this.filters.addFilter(filterStr,num.toString());
+        })
+      }
+    })
+  }
+
+  getSelectedList(filterOp : string): number[] {
+    let res : number[] = []
+    this.linhas.forEach((linha) => {
+      if(filterOp === "Unedited"){
+        res.push(linha.materialId);
+      }
+      else{
+        if (linha.selected && filterOp === "Selected")
+          res.push(linha.materialId);
+        if (!linha.selected && filterOp === "Unselected")
+          res.push(linha.materialId);
+      }
+    })
+    return res;
+  }
+
+
+  receiveFlagEmission(emission : any){
+    let editCell: IEditCell | undefined;
+
+    console.log("Emission is" , emission);
+
+    if (this.linhas.has(emission.id)){
+      editCell = this.linhas.get(emission.id);
+    } 
+    else{
+      editCell = <IEditCell>{};
+      editCell.materialId = this.materials?.find(e => e.id == emission.id)?.id ?? -1;
+      editCell.newSST = this.materials?.find(e => e.id === emission.id)?.proposedSST ?? -1;
+      editCell.newST = this.materials?.find(e => e.id === emission.id)?.proposedST ?? -1;
+      editCell.newComment = this.materials?.find(e => e.id === emission.id)?.comment ?? "";
+      editCell.selected = false;
+      editCell.flag = this.materials?.find(e => e.id === emission.id)?.flagMaterial ?? false;
+    }
+    if (editCell){
+      editCell.flag = emission.flag
+      if (emission.flag){
+        editCell.dateFlag = emission.date;
+      }
+      this.linhas.set(emission.id, editCell)
+      console.log(editCell);
+    }
+  }
+
+
+  receiveNumberFilter(event : any) : void{
+    const filterName :string = event.filterName;
+    
+    const submitName : string = filterName + "." + event.operator
+    console.log("submitted name : " ,submitName);
+    this.filters.removeAllFiltersName(submitName)
+    this.filters.addFilter(submitName, event.value);
+    
+    this.load();
+  }
+
+
+  onFileSelected(event:any): void {
+    //true -> replace
+    //false -> add
+    console.log("Entrou na função")
+    const file : File = event.file ;
+    const typeReplace : boolean = event.opType;
+    if (file && typeReplace) {
+      this.materialService.uploadFileReplace(file).subscribe({
+        next: (res: any) => {       
+          this.load()
+          console.log("File Uploaded aaa")
+        },error:(error:any) =>{
+          alert("Error Uploading File")
+        }
+      });
+    }
+    else if (file && !typeReplace){
+      this.materialService.uploadFileAddOrUpdate(file).subscribe({
+        next: (res: any) => {
+          this.load()
+        },error:(error:any) =>{
+          alert("Error Uploading File")
+        }
+      });
+    }
+  }
+
+  makeEditable(a: number, b: number){
+    this._isEditable = [a,b];
+
+  }
+
+
+
+  calcNewValueAvg(material : IMaterial) : number {
+    let editCell: IEditCell | undefined;
+    editCell = this.linhas.get(material.id)
+    
+    if (editCell){
+      const newDeltaSST = (editCell.newSST ?? 1) - (material.currSAPSafetyStock ?? 1);
+      const newDeltaST = (editCell.newST ?? 1) - (material.currentSAPSafeTime ?? 1);
+      const unitCost = material.unitCost ?? 1
+      return Number((newDeltaSST * unitCost + newDeltaST * unitCost * (material.avgDemand ?? 1)).toFixed(2));
+    }
+
+    else {
+      return Number((material.avgInventoryEffectAfterChange ?? 1).toFixed(2));
+    }
+  
+  }
+
+
+  input(event: any, col_name : string, id: number): void {
+
+    let editCell: IEditCell | undefined;
+
+    if (this.linhas.has(id)){
+      editCell = this.linhas.get(id);
+    } 
+    else{
+      editCell = <IEditCell>{};
+      editCell.materialId = this.materials?.find(e => e.id == id)?.id ?? -1;
+      editCell.newSST = this.materials?.find(e => e.id === id)?.proposedSST ?? -1;
+      editCell.newST = this.materials?.find(e => e.id === id)?.proposedST ?? -1;
+      editCell.newComment = this.materials?.find(e => e.id === id)?.comment ?? "";
+      editCell.selected = false;
+      editCell.flag = this.materials?.find(e => e.id === id)?.flagMaterial ?? false;
+    }
+    if (editCell){
+      if (col_name === "newSST") editCell.newSST = Math.round(event.target.value);
+      if (col_name === "newST") editCell.newST = Math.round(event.target.value);
+      if (col_name === "newComment") editCell.newComment = event.target.value;
+      if (col_name === "selected") {  
+        editCell.selected = event.target.checked;
+        //this.selectedMaterials.push(this.materials?.find(e => e.id === id)?.material ?? "");
+        // const materialCopy = this.materials?.find(e => e.id=== id);
+        // if (materialCopy !== undefined){
+        //   this.selectedMaterials.push(materialCopy);
+        //   console.log("Seleted List", this.selectedMaterials)
+        // }
+      }
+      if (col_name === "flag") editCell.flag = !editCell.flag
+      console.log("value " + col_name + "changed")
+      console.log(editCell)
+      this.linhas.set(id, editCell)
+      this._isEditable = [-1,-1]
+    }
+    
+  }
+
+
+  // filterSelected(){
+    
+  //   // this.selectedFilterState = true;
+  //   // this.totalItems = this.selectedMaterials.length;
+  //   // this.materials = this.selectedMaterials.splice(0,5);
+  //   // this.page = 1;
+  // }
+
+
+  switchVisibility(event: any) : void {
+    var col_name = event.name;
+    var visibility = event.visibility;
+    var cl = document.getElementsByClassName(col_name)
+    if (this.visibility.get(col_name) == false){
+      this.visibility.set(col_name, true)
+      console.log("Is visible equals to " , this.visibility.get(col_name))
+      for(let i = 0; i<cl.length;i++){
+        cl[i].classList.remove("tableHide")
+      }
+    }
+    else {
+      this.visibility.set(col_name, false)
+      console.log("Is visible equals to " , this.visibility.get(col_name))
+      for(let i = 0; i<cl.length;i++){
+        console.log("Adicionei o tableHide")
+        cl[i].classList.add("tableHide")
+      }
+    }
+  }
+
+
+
+
+
+
+  filterABCClassif(event : any): void{
+    if(event.opType){
+      this.filters.addFilter("abcClassification.in", event.filterValue);
     }
     else{
-      this.filters.removeAllFiltersName("description.contains")
-      this.filters.addFilter("description.contains",filterValue);
+      this.filters.removeFilter("abcClassification.in", event.filterValue);
     }
   }
-  this.load();
-}
 
-receiveFlagEmission(emission : any){
-  let editCell: IEditCell | undefined;
 
-  console.log("Emission is" , emission);
 
-  if (this.linhas.has(emission.id)){
-    editCell = this.linhas.get(emission.id);
-  } 
-  else{
-    editCell = <IEditCell>{};
-    editCell.materialId = this.materials?.find(e => e.id == emission.id)?.id ?? -1;
-    editCell.newSST = this.materials?.find(e => e.id === emission.id)?.proposedSST ?? -1;
-    editCell.newST = this.materials?.find(e => e.id === emission.id)?.proposedST ?? -1;
-    editCell.newComment = this.materials?.find(e => e.id === emission.id)?.comment ?? "";
-    editCell.selected = false;
-    editCell.flag = this.materials?.find(e => e.id === emission.id)?.flagMaterial ?? false;
+  resetFilters(): void{
+    this.filters.clear();
+    this.load();
   }
-  if (editCell){
-    editCell.flag = emission.flag
-    if (emission.flag){
-      editCell.dateFlag = emission.date;
-    }
-    this.linhas.set(emission.id, editCell)
-    console.log(editCell);
-  }
-
-}
-
-receiveNumberFilter(event : any) : void{
-  const filterName :string = event.filterName;
-  
-  const submitName : string = filterName + "." + event.operator
-  console.log("submitted name : " ,submitName);
-  this.filters.removeAllFiltersName(submitName)
-  this.filters.addFilter(submitName, event.value);
-  
-  this.load();
-}
-
-
-onFileSelected(event:any): void {
-  //true -> replace
-  //false -> add
-  console.log("Entrou na função")
-  const file : File = event.file ;
-  const typeReplace : boolean = event.opType;
-  if (file && typeReplace) {
-    this.materialService.uploadFileReplace(file).subscribe({
-      next: (res: any) => {       
-        this.load()
-        console.log("File Uploaded aaa")
-      },error:(error:any) =>{
-        alert("Error Uploading File")
-      }
-    });
-  }
-  else if (file && !typeReplace){
-    this.materialService.uploadFileAddOrUpdate(file).subscribe({
-      next: (res: any) => {
-        this.load()
-      },error:(error:any) =>{
-        alert("Error Uploading File")
-      }
-    });
-  }
-}
-
-makeEditable(a: number, b: number){
-  this._isEditable = [a,b];
-
-}
-
-selectRow(checked : boolean, id : number) : boolean {
-  var editCell: IEditCell | undefined;
-  if (checked) {
-    // get row with id and change background color
-    return true
-  }
-  else {
-    // get row with id and reset background color
-    return false
-  }
-}
-
-
-calcNewValueAvg(material : IMaterial) : number {
-  let editCell: IEditCell | undefined;
-  editCell = this.linhas.get(material.id)
-  
-  if (editCell){
-    const newDeltaSST = (editCell.newSST ?? 1) - (material.currSAPSafetyStock ?? 1);
-    const newDeltaST = (editCell.newST ?? 1) - (material.currentSAPSafeTime ?? 1);
-    const unitCost = material.unitCost ?? 1
-    return Number((newDeltaSST * unitCost + newDeltaST * unitCost * (material.avgDemand ?? 1)).toFixed(2));
-  }
-
-  else {
-    return Number((material.avgInventoryEffectAfterChange ?? 1).toFixed(2));
-  }
- 
-}
-
-
-input(event: any, col_name : string, id: number): void {
-
-  let editCell: IEditCell | undefined;
-
-  if (this.linhas.has(id)){
-    editCell = this.linhas.get(id);
-  } 
-  else{
-    editCell = <IEditCell>{};
-    editCell.materialId = this.materials?.find(e => e.id == id)?.id ?? -1;
-    editCell.newSST = this.materials?.find(e => e.id === id)?.proposedSST ?? -1;
-    editCell.newST = this.materials?.find(e => e.id === id)?.proposedST ?? -1;
-    editCell.newComment = this.materials?.find(e => e.id === id)?.comment ?? "";
-    editCell.selected = false;
-    editCell.flag = this.materials?.find(e => e.id === id)?.flagMaterial ?? false;
-  }
-  if (editCell){
-    if (col_name === "newSST") editCell.newSST = Math.round(event.target.value);
-    if (col_name === "newST") editCell.newST = Math.round(event.target.value);
-    if (col_name === "newComment") editCell.newComment = event.target.value;
-    if (col_name === "selected") editCell.selected = this.selectRow(event.target.checked, id);
-    if (col_name === "flag") editCell.flag = !editCell.flag
-    console.log("value " + col_name + "changed")
-    console.log(editCell)
-    this.linhas.set(id, editCell)
-    this._isEditable = [-1,-1]
-  }
-  
-}
-
-
-
-
-
-
-
-
-switchVisibility(event: Event, col_name :any) : void {
-  var cl = document.getElementsByClassName(col_name)
-  if (this.visibility.get(col_name) == false){
-    this.visibility.set(col_name, true)
-    console.log("Is visible equals to " , this.visibility.get(col_name))
-    for(let i = 0; i<cl.length;i++){
-      cl[i].classList.remove("tableHide")
-    }
-  }
-  else {
-    this.visibility.set(col_name, false)
-    console.log("Is visible equals to " , this.visibility.get(col_name))
-    for(let i = 0; i<cl.length;i++){
-      cl[i].classList.add("tableHide")
-    }
-  }
-  event.stopPropagation();
-}
-
-filter_load_test() : void {
-  this.filters.addFilter("abcClassification.in", "A");  
-  this.filters.addFilter("abcClassification.in", "B");  
-  console.log(this.filters)
-  this.load()
-}
-
-
-
-
-filterABCClassif(event : any): void{
-  if(event.opType){
-    this.filters.addFilter("abcClassification.in", event.filterValue);
-  }
-  else{
-    this.filters.removeFilter("abcClassification.in", event.filterValue);
-  }
-}
-
-
-
-nukeFilters(): void{
-  this.filters.clear();
-  this.load();
-}
 
 
   delete(material: IMaterial): void {
@@ -407,7 +504,7 @@ nukeFilters(): void{
   }
 
   navigateToPage(page = this.page): void {
-    this.handleNavigation(page, this.predicate, this.ascending, this.filters.filterOptions);
+     this.handleNavigation(page, this.predicate, this.ascending, this.filters.filterOptions);
   }
 
   protected loadFromBackendWithRouteInformations(): Observable<EntityArrayResponseType> {

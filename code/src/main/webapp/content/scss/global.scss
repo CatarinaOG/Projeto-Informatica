@@ -353,3 +353,29 @@ input[type=number] {
 .dropdown-toggle::after {
   display: none;
 }
+
+
+.tableHeader {
+  border-color: black !important; 
+  border-width: 2px !important;
+}
+
+.headerRow1{
+  background-color: #B8B8B8;
+}
+
+.headerRow2{
+  background-color: #DADADA; 
+  border-bottom: black; 
+  border-width: 2px;
+}
+
+.headerRowStart{
+  border-left-color: black; 
+  border-width: 1px;
+}
+
+.headerRowEnd{
+  border-right-color: black; 
+  border-width: 1px;
+}

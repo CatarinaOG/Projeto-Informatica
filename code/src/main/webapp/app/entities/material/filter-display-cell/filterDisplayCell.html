@@ -1,15 +1,30 @@
-<div>
-    <span style="font-weight: bold;"> {{ filterName }} </span> 
-    <span>: </span>
-    <span *ngIf="filter.name.split('.')[1] == 'greaterThan'">&gt;</span>
-    <span *ngIf="filter.name.split('.')[1] == 'lessThan'">&lt;</span>
-    <span *ngIf="filter.name.split('.')[1] == 'greaterThanOrEqual'">&ge;</span>
-    <span *ngIf="filter.name.split('.')[1] == 'lessThanOrEqual'">&le;</span>    
-    <span *ngIf="filter.name.split('.')[1] == 'equals'">==</span>
-    <span *ngIf="filter.name.split('.')[1] == 'notEquals'">!=</span>
-    <span> {{ filter.values }} </span>
+
+<ng-template [ngIf]="!flagSpecialFilter && filterName !== 'na'">
+    <div>
+        <span style="font-weight: bold;"> {{ filterName }} </span> 
+        <span>: </span>
+        <span *ngIf="filter.name.split('.')[1] == 'greaterThan'">&gt;</span>
+        <span *ngIf="filter.name.split('.')[1] == 'lessThan'">&lt;</span>
+        <span *ngIf="filter.name.split('.')[1] == 'greaterThanOrEqual'">&ge;</span>
+        <span *ngIf="filter.name.split('.')[1] == 'lessThanOrEqual'">&le;</span>    
+        <span *ngIf="filter.name.split('.')[1] == 'equals'">==</span>
+        <span *ngIf="filter.name.split('.')[1] == 'notEquals'">!=</span>
+        <span> {{ filter.values }} </span>
+        
+        <button class="buttonNoBorder" (click) = "sendFilterRemoveMessage()">
+            <fa-icon icon="trash-alt"></fa-icon>
+        </button>
+    </div>
+</ng-template>
+
+<ng-template [ngIf]="flagSpecialFilter && specialFilter.isActive">
+    <div>
+        <span style="font-weight: bold;"> {{ specialFilter.name }} </span>     
     
-    <button class="buttonNoBorder" (click) = "sendFilterRemoveMessage()">
-        <fa-icon icon="trash-alt"></fa-icon>
-    </button>
-</div>
+        <button class="buttonNoBorder" (click) = "sendFilterRemoveMessage()">
+            <fa-icon icon="trash-alt"></fa-icon>
+        </button>
+    </div>
+</ng-template>
+
+

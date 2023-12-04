@@ -168,9 +168,39 @@
               </li>
             </ul>
           </div>
+          
+          <div class="dropdown-divider"></div>
+          
+          <div ngbDropdown class="dropdown d-flex" placement="right-top" autoClose = "outside">
+            <button ngbDropdownToggle style="display: flex;" class="btn btn-primary buttonNoBorder inputWidth text-left" type="button" id="nestedDropdownButton" aria-expanded="false"> 
+              <span style="flex-grow: 1; text-align: left;">Selected Rows</span>
+              <fa-icon icon="caret-right" style="margin-left: 10px;"></fa-icon>
+            </button>
+            <ul ngbDropdownMenu aria-labelledby="nestedDropdownButton">
+              <li>
+                <button ngbDropdownItem  class="btn btn-primary" (click)="sendFilterSpecial('Selected')">
+                  <span>Selected</span>
+                </button>
+              </li>
+              <li>
+                <button ngbDropdownItem class="btn btn-primary" (click)="sendFilterSpecial('Unselected')">
+                  <span>Unselected</span>
+                </button>
+              </li>
+              <li>
+                <button ngbDropdownItem class="btn btn-primary" (click)="sendFilterSpecial('Unedited')">
+                  <span>Unedited</span>
+                </button>
+              </li>
+            </ul>
+          </div>
         </li>
+
       </ul>
     </div>
+
+
+
   
       <input type="file" class="file-input" accept=".csv,.ods,.xlsx,.xls"  (change)="sendFileMessage($event,true)" (click)="importReplaceInput.value=''" #importReplaceInput>
       <input type="file" class="file-input" accept=".csv,.ods,.xlsx,.xls"  (change)="sendFileMessage($event,false)" (click)="importAdd.value=''" #importAdd>

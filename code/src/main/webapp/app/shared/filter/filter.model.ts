@@ -127,13 +127,18 @@ export class FilterOptions implements IFilterOptions {
   }
 
   removeAllFiltersName(name: string) : void{
-    let i = 0;
-    for(let filter of this._filterOptions){
-      if(filter.name === name){
-        this._filterOptions.splice(i, 1);
-      }
-      i++;
-    }
+    this.getFilterOptionByName(name)?.values.forEach((val) => {
+      this.getFilterOptionByName(name)?.removeValue(val);
+    });
+    this.changed();
+    
+    // let i = 0;
+    // for(let filter of this._filterOptions){
+    //   if(filter.name === name){
+    //     this._filterOptions.splice(i, 1);
+    //   }
+    //   i++;
+    // }
 
   }
 

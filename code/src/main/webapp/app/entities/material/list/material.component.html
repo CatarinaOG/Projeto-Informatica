@@ -5,20 +5,31 @@
 
     <options-bar (stringEmitter) = "receiveStringEvent($event)" (fileEmitter) = "onFileSelected($event)" (textFilterEmitter) = "receiveTextFilter($event)" (abcFilterEmitter) = "filterABCClassif($event)" (numberFilterEmitter) ="receiveNumberFilter($event)"></options-bar>
     
+    
     <div *ngIf="this.filters.filterOptions.length > 0" >
       <div style="font-weight: bold; text-align: start;">Active Filters:</div>
       <div class="d-flex">
-        <div *ngFor="let filter of this.filters.filterOptions" class="activeFilterCell">
-          <filter-display-cell [filter]=filter  (filterRemoveMessage)="receiveFilterRemoveMessage($event)"></filter-display-cell>
-        </div> 
+
+        <ng-container *ngFor="let filter of this.filters.filterOptions">
+          <div  *ngIf = "filter.name.split('.')[0] !== 'id'" class="activeFilterCell">
+            <filter-display-cell [filter]=filter (filterRemoveMessage)="receiveFilterRemoveMessage($event)" ></filter-display-cell>
+          </div>
+        </ng-container>
+
+        <ng-container *ngFor="let specialFilter of this.specialFiltersList">
+          <div  *ngIf = "specialFilter.isActive" class="activeFilterCell">
+            <filter-display-cell [specialFilter]="specialFilter" (spFilterRemoveMessage)="receiveSpFilterRemoveMessage($event)" ></filter-display-cell>
+          </div>
+        </ng-container>
 
         <div style="flex-grow: 1;"></div> 
         
         <div>
-          <button class="btn btn-info me-2 " style="margin-left: 8px;">
+          <button class="btn btn-info me-2 " style="margin-left: 8px;" (click)="resetFilters()" placement="top" ngbTooltip="Tooltip on top">
             <fa-icon icon="trash-alt"></fa-icon>
-          <span>Reset Filters</span>
-        </button>
+            <span>Reset Filters</span>
+          </button>
+          
         </div>
       </div>
     </div>
@@ -49,109 +60,86 @@
   <div class="table-responsive table-entities table-bordered" id="entities" *ngIf="materials && materials.length > 0" style="border: 1px solid black;">
     <table class="table table-striped " aria-describedby="page-heading">
       <thead>
-        <tr style="background-color: #B8B8B8;">
-          <th [attr.colspan]="visibility.get('materialInfo') ? 3 : 1" style="border-color: black; border-width: 2px;">
-            <div class="d-flex" style="place-content: center;">
-              <span class="flexGrow">Material Info</span>
-              <button class="buttonNoBorder" (click)="switchVisibility($event,'materialInfo')">
-                <fa-icon [icon]="visibility.get('materialInfo') ? 'compress-alt' : 'expand-alt'"></fa-icon>
-              </button>
-            </div>
+        <tr class = "headerRow1">
+
+          <th [attr.colspan]="visibility.get('materialInfo') ? 3 : 1" class="tableHeader">
+            <header-group [headerName] = "'Material Info'" [visibilityValue] = "visibility.get('materialInfo')" groupName = 'materialInfo' (visibilityEmitter)="switchVisibility($event)"></header-group>
           </th>
-          <th [attr.colspan]="visibility.get('supplierDelay') ? 2 : 1" style="border-color: black; border-width: 2px;">
-            <div class="d-flex" style="place-content: center;"> 
-              <span class="flexGrow">Supplier Delay Info</span>
-              <button class="buttonNoBorder" (click)="switchVisibility($event,'supplierDelay')">
-                <fa-icon [icon]="visibility.get('supplierDelay') ? 'compress-alt' : 'expand-alt'"></fa-icon>
-              </button>
-            </div>
+
+          <th [attr.colspan]="visibility.get('supplierDelay') ? 2 : 1" class="tableHeader">
+            <header-group [headerName] = "'Supplier Delay Info'" [visibilityValue] = "visibility.get('supplierDelay')" groupName = 'supplierDelay' (visibilityEmitter)="switchVisibility($event)"></header-group>
           </th>
-          <th [attr.colspan]="visibility.get('safetyStock') ? 2 : 1" style="border-color: black; border-width: 2px;">
-            <div class="d-flex" style="place-content: center;">
-              <span class="flexGrow">Safety Stock Info</span>
-              <button class="buttonNoBorder" (click)="switchVisibility($event,'safetyStock')">
-                <fa-icon [icon]="visibility.get('safetyStock') ? 'compress-alt' : 'expand-alt'"></fa-icon>
-              </button>
-            </div>
+
+          <th [attr.colspan]="visibility.get('safetyStock') ? 2 : 1" class="tableHeader">
+            <header-group [headerName] = "'Safety Stock Info'" [visibilityValue] = "visibility.get('safetyStock')" groupName = 'safetyStock' (visibilityEmitter)="switchVisibility($event)"></header-group>
           </th>
-          <th [attr.colspan]="visibility.get('safetyTime') ? 2 : 1" style="border-color: black; border-width: 2px;">
-            <div class="d-flex" style="place-content: center;">
-              <span class="flexGrow">Safety Time Info</span>
-              <button class="buttonNoBorder" (click)="switchVisibility($event,'safetyTime')">
-                <fa-icon [icon]="visibility.get('safetyTime') ? 'compress-alt' : 'expand-alt'"></fa-icon>
-              </button>
-            </div>
+
+          <th [attr.colspan]="visibility.get('safetyTime') ? 2 : 1" class="tableHeader">
+            <header-group [headerName] = "'Safety Time Info'" [visibilityValue] = "visibility.get('materialInfo')" groupName = 'safetyTime' (visibilityEmitter)="switchVisibility($event)"></header-group>
           </th>
-          <th [attr.colspan]="visibility.get('inventory') ? 6 : 1" style="border-color: black; border-width: 2px;">
-            <div class="d-flex" style="place-content: center;">
-              <span class="flexGrow">Inventory Info & Service Level</span>
-              <button class="buttonNoBorder" (click)="switchVisibility($event,'inventory')">
-                <fa-icon [icon]="visibility.get('inventory') ? 'compress-alt' : 'expand-alt'"></fa-icon>
-              </button>
-            </div>
+
+          <th [attr.colspan]="visibility.get('inventory') ? 6 : 1" class="tableHeader">
+            <header-group [headerName] = "'Inventory'" [visibilityValue] = "visibility.get('inventory')" groupName = 'inventory' (visibilityEmitter)="switchVisibility($event)"></header-group>
           </th>
-          <th [attr.colspan]="visibility.get('edit') ? 5 : 1" style="border-color: black; border-width: 2px;">
-            <div class="d-flex" style="place-content: center;">
-              <span class="flexGrow">Edit</span>
-              <button class="buttonNoBorder" (click)="switchVisibility($event,'edit')">
-                <fa-icon [icon]="visibility.get('edit') ? 'compress-alt' : 'expand-alt'"></fa-icon>
-              </button>
-            </div>
+
+          <th [attr.colspan]="visibility.get('edit') ? 5 : 1" class="tableHeader">
+            <header-group [headerName] = "'Edit'" [visibilityValue] = "visibility.get('edit')" groupName = 'edit' (visibilityEmitter)="switchVisibility($event)"></header-group>
           </th>
         </tr>
 
-        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()" style="background-color: #DADADA; border-bottom: black; border-width: 2px;" >
-          <th scope="col" jhiSortBy="material" class ="materialInfo" style="border-left-color: black; border-width: 1px;">
-            <div class="d-flex" style="place-content: center;">
+        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()" class="headerRow2" >
+          
+          <th scope="col" jhiSortBy="material" class ="materialInfo headerRowStart">
+            <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{msg.get('Material')}}">
               <span>Material</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
 
           <th scope="col" jhiSortBy="description" class ="materialInfo">
-            <div class="d-flex" style="place-content: center;">
+            <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{msg.get('Material Description')}}">
               <span>Material Description</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
 
-          <th scope="col" jhiSortBy="abcClassification" class ="materialInfo" style="border-right-color: black; border-width: 1px;">
-            <div class="d-flex" style="place-content: center;">
-              <span>Abc Classification</span>
+          <th scope="col" jhiSortBy="abcClassification" class ="materialInfo headerRowEnd">
+            <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{msg.get('ABC Classification')}}">
+              <span>ABC Classification</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
 
-          <th *ngIf = "!visibility.get('materialInfo')" style="border-right-color: black; border-width: 1px;">
+          <th *ngIf = "!visibility.get('materialInfo')" class ="materialInfo headerRowEnd">
             ...
           </th>
           
           <th scope="col" jhiSortBy="avgSupplierDelay" class ="supplierDelay">
-            <div class="d-flex" style="place-content: center;">
+            <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{msg.get('Avg Supplier Delay')}}">
               <span>Avg Supplier Delay</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
           
-          <th scope="col" jhiSortBy="maxSupplierDelay" class ="supplierDelay" style="border-right-color: black; border-width: 1px;">
-            <div class="d-flex" style="place-content: center;">
+          <th scope="col" jhiSortBy="maxSupplierDelay" class ="supplierDelay headerRowEnd">
+            <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{msg.get('Max Supplier Delay')}}">
               <span>Max Supplier Delay</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th *ngIf = "!visibility.get('supplierDelay')" style="border-right-color: black; border-width: 1px;">
+          <th *ngIf = "!visibility.get('supplierDelay')" class ="materialInfo headerRowEnd">
             ...
           </th>
 
           <th scope="col" jhiSortBy="currSAPSafetyStock" class ="safetyStock">
-            <div class="d-flex" style="place-content: center;">
+            <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{msg.get('Current Sap Safety Stock')}}">
               <span>Current Sap Safety Stock</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
           
-          <th scope="col" jhiSortBy="proposedSST" class = "safetyStock" style="border-right-color: black; border-width: 1px;">
-            <div class="d-flex" style="place-content: center;">
+          <th scope="col" jhiSortBy="proposedSST" class = "safetyStock headerRowEnd">
+            <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{msg.get('Proposed Safety Stock')}}">
               <span>Proposed Safety Stock</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
@@ -159,19 +147,19 @@
 
          
 
-          <th *ngIf = "!visibility.get('safetyStock')" style="border-right-color: black; border-width: 1px;">
+          <th *ngIf = "!visibility.get('safetyStock')" class ="materialInfo headerRowEnd">
             ...
           </th>
 
           <th scope="col" jhiSortBy="currentSAPSafeTime" class = "safetyTime">
-            <div class="d-flex" style="place-content: center;">
+            <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{msg.get('Current Sap Safety Time')}}">
               <span>Current SAP Safety Time</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
 
-          <th scope="col" jhiSortBy="proposedST" class = "safetyTime" style="border-right-color: black; border-width: 1px;">
-            <div class="d-flex" style="place-content: center;">
+          <th scope="col" jhiSortBy="proposedST" class = "safetyTime headerRowEnd">
+            <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{msg.get('Proposed Safety Time')}}">
               <span>Proposed Safety Time</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
@@ -179,70 +167,70 @@
 
           
           
-          <th *ngIf = "!visibility.get('safetyTime')" style="border-right-color: black; border-width: 1px;">
+          <th *ngIf = "!visibility.get('safetyTime')" class ="materialInfo headerRowEnd">
             ...
           </th>
           
           <th scope="col" jhiSortBy="serviceLevel" class = "inventory">
-            <div class="d-flex" style="place-content: center;">
+            <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{msg.get('Service Level')}}">
               <span>Service Level</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
 
           <th scope="col" jhiSortBy="openSAPmd04" class = "inventory">
-            <div class="d-flex" style="place-content: center;">
+            <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{msg.get('Open SAP Md 04')}}">
               <span>Open SAP Md 04</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
 
           <th scope="col" jhiSortBy="currentInventoryValue" class="inventory">
-            <div class="d-flex" style="place-content: center;">
+            <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{msg.get('Current Inventory Value')}}">
               <span>Current Inventory Value</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
 
-          <th scope="col" jhiSortBy="deltaSST" class = "inventory" >
-            <div class="d-flex" style="place-content: center;">
+          <th scope="col" jhiSortBy="deltaSST" class = "inventory">
+            <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{msg.get('Delta Safety Stock')}}">
               <span>Delta Safety Stock</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
 
           <th scope="col" jhiSortBy="deltaST" class = "inventory" >
-            <div class="d-flex" style="place-content: center;">
+            <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{msg.get('Delta Safety Time')}}">
               <span>Delta Safety Time</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
           
-          <th scope="col" jhiSortBy="avgInventoryEffectAfterChange" class="inventory" style="border-right-color: black; border-width: 1px;">
-            <div class="d-flex" style="place-content: center;">
+          <th scope="col" jhiSortBy="avgInventoryEffectAfterChange" class="inventory headerRowEnd">
+            <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{msg.get('Average Inventory Effect After Change')}}">
               <span>Average Inventory Effect After Change</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
           
-          <th *ngIf = "!visibility.get('inventory')" style="border-right-color: black; border-width: 1px;">
+          <th *ngIf = "!visibility.get('inventory')" class ="materialInfo headerRowEnd">
             ...
           </th>
-          <th scope="col" jhiSortBy="newSapSafetyStock" class="edit tableHide">
-            <div class="d-flex" style="place-content: center;">
+          <th scope="col" jhiSortBy="newSapSafetyStock" class="edit" [ngClass] ="func2()">
+            <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{msg.get('New SAP Safety Stock')}}">
               <span>New Sap Safety Stock</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="newSapSafetyTime" class="edit tableHide">
-            <div class="d-flex" style="place-content: center;">
+          <th scope="col" jhiSortBy="newSapSafetyTime" class="edit" [ngClass] ="func2()">
+            <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{msg.get('New SAP Safety Time')}}">
               <span>New Sap Safety Time</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="selectEntriesForChangeInSap" class="edit tableHide">
+          <th scope="col" jhiSortBy="selectEntriesForChangeInSap" class="edit" [ngClass] ="func2()">
             <div  >
-              <div class="d-flex" style="place-content: center;">
+              <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{msg.get('Select Entries For Change')}}">
                 <span>Select Entries For Change In Sap</span>
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
@@ -251,29 +239,26 @@
             </div>
           </th>
 
-          <th scope="col" jhiSortBy="flagMaterial" class="edit tableHide">
-            <div class="d-flex" style="place-content: center;">
+          <th scope="col" jhiSortBy="flagMaterial" class="edit" [ngClass] ="func2()">
+            <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{msg.get('Flag Material as Special Case')}}">
               <span>Flag Material As Special Case</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
 
-          <th scope="col" jhiSortBy="comment" class="setWidth edit tableHide" style="border-right-color: black; border-width: 1px;">
-            <div class="d-flex" style="place-content: center;">
+          <th scope="col" jhiSortBy="comment" class="setWidth edit headerRowEnd" [ngClass] ="func2()">
+            <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{msg.get('Comment')}}">
               <span>Comment</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th *ngIf = "!visibility.get('edit')" style="border-right-color: black; border-width: 1px;">
+          <th *ngIf = "!visibility.get('edit')" class ="materialInfo headerRowEnd">
             ...
           </th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let material of materials; trackBy: trackId" data-cy="entityTable" [ngClass] = "func(material.id)">
-          <!--<td>
-            <a [routerLink]="['/material', material.id, 'view']">{{ material.id }}</a>
-          </td>-->
           <td class ="materialInfo">{{ material.material }}</td>
           <td class ="materialInfo">{{ material.description }}</td>
           <td class ="materialInfo">{{ material.abcClassification }}</td>
@@ -287,13 +272,17 @@
             ...
           </th>
 
-          <td class ="safetyStock">{{ material.currSAPSafetyStock }}</td>
+          <td class ="safetyStock" >
+            <span placement="top" ngbTooltip="Changed on : 12.04.2023  Previous Safety Stock : 2.000">{{ material.currSAPSafetyStock }}</span>
+          </td>
           <td class ="safetyStock">{{ material.proposedSST }}</td>
           <th *ngIf = "!visibility.get('safetyStock')">
             ...
           </th>
 
-          <td class ="safetyTime">{{ material.currentSAPSafeTime }}</td>
+          <td class ="safetyTime">
+            <span placement="top" ngbTooltip="Changed on : 12.04.2023  Previous Safety Time : 2.000">{{ material.currentSAPSafeTime }}</span>
+          </td>
           <td class ="safetyTime">{{ material.proposedST }}</td>
           <th *ngIf = "!visibility.get('safetyTime')">
             ...
@@ -301,7 +290,7 @@
 
           <td  class ="inventory">{{ material.serviceLevel }}</td>
           <td class ="inventory"><button class="buttonNoBorder">
-            <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"><fa-icon icon="external-link" style="color: #2D8DFF;"></fa-icon></a>
+            <a href="https://www.sap.com/portugal/index.html"><fa-icon icon="external-link" style="color: #2D8DFF;"></fa-icon></a>
             </button> <!--{{ diabo.openSapMd04 }}-->
           </td>
           <td  class ="inventory">{{ material.currentInventoryValue }}</td>
