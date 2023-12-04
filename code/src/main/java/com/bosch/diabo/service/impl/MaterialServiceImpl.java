@@ -321,7 +321,7 @@ public class MaterialServiceImpl implements MaterialService {
             try {
                 material.setNewSAPSafetyStock(Integer.parseInt(getStringCellValue(row, headerMap, "New SAP SS")));
             } catch (NumberFormatException e) {
-                material.setNewSAPSafetyStock(material.getCurrSAPSafetyStock());
+                material.setNewSAPSafetyStock(material.getProposedSST());
             }
         }
 
@@ -329,7 +329,7 @@ public class MaterialServiceImpl implements MaterialService {
             try {
                 material.setNewSAPSafetyTime(Integer.parseInt(getStringCellValue(row, headerMap, "New SAP Safety Time")));
             } catch (NumberFormatException e) {
-                material.setNewSAPSafetyTime(material.getCurrentSAPSafeTime());
+                material.setNewSAPSafetyTime(material.getProposedST());
             }
         }
 
@@ -450,7 +450,7 @@ public class MaterialServiceImpl implements MaterialService {
             try {
                 material.setNewSAPSafetyStock(Integer.parseInt(nextRecord[getIndex(header, "New SAP SS")]));
             } catch (NumberFormatException e) {
-                material.setNewSAPSafetyStock(material.getCurrSAPSafetyStock());
+                material.setNewSAPSafetyStock(material.getProposedSST());
             }
         }
 
@@ -458,7 +458,7 @@ public class MaterialServiceImpl implements MaterialService {
             try {
                 material.setNewSAPSafetyTime(Integer.parseInt(nextRecord[getIndex(header, "New SAP Safety Time")]));
             } catch (NumberFormatException e) {
-                material.setNewSAPSafetyTime(material.getCurrentSAPSafeTime());
+                material.setNewSAPSafetyTime(material.getProposedST());
             }
         }
 
