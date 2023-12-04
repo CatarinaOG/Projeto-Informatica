@@ -1,17 +1,17 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { HttpHeaders } from '@angular/common/http';
 import { ActivatedRoute, Data, ParamMap, Router } from '@angular/router';
-import { combineLatest, filter, Observable, switchMap, tap } from 'rxjs';
+import { combineLatest, filter, last, Observable, switchMap, tap } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { IEditCell } from '../editCell.model'
 import { specialFilter } from '../specialFilters.model'
 import { IMaterial } from '../material.model';
-
 import { ITEMS_PER_PAGE, PAGE_HEADER, TOTAL_COUNT_RESPONSE_HEADER } from 'app/config/pagination.constants';
 import { ASC, DESC, SORT, ITEM_DELETED_EVENT, DEFAULT_SORT_DATA } from 'app/config/navigation.constants';
 import { EntityArrayResponseType, MaterialService } from '../service/material.service';
 import { MaterialDeleteDialogComponent } from '../delete/material-delete-dialog.component';
 import { FilterOptions, IFilterOptions, IFilterOption } from 'app/shared/filter/filter.model';
+import { IHistoryEntity } from '../historyEntity.model';
 
 @Component({
   selector: 'jhi-material',
@@ -26,6 +26,8 @@ export class MaterialComponent implements OnInit {
   predicate = 'id';
   ascending = true;
   filters: IFilterOptions = new FilterOptions();
+
+  history: IHistoryEntity[] = [];
 
   msg = new Map<string, string>([
     ["Material", "Material"],
@@ -169,6 +171,7 @@ export class MaterialComponent implements OnInit {
         }
       });
     }
+    this.history = [];
 
 }
 
@@ -183,12 +186,15 @@ export class MaterialComponent implements OnInit {
     if (this.message === "Submit"){
       this.submitToSAP()
     }
-    if (this.message === "DowBid.in%5D=3059nload"){
+    if (this.message === "Download"){
       this.materialService
       .exportFileAsExcel()
       .subscribe((res) =>
         this.createAndShowDownloadFile(res, "dowload.xlsx", "application/vnd.ms-excel")
       );  }
+    if (this.message === "Undo"){
+      this.undo()
+    }
   }
 
   createAndShowDownloadFile = (content: any, fileName: string, contentType: string): void => {
@@ -384,10 +390,85 @@ export class MaterialComponent implements OnInit {
   }
 
 
+  checkEditCell(lastEntry : IHistoryEntity): boolean{
+    let materialValue : IMaterial | undefined = this.materials?.find(e => e.id === lastEntry?.materialId);
+    switch (lastEntry.column){
+      case "newSST":
+        if (materialValue?.newSAPSafetyStock === lastEntry.oldValue){
+          return (this.linhas.get(lastEntry.materialId)?.newST !== materialValue?.proposedSST) || (this.linhas.get(lastEntry.materialId)?.newComment !== "")
+        }
+        break;
+      case "newST":
+        if (materialValue?.newSAPSafetyStock === lastEntry.oldValue){
+          return (this.linhas.get(lastEntry.materialId)?.newST !== materialValue?.proposedST) || (this.linhas.get(lastEntry.materialId)?.newComment !== "")
+        }
+        break;
+    }
+    return false;
+  }
+
+
+  undo() : void{
+    if(this.history.length > 0){
+      let lastEntry = this.history.pop();
+      if(lastEntry){
+        let editCell: IEditCell | undefined;
+        editCell = this.linhas.get(lastEntry.materialId)
+        if(editCell){
+          switch(lastEntry.column){
+            case "newSST":
+              if(!this.checkEditCell(lastEntry)){
+                editCell.newSST = lastEntry.oldValue;
+                this.linhas.set(lastEntry.materialId, editCell);
+              }
+              else this.linhas.delete(editCell.materialId);
+              break;
+            case "newST":
+              if(!this.checkEditCell(lastEntry)){
+                editCell.newST = lastEntry.oldValue;
+                this.linhas.set(lastEntry.materialId, editCell);
+              }
+              else this.linhas.delete(editCell.materialId);
+              break;
+          }
+        }
+      }
+    }
+    console.log("History depois do undo : " , this.linhas)
+  }
+
+
+  addToHistory(col_name : string, new_value : number , old_value : number, material_id : number) : void{
+    // - if existe no history && nome da coluna está la
+    //   adicionar ao índice e alterar new e old
+    // - else
+    //   criar nova entrada no history com indice a 0
+
+    // check if value already exists in history, and if it does, update it
+    let index = this.history.findIndex((historyEntity) => {historyEntity.materialId == material_id && historyEntity.column == col_name})
+    // if it doesn't exist, create a new entry
+    if(index === -1){
+      let newEntry = <IHistoryEntity>{materialId : material_id, column : col_name, 
+                                      oldValue : old_value , currentValue : new_value};
+      this.history.push(newEntry);
+      console.log("Braço A History atual é: ", this.history);
+    }
+    else{
+      let newEntry = <IHistoryEntity>{}; // mudar old value
+      newEntry.materialId = material_id;
+      newEntry.oldValue = this.history[index].currentValue;
+      newEntry.currentValue = new_value;
+      console.log("Braço B History atual é: ", this.history);
+    }
+    if(this.history.length > 10){
+      this.history.shift();
+    }
+  }
+
   input(event: any, col_name : string, id: number): void {
 
     let editCell: IEditCell | undefined;
-
+    let oldValue = 0;
     if (this.linhas.has(id)){
       editCell = this.linhas.get(id);
     } 
@@ -401,8 +482,14 @@ export class MaterialComponent implements OnInit {
       editCell.flag = this.materials?.find(e => e.id === id)?.flagMaterial ?? false;
     }
     if (editCell){
-      if (col_name === "newSST") editCell.newSST = Math.round(event.target.value);
-      if (col_name === "newST") editCell.newST = Math.round(event.target.value);
+      if (col_name === "newSST"){
+        oldValue = editCell.newSST
+        editCell.newSST = Math.round(event.target.value);
+      } 
+      if (col_name === "newST"){
+        oldValue = editCell.newST;
+        editCell.newST = Math.round(event.target.value); 
+      }
       if (col_name === "newComment") editCell.newComment = event.target.value;
       if (col_name === "selected") {  
         editCell.selected = event.target.checked;
@@ -418,6 +505,7 @@ export class MaterialComponent implements OnInit {
       console.log(editCell)
       this.linhas.set(id, editCell)
       this._isEditable = [-1,-1]
+      this.addToHistory(col_name, Math.round(Number(event.target.value)), oldValue, id);
     }
     
   }

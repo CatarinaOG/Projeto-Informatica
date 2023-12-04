@@ -234,10 +234,18 @@
         </ul>
       </div>
 
+
+    
+    <button class="btn btn-info me-2" style="margin-left: 8px;" (click)="sendUndo()" [disabled]="historyLength==0">
+      <fa-icon icon="undo"></fa-icon>
+      <span class="font-weight-bold">Undo</span>
+    </button>
+
     <button class="btn btn-info me-2" style="margin-left: 8px;" (click)="sendLoad()" >
       <fa-icon icon="sync"></fa-icon>
       <span class="font-weight-bold">Refresh list</span>
     </button>
+
 
     <div style="flex-grow: 1;"></div> 
     

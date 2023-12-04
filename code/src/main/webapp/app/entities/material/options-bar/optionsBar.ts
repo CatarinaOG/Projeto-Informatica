@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'options-bar',
@@ -6,6 +6,7 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 })
 export class OptionsBar implements OnInit {
 
+  @Input() historyLength! : number; 
   @Output() stringEmitter = new EventEmitter<string>();
   @Output() fileEmitter = new EventEmitter<{opType :boolean, file : File}>();
   @Output() textFilterEmitter = new EventEmitter<{filterName : string, filterText : string}>();
@@ -109,5 +110,9 @@ export class OptionsBar implements OnInit {
 
     submitToSAP(){
         this.stringEmitter.emit("Submit")
+    }
+
+    sendUndo(){
+        this.stringEmitter.emit("Undo")
     }
 };
