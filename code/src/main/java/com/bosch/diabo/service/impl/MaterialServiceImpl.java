@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.ArrayList;
 
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
@@ -513,6 +514,18 @@ public class MaterialServiceImpl implements MaterialService {
                 );
             }
         }
+    }
+
+    public List<Material> getMatrialChanged(List<Object> data){
+        ArrayList<Material> l = new ArrayList<>();
+        for (Object item : data) {
+            if (item instanceof Map) {
+                Map<String, Object> dataMap = (Map<String, Object>) item;
+                Optional<Material> mat = findOne(extractLong(dataMap.get("materialId")));
+                mat.ifPresent(m -> l.add(m));
+            }
+        }
+        return l;
     }
 
     public void updateObject(Long materialId, int newSST, int newST, String newComment, Boolean flag){

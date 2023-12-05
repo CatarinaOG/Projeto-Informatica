@@ -43,8 +43,13 @@ export class MaterialService {
     return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
-  submitChanges(data : any[]): Observable<HttpResponse<{}>> {
-    return this.http.post(`${this.resourceUrl}/submitChanges`,data, { observe: 'response' });
+  submitChanges(data : any[]): Observable<Blob>{
+    return this.http.post<Blob>(`${this.resourceUrl}/submitChanges/`,data, {
+      responseType: 'blob' as 'json',
+      headers: {
+        Accept: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      },
+    });
   }
 
   uploadFileReplace(file: File): Observable<HttpResponse<{}>> {

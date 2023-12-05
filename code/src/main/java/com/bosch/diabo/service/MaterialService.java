@@ -98,4 +98,6 @@ public interface MaterialService {
      */
     void submitChanges(List<Object> data);
 
+    List<Material> getMatrialChanged(List<Object> data)
+
 }

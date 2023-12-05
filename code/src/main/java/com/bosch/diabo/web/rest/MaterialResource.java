@@ -274,32 +274,37 @@ public class MaterialResource {
      * @throws IOException if file reading failed
      */
     @PostMapping("/materials/submitChanges")
-    public ResponseEntity<String> submitChanges(@RequestBody List<Object> data) {
+    public ResponseEntity<ByteArrayResource> submitChanges(@RequestBody List<Object> data) {
         log.debug("REST request submit changes");
         materialService.submitChanges(data);
-        return ResponseEntity.ok("");
+        List<Material> data2 = materialService.getMatrialChanged(data);
+        byte[] file = generateExcelFile(data2);
+        return ResponseEntity.ok()
+            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + "DataChanges.xlsx")
+            .contentType(MediaType.parseMediaType("application/vnd.ms-excel"))
+            .body(new ByteArrayResource(file));
+        
     }
 
     @GetMapping("/materials/download") 
     public ResponseEntity<ByteArrayResource> downloadExcel() throws IOException {
+        // Query database and get result set
+        String fileName = "Data.xlsx";
+        MaterialCriteria mc = new MaterialCriteria();
+        List<Material> materials = materialQueryService.findByCriteria(mc);
+        byte[] data;
 
-    // Query database and get result set
-    String fileName = "Data.xlsx";
-    MaterialCriteria mc = new MaterialCriteria();
-    List<Material> materials = materialQueryService.findByCriteria(mc);
-    byte[] data;
+        try{
+            data = generateExcelFile(materials);
+        }
+        catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
 
-    try{
-        data = generateExcelFile(materials);
-    }
-    catch (Exception e){
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-    }
-
-    return ResponseEntity.ok()
-        .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName)
-        .contentType(MediaType.parseMediaType("application/vnd.ms-excel"))
-        .body(new ByteArrayResource(data));
+        return ResponseEntity.ok()
+            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName)
+            .contentType(MediaType.parseMediaType("application/vnd.ms-excel"))
+            .body(new ByteArrayResource(data));
     }
 
     public byte[] generateExcelFile(List<Material> materials) throws IOException{

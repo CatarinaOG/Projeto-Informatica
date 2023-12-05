@@ -154,24 +154,11 @@ export class MaterialComponent implements OnInit {
     }
     else {
       console.log("Lista : " , list)
-      this.materialService.submitChanges(list).subscribe({
-        next: (res: any) => {       
-          this.load()
-          console.log("Estamos a recarregar")
-          alert("Dados enviados com sucesso")
-          this.materialService
-            .exportFileAsExcel()
-            .subscribe((res) =>
-              this.createAndShowDownloadFile(res, "dowload.xlsx", "application/vnd.ms-excel")
-            ); 
-            this.linhas.clear();
-          },error:(error:any) =>{
-          alert("Erro no upload dos ficheiros")
-          alert("Error Uploading Values")
-        }
-      });
-    }
-    this.history = [];
+      this.materialService.submitChanges(list).subscribe((res) =>
+        this.createAndShowDownloadFile(res, "DataChanged.xlsx", "application/vnd.ms-excel"));
+      };
+  }
+
 
 }
 
