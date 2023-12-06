@@ -103,7 +103,7 @@
           </th>
 
           <th scope="col" jhiSortBy="abcClassification" class ="materialInfo headerRowEnd">
-            <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{msg.get('ABC Classification')}}">
+            <div class="d-flex" style="place-content: center;" placement="top" [ngbTooltip]="msg.get('ABC Classification')">
               <span>ABC Classification</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
@@ -215,19 +215,19 @@
           <th *ngIf = "!visibility.get('inventory')" class ="materialInfo headerRowEnd">
             ...
           </th>
-          <th scope="col" jhiSortBy="newSapSafetyStock" class="edit" [ngClass] ="func2()">
+          <th scope="col" jhiSortBy="newSapSafetyStock" class="edit" [ngClass] ="editCellClasses('header')">
             <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{msg.get('New SAP Safety Stock')}}">
               <span>New Sap Safety Stock</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="newSapSafetyTime" class="edit" [ngClass] ="func2()">
+          <th scope="col" jhiSortBy="newSapSafetyTime" class="edit" [ngClass] ="editCellClasses('header')">
             <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{msg.get('New SAP Safety Time')}}">
               <span>New Sap Safety Time</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="selectEntriesForChangeInSap" class="edit" [ngClass] ="func2()">
+          <th scope="col" jhiSortBy="selectEntriesForChangeInSap" class="edit" [ngClass] ="editCellClasses('header')">
             <div  >
               <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{msg.get('Select Entries For Change')}}">
                 <span>Select Entries For Change In Sap</span>
@@ -238,14 +238,14 @@
             </div>
           </th>
 
-          <th scope="col" jhiSortBy="flagMaterial" class="edit" [ngClass] ="func2()">
+          <th scope="col" jhiSortBy="flagMaterial" class="edit" [ngClass] ="editCellClasses('header')">
             <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{msg.get('Flag Material as Special Case')}}">
               <span>Flag Material As Special Case</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
 
-          <th scope="col" jhiSortBy="comment" class="setWidth edit headerRowEnd" [ngClass] ="func2()">
+          <th scope="col" jhiSortBy="comment" class="setWidth edit headerRowEnd" [ngClass] ="editCellClasses('header')">
             <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{msg.get('Comment')}}">
               <span>Comment</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
@@ -303,28 +303,29 @@
 
          
           
-          <td class ="edit" *ngIf="isEditable[0] === material.id && isEditable[1] === 0 " ><input class = "inputWidth" type="number" min=0 placeholder="{{(linhas.get(material.id) && (linhas.get(material.id)?.newSST !== material.proposedSST )) ? linhas.get(material.id)?.newSST : material.proposedSST}}" (change)="input($event,'newSST',material.id)"></td>
-          <td class ="edit" *ngIf="!(isEditable[0] === material.id && isEditable[1] === 0) " (click)="makeEditable(material.id,0)" [ngStyle]="{'color': (linhas.has(material.id) && (linhas.get(material.id)?.newSST !== material.proposedSST)) ? 'blue' : 'black'}" [ngClass] ="func2()">{{(linhas.get(material.id) && (linhas.get(material.id)?.newSST) !== material.proposedSST  ? linhas.get(material.id)?.newSST : ((material.newSAPSafetyStock !== -1 ) ? material.newSAPSafetyStock : material.proposedSST ))}}</td>
+          <td class ="edit" *ngIf="isEditable[0] === material.id && isEditable[1] === 0 " ><input class = "inputWidth" type="number" min=0 [placeholder]="placeholderGeneratorNum('SST',material)" (change)="input($event,'newSST',material.id)"></td>
+          
+          <td class ="edit" *ngIf="!(isEditable[0] === material.id && isEditable[1] === 0) " (click)="makeEditable(material.id,0)"  [ngClass] ="editCellClasses('SST',material)">{{(linhas.get(material.id) && (linhas.get(material.id)?.newSST) !== material.proposedSST  ? linhas.get(material.id)?.newSST : ((material.newSAPSafetyStock !== -1 ) ? material.newSAPSafetyStock : material.proposedSST ))}}</td>
 
 
 
-          <td class ="edit " *ngIf="isEditable[0] === material.id && isEditable[1] === 1"><input class = "inputWidth" type="number" min=0 placeholder="{{ (linhas.get(material.id) && (linhas.get(material.id)?.newST !== material.proposedST )) ? linhas.get(material.id)?.newST :material.proposedST}}" (change)="input($event,'newST',material.id)"></td>
+          <td class ="edit " *ngIf="isEditable[0] === material.id && isEditable[1] === 1"><input class = "inputWidth" type="number" min=0 [placeholder]="placeholderGeneratorNum('ST',material)" (change)="input($event,'newST',material.id)"></td>
 
-          <td class ="edit " *ngIf="!(isEditable[0] === material.id && isEditable[1] === 1)" (click)="makeEditable(material.id,1)" [ngStyle]="{'color': (linhas.has(material.id) && (linhas.get(material.id)?.newST !== material.proposedST)) ? 'blue' : 'black'}" [ngClass] ="func2()">{{(linhas.get(material.id) && (linhas.get(material.id)?.newST) !== material.proposedST  ? linhas.get(material.id)?.newST : ((material.newSAPSafetyTime !== -1 ) ? material.newSAPSafetyTime : material.proposedST ))}}</td>
+          <td class ="edit " *ngIf="!(isEditable[0] === material.id && isEditable[1] === 1)" (click)="makeEditable(material.id,1)"  [ngClass] ="editCellClasses('ST',material)">{{(linhas.get(material.id) && (linhas.get(material.id)?.newST) !== material.proposedST  ? linhas.get(material.id)?.newST : ((material.newSAPSafetyTime !== -1 ) ? material.newSAPSafetyTime : material.proposedST ))}}</td>
 
           
 
 
-          <td class ="edit" [ngClass] ="func2()"><input type="checkbox" [checked]="linhas.get(material.id)?.selected" [disabled]="!linhas.has(material.id)" (click)="input($event,'selected',material.id)"></td>
+          <td class ="edit" [ngClass] ="editCellClasses('header')"><input type="checkbox" [checked]="linhas.get(material.id)?.selected" [disabled]="!linhas.has(material.id)" (click)="input($event,'selected',material.id)"></td>
 
-          <td class ="edit" [ngClass] ="func2()">
+          <td class ="edit" [ngClass] ="editCellClasses('header')">
             <flag-modal [material]="material" [linhas] = "linhas" (flagDateEmmiter) = "receiveFlagEmission($event)"></flag-modal>
           </td>
 
           
           <td class ="edit setWidth" *ngIf="isEditable[0] === material.id && isEditable[1] === 2"><input class="inputWidth" placeholder="{{ linhas.get(material.id) ? linhas.get(material.id)?.newComment : material.comment}}" (change)="input($event,'newComment',material.id)"></td>
          
-          <td class ="edit setWidth" *ngIf="!(isEditable[0] === material.id && isEditable[1] === 2)" (click)="makeEditable(material.id,2)" [ngStyle]="{'color': (linhas.has(material.id) && (linhas.get(material.id)?.newComment !== material.comment)) ? 'blue' : 'black'}" [ngClass] ="func2()" >{{((linhas.has(material.id) && (linhas.get(material.id)?.newComment !== material.comment))) ? linhas.get(material.id)?.newComment : material.comment }}</td>
+          <td class ="edit setWidth" *ngIf="!(isEditable[0] === material.id && isEditable[1] === 2)" (click)="makeEditable(material.id,2)" [ngClass] ="editCellClasses('Comment',material)" >{{((linhas.has(material.id) && (linhas.get(material.id)?.newComment !== material.comment))) ? linhas.get(material.id)?.newComment : material.comment }}</td>
 
 
           <th *ngIf = "!visibility.get('edit')">

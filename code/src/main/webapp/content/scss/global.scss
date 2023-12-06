@@ -316,11 +316,11 @@ angular-cli removes postcss-rtl processed inline css, processed rules must be ad
 }
 
 .textBlue {
-  color: blue;
+  color: blue !important;
 }
 
 .textBlack{
-  color: black;
+  color: black !important;
 }
 
 .activeFilterCell {

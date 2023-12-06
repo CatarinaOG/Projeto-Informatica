@@ -124,13 +124,78 @@ export class MaterialComponent implements OnInit {
     } 
   }
 
-  func2() : string {
+  editCellClasses(valueName : string,material? : IMaterial) : string {
+    let returnVal = ""
     if (this.visibility.get('edit') === false){
-      return " tableHide"
+      returnVal = "tableHide "
     }
     else{
-      return ""
+      returnVal = ""
+      if (valueName!== "header"){
+        if(material !== undefined ){
+          returnVal += this.chooseColor(material,valueName);
+          console.log("returnVAL IS: ",returnVal)
+        }
+      }
     }
+    return returnVal
+  }
+
+  chooseColor(material : IMaterial , valueName : string) : string {
+    let returnVal = ""
+    switch (valueName){
+      case ("SST"):
+        if (this.linhas.has(material.id) && (this.linhas.get(material.id)?.newSST !== material.newSAPSafetyStock)){
+          returnVal = "textBlue"
+          console.log("AAAAA")
+        }
+        else {
+          console.log("material.id is:",material.id)
+          console.log("This.linhas.has(material.id) result is:",this.linhas.has(material.id))
+          console.log("this.linhas.get(material.id)?.newSST result is:",this.linhas.get(material.id)?.newSST)
+          console.log("material.newSAPSafetyStock result is:", material.newSAPSafetyStock)
+          returnVal= "textBlack"
+        }
+        break;
+      case ("ST"):
+        if (this.linhas.has(material.id) && (this.linhas.get(material.id)?.newST !== material.proposedST)){
+          returnVal = "textBlue"
+        }
+        else {
+          returnVal= "textBlack"
+        }
+        break;
+      case ("Comment"):
+        if (this.linhas.has(material.id) && (this.linhas.get(material.id)?.newComment !== material.comment)){
+          returnVal = "textBlue"
+        }
+        else {
+          returnVal = "textBlack"
+        }
+        break;
+    }
+    return returnVal
+  }
+
+  placeholderGeneratorNum(valueName : string, material : IMaterial) : number {
+    let returnVal = 0;
+    let editCell : IEditCell | undefined = this.linhas.get(material.id)
+    if (valueName === "SST"){
+      if ((editCell !== undefined && (this.linhas.get(material.id)?.newSST !== material.newSAPSafetyStock ))){
+        returnVal = editCell.newSST
+      }
+      else if (material.newSAPSafetyStock) returnVal = material.newSAPSafetyStock;
+    }
+    else if(valueName === "ST"){
+      if ((editCell !== undefined && (this.linhas.get(material.id)?.newSST !== material.newSAPSafetyStock ))){
+        returnVal = editCell.newSST
+      }
+      else if (material.newSAPSafetyStock) returnVal = material.newSAPSafetyStock;
+    }
+    else if(valueName === "Comment"){
+
+    }
+    return returnVal;
   }
 
 
@@ -138,13 +203,16 @@ export class MaterialComponent implements OnInit {
 
     const list : IEditCell[] = [];
     
-    this.linhas.forEach(function(value,key) {
+    this.linhas.forEach((value,key) => {
       if (value.selected){
-        list.push(value)
+        list.push(value);
+        this.linhas.delete(key);
       }
     })
     return list
   }
+
+
 
   submitToSAP(){
     let list = this.mapToSubmit();
@@ -153,10 +221,13 @@ export class MaterialComponent implements OnInit {
     }
     else {
       console.log("Lista : " , list)
-      this.materialService.submitChanges(list).subscribe((res) =>
-        this.createAndShowDownloadFile(res, "DataChanged.xlsx", "application/vnd.ms-excel"));
-      };
-  }
+      this.materialService.submitChanges(list).subscribe((res) => {
+        this.createAndShowDownloadFile(res, "DataChanged.xlsx", "application/vnd.ms-excel");
+        this.load()
+      })
+      }
+    };
+  
 
   message:string | undefined;
 
@@ -448,7 +519,7 @@ export class MaterialComponent implements OnInit {
   }
 
   input(event: any, col_name : string, id: number): void {
-
+    console.log("This linhas is : ", this.linhas)
     let editCell: IEditCell | undefined;
     let oldValue = 0;
     if (this.linhas.has(id)){
