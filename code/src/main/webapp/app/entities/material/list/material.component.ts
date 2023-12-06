@@ -147,7 +147,6 @@ export class MaterialComponent implements OnInit {
   }
 
   submitToSAP(){
-
     let list = this.mapToSubmit();
     if (list.length == 0) {
       alert("No lines were selected");
@@ -158,10 +157,6 @@ export class MaterialComponent implements OnInit {
         this.createAndShowDownloadFile(res, "DataChanged.xlsx", "application/vnd.ms-excel"));
       };
   }
-
-
-}
-
 
   message:string | undefined;
 

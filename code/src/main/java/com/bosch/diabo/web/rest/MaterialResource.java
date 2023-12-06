@@ -278,7 +278,12 @@ public class MaterialResource {
         log.debug("REST request submit changes");
         materialService.submitChanges(data);
         List<Material> data2 = materialService.getMatrialChanged(data);
-        byte[] file = generateExcelFile(data2);
+        byte[] file;
+        try {
+            file = generateExcelFile(data2);
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
         return ResponseEntity.ok()
             .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + "DataChanges.xlsx")
             .contentType(MediaType.parseMediaType("application/vnd.ms-excel"))
