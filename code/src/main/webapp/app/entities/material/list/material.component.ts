@@ -134,7 +134,6 @@ export class MaterialComponent implements OnInit {
       if (valueName!== "header"){
         if(material !== undefined ){
           returnVal += this.chooseColor(material,valueName);
-          console.log("returnVAL IS: ",returnVal)
         }
       }
     }
@@ -147,13 +146,8 @@ export class MaterialComponent implements OnInit {
       case ("SST"):
         if (this.linhas.has(material.id) && (this.linhas.get(material.id)?.newSST !== material.newSAPSafetyStock)){
           returnVal = "textBlue"
-          console.log("AAAAA")
         }
         else {
-          console.log("material.id is:",material.id)
-          console.log("This.linhas.has(material.id) result is:",this.linhas.has(material.id))
-          console.log("this.linhas.get(material.id)?.newSST result is:",this.linhas.get(material.id)?.newSST)
-          console.log("material.newSAPSafetyStock result is:", material.newSAPSafetyStock)
           returnVal= "textBlack"
         }
         break;
@@ -187,16 +181,54 @@ export class MaterialComponent implements OnInit {
       else if (material.newSAPSafetyStock) returnVal = material.newSAPSafetyStock;
     }
     else if(valueName === "ST"){
-      if ((editCell !== undefined && (this.linhas.get(material.id)?.newSST !== material.newSAPSafetyStock ))){
-        returnVal = editCell.newSST
+      if ((editCell !== undefined && (this.linhas.get(material.id)?.newST !== material.newSAPSafetyTime ))){
+        returnVal = editCell.newST
       }
-      else if (material.newSAPSafetyStock) returnVal = material.newSAPSafetyStock;
-    }
-    else if(valueName === "Comment"){
-
+      else if (material.newSAPSafetyTime) returnVal = material.newSAPSafetyTime;
     }
     return returnVal;
   }
+
+  placeholderGeneratorString(material : IMaterial) : string {
+    let returnVal = "";
+    let editCell : IEditCell | undefined = this.linhas.get(material.id)
+    if ((editCell !== undefined && (editCell.newComment !== material.comment ))){
+      returnVal = editCell.newComment
+    }
+    else if (material.comment) returnVal = material.comment;
+
+    return returnVal;
+  }
+
+
+cellValueGenerator(valueName : string, material : IMaterial) : number {
+
+  let returnVal = 0;
+  let editCell : IEditCell | undefined = this.linhas.get(material.id)
+
+  if (valueName === "SST"){
+    if(editCell!==undefined && (editCell.newSST) !== material.proposedSST) returnVal = editCell.newSST
+    else if ( material.newSAPSafetyStock && material.newSAPSafetyStock !== -1 ){
+      returnVal = material.newSAPSafetyStock;
+    }
+    else if(material.proposedSST){
+      returnVal = material.proposedSST
+    }
+  }
+  else if (valueName === "ST"){
+    if(editCell!==undefined && (editCell.newST) !== material.proposedST) returnVal = editCell.newST
+    else if ( material.newSAPSafetyTime && material.newSAPSafetyTime !== -1 ){
+      returnVal = material.newSAPSafetyTime;
+    }
+    else if(material.proposedST){
+      returnVal = material.proposedST
+    }
+  }
+  return returnVal;
+}
+
+
+
 
 
   mapToSubmit(): IEditCell[] {
@@ -220,7 +252,6 @@ export class MaterialComponent implements OnInit {
       alert("No lines were selected");
     }
     else {
-      console.log("Lista : " , list)
       this.materialService.submitChanges(list).subscribe((res) => {
         this.createAndShowDownloadFile(res, "DataChanged.xlsx", "application/vnd.ms-excel");
         this.load()
@@ -261,7 +292,6 @@ export class MaterialComponent implements OnInit {
 
 
   receiveFilterRemoveMessage (filter : IFilterOption) : void{
-    console.log(filter.values)
     for(let value of filter.values){
       this.filters.removeFilter(filter.name, value);
     }
@@ -272,7 +302,6 @@ export class MaterialComponent implements OnInit {
       if (actSpFilter.name === spFilter.name){
         actSpFilter.isActive = false
         actSpFilter.idList = []
-        console.log(actSpFilter)
       }
     })
 
@@ -354,7 +383,6 @@ export class MaterialComponent implements OnInit {
   receiveFlagEmission(emission : any){
     let editCell: IEditCell | undefined;
 
-    console.log("Emission is" , emission);
 
     if (this.linhas.has(emission.id)){
       editCell = this.linhas.get(emission.id);
@@ -374,7 +402,6 @@ export class MaterialComponent implements OnInit {
         editCell.dateFlag = emission.date;
       }
       this.linhas.set(emission.id, editCell)
-      console.log(editCell);
     }
   }
 
@@ -383,7 +410,6 @@ export class MaterialComponent implements OnInit {
     const filterName :string = event.filterName;
     
     const submitName : string = filterName + "." + event.operator
-    console.log("submitted name : " ,submitName);
     this.filters.removeAllFiltersName(submitName)
     this.filters.addFilter(submitName, event.value);
     
@@ -394,16 +420,13 @@ export class MaterialComponent implements OnInit {
   onFileSelected(event:any): void {
     //true -> replace
     //false -> add
-    console.log("Entrou na função")
     const file : File = event.file ;
     const typeReplace : boolean = event.opType;
     if (file && typeReplace) {
       this.materialService.uploadFileReplace(file).subscribe({
         next: (res: any) => {       
           this.load()
-          console.log("File Uploaded aaa")
         },error:(error:any) =>{
-          alert("Error Uploading File")
         }
       });
     }
@@ -487,7 +510,6 @@ export class MaterialComponent implements OnInit {
         }
       }
     }
-    console.log("History depois do undo : " , this.linhas)
   }
 
 
@@ -504,14 +526,12 @@ export class MaterialComponent implements OnInit {
       let newEntry = <IHistoryEntity>{materialId : material_id, column : col_name, 
                                       oldValue : old_value , currentValue : new_value};
       this.history.push(newEntry);
-      console.log("Braço A History atual é: ", this.history);
     }
     else{
       let newEntry = <IHistoryEntity>{}; // mudar old value
       newEntry.materialId = material_id;
       newEntry.oldValue = this.history[index].currentValue;
       newEntry.currentValue = new_value;
-      console.log("Braço B History atual é: ", this.history);
     }
     if(this.history.length > 10){
       this.history.shift();
@@ -519,7 +539,6 @@ export class MaterialComponent implements OnInit {
   }
 
   input(event: any, col_name : string, id: number): void {
-    console.log("This linhas is : ", this.linhas)
     let editCell: IEditCell | undefined;
     let oldValue = 0;
     if (this.linhas.has(id)){
@@ -554,8 +573,6 @@ export class MaterialComponent implements OnInit {
         // }
       }
       if (col_name === "flag") editCell.flag = !editCell.flag
-      console.log("value " + col_name + "changed")
-      console.log(editCell)
       this.linhas.set(id, editCell)
       this._isEditable = [-1,-1]
       this.addToHistory(col_name, Math.round(Number(event.target.value)), oldValue, id);
@@ -579,16 +596,13 @@ export class MaterialComponent implements OnInit {
     var cl = document.getElementsByClassName(col_name)
     if (this.visibility.get(col_name) == false){
       this.visibility.set(col_name, true)
-      console.log("Is visible equals to " , this.visibility.get(col_name))
       for(let i = 0; i<cl.length;i++){
         cl[i].classList.remove("tableHide")
       }
     }
     else {
       this.visibility.set(col_name, false)
-      console.log("Is visible equals to " , this.visibility.get(col_name))
       for(let i = 0; i<cl.length;i++){
-        console.log("Adicionei o tableHide")
         cl[i].classList.add("tableHide")
       }
     }

@@ -305,13 +305,13 @@
           
           <td class ="edit" *ngIf="isEditable[0] === material.id && isEditable[1] === 0 " ><input class = "inputWidth" type="number" min=0 [placeholder]="placeholderGeneratorNum('SST',material)" (change)="input($event,'newSST',material.id)"></td>
           
-          <td class ="edit" *ngIf="!(isEditable[0] === material.id && isEditable[1] === 0) " (click)="makeEditable(material.id,0)"  [ngClass] ="editCellClasses('SST',material)">{{(linhas.get(material.id) && (linhas.get(material.id)?.newSST) !== material.proposedSST  ? linhas.get(material.id)?.newSST : ((material.newSAPSafetyStock !== -1 ) ? material.newSAPSafetyStock : material.proposedSST ))}}</td>
+          <td class ="edit" *ngIf="!(isEditable[0] === material.id && isEditable[1] === 0) " (click)="makeEditable(material.id,0)"  [ngClass] ="editCellClasses('SST',material)">{{cellValueGenerator('SST',material)}}</td>
 
 
 
           <td class ="edit " *ngIf="isEditable[0] === material.id && isEditable[1] === 1"><input class = "inputWidth" type="number" min=0 [placeholder]="placeholderGeneratorNum('ST',material)" (change)="input($event,'newST',material.id)"></td>
 
-          <td class ="edit " *ngIf="!(isEditable[0] === material.id && isEditable[1] === 1)" (click)="makeEditable(material.id,1)"  [ngClass] ="editCellClasses('ST',material)">{{(linhas.get(material.id) && (linhas.get(material.id)?.newST) !== material.proposedST  ? linhas.get(material.id)?.newST : ((material.newSAPSafetyTime !== -1 ) ? material.newSAPSafetyTime : material.proposedST ))}}</td>
+          <td class ="edit " *ngIf="!(isEditable[0] === material.id && isEditable[1] === 1)" (click)="makeEditable(material.id,1)"  [ngClass] ="editCellClasses('ST',material)">{{cellValueGenerator('ST',material)}}</td>
 
           
 
@@ -323,7 +323,7 @@
           </td>
 
           
-          <td class ="edit setWidth" *ngIf="isEditable[0] === material.id && isEditable[1] === 2"><input class="inputWidth" placeholder="{{ linhas.get(material.id) ? linhas.get(material.id)?.newComment : material.comment}}" (change)="input($event,'newComment',material.id)"></td>
+          <td class ="edit setWidth" *ngIf="isEditable[0] === material.id && isEditable[1] === 2"><input class="inputWidth" [placeholder]="placeholderGeneratorString(material)" (change)="input($event,'newComment',material.id)"></td>
          
           <td class ="edit setWidth" *ngIf="!(isEditable[0] === material.id && isEditable[1] === 2)" (click)="makeEditable(material.id,2)" [ngClass] ="editCellClasses('Comment',material)" >{{((linhas.has(material.id) && (linhas.get(material.id)?.newComment !== material.comment))) ? linhas.get(material.id)?.newComment : material.comment }}</td>
 
