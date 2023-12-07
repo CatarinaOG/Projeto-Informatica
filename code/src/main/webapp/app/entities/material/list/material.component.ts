@@ -345,6 +345,12 @@ cellValueGenerator(valueName : string, material : IMaterial) : number {
     this.applySpecialFilters()
   }
 
+
+  receiveDropdownNumber(event : any){
+    this.itemsPerPage = event;
+    this.load()
+  }
+
   applySpecialFilters(){
     this.filters.removeAllFiltersName("id.in")
     this.filters.removeAllFiltersName("id.notIn")

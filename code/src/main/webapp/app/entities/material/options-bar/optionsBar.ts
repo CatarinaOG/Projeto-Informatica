@@ -12,6 +12,8 @@ export class OptionsBar implements OnInit {
   @Output() textFilterEmitter = new EventEmitter<{filterName : string, filterText : string}>();
   @Output() abcFilterEmitter = new EventEmitter<{opType : boolean, filterValue : string}>();
   @Output() numberFilterEmitter = new EventEmitter<{filterName : string, operator : string, value : number}>();
+  @Output() dropdownNumberEmitter = new EventEmitter<number>();
+
 
   filterStatus = new Map<string,boolean>([
     ["Material Name", false],
@@ -115,4 +117,9 @@ export class OptionsBar implements OnInit {
     sendUndo(){
         this.stringEmitter.emit("Undo")
     }
+
+    sendNumber(dropdownChoice : number){
+        this.dropdownNumberEmitter.emit(dropdownChoice)
+    }
 };
+

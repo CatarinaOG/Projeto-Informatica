@@ -235,6 +235,32 @@
       </div>
 
 
+      <div ngbDropdown class="dropdown d-flex" autoClose = "outside">
+        <button ngbDropdownToggle style="display: flex;" class="btn btn-white" type="button" id="nestedDropdownButton" aria-expanded="false"> 
+          <span style="flex-grow: 1; text-align: left;">Table Size</span>
+          <fa-icon icon="caret-down" style="margin-left: 10px;"></fa-icon>
+        </button>
+        <ul ngbDropdownMenu aria-labelledby="nestedDropdownButton">
+          <li>
+            <button ngbDropdownItem  class="btn btn-primary" (click)="sendNumber(10)">
+              <span>10</span>
+            </button>
+          </li>
+          <li>
+            <button ngbDropdownItem class="btn btn-primary" (click)="sendNumber(20)">
+              <span>20</span>
+            </button>
+          </li>
+          <li>
+            <button ngbDropdownItem class="btn btn-primary" (click)="sendNumber(30)">
+              <span>30</span>
+            </button>
+          </li>
+        </ul>
+      </div>
+
+
+
     
     <button class="btn btn-info me-2" style="margin-left: 8px;" (click)="sendUndo()" [disabled]="historyLength==0">
       <fa-icon icon="undo"></fa-icon>
