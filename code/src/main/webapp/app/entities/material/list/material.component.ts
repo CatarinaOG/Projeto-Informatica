@@ -68,6 +68,8 @@ export class MaterialComponent implements OnInit {
     {name: "Selected", isActive: false, idList:[]},
     {name: "Unselected", isActive: false, idList:[]},
     {name: "Unedited", isActive: false, idList:[]},
+    {name: "Flagged", isActive: false, idList:[]},
+    {name: "Unflagged", isActive: false, idList:[]},
   ]; 
   
 
@@ -324,7 +326,7 @@ cellValueGenerator(valueName : string, material : IMaterial) : number {
         this.filters.removeAllFiltersName("description.contains")
         this.filters.addFilter("description.contains",filterValue);
       }
-      else if (filterName === "Selected Row"){
+      else if (filterName === "Selected Materials" || filterName === "Flagged Materials"){
         this.receiveSpecialFilter(filterValue)
       }
     }
@@ -332,17 +334,39 @@ cellValueGenerator(valueName : string, material : IMaterial) : number {
   }
 
   receiveSpecialFilter(filterOp:string){
-    let index = -1;
-    if(filterOp === "Selected")
-      index = 0;
-    else if(filterOp === "Unselected")
-      index = 1
-    else if(filterOp === "Unedited")
-      index = 2;
-    this.specialFiltersList[index].isActive = true
-    this.specialFiltersList[index].idList = this.getSelectedList(filterOp)
-    
+    this.specialFiltersList.forEach((actSpFilter) => {
+      if (actSpFilter.name === filterOp){
+        actSpFilter.isActive = true
+        if(filterOp !== "Flagged" && filterOp !== "Unflagged")
+          actSpFilter.idList = this.getSelectedList(filterOp)
+      }
+      //Ao ativar Unedited, desativar Selected e Unselected
+      if (filterOp === "Unedited" && actSpFilter.name !== filterOp){
+        actSpFilter.isActive = false
+        actSpFilter.idList = []
+      }
+      //Ao ativar Selected ou Unselected, desativar Unedited
+      if ((filterOp === "Selected" || filterOp === "Unselected") && actSpFilter.name === "Unedited"){
+        actSpFilter.isActive = false
+        actSpFilter.idList = []
+      }
+      //Desativa Flagged quando Unflagged e Vice-Versa
+      if(filterOp === "Flagged" && actSpFilter.name === "Unflagged") actSpFilter.isActive = false
+      if(filterOp === "Unflagged" && actSpFilter.name === "Flagged") actSpFilter.isActive = false
+    })
+
     this.applySpecialFilters()
+    // let index = -1;
+    // if(filterOp === "Selected")
+    //   index = 0;
+    // else if(filterOp === "Unselected")
+    //   index = 1
+    // else if(filterOp === "Unedited")
+    //   index = 2;
+    // this.specialFiltersList[index].isActive = true
+    // this.specialFiltersList[index].idList = this.getSelectedList(filterOp)
+    
+    // this.applySpecialFilters()
   }
 
 
@@ -352,19 +376,27 @@ cellValueGenerator(valueName : string, material : IMaterial) : number {
   }
 
   applySpecialFilters(){
+    this.filters.removeAllFiltersName("flagMaterial.equals")
     this.filters.removeAllFiltersName("id.in")
     this.filters.removeAllFiltersName("id.notIn")
-
+    
     this.specialFiltersList.forEach((spFilter) => {
       if(spFilter.isActive){
-        
-        let filterStr = "id.in"
-        if(spFilter.name === "Unedited")
-          filterStr = "id.notIn"
+        if(spFilter.name === "Flagged"){
+          this.filters.addFilter("flagMaterial.equals","true");
+        }
+        else if (spFilter.name === "Unflagged"){
+          this.filters.addFilter("flagMaterial.equals","false");
+        }
+        else{
+            let filterStr = "id.in"
+          if(spFilter.name === "Unedited")
+            filterStr = "id.notIn"
 
-        spFilter.idList.forEach((num) => {
-          this.filters.addFilter(filterStr,num.toString());
-        })
+          spFilter.idList.forEach((num) => {
+            this.filters.addFilter(filterStr,num.toString());
+          })
+        }
       }
     })
   }
@@ -632,6 +664,10 @@ cellValueGenerator(valueName : string, material : IMaterial) : number {
 
   resetFilters(): void{
     this.filters.clear();
+    this.specialFiltersList.forEach((spFilters) => {
+      spFilters.isActive = false;
+      spFilters.idList = [];
+    })
     this.load();
   }
 

@@ -79,13 +79,19 @@ export class OptionsBar implements OnInit {
 
         switch (filterNameOp) {
             case 'Selected':
-                this.textFilterEmitter.emit({filterName : "Selected Row", filterText : filterNameOp})
+                this.textFilterEmitter.emit({filterName : "Selected Materials", filterText : filterNameOp})
                 break;
             case 'Unselected':
-                this.textFilterEmitter.emit({filterName : "Selected Row", filterText : filterNameOp})
+                this.textFilterEmitter.emit({filterName : "Selected Materials", filterText : filterNameOp})
                 break;
             case 'Unedited':
-                this.textFilterEmitter.emit({filterName : "Selected Row", filterText : filterNameOp})
+                this.textFilterEmitter.emit({filterName : "Selected Materials", filterText : filterNameOp})
+                break;
+            case 'Flagged':
+                this.textFilterEmitter.emit({filterName : "Flagged Materials", filterText : filterNameOp})
+                break;
+            case 'Unflagged':
+                this.textFilterEmitter.emit({filterName : "Flagged Materials", filterText : filterNameOp})
                 break;
             default:
                 break;

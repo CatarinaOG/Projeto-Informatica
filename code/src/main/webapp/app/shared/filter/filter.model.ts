@@ -127,10 +127,14 @@ export class FilterOptions implements IFilterOptions {
   }
 
   removeAllFiltersName(name: string) : void{
-    this.getFilterOptionByName(name)?.values.forEach((val) => {
-      this.getFilterOptionByName(name)?.removeValue(val);
-    });
+    let ft = this.getFilterOptionByName(name)
+    if (ft) ft.values = [];
     this.changed();
+
+    // this.getFilterOptionByName(name)?.values.forEach((val) => {
+    //   this.getFilterOptionByName(name)?.removeValue(val);
+    // });
+    // this.changed();
     
     // let i = 0;
     // for(let filter of this._filterOptions){

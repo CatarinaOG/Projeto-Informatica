@@ -173,7 +173,7 @@
           
           <div ngbDropdown class="dropdown d-flex" placement="right-top" autoClose = "outside">
             <button ngbDropdownToggle style="display: flex;" class="btn btn-primary buttonNoBorder inputWidth text-left" type="button" id="nestedDropdownButton" aria-expanded="false"> 
-              <span style="flex-grow: 1; text-align: left;">Selected Rows</span>
+              <span style="flex-grow: 1; text-align: left;">Selected Materials</span>
               <fa-icon icon="caret-right" style="margin-left: 10px;"></fa-icon>
             </button>
             <ul ngbDropdownMenu aria-labelledby="nestedDropdownButton">
@@ -194,8 +194,27 @@
               </li>
             </ul>
           </div>
-        </li>
 
+          <div ngbDropdown class="dropdown d-flex" placement="right-top" autoClose = "outside">
+            <button ngbDropdownToggle style="display: flex;" class="btn btn-primary buttonNoBorder inputWidth text-left" type="button" id="nestedDropdownButton" aria-expanded="false"> 
+              <span style="flex-grow: 1; text-align: left;">Flagged Materials</span>
+              <fa-icon icon="caret-right" style="margin-left: 10px;"></fa-icon>
+            </button>
+            <ul ngbDropdownMenu aria-labelledby="nestedDropdownButton">
+              <li>
+                <button ngbDropdownItem  class="btn btn-primary" (click)="sendFilterSpecial('Flagged')">
+                  <span>Flagged</span>
+                </button>
+              </li>
+              <li>
+                <button ngbDropdownItem class="btn btn-primary" (click)="sendFilterSpecial('Unflagged')">
+                  <span>Unflagged</span>
+                </button>
+              </li>
+            </ul>
+          </div>
+
+        </li>
       </ul>
     </div>
 
