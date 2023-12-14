@@ -434,8 +434,8 @@ cellValueGenerator(valueName : string, material : IMaterial) : number {
     else{
       editCell = <IEditCell>{};
       editCell.materialId = this.materials?.find(e => e.id == emission.id)?.id ?? -1;
-      editCell.newSST = this.materials?.find(e => e.id === emission.id)?.proposedSST ?? -1;
-      editCell.newST = this.materials?.find(e => e.id === emission.id)?.proposedST ?? -1;
+      editCell.newSST = this.materials?.find(e => e.id === emission.id)?.newSAPSafetyStock ?? -1;
+      editCell.newST = this.materials?.find(e => e.id === emission.id)?.newSAPSafetyTime ?? -1;
       editCell.newComment = this.materials?.find(e => e.id === emission.id)?.comment ?? "";
       editCell.selected = false;
       editCell.flag = this.materials?.find(e => e.id === emission.id)?.flagMaterial ?? false;
@@ -560,9 +560,7 @@ cellValueGenerator(valueName : string, material : IMaterial) : number {
     if(this.undoSize < this.history.length){
       for(let i = 0 ; i<this.history.length-this.undoSize;i++){
         this.history.shift()
-        console.log("Foi feito um shift")
       }
-      console.log("O history após o changeSize é:", this.history)
     }
   }
 
@@ -590,7 +588,6 @@ cellValueGenerator(valueName : string, material : IMaterial) : number {
     if(this.history.length > this.undoSize){
       this.history.shift();
     }
-    console.log ("O historico é :" , this.history)
   }
 
   input(event: any, col_name : string, id: number): void {

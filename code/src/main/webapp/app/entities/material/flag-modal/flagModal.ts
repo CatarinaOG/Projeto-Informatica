@@ -1,5 +1,6 @@
 import { Component, inject, TemplateRef, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { NgbDateStruct, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import {formatDate} from '@angular/common';
 
 import { IMaterial } from '../material.model';
 import { IEditCell } from '../editCell.model';
@@ -11,6 +12,12 @@ import { IEditCell } from '../editCell.model';
 export class FlagModal  implements OnInit{
 	
     closeResult = '';
+	current = new Date();
+	minDate = {
+	  year: this.current.getFullYear(),
+	  month: this.current.getMonth() + 1,
+	  day: this.current.getDate()
+	};
 
     @Input() material!: IMaterial;
 	@Input() linhas!: Map<number,IEditCell>;
@@ -20,6 +27,7 @@ export class FlagModal  implements OnInit{
 	private modalService = inject(NgbModal);
 	date : string = "" ; 
 	checkFlag : boolean = false;
+	disabled = true;
 
 	ngOnInit(): void {
 		const value = this.linhas.get(this.material.id);
@@ -33,15 +41,31 @@ export class FlagModal  implements OnInit{
 			}
 			else this.checkFlag = false;
 		}
-		console.log("CheckFlag is equals to: ", this.checkFlag)
+
 	}
 
+	toggleCheckbox() {
+	  this.checkFlag = !this.checkFlag;
+	}
+  
+	definePlaceholder() : string{
+		let returnValue = "yyyy-mm-dd"
+		const lineVal = this.linhas.get(this.material.id)
+		if(lineVal !== null && lineVal !== undefined){
+			returnValue = lineVal.dateFlag
+		}
+		return returnValue;
+	}
+
+	inputHideShow() : string {
+		if (!this.checkFlag) return "tableHide"
+		else return ""
+	}
+	
 	open(content: TemplateRef<any>): void {
 		this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then(
 			(result) => {
 				this.closeResult = `Closed with: ${result}`;
-				console.log("Content is : " , content)
-				console.log("Result is", result)
                 this.flagDateEmmiter.emit({flag : this.checkFlag, date : this.date , id : this.material.id})
 			}, 
 			(reason) => {
@@ -57,5 +81,16 @@ export class FlagModal  implements OnInit{
 		this.date = d.toISOString().split("T")[0];
 	}
 
+	submitStatus () : boolean {
+		let returnVal = false;
+		if(this.checkFlag){
+			if(this.date === ""){
+				returnVal = true;
+			}
+			else returnVal = false;
+		}
+		return returnVal;
+	}
+ 
 
 }
