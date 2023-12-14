@@ -289,7 +289,7 @@
 
           <td  class ="inventory">{{ material.serviceLevel }}</td>
           <td class ="inventory"><button class="buttonNoBorder">
-            <a href="https://www.sap.com/portugal/index.html"><fa-icon icon="external-link" style="color: #2D8DFF;"></fa-icon></a>
+            <a href="{{sapLinkBuilder(material.id)}}"><fa-icon icon="external-link" style="color: #2D8DFF;"></fa-icon></a>
             </button> <!--{{ diabo.openSapMd04 }}-->
           </td>
           <td  class ="inventory">{{ material.currentInventoryValue }}</td>

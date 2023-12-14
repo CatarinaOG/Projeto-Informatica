@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild,HostListener } from '@angular/core';
 import { HttpHeaders } from '@angular/common/http';
 import { ActivatedRoute, Data, ParamMap, Router } from '@angular/router';
 import { combineLatest, filter, last, Observable, switchMap, tap } from 'rxjs';
@@ -19,7 +19,8 @@ import { IHistoryEntity } from '../historyEntity.model';
 })
 
 
-export class MaterialComponent implements OnInit {
+
+export class MaterialComponent implements OnInit , OnDestroy {
   materials?: IMaterial[];
   isLoading = false;
   undoSize = 10;
@@ -99,6 +100,13 @@ export class MaterialComponent implements OnInit {
     ])
   }
 
+  @HostListener('window:beforeunload', ['$event'])
+    unloadNotification($event: any) {
+        if (this.linhas.size > 0) {
+            $event.returnValue =true;
+        }
+    }
+
 
 
   trackId = (_index: number, item: IMaterial): number => this.materialService.getMaterialIdentifier(item);
@@ -106,6 +114,16 @@ export class MaterialComponent implements OnInit {
   ngOnInit(): void {
     this.load();
     this.filters.filterChanges.subscribe(filterOptions => this.handleNavigation(1, this.predicate, this.ascending, filterOptions));
+    this.filters.removeAllFiltersName("id.in");
+    this.filters.removeAllFiltersName("id.notIn");
+  }
+
+  ngOnDestroy(): void {
+      if (this.linhas.size > 0) {
+        if (!confirm("You have unsaved changed. Do you wish to proceed?")){
+          alert("Too Bad, I can't stop it now...")
+        } 
+      }
   }
 
  
@@ -675,6 +693,20 @@ cellValueGenerator(valueName : string, material : IMaterial) : number {
   }
 
 
+  sapLinkBuilder (materialID : number) : string {
+    //https://rb3p72a4.server.bosch.com:44300/sap/bc/gui/sap/its/webgui?~transaction=md04&WERKS=208M&DISPO=208M&MATNR=012.1B0.0664-02
+    let resultValue = "https://rb3p72a4.server.bosch.com:44300/sap/bc/gui/sap/its/webgui?~transaction=md04"
+    if(this.materials !== null && this.materials !== undefined){
+      let materialValue = this.materials?.find(e => e.id == materialID)
+      if (materialValue !==null && materialValue !== undefined){
+        resultValue += "&WERKS="+ "werksname"
+        resultValue += "&DISPO=" + "dispoName"
+        resultValue += "&MATNR=" + materialValue.material
+      }
+    }
+    
+    return resultValue
+  }
 
   resetFilters(): void{
     this.filters.clear();
