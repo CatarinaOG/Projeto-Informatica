@@ -12,7 +12,7 @@ export class OptionsBar implements OnInit {
   @Output() textFilterEmitter = new EventEmitter<{filterName : string, filterText : string}>();
   @Output() abcFilterEmitter = new EventEmitter<{opType : boolean, filterValue : string}>();
   @Output() numberFilterEmitter = new EventEmitter<{filterName : string, operator : string, value : number}>();
-  @Output() dropdownNumberEmitter = new EventEmitter<number>();
+  @Output() dropdownNumberEmitter = new EventEmitter<{menuName:string, menuValue : number}>();
 
 
   filterStatus = new Map<string,boolean>([
@@ -32,7 +32,8 @@ export class OptionsBar implements OnInit {
     ["Avg. Inv. Effect After Change", false]
   ]);
 
-  
+  undoSize : number= 10;
+
   constructor( ) { }
   ngOnInit(): void { }
 
@@ -124,8 +125,17 @@ export class OptionsBar implements OnInit {
         this.stringEmitter.emit("Undo")
     }
 
-    sendNumber(dropdownChoice : number){
-        this.dropdownNumberEmitter.emit(dropdownChoice)
+    sendNumber(menuName : string ,dropdownChoice : number){
+        this.dropdownNumberEmitter.emit({ menuName : menuName ,menuValue : dropdownChoice})
+        if(menuName === "undo"){
+            this.undoSize =  dropdownChoice;
+        }
     }
+
+    optionStatus(dropdownValue : number) : string{
+        if (dropdownValue === this.undoSize) return "(active)"
+        else return ""
+    }
+
 };
 

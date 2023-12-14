@@ -254,25 +254,49 @@
       </div>
 
 
-      <div ngbDropdown class="dropdown d-flex" autoClose = "outside">
-        <button ngbDropdownToggle style="display: flex;" class="btn btn-white" type="button" id="nestedDropdownButton" aria-expanded="false"> 
-          <span style="flex-grow: 1; text-align: left;">Table Size</span>
+      <div ngbDropdown class="dropdown d-flex justify-content-end" autoClose="outside">
+        <button ngbDropdownToggle class="btn btn-white" type="button"  id="dropdownMenuButton" aria-expanded="false">  
+          <span >Table Size</span>
           <fa-icon icon="caret-down" style="margin-left: 10px;"></fa-icon>
         </button>
         <ul ngbDropdownMenu aria-labelledby="nestedDropdownButton">
           <li>
-            <button ngbDropdownItem  class="btn btn-primary" (click)="sendNumber(10)">
+            <button ngbDropdownItem  class="btn btn-primary" (click)="sendNumber('pageSize',10)">
               <span>10</span>
             </button>
           </li>
           <li>
-            <button ngbDropdownItem class="btn btn-primary" (click)="sendNumber(20)">
+            <button ngbDropdownItem class="btn btn-primary" (click)="sendNumber('pageSize',20)">
               <span>20</span>
             </button>
           </li>
           <li>
-            <button ngbDropdownItem class="btn btn-primary" (click)="sendNumber(30)">
+            <button ngbDropdownItem class="btn btn-primary" (click)="sendNumber('pageSize',30)">
               <span>30</span>
+            </button>
+          </li>
+        </ul>
+      </div>
+
+      <div ngbDropdown class="dropdown d-flex justify-content-end" autoClose="outside">
+        <button ngbDropdownToggle class="btn btn-white" type="button"  id="dropdownMenuButton" aria-expanded="false">  
+          <span style="flex-grow: 1; text-align: left;">"Undo" Size</span>
+          <fa-icon icon="caret-down" style="margin-left: 10px;"></fa-icon>
+        </button>
+        <ul ngbDropdownMenu aria-labelledby="nestedDropdownButton">
+          <li>
+            <button ngbDropdownItem  class="btn btn-primary" (click)="sendNumber('undo',5)">
+              <span>5 steps {{optionStatus(5)}}</span>
+            </button>
+          </li>
+          <li>
+            <button ngbDropdownItem class="btn btn-primary" (click)="sendNumber('undo',10)">
+              <span>10 steps {{optionStatus(10)}} </span>
+            </button>
+          </li>
+          <li>
+            <button ngbDropdownItem class="btn btn-primary" (click)="sendNumber('undo',15)">
+              <span>15 steps {{optionStatus(15)}}</span>
             </button>
           </li>
         </ul>

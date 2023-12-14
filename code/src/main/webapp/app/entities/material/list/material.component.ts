@@ -22,7 +22,7 @@ import { IHistoryEntity } from '../historyEntity.model';
 export class MaterialComponent implements OnInit {
   materials?: IMaterial[];
   isLoading = false;
-
+  undoSize = 10;
   predicate = 'id';
   ascending = true;
   filters: IFilterOptions = new FilterOptions();
@@ -371,8 +371,14 @@ cellValueGenerator(valueName : string, material : IMaterial) : number {
 
 
   receiveDropdownNumber(event : any){
-    this.itemsPerPage = event;
-    this.load()
+    if ( event.menuName === "undo"){
+      this.undoSize = event.menuValue;
+      this.undoChangeSize();
+    }
+    else{
+      this.itemsPerPage = event.menuValue;
+      this.load()
+    }
   }
 
   applySpecialFilters(){
@@ -550,6 +556,16 @@ cellValueGenerator(valueName : string, material : IMaterial) : number {
     }
   }
 
+  undoChangeSize(){
+    if(this.undoSize < this.history.length){
+      for(let i = 0 ; i<this.history.length-this.undoSize;i++){
+        this.history.shift()
+        console.log("Foi feito um shift")
+      }
+      console.log("O history após o changeSize é:", this.history)
+    }
+  }
+
 
   addToHistory(col_name : string, new_value : number , old_value : number, material_id : number) : void{
     // - if existe no history && nome da coluna está la
@@ -571,9 +587,10 @@ cellValueGenerator(valueName : string, material : IMaterial) : number {
       newEntry.oldValue = this.history[index].currentValue;
       newEntry.currentValue = new_value;
     }
-    if(this.history.length > 10){
+    if(this.history.length > this.undoSize){
       this.history.shift();
     }
+    console.log ("O historico é :" , this.history)
   }
 
   input(event: any, col_name : string, id: number): void {
