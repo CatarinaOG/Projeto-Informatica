@@ -154,7 +154,7 @@ export class MaterialComponent implements OnInit {
         }
         break;
       case ("ST"):
-        if (this.linhas.has(material.id) && (this.linhas.get(material.id)?.newST !== material.proposedST)){
+        if (this.linhas.has(material.id) && (this.linhas.get(material.id)?.newST !== material.newSAPSafetyTime)){
           returnVal = "textBlue"
         }
         else {
@@ -585,8 +585,8 @@ cellValueGenerator(valueName : string, material : IMaterial) : number {
     else{
       editCell = <IEditCell>{};
       editCell.materialId = this.materials?.find(e => e.id == id)?.id ?? -1;
-      editCell.newSST = this.materials?.find(e => e.id === id)?.proposedSST ?? -1;
-      editCell.newST = this.materials?.find(e => e.id === id)?.proposedST ?? -1;
+      editCell.newSST = this.materials?.find(e => e.id === id)?.newSAPSafetyStock ?? -1;
+      editCell.newST = this.materials?.find(e => e.id === id)?.newSAPSafetyTime ?? -1;
       editCell.newComment = this.materials?.find(e => e.id === id)?.comment ?? "";
       editCell.selected = false;
       editCell.flag = this.materials?.find(e => e.id === id)?.flagMaterial ?? false;
