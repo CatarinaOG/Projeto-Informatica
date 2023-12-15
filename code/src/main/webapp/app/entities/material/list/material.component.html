@@ -52,7 +52,12 @@
 
   <jhi-alert></jhi-alert>
 
-  <ngb-alert #selfClosingAlert type="success" (closed)="successMessage = ''">{{ successMessage }}</ngb-alert>
+  <p *ngIf="alertMessage!=='n/a'">
+    <ngb-alert [dismissible]="true" >
+      {{alertMessage}}
+    </ngb-alert>
+  </p> 
+
 
 
   <div class="alert alert-warning" id="no-result" *ngIf="materials?.length === 0">
@@ -396,6 +401,7 @@
       </tbody>
     </table>
   </div>
+
 
   <div *ngIf="materials && materials.length > 0">
     <div class="d-flex justify-content-center">

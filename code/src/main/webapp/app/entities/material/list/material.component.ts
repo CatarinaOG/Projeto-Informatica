@@ -13,6 +13,7 @@ import { MaterialDeleteDialogComponent } from '../delete/material-delete-dialog.
 import { FilterOptions, IFilterOptions, IFilterOption } from 'app/shared/filter/filter.model';
 import { IHistoryEntity } from '../historyEntity.model';
 
+import { NgbAlert } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'jhi-material',
@@ -22,6 +23,11 @@ import { IHistoryEntity } from '../historyEntity.model';
 
 
 export class MaterialComponent implements OnInit , OnDestroy {
+
+  @ViewChild(NgbAlert, { static: false }) alert!: NgbAlert | undefined;
+
+  alertMessage = "n/a";
+
   materials?: IMaterial[];
   isLoading = false;
   undoSize = 10;
@@ -76,6 +82,10 @@ export class MaterialComponent implements OnInit , OnDestroy {
     {name: "Unflagged", isActive: false, idList:[]},
   ]; 
   
+  options = {
+    autoClose: false,
+    keepAfterRouteChange: false
+};
 
   private _isEditable : number[] = [-1,-1];
   get isEditable(): number[] {
@@ -91,7 +101,7 @@ export class MaterialComponent implements OnInit , OnDestroy {
     protected materialService: MaterialService,
     protected activatedRoute: ActivatedRoute,
     public router: Router,
-    protected modalService: NgbModal,
+    protected modalService: NgbModal
   ) {
     this.visibility = new Map<string, boolean>([
       ["materialInfo", true],
@@ -114,6 +124,7 @@ export class MaterialComponent implements OnInit , OnDestroy {
 
   trackId = (_index: number, item: IMaterial): number => this.materialService.getMaterialIdentifier(item);
 
+
   ngOnInit(): void {
     this.load();
     this.filters.filterChanges.subscribe(filterOptions => this.handleNavigation(1, this.predicate, this.ascending, filterOptions));
@@ -128,6 +139,13 @@ export class MaterialComponent implements OnInit , OnDestroy {
       }
   }
 
+  
+  autoDismissAlert() {
+    setTimeout(() => {
+      this.alertMessage="n/a";
+    }, 5000); // 5000ms = 5 seconds
+  }
+  
  
   checkUncheckAll(event:any): void {
     this.linhas.forEach(function(value,key) {
@@ -292,6 +310,8 @@ cellValueGenerator(valueName : string, material : IMaterial) : number {
       this.materialService.submitChanges(list).subscribe((res) => {
         this.createAndShowDownloadFile(res, "DataChanged.xlsx", "application/vnd.ms-excel");
         this.load()
+        this.alertMessage="DATA WAS SUBMITTED SUCCESSFULLY"
+        this.autoDismissAlert();
       })
       }
     };
@@ -327,7 +347,8 @@ cellValueGenerator(valueName : string, material : IMaterial) : number {
     a.href = URL.createObjectURL(file);
     a.download = fileName;
     a.click();
-    alert("File was downloaded successfully")
+    this.alertMessage="DATA DOWNLOAD INITIATED"
+    this.autoDismissAlert();
   };
 
 
@@ -508,6 +529,8 @@ cellValueGenerator(valueName : string, material : IMaterial) : number {
       this.materialService.uploadFileReplace(file).subscribe({
         next: (res: any) => {       
           this.load()
+          this.alertMessage="DATA REPLACED SUCCESSFULLY"
+          this.autoDismissAlert();
         },error:(error:any) =>{
           alert("Error Uploading File")
         }
@@ -517,6 +540,8 @@ cellValueGenerator(valueName : string, material : IMaterial) : number {
       this.materialService.uploadFileAddOrUpdate(file).subscribe({
         next: (res: any) => {
           this.load()
+          this.alertMessage="DATA ADDED SUCCESSFULLY"
+          this.autoDismissAlert();
         },error:(error:any) =>{
           alert("Error Uploading File")
         }
@@ -609,6 +634,8 @@ cellValueGenerator(valueName : string, material : IMaterial) : number {
       for(let i = 0 ; i<this.history.length-this.undoSize;i++){
         this.history.shift()
       }
+      this.alertMessage="UNDO SIZE CHANGED, OLDER STEPS WHERE LOST"
+      this.autoDismissAlert();
     }
   }
 

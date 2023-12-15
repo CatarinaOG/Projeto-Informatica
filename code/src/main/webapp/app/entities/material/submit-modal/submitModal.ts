@@ -24,22 +24,24 @@ export class SubmitModal  implements OnInit{
 	}
 	
 	open(content: TemplateRef<any>): void {
-		this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then(
-			(result) => {
-				this.closeResult = `Closed with: ${result}`;
-				if (result === "Submit Anyways"){
-					this.confirmEmmiter.emit({confirm : true})
-				}  
-				else this.confirmEmmiter.emit({confirm : false})
-			}, 
-			(reason) => {
-				// this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-			},
-		);
+		if (this.unselectedLines === 0){
+			this.confirmEmmiter.emit({confirm : true})
+		}
+		else {
+			this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then(
+				(result) => {
+					this.closeResult = `Closed with: ${result}`;
+					if (result === "Submit Anyways"){
+						this.confirmEmmiter.emit({confirm : true})
+					}  
+					else this.confirmEmmiter.emit({confirm : false})
+				}, 
+				(reason) => {
+					// this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+				},
+			);
+		}
 	}
-
-
-
 
 	submitStatus () : boolean {
 		let returnVal = false;
