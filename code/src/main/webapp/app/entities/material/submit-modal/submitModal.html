@@ -1,0 +1,36 @@
+<button class="btn btn-primary me-2" style="margin-left: 8px; color: white;" (click) = "open(content)" [disabled] = "totalLines === 0">
+    <fa-icon icon="paper-plane"></fa-icon>
+    <span>Submit Changes to SAP</span>
+</button> 
+
+<ng-template #content let-modal>
+	<div class="modal-header">
+		<h3 class="modal-title" id="modal-basic-title">Before you submit...</h3>
+		<button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+	</div>
+	<div class="modal-body">
+        
+        <h4>
+            You have 
+			<span style="color: red;font-weight: 900;">{{ this.unselectedLines }}</span> 
+			edited but not selected. 
+        </h4>
+        <h5 >
+            Do you want to review the unselected lines?
+        </h5>
+
+	</div>
+	<div class="modal-footer submitModalBtns">
+		<button type="button" class="btn btn-info" (click)="modal.close('Check Unselected')" [disabled] = "submitStatus()">Check Unselected</button>
+        <button type="button" class="btn btn-outline-dark" (click)="modal.close('Submit Anyways')" [disabled] = "submitStatus()">Submit Anyways</button>
+	</div>
+</ng-template>
+
+<!-- <button class="btn btn-lg btn-outline-primary" (click)="open(content)">Launch demo modal</button> -->
+
+<!-- 
+<button class="btn btn-lg btn-outline-primary" (click)="open(content)">Launch demo modal</button>
+
+<hr />
+
+<pre>{{ closeResult }}</pre> -->

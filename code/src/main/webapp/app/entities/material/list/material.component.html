@@ -3,7 +3,7 @@
     <span>Materials</span>
   </h2>
 
-    <options-bar (stringEmitter) = "receiveStringEvent($event)" (fileEmitter) = "onFileSelected($event)" (textFilterEmitter) = "receiveTextFilter($event)" (abcFilterEmitter) = "filterABCClassif($event)" (numberFilterEmitter) ="receiveNumberFilter($event)" [historyLength] = "history.length" [changesListLength]="this.linhas.size"(dropdownNumberEmitter) = "receiveDropdownNumber($event)"></options-bar>
+    <options-bar (stringEmitter) = "receiveStringEvent($event)" (fileEmitter) = "onFileSelected($event)" (textFilterEmitter) = "receiveTextFilter($event)" (abcFilterEmitter) = "filterABCClassif($event)" (numberFilterEmitter) ="receiveNumberFilter($event)" [historyLength] = "history.length" [changesListLength]="this.linhas.size" [unselectedLines] = "getUnselectedLines()" (dropdownNumberEmitter) = "receiveDropdownNumber($event)"></options-bar>
     
     
     <div *ngIf="this.filters.filterOptions.length > 0" >
@@ -52,13 +52,16 @@
 
   <jhi-alert></jhi-alert>
 
+  <ngb-alert #selfClosingAlert type="success" (closed)="successMessage = ''">{{ successMessage }}</ngb-alert>
+
+
   <div class="alert alert-warning" id="no-result" *ngIf="materials?.length === 0">
     <span>No Materials found</span>
   </div>
 
-  <div class="table-responsive table-entities table-bordered" id="entities" *ngIf="materials && materials.length > 0" style="border: 1px solid black;">
+  <div class="table-responsive table-entities " id="entities" *ngIf="materials && materials.length > 0" >
     <table class="table table-striped " aria-describedby="page-heading">
-      <thead>
+      <thead class = "navbar-dark">
         <tr class = "headerRow1">
 
           <th [attr.colspan]="visibility.get('materialInfo') ? 5 : 1" class="tableHeader">
@@ -284,31 +287,31 @@
           <td class ="materialInfo" [ngClass] ="editCellClasses('materialInfo')">{{ material.description }}</td>
           <td class ="materialInfo" [ngClass] ="editCellClasses('materialInfo')">{{ material.abcClassification }}</td>
           <td class ="materialInfo" [ngClass] ="editCellClasses('materialInfo')">{{ "Lomar, Braga, PT" }}</td>
-          <td class ="materialInfo" [ngClass] ="editCellClasses('materialInfo')">{{ "md04" }}</td>
+          <td class ="materialInfo headerRowEnd" [ngClass] ="editCellClasses('materialInfo')">{{ "md04" }}</td>
 
-          <td *ngIf = "!visibility.get('materialInfo')">
+          <td *ngIf = "!visibility.get('materialInfo')" class="headerRowEnd">
             ...
           </td>
 
           <td class ="supplierDelay" [ngClass] ="editCellClasses('supplierDelay')">{{ material.avgSupplierDelay }}</td>
-          <td class ="supplierDelay" [ngClass] ="editCellClasses('supplierDelay')">{{ material.maxSupplierDelay }}</td>
-          <td *ngIf = "!visibility.get('supplierDelay')">
+          <td class ="supplierDelay headerRowEnd" [ngClass] ="editCellClasses('supplierDelay')">{{ material.maxSupplierDelay }}</td>
+          <td *ngIf = "!visibility.get('supplierDelay')" class="headerRowEnd">
             ...
           </td>
 
           <td class ="safetyStock" [ngClass] ="editCellClasses('safetyStock')">
             <span placement="top" ngbTooltip="Changed on : 12.04.2023  Previous Safety Stock : 2.000">{{ material.currSAPSafetyStock }}</span>
           </td>
-          <td class ="safetyStock" [ngClass] ="editCellClasses('safetyStock')">{{ material.proposedSST }}</td>
-          <td *ngIf = "!visibility.get('safetyStock')">
+          <td class ="safetyStock headerRowEnd" [ngClass] ="editCellClasses('safetyStock')">{{ material.proposedSST }}</td>
+          <td *ngIf = "!visibility.get('safetyStock')" class="headerRowEnd">
             ...
           </td>
 
           <td class ="safetyTime" [ngClass] ="editCellClasses('safetyTime')">
             <span placement="top" ngbTooltip="Changed on : 12.04.2023  Previous Safety Time : 2.000">{{ material.currentSAPSafeTime }}</span>
           </td>
-          <td class ="safetyTime" [ngClass] ="editCellClasses('safetyTime')">{{ material.proposedST }}</td>
-          <td *ngIf = "!visibility.get('safetyTime')">
+          <td class ="safetyTime headerRowEnd" [ngClass] ="editCellClasses('safetyTime')">{{ material.proposedST }}</td>
+          <td *ngIf = "!visibility.get('safetyTime')" class="headerRowEnd">
             ...
           </td>
 
@@ -321,8 +324,8 @@
           <td class ="inventory" [ngClass] ="editCellClasses('inventory')">{{ material.deltaSST }}</td>
           <td class ="inventory" [ngClass] ="editCellClasses('inventory')">{{ material.deltaST }}</td>
 
-          <td  class ="inventory" [ngClass] ="editCellClasses('inventory')">{{ calcNewValueAvg(material) }}</td>
-          <td *ngIf = "!visibility.get('inventory')">
+          <td  class ="inventory headerRowEnd" [ngClass] ="editCellClasses('inventory')">{{ calcNewValueAvg(material) }}</td>
+          <td *ngIf = "!visibility.get('inventory')" class="headerRowEnd">
             ...
           </td>
 

@@ -356,27 +356,53 @@ input[type=number] {
 }
 
 
+
+.table {
+  border-collapse: collapse;
+}
+
+.table thd {
+  border: none; /* Remove borders for cells */
+}
+
+
 .tableHeader {
-  border-color: black !important; 
-  border-width: 2px !important;
+  border-color: rgb(219, 219, 219) !important;
+  color: black;
+  border-width: 1px !important;
 }
 
-.headerRow1{
-  background-color: #B8B8B8;
+/* Updated header colors */
+.headerRow1 {
+  background-color: #6c757d; /* A darker gray */
+  color: white; /* White text for better contrast */
 }
 
-.headerRow2{
-  background-color: #DADADA; 
-  border-bottom: black; 
-  border-width: 2px;
+.headerRow2 {
+  background-color: #adb5bd; /* A lighter gray */
+  color: black; /* Black text for better readability */
 }
 
 .headerRowStart{
-  border-left-color: black; 
-  border-width: 1px;
+  border-left-color: rgb(219, 219, 219); 
+  border-left-width: 1px;
 }
 
 .headerRowEnd{
-  border-right-color: black; 
-  border-width: 1px;
+  border-right-color: rgb(219, 219, 219) !important ;
+  border-right-width: 1px !important; 
 }
+
+.rowLimiter {
+  border-right-color: rgb(219, 219, 219); 
+  border-right-width: 1px;
+}
+
+.submitModalBtns {
+  display: flex;
+  justify-content: space-between;
+}
+
+
+
+

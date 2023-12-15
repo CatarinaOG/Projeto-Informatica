@@ -12,10 +12,10 @@ import { FlagModal } from './flag-modal/flagModal'
 import { HeaderGroup } from './header-group/header-group.component'
 import { HeaderColumn} from './header-column/header-column.component'
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
-
+import { SubmitModal } from './submit-modal/submitModal';
 
 @NgModule({
   imports: [SharedModule, MaterialRoutingModule,NgbTooltipModule],
-  declarations: [MaterialComponent, MaterialDetailComponent, MaterialUpdateComponent, MaterialDeleteDialogComponent, OptionsBar, FilterDisplayCell, FilterForm,FlagModal,HeaderGroup,HeaderColumn],
+  declarations: [MaterialComponent, MaterialDetailComponent, MaterialUpdateComponent, MaterialDeleteDialogComponent, OptionsBar, FilterDisplayCell, FilterForm,FlagModal,HeaderGroup,HeaderColumn,SubmitModal],
 })
 export class MaterialModule {}

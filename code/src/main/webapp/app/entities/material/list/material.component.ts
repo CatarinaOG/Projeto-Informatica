@@ -13,6 +13,7 @@ import { MaterialDeleteDialogComponent } from '../delete/material-delete-dialog.
 import { FilterOptions, IFilterOptions, IFilterOption } from 'app/shared/filter/filter.model';
 import { IHistoryEntity } from '../historyEntity.model';
 
+
 @Component({
   selector: 'jhi-material',
   templateUrl: './material.component.html'
@@ -123,7 +124,6 @@ export class MaterialComponent implements OnInit , OnDestroy {
   ngOnDestroy(): void {
       if (this.linhas.size > 0) {
         if (!confirm("You have unsaved changed. Do you wish to proceed?")){
-          alert("Too Bad, I can't stop it now...")
         } 
       }
   }
@@ -315,6 +315,9 @@ cellValueGenerator(valueName : string, material : IMaterial) : number {
       );  }
     if (this.message === "Undo"){
       this.undo()
+    }
+    if (this.message === "Check unselected"){
+      this.receiveSpecialFilter("Unselected");
     }
   }
 
@@ -696,6 +699,16 @@ cellValueGenerator(valueName : string, material : IMaterial) : number {
       this.visibility.set(col_name, false)
     }
   }
+
+  getUnselectedLines() : number{
+    let count = 0;
+    this.linhas.forEach((value: IEditCell, key: number) => {
+        if(!value.selected){
+            count++;
+        }
+    });
+    return count;
+}
 
 
 

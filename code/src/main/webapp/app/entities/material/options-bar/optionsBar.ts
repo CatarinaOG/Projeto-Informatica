@@ -8,6 +8,7 @@ export class OptionsBar implements OnInit {
 
   @Input() historyLength! : number; 
   @Input() changesListLength! : number;
+  @Input() unselectedLines! : number;
   @Output() stringEmitter = new EventEmitter<string>();
   @Output() fileEmitter = new EventEmitter<{opType :boolean, file : File}>();
   @Output() textFilterEmitter = new EventEmitter<{filterName : string, filterText : string}>();
@@ -118,8 +119,9 @@ export class OptionsBar implements OnInit {
         this.abcFilterEmitter.emit({opType: event.target.checked, filterValue : value})
     }
 
-    submitToSAP(){
-        this.stringEmitter.emit("Submit")
+    submitToSAP(event : any){
+        if (event.confirm) this.stringEmitter.emit("Submit")
+        else this.stringEmitter.emit("Check unselected")
     }
 
     sendUndo(){
@@ -137,6 +139,7 @@ export class OptionsBar implements OnInit {
         if (dropdownValue === this.undoSize) return "(active)"
         else return ""
     }
+
 
 };
 
