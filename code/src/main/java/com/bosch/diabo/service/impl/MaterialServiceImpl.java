@@ -317,6 +317,7 @@ public class MaterialServiceImpl implements MaterialService {
         material.setUnitCost(getFloatCellValue(row, headerMap, "Unit Cost"));
         material.setAvgDemand(getIntCellValue(row, headerMap, "Avg Demand"));
         material.setAvgInventoryEffectAfterChange(getFloatCellValue(row, headerMap, "Average inventory effect after change"));
+        material.setFlagMaterial(false);
 
         if (headerMap.containsKey("New SAP SS")) {
             try {
@@ -332,10 +333,6 @@ public class MaterialServiceImpl implements MaterialService {
             } catch (NumberFormatException e) {
                 material.setNewSAPSafetyTime(material.getProposedST());
             }
-        }
-
-        if (headerMap.containsKey("Flag material")) {
-            material.setFlagMaterial(getFlagValue(getStringCellValue(row, headerMap, "Flag material")));
         }
 
         if (headerMap.containsKey("Comment")) {
@@ -364,9 +361,6 @@ public class MaterialServiceImpl implements MaterialService {
         return cell != null ? (int) cell.getNumericCellValue() : 0; // Set a default value if the cell is null
     }
     
-    private Boolean getFlagValue(String cellValue) {
-        return cellValue != null && cellValue.equalsIgnoreCase("true");
-    }
 
     // ---------- > XLS < ----------
 
@@ -446,7 +440,8 @@ public class MaterialServiceImpl implements MaterialService {
         material.setUnitCost(parseNumericValue(nextRecord[getIndex(header, "Unit Cost")]));
         material.setAvgDemand(Integer.parseInt(nextRecord[getIndex(header, "Avg Demand")]));
         material.setAvgInventoryEffectAfterChange(parseNumericValue(nextRecord[getIndex(header, "Average inventory effect after change")]));
-        
+        material.setFlagMaterial(false);
+
         if(getIndex(header, "New SAP SS") >= 0){
             try {
                 material.setNewSAPSafetyStock(Integer.parseInt(nextRecord[getIndex(header, "New SAP SS")]));
@@ -463,10 +458,6 @@ public class MaterialServiceImpl implements MaterialService {
             }
         }
 
-        if(getIndex(header, "Flag material") >= 0){
-            material.setFlagMaterial(getFlagValueCSV(nextRecord[getIndex(header, "Flag material")]));
-        }
-
         if(getIndex(header, "Comment") >= 0){
             material.setComment(nextRecord[getIndex(header, "Comment")]);
         }
@@ -474,12 +465,6 @@ public class MaterialServiceImpl implements MaterialService {
         return material;
     }
 
-    private Boolean getFlagValueCSV(String cellValue) {
-        if (cellValue != null && !cellValue.isEmpty()) {
-            return Boolean.parseBoolean(cellValue);
-        }
-        return false;
-    }
 
     private int getIndex(String[] header, String columnName) {
         for (int i = 0; i < header.length; i++) {
