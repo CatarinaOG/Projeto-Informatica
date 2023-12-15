@@ -178,17 +178,17 @@
             </button>
             <ul ngbDropdownMenu aria-labelledby="nestedDropdownButton">
               <li>
-                <button ngbDropdownItem  class="btn btn-primary" (click)="sendFilterSpecial('Selected')">
+                <button ngbDropdownItem  class="btn btn-primary" (click)="sendFilterSpecial('Selected')" [disabled] = "this.changesListLength === 0">
                   <span>Selected</span>
                 </button>
               </li>
               <li>
-                <button ngbDropdownItem class="btn btn-primary" (click)="sendFilterSpecial('Unselected')">
+                <button ngbDropdownItem class="btn btn-primary" (click)="sendFilterSpecial('Unselected')" [disabled] = "this.changesListLength === 0">
                   <span>Unselected</span>
                 </button>
               </li>
               <li>
-                <button ngbDropdownItem class="btn btn-primary" (click)="sendFilterSpecial('Unedited')">
+                <button ngbDropdownItem class="btn btn-primary" (click)="sendFilterSpecial('Unedited')" [disabled] = "this.changesListLength === 0">
                   <span>Unedited</span>
                 </button>
               </li>

@@ -7,6 +7,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 export class OptionsBar implements OnInit {
 
   @Input() historyLength! : number; 
+  @Input() changesListLength! : number;
   @Output() stringEmitter = new EventEmitter<string>();
   @Output() fileEmitter = new EventEmitter<{opType :boolean, file : File}>();
   @Output() textFilterEmitter = new EventEmitter<{filterName : string, filterText : string}>();

@@ -34,6 +34,8 @@ export class MaterialComponent implements OnInit , OnDestroy {
     ["Material", "Material"],
     ["Material Description", "Material Description"],
     ["ABC Classification", "ABC Classification"],
+    ["Plant", "Plant"],
+    ["MRP Controller", "MRP Controller"],
     ["Avg Supplier Delay", "Avg Supplier Delay"],
     ["Max Supplier Delay", "Max Supplier Delay"],
     ["Current Sap Safety Stock", "Current Sap Safety Stock"],
@@ -92,9 +94,9 @@ export class MaterialComponent implements OnInit , OnDestroy {
   ) {
     this.visibility = new Map<string, boolean>([
       ["materialInfo", true],
-      ["supplierDelay", true],
-      ["safetyStock", true],
-      ["safetyTime", true],
+      ["supplierDelay", false],
+      ["safetyStock", false],
+      ["safetyTime", false],
       ["inventory", true],
       ["edit", false]
     ])
@@ -144,16 +146,31 @@ export class MaterialComponent implements OnInit , OnDestroy {
     } 
   }
 
-  editCellClasses(valueName : string,material? : IMaterial) : string {
+  editCellClasses(colName : string,material? : IMaterial,editColName? : string) : string {
     let returnVal = ""
-    if (this.visibility.get('edit') === false){
+    if (colName === "materialInfo" && this.visibility.get('materialInfo') === false){
+      returnVal = "tableHide "
+    }
+    else if (colName === "edit" && this.visibility.get('edit') === false){
+      returnVal = "tableHide "
+    }
+    else if (colName === "supplierDelay" && this.visibility.get('supplierDelay') === false){
+      returnVal = "tableHide "
+    }
+    else if (colName === "safetyStock" && this.visibility.get('safetyStock') === false){
+      returnVal = "tableHide "
+    }
+    else if (colName === "safetyTime" && this.visibility.get('safetyTime') === false){
+      returnVal = "tableHide "
+    }
+    else if (colName === "inventory" && this.visibility.get('inventory') === false){
       returnVal = "tableHide "
     }
     else{
       returnVal = ""
-      if (valueName!== "header"){
-        if(material !== undefined ){
-          returnVal += this.chooseColor(material,valueName);
+      if (colName!== "header"){
+        if(material !== undefined && editColName !== undefined){
+          returnVal += this.chooseColor(material,editColName);
         }
       }
     }
@@ -489,6 +506,7 @@ cellValueGenerator(valueName : string, material : IMaterial) : number {
         next: (res: any) => {       
           this.load()
         },error:(error:any) =>{
+          alert("Error Uploading File")
         }
       });
     }
@@ -533,11 +551,11 @@ cellValueGenerator(valueName : string, material : IMaterial) : number {
     switch (lastEntry.column){
       case "newSST":
         if (materialValue?.newSAPSafetyStock === lastEntry.oldValue){
-          return (this.linhas.get(lastEntry.materialId)?.newST !== materialValue?.proposedSST) || (this.linhas.get(lastEntry.materialId)?.newComment !== "")
+          return (this.linhas.get(lastEntry.materialId)?.newSST !== materialValue?.proposedSST) || (this.linhas.get(lastEntry.materialId)?.newComment !== "")
         }
         break;
       case "newST":
-        if (materialValue?.newSAPSafetyStock === lastEntry.oldValue){
+        if (materialValue?.newSAPSafetyTime === lastEntry.oldValue){
           return (this.linhas.get(lastEntry.materialId)?.newST !== materialValue?.proposedST) || (this.linhas.get(lastEntry.materialId)?.newComment !== "")
         }
         break;
@@ -558,17 +576,26 @@ cellValueGenerator(valueName : string, material : IMaterial) : number {
               if(!this.checkEditCell(lastEntry)){
                 editCell.newSST = lastEntry.oldValue;
                 this.linhas.set(lastEntry.materialId, editCell);
+                console.log("entrou no braço A SST")
               }
-              else this.linhas.delete(editCell.materialId);
+              else {
+                this.linhas.delete(editCell.materialId);
+                console.log("entrou no braço B SST")
+              }
               break;
             case "newST":
               if(!this.checkEditCell(lastEntry)){
                 editCell.newST = lastEntry.oldValue;
                 this.linhas.set(lastEntry.materialId, editCell);
+                console.log("entrou no braço A")
               }
-              else this.linhas.delete(editCell.materialId);
+              else {
+                this.linhas.delete(editCell.materialId);
+                console.log("entrou no braço B")
+              }
               break;
           }
+          console.log(this.linhas)
         }
       }
     }
@@ -662,19 +689,11 @@ cellValueGenerator(valueName : string, material : IMaterial) : number {
 
   switchVisibility(event: any) : void {
     var col_name = event.name;
-    var visibility = event.visibility;
-    var cl = document.getElementsByClassName(col_name)
     if (this.visibility.get(col_name) == false){
       this.visibility.set(col_name, true)
-      for(let i = 0; i<cl.length;i++){
-        cl[i].classList.remove("tableHide")
-      }
     }
     else {
       this.visibility.set(col_name, false)
-      for(let i = 0; i<cl.length;i++){
-        cl[i].classList.add("tableHide")
-      }
     }
   }
 
@@ -730,7 +749,9 @@ cellValueGenerator(valueName : string, material : IMaterial) : number {
       .subscribe({
         next: (res: EntityArrayResponseType) => {
           this.onResponseSuccess(res);
-        },
+        },error:(error:any) =>{
+          alert("Error Deleting")
+        }
       });
   }
 
@@ -738,7 +759,9 @@ cellValueGenerator(valueName : string, material : IMaterial) : number {
     this.loadFromBackendWithRouteInformations().subscribe({
       next: (res: EntityArrayResponseType) => {
         this.onResponseSuccess(res);
-      },
+      },error:(error:any) =>{
+        alert("Error Loading")
+      }
     });
   }
 
