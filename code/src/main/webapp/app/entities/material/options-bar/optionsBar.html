@@ -1,10 +1,10 @@
-<div class="d-flex" style=" margin-bottom: 20px;">
+<div class="optionsBarResponsive" style=" margin-bottom: 20px;">
     
     <div ngbDropdown class="dropdown d-flex justify-content-end" autoClose="outside">
       <button ngbDropdownToggle class="btn btn-white" type="button"  id="dropdownMenuButton" aria-expanded="false">
         <fa-icon icon="filter"></fa-icon>
         <span>Filter Options</span>
-        <fa-icon icon="caret-down" style="margin-left: 5px;"></fa-icon>
+        <fa-icon icon="caret-down"></fa-icon>
       </button>
       <ul ngbDropdownMenu aria-labelledby="dropdownMenuButton">
         <li>
@@ -224,8 +224,8 @@
       <input type="file" class="file-input" accept=".csv,.ods,.xlsx,.xls"  (change)="sendFileMessage($event,true)" (click)="importReplaceInput.value=''" #importReplaceInput>
       <input type="file" class="file-input" accept=".csv,.ods,.xlsx,.xls"  (change)="sendFileMessage($event,false)" (click)="importAdd.value=''" #importAdd>
   
-      <div ngbDropdown class="dropdown d-flex justify-content-end" style="margin-left: 8px;">
-        <button ngbDropdownToggle class="btn btn-white"  style="margin-right: 8px;" type="button" id="dropdownMenuButton" aria-expanded="false"> 
+      <div ngbDropdown class="dropdown d-flex justify-content-end">
+        <button ngbDropdownToggle class="btn btn-white" type="button" id="dropdownMenuButton" aria-expanded="false"> 
           <fa-icon icon="file"></fa-icon>
           <span>File Options</span>
           <fa-icon icon="caret-down" style="margin-left: 5px;"></fa-icon>
@@ -305,15 +305,24 @@
 
 
     
-    <button class="btn btn-info me-2" style="margin-left: 8px;" (click)="sendUndo()" [disabled]="historyLength==0">
+    <button class="btn btn-info me-2" (click)="sendUndo()" [disabled]="historyLength==0">
       <fa-icon icon="undo"></fa-icon>
       <span class="font-weight-bold">Undo</span>
     </button>
 
-    <button class="btn btn-info me-2" style="margin-left: 8px;" (click)="sendLoad()" >
+    <button class="btn btn-info me-2" (click)="sendLoad()" >
       <fa-icon icon="sync"></fa-icon>
       <span class="font-weight-bold">Refresh list</span>
     </button>
+
+    
+    <div class="form-check form-switch" style="display: flex;">
+      <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" [checked]="currencyEUR" (change)="toggleCheckbox()">
+      <label class="form-check-label" for="flexSwitchCheckChecked" style="margin-left: 10px;">
+          {{ currencyEUR ? "Euros €" : "Local Currency"}}
+      </label>
+  </div>
+
 
 
     <div style="flex-grow: 1;"></div> 

@@ -1,8 +1,8 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild,HostListener } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild,ViewChildren,HostListener, QueryList } from '@angular/core';
 import { HttpHeaders } from '@angular/common/http';
 import { ActivatedRoute, Data, ParamMap, Router } from '@angular/router';
 import { combineLatest, filter, last, Observable, switchMap, tap } from 'rxjs';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
 import { IEditCell } from '../editCell.model'
 import { specialFilter } from '../specialFilters.model'
 import { IMaterial } from '../material.model';
@@ -25,6 +25,7 @@ import { NgbAlert } from '@ng-bootstrap/ng-bootstrap';
 export class MaterialComponent implements OnInit , OnDestroy {
 
   @ViewChild(NgbAlert, { static: false }) alert!: NgbAlert | undefined;
+  @ViewChildren(NgbTooltip) tooltips!: QueryList<NgbTooltip>;
 
   alertMessage = "n/a";
 
@@ -34,6 +35,7 @@ export class MaterialComponent implements OnInit , OnDestroy {
   predicate = 'id';
   ascending = true;
   filters: IFilterOptions = new FilterOptions();
+  currencyEUR : boolean = true;
 
   history: IHistoryEntity[] = [];
 
@@ -61,7 +63,7 @@ export class MaterialComponent implements OnInit , OnDestroy {
     ["Flag Material as Special Case", "Flag Material as Special Case"],
     ["Comment", "Comment"],
   ]);
-  
+
   itemsPerPage = 5;//ITEMS_PER_PAGE;
   totalItems = 0;
   page = 1;
@@ -80,8 +82,8 @@ export class MaterialComponent implements OnInit , OnDestroy {
     {name: "Unedited", isActive: false, idList:[]},
     {name: "Flagged", isActive: false, idList:[]},
     {name: "Unflagged", isActive: false, idList:[]},
-  ]; 
-  
+  ];
+
   options = {
     autoClose: false,
     keepAfterRouteChange: false
@@ -93,9 +95,9 @@ export class MaterialComponent implements OnInit , OnDestroy {
   }
   set isEditable(value: number[]) {
     this._isEditable = [value[0], value[1]]
-    
+
   }
-  
+
 
   constructor(
     protected materialService: MaterialService,
@@ -135,18 +137,18 @@ export class MaterialComponent implements OnInit , OnDestroy {
   ngOnDestroy(): void {
       if (this.linhas.size > 0) {
         if (!confirm("You have unsaved changed. Do you wish to proceed?")){
-        } 
+        }
       }
   }
 
-  
+
   autoDismissAlert() {
     setTimeout(() => {
       this.alertMessage="n/a";
     }, 5000); // 5000ms = 5 seconds
   }
-  
- 
+
+
   checkUncheckAll(event:any): void {
     this.linhas.forEach(function(value,key) {
       value.selected = event.target.checked
@@ -161,7 +163,7 @@ export class MaterialComponent implements OnInit , OnDestroy {
     }
     else {
       return "normal-row"
-    } 
+    }
   }
 
   editCellClasses(colName : string,material? : IMaterial,editColName? : string) : string {
@@ -248,7 +250,7 @@ export class MaterialComponent implements OnInit , OnDestroy {
     let returnVal = "";
     let editCell : IEditCell | undefined = this.linhas.get(material.id)
     if ((editCell !== undefined && (editCell.newComment !== material.comment ))){
-      returnVal = editCell.newComment
+      returnVal = editCell.newComment ?? ""
     }
     else if (material.comment) returnVal = material.comment;
 
@@ -289,7 +291,7 @@ cellValueGenerator(valueName : string, material : IMaterial) : number {
   mapToSubmit(): IEditCell[] {
 
     const list : IEditCell[] = [];
-    
+
     this.linhas.forEach((value,key) => {
       if (value.selected){
         list.push(value);
@@ -315,7 +317,7 @@ cellValueGenerator(valueName : string, material : IMaterial) : number {
       })
       }
     };
-  
+
 
   message:string | undefined;
 
@@ -323,7 +325,7 @@ cellValueGenerator(valueName : string, material : IMaterial) : number {
     this.message = messageText;
     if (this.message === "load"){
       this.load();
-    } 
+    }
     if (this.message === "Submit"){
       this.submitToSAP()
     }
@@ -339,6 +341,10 @@ cellValueGenerator(valueName : string, material : IMaterial) : number {
     if (this.message === "Check unselected"){
       this.receiveSpecialFilter("Unselected");
     }
+  }
+
+  receiveCurrencyVal(event : boolean){
+    this.currencyEUR = event;
   }
 
   createAndShowDownloadFile = (content: any, fileName: string, contentType: string): void => {
@@ -375,7 +381,7 @@ cellValueGenerator(valueName : string, material : IMaterial) : number {
     if(filterValue === ''){
       this.filters.removeAllFiltersName("material.contains");
       this.filters.removeAllFiltersName("description.contains");
-    } 
+    }
     else{
       if (filterName === "Material Name"){
         this.filters.removeAllFiltersName("material.contains")
@@ -424,7 +430,7 @@ cellValueGenerator(valueName : string, material : IMaterial) : number {
     //   index = 2;
     // this.specialFiltersList[index].isActive = true
     // this.specialFiltersList[index].idList = this.getSelectedList(filterOp)
-    
+
     // this.applySpecialFilters()
   }
 
@@ -444,7 +450,7 @@ cellValueGenerator(valueName : string, material : IMaterial) : number {
     this.filters.removeAllFiltersName("flagMaterial.equals")
     this.filters.removeAllFiltersName("id.in")
     this.filters.removeAllFiltersName("id.notIn")
-    
+
     this.specialFiltersList.forEach((spFilter) => {
       if(spFilter.isActive){
         if(spFilter.name === "Flagged"){
@@ -489,13 +495,13 @@ cellValueGenerator(valueName : string, material : IMaterial) : number {
 
     if (this.linhas.has(emission.id)){
       editCell = this.linhas.get(emission.id);
-    } 
+    }
     else{
       editCell = <IEditCell>{};
       editCell.materialId = this.materials?.find(e => e.id == emission.id)?.id ?? -1;
       editCell.newSST = this.materials?.find(e => e.id === emission.id)?.newSAPSafetyStock ?? -1;
       editCell.newST = this.materials?.find(e => e.id === emission.id)?.newSAPSafetyTime ?? -1;
-      editCell.newComment = this.materials?.find(e => e.id === emission.id)?.comment ?? "";
+      editCell.newComment = this.materials?.find(e => e.id === emission.id)?.comment ?? null;
       editCell.selected = false;
       editCell.flag = this.materials?.find(e => e.id === emission.id)?.flagMaterial ?? false;
     }
@@ -511,11 +517,11 @@ cellValueGenerator(valueName : string, material : IMaterial) : number {
 
   receiveNumberFilter(event : any) : void{
     const filterName :string = event.filterName;
-    
+
     const submitName : string = filterName + "." + event.operator
     this.filters.removeAllFiltersName(submitName)
     this.filters.addFilter(submitName, event.value);
-    
+
     this.load();
   }
 
@@ -527,7 +533,7 @@ cellValueGenerator(valueName : string, material : IMaterial) : number {
     const typeReplace : boolean = event.opType;
     if (file && typeReplace) {
       this.materialService.uploadFileReplace(file).subscribe({
-        next: (res: any) => {       
+        next: (res: any) => {
           this.load()
           this.alertMessage="DATA REPLACED SUCCESSFULLY"
           this.autoDismissAlert();
@@ -559,7 +565,7 @@ cellValueGenerator(valueName : string, material : IMaterial) : number {
   calcNewValueAvg(material : IMaterial) : number {
     let editCell: IEditCell | undefined;
     editCell = this.linhas.get(material.id)
-    
+
     if (editCell){
       const newDeltaSST = (editCell.newSST ?? 1) - (material.currSAPSafetyStock ?? 1);
       const newDeltaST = (editCell.newST ?? 1) - (material.currentSAPSafeTime ?? 1);
@@ -570,7 +576,7 @@ cellValueGenerator(valueName : string, material : IMaterial) : number {
     else {
       return Number((material.avgInventoryEffectAfterChange ?? 1).toFixed(2));
     }
-  
+
   }
 
 
@@ -650,7 +656,7 @@ cellValueGenerator(valueName : string, material : IMaterial) : number {
     let index = this.history.findIndex((historyEntity) => {historyEntity.materialId == material_id && historyEntity.column == col_name})
     // if it doesn't exist, create a new entry
     if(index === -1){
-      let newEntry = <IHistoryEntity>{materialId : material_id, column : col_name, 
+      let newEntry = <IHistoryEntity>{materialId : material_id, column : col_name,
                                       oldValue : old_value , currentValue : new_value};
       this.history.push(newEntry);
     }
@@ -670,13 +676,13 @@ cellValueGenerator(valueName : string, material : IMaterial) : number {
     let oldValue = 0;
     if (this.linhas.has(id)){
       editCell = this.linhas.get(id);
-    } 
+    }
     else{
       editCell = <IEditCell>{};
       editCell.materialId = this.materials?.find(e => e.id == id)?.id ?? -1;
       editCell.newSST = this.materials?.find(e => e.id === id)?.newSAPSafetyStock ?? -1;
       editCell.newST = this.materials?.find(e => e.id === id)?.newSAPSafetyTime ?? -1;
-      editCell.newComment = this.materials?.find(e => e.id === id)?.comment ?? "";
+      editCell.newComment = this.materials?.find(e => e.id === id)?.comment ?? null;
       editCell.selected = false;
       editCell.flag = this.materials?.find(e => e.id === id)?.flagMaterial ?? false;
     }
@@ -684,13 +690,14 @@ cellValueGenerator(valueName : string, material : IMaterial) : number {
       if (col_name === "newSST"){
         oldValue = editCell.newSST
         editCell.newSST = Math.round(event.target.value);
-      } 
+      }
       if (col_name === "newST"){
+        //this.openTooltip(toolTip);
         oldValue = editCell.newST;
-        editCell.newST = Math.round(event.target.value); 
+        editCell.newST = Math.round(event.target.value);
       }
       if (col_name === "newComment") editCell.newComment = event.target.value;
-      if (col_name === "selected") {  
+      if (col_name === "selected") {
         editCell.selected = event.target.checked;
         //this.selectedMaterials.push(this.materials?.find(e => e.id === id)?.material ?? "");
         // const materialCopy = this.materials?.find(e => e.id=== id);
@@ -704,12 +711,16 @@ cellValueGenerator(valueName : string, material : IMaterial) : number {
       this._isEditable = [-1,-1]
       this.addToHistory(col_name, Math.round(Number(event.target.value)), oldValue, id);
     }
-    
+
   }
+
+  // openTooltip(toolTip: NgbTooltip | undefined) {
+  //   toolTip?.open();
+  // }
 
 
   // filterSelected(){
-    
+
   //   // this.selectedFilterState = true;
   //   // this.totalItems = this.selectedMaterials.length;
   //   // this.materials = this.selectedMaterials.splice(0,5);
@@ -763,7 +774,7 @@ cellValueGenerator(valueName : string, material : IMaterial) : number {
         resultValue += "&MATNR=" + materialValue.material
       }
     }
-    
+
     return resultValue
   }
 

@@ -3,7 +3,7 @@
     <span>Materials</span>
   </h2>
 
-    <options-bar (stringEmitter) = "receiveStringEvent($event)" (fileEmitter) = "onFileSelected($event)" (textFilterEmitter) = "receiveTextFilter($event)" (abcFilterEmitter) = "filterABCClassif($event)" (numberFilterEmitter) ="receiveNumberFilter($event)" [historyLength] = "history.length" [changesListLength]="this.linhas.size" [unselectedLines] = "getUnselectedLines()" (dropdownNumberEmitter) = "receiveDropdownNumber($event)"></options-bar>
+    <options-bar (stringEmitter) = "receiveStringEvent($event)" (fileEmitter) = "onFileSelected($event)" (textFilterEmitter) = "receiveTextFilter($event)" (abcFilterEmitter) = "filterABCClassif($event)" (numberFilterEmitter) ="receiveNumberFilter($event)" [historyLength] = "history.length" [changesListLength]="this.linhas.size" [unselectedLines] = "getUnselectedLines()" [currencyEUR] = "currencyEUR" (currencyValEmitter) = "receiveCurrencyVal($event)" (dropdownNumberEmitter) = "receiveDropdownNumber($event)"></options-bar>
     
     
     <div *ngIf="this.filters.filterOptions.length > 0" >
@@ -25,7 +25,7 @@
         <div style="flex-grow: 1;"></div> 
         
         <div>
-          <button class="btn btn-info me-2 " style="margin-left: 8px;" (click)="resetFilters()" placement="top" ngbTooltip="Tooltip on top">
+          <button class="btn btn-info me-2 " style="margin-left: 8px;" (click)="resetFilters()" placement="top">
             <fa-icon icon="trash-alt"></fa-icon>
             <span>Reset Filters</span>
           </button>
@@ -97,7 +97,7 @@
         <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()" class="headerRow2" >
           
           <th scope="col" jhiSortBy="material" class ="materialInfo headerRowStart" [ngClass] ="editCellClasses('materialInfo')">
-            <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{msg.get('Material')}}">
+            <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{msg.get('Material')}}" >
               <span>Material</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
@@ -287,7 +287,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let material of materials; trackBy: trackId" data-cy="entityTable" [ngClass] = "func(material.id)">
+        <tr *ngFor="let material of materials; trackBy: trackId; let i = index;" data-cy="entityTable" [ngClass] = "func(material.id)">
           <td class ="materialInfo" [ngClass] ="editCellClasses('materialInfo')">{{ material.material }}</td>
           <td class ="materialInfo" [ngClass] ="editCellClasses('materialInfo')">{{ material.description }}</td>
           <td class ="materialInfo" [ngClass] ="editCellClasses('materialInfo')">{{ material.abcClassification }}</td>
@@ -305,7 +305,11 @@
           </td>
 
           <td class ="safetyStock" [ngClass] ="editCellClasses('safetyStock')">
-            <span placement="top" ngbTooltip="Changed on : 12.04.2023  Previous Safety Stock : 2.000">{{ material.currSAPSafetyStock }}</span>
+            <ng-template #safetyStockContent>   
+              Changed on: 12.04.2023  
+              <p>Previous Safety Stock: 2000</p>
+            </ng-template>
+            <span placement="top" tooltipClass="custom-tooltip-smaller" [ngbTooltip]="safetyStockContent">{{ material.currSAPSafetyStock }}</span>
           </td>
           <td class ="safetyStock headerRowEnd" [ngClass] ="editCellClasses('safetyStock')">{{ material.proposedSST }}</td>
           <td *ngIf = "!visibility.get('safetyStock')" class="headerRowEnd">
@@ -313,7 +317,11 @@
           </td>
 
           <td class ="safetyTime" [ngClass] ="editCellClasses('safetyTime')">
-            <span placement="top" ngbTooltip="Changed on : 12.04.2023  Previous Safety Time : 2.000">{{ material.currentSAPSafeTime }}</span>
+            <ng-template #safetyTimeContent>   
+              Changed on: 12.04.2023  
+              <p>Previous Safety Time: 2000</p>
+            </ng-template>
+            <span placement="top" tooltipClass="custom-tooltip-smaller" [ngbTooltip]="safetyStockContent">{{ material.currentSAPSafeTime }}</span>
           </td>
           <td class ="safetyTime headerRowEnd" [ngClass] ="editCellClasses('safetyTime')">{{ material.proposedST }}</td>
           <td *ngIf = "!visibility.get('safetyTime')" class="headerRowEnd">
@@ -337,16 +345,16 @@
          
           
           <td class ="edit" *ngIf="isEditable[0] === material.id && isEditable[1] === 0 " ><input class = "inputWidth" type="number" min=0 [placeholder]="placeholderGeneratorNum('SST',material)" (change)="input($event,'newSST',material.id)"></td>
+
+          <td class ="edit" *ngIf="!(isEditable[0] === material.id && isEditable[1] === 0) " (click)="makeEditable(material.id,0)"  [ngClass] ="editCellClasses('edit',material,'SST')"><tooltip-cell [oldValue] = "material.newSAPSafetyStock" [generatedValue] = "cellValueGenerator('SST',material)"></tooltip-cell></td>
+
           
-          <td class ="edit" *ngIf="!(isEditable[0] === material.id && isEditable[1] === 0) " (click)="makeEditable(material.id,0)"  [ngClass] ="editCellClasses('edit',material,'SST')">{{cellValueGenerator('SST',material)}}</td>
-
-
 
           <td class ="edit " *ngIf="isEditable[0] === material.id && isEditable[1] === 1"><input class = "inputWidth" type="number" min=0 [placeholder]="placeholderGeneratorNum('ST',material)" (change)="input($event,'newST',material.id)"></td>
-
-          <td class ="edit " *ngIf="!(isEditable[0] === material.id && isEditable[1] === 1)" (click)="makeEditable(material.id,1)"  [ngClass] ="editCellClasses('edit',material,'ST')">{{cellValueGenerator('ST',material)}}</td>
-
           
+          <td class ="edit" *ngIf="!(isEditable[0] === material.id && isEditable[1] === 1)" (click)="makeEditable(material.id,1)"  [ngClass] ="editCellClasses('edit',material,'ST')" ><tooltip-cell [oldValue] = "material.newSAPSafetyTime" [generatedValue] = "cellValueGenerator('ST',material)"></tooltip-cell></td>
+
+
 
 
           <td class ="edit" [ngClass] ="editCellClasses('edit')"><input type="checkbox" [checked]="linhas.get(material.id)?.selected" [disabled]="!linhas.has(material.id)" (click)="input($event,'selected',material.id)"></td>

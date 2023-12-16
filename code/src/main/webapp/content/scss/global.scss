@@ -318,6 +318,7 @@ angular-cli removes postcss-rtl processed inline css, processed rules must be ad
 .textBlue {
   color: blue !important;
   font-weight: 900 !important;
+  background-color: #AED3FF !important;
 }
 
 .textBlack{
@@ -403,6 +404,24 @@ input[type=number] {
   justify-content: space-between;
 }
 
+.custom-tooltip {
+  --bs-tooltip-bg: #0073ff;
+  font-size: large;
+}
 
+.custom-tooltip-smaller {
+  --bs-tooltip-bg: #0073ff;
+}
 
+.optionsBarResponsive {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
 
+/* portrait tablets, portrait iPad, e-readers (Nook/Kindle), landscape 800x480 phones (Android) */ 
+@media (max-width:1000px)  { 
+  .optionsBarResponsive {
+    flex-direction: column;
+  }
+}

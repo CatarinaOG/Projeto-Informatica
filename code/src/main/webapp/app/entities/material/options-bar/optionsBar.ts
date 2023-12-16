@@ -9,13 +9,14 @@ export class OptionsBar implements OnInit {
   @Input() historyLength! : number; 
   @Input() changesListLength! : number;
   @Input() unselectedLines! : number;
+  @Input() currencyEUR ! : boolean;
   @Output() stringEmitter = new EventEmitter<string>();
   @Output() fileEmitter = new EventEmitter<{opType :boolean, file : File}>();
   @Output() textFilterEmitter = new EventEmitter<{filterName : string, filterText : string}>();
   @Output() abcFilterEmitter = new EventEmitter<{opType : boolean, filterValue : string}>();
   @Output() numberFilterEmitter = new EventEmitter<{filterName : string, operator : string, value : number}>();
   @Output() dropdownNumberEmitter = new EventEmitter<{menuName:string, menuValue : number}>();
-
+  @Output() currencyValEmitter = new EventEmitter<boolean>();
 
   filterStatus = new Map<string,boolean>([
     ["Material Name", false],
@@ -140,6 +141,13 @@ export class OptionsBar implements OnInit {
         else return ""
     }
 
-
+    toggleCheckbox(){
+        if(this.currencyEUR){
+            this.currencyValEmitter.emit(false)
+        }
+        else {
+            this.currencyValEmitter.emit(true)
+        }
+    }
 };
 

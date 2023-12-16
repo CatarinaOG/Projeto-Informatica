@@ -1,0 +1,5 @@
+<ng-template #tipContent>   
+    The input value constitutes a <b style = "color : black">{{messageVal}}</b> deviation from the old value
+</ng-template>
+
+<span placement="top" [ngbTooltip]="tipContent" #t="ngbTooltip" triggers="manual" tooltipClass="custom-tooltip">{{generatedValue}}</span>
