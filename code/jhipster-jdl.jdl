@@ -1,6 +1,3 @@
-
-
-
 entity Material {
 	material String
     description String
@@ -8,6 +5,8 @@ entity Material {
     avgSupplierDelay Float
     maxSupplierDelay Float
     serviceLevel Float
+    plant String
+    mrpController String
     currSAPSafetyStock Integer
 	proposedSST Integer
     deltaSST Integer
@@ -19,16 +18,15 @@ entity Material {
     unitCost Float
     avgDemand Integer
     avgInventoryEffectAfterChange Float
+    flagMaterial Boolean
+    flagExpirationDate LocalDate
+    comment String
     newSAPSafetyStock Integer
     newSAPSafetyTime Integer
-    flagMaterial Boolean
-    comment String
-    flagDate LocalDate
-    plant String
-    mrpController String
-    lastEdited LocalDate
-    toSaveLastEdited Boolean
-    currencyType Coin
+    lastUpdatedCurrentSS LocalDate
+    lastUpdatedCurrentST LocalDate
+    toSaveUpdates Boolean
+    currency Coin
 }
 
 enum ABCClassification {
@@ -36,8 +34,36 @@ enum ABCClassification {
 }
 
 enum Coin {
-	EUR, USD, AUD, GBP, XCD, XOF, NZD, XAF, ZAR, XPF, DKK, RUB, INR,
-    JOD, MAD, BND, HKD, SGD, AMD, CHF, ANG, TRY, MRU, SHP, FKP, ILS, CAD, NOK, CLP, CNY  
+    EUR,
+    USD,
+    AUD,
+    GBP,
+    XCD,
+    XOF,
+    NZD,
+    XAF,
+    ZAR,
+    XPF,
+    DKK,
+    RUB,
+    INR,
+    JOD,
+    MAD,
+    BND,
+    HKD,
+    SGD,
+    AMD,
+    CHF,
+    ANG,
+    TRY,
+    MRU,
+    SHP,
+    FKP,
+    ILS,
+    CAD,
+    NOK,
+    CLP,
+    CNY
 }
 
 // Set pagination options

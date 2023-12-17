@@ -117,6 +117,12 @@ public class MaterialServiceImpl implements MaterialService {
                 if (material.getServiceLevel() != null) {
                     existingMaterial.setServiceLevel(material.getServiceLevel());
                 }
+                if (material.getPlant() != null) {
+                    existingMaterial.setPlant(material.getPlant());
+                }
+                if (material.getMrpController() != null) {
+                    existingMaterial.setMrpController(material.getMrpController());
+                }
                 if (material.getCurrSAPSafetyStock() != null) {
                     existingMaterial.setCurrSAPSafetyStock(material.getCurrSAPSafetyStock());
                 }
@@ -150,35 +156,32 @@ public class MaterialServiceImpl implements MaterialService {
                 if (material.getAvgInventoryEffectAfterChange() != null) {
                     existingMaterial.setAvgInventoryEffectAfterChange(material.getAvgInventoryEffectAfterChange());
                 }
+                if (material.getFlagMaterial() != null) {
+                    existingMaterial.setFlagMaterial(material.getFlagMaterial());
+                }
+                if (material.getFlagExpirationDate() != null) {
+                    existingMaterial.setFlagExpirationDate(material.getFlagExpirationDate());
+                }
+                if (material.getComment() != null) {
+                    existingMaterial.setComment(material.getComment());
+                }
                 if (material.getNewSAPSafetyStock() != null) {
                     existingMaterial.setNewSAPSafetyStock(material.getNewSAPSafetyStock());
                 }
                 if (material.getNewSAPSafetyTime() != null) {
                     existingMaterial.setNewSAPSafetyTime(material.getNewSAPSafetyTime());
                 }
-                if (material.getFlagMaterial() != null) {
-                    existingMaterial.setFlagMaterial(material.getFlagMaterial());
+                if (material.getLastUpdatedCurrentSS() != null) {
+                    existingMaterial.setLastUpdatedCurrentSS(material.getLastUpdatedCurrentSS());
                 }
-                if (material.getComment() != null) {
-                    existingMaterial.setComment(material.getComment());
+                if (material.getLastUpdatedCurrentST() != null) {
+                    existingMaterial.setLastUpdatedCurrentST(material.getLastUpdatedCurrentST());
                 }
-                if (material.getFlagDate() != null) {
-                    existingMaterial.setFlagDate(material.getFlagDate());
+                if (material.getToSaveUpdates() != null) {
+                    existingMaterial.setToSaveUpdates(material.getToSaveUpdates());
                 }
-                if (material.getPlant() != null) {
-                    existingMaterial.setPlant(material.getPlant());
-                }
-                if (material.getMrpController() != null) {
-                    existingMaterial.setMrpController(material.getMrpController());
-                }
-                if (material.getLastEdited() != null) {
-                    existingMaterial.setLastEdited(material.getLastEdited());
-                }
-                if (material.getToSaveLastEdited() != null) {
-                    existingMaterial.setToSaveLastEdited(material.getToSaveLastEdited());
-                }
-                if (material.getCurrencyType() != null) {
-                    existingMaterial.setCurrencyType(material.getCurrencyType());
+                if (material.getCurrency() != null) {
+                    existingMaterial.setCurrency(material.getCurrency());
                 }
 
                 return existingMaterial;

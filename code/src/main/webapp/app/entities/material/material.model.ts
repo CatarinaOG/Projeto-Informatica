@@ -10,6 +10,8 @@ export interface IMaterial {
   avgSupplierDelay?: number | null;
   maxSupplierDelay?: number | null;
   serviceLevel?: number | null;
+  plant?: string | null;
+  mrpController?: string | null;
   currSAPSafetyStock?: number | null;
   proposedSST?: number | null;
   deltaSST?: number | null;
@@ -21,16 +23,15 @@ export interface IMaterial {
   unitCost?: number | null;
   avgDemand?: number | null;
   avgInventoryEffectAfterChange?: number | null;
+  flagMaterial?: boolean | null;
+  flagExpirationDate?: dayjs.Dayjs | null;
+  comment?: string | null;
   newSAPSafetyStock?: number | null;
   newSAPSafetyTime?: number | null;
-  flagMaterial?: boolean | null;
-  comment?: string | null;
-  flagDate?: dayjs.Dayjs | null;
-  plant?: string | null;
-  mrpController?: string | null;
-  lastEdited?: dayjs.Dayjs | null;
-  toSaveLastEdited?: boolean | null;
-  currencyType?: Coin | null;
+  lastUpdatedCurrentSS?: dayjs.Dayjs | null;
+  lastUpdatedCurrentST?: dayjs.Dayjs | null;
+  toSaveUpdates?: boolean | null;
+  currency?: Coin | null;
 }
 
 export type NewMaterial = Omit<IMaterial, 'id'> & { id: null };

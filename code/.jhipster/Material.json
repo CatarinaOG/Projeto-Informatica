@@ -31,6 +31,14 @@
       "fieldType": "Float"
     },
     {
+      "fieldName": "plant",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "mrpController",
+      "fieldType": "String"
+    },
+    {
       "fieldName": "currSAPSafetyStock",
       "fieldType": "Integer"
     },
@@ -75,6 +83,18 @@
       "fieldType": "Float"
     },
     {
+      "fieldName": "flagMaterial",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "flagExpirationDate",
+      "fieldType": "LocalDate"
+    },
+    {
+      "fieldName": "comment",
+      "fieldType": "String"
+    },
+    {
       "fieldName": "newSAPSafetyStock",
       "fieldType": "Integer"
     },
@@ -83,35 +103,19 @@
       "fieldType": "Integer"
     },
     {
-      "fieldName": "flagMaterial",
-      "fieldType": "Boolean"
-    },
-    {
-      "fieldName": "comment",
-      "fieldType": "String"
-    },
-    {
-      "fieldName": "flagDate",
+      "fieldName": "lastUpdatedCurrentSS",
       "fieldType": "LocalDate"
     },
     {
-      "fieldName": "plant",
-      "fieldType": "String"
-    },
-    {
-      "fieldName": "mrpController",
-      "fieldType": "String"
-    },
-    {
-      "fieldName": "lastEdited",
+      "fieldName": "lastUpdatedCurrentST",
       "fieldType": "LocalDate"
     },
     {
-      "fieldName": "toSaveLastEdited",
+      "fieldName": "toSaveUpdates",
       "fieldType": "Boolean"
     },
     {
-      "fieldName": "currencyType",
+      "fieldName": "currency",
       "fieldType": "Coin",
       "fieldValues": "EUR,USD,AUD,GBP,XCD,XOF,NZD,XAF,ZAR,XPF,DKK,RUB,INR,JOD,MAD,BND,HKD,SGD,AMD,CHF,ANG,TRY,MRU,SHP,FKP,ILS,CAD,NOK,CLP,CNY"
     }

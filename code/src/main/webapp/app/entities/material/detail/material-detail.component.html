@@ -38,6 +38,14 @@
         <dd>
           <span>{{ material.serviceLevel }}</span>
         </dd>
+        <dt><span>Plant</span></dt>
+        <dd>
+          <span>{{ material.plant }}</span>
+        </dd>
+        <dt><span>Mrp Controller</span></dt>
+        <dd>
+          <span>{{ material.mrpController }}</span>
+        </dd>
         <dt><span>Curr SAP Safety Stock</span></dt>
         <dd>
           <span>{{ material.currSAPSafetyStock }}</span>
@@ -82,6 +90,18 @@
         <dd>
           <span>{{ material.avgInventoryEffectAfterChange }}</span>
         </dd>
+        <dt><span>Flag Material</span></dt>
+        <dd>
+          <span>{{ material.flagMaterial }}</span>
+        </dd>
+        <dt><span>Flag Expiration Date</span></dt>
+        <dd>
+          <span>{{ material.flagExpirationDate | formatMediumDate }}</span>
+        </dd>
+        <dt><span>Comment</span></dt>
+        <dd>
+          <span>{{ material.comment }}</span>
+        </dd>
         <dt><span>New SAP Safety Stock</span></dt>
         <dd>
           <span>{{ material.newSAPSafetyStock }}</span>
@@ -90,37 +110,21 @@
         <dd>
           <span>{{ material.newSAPSafetyTime }}</span>
         </dd>
-        <dt><span>Flag Material</span></dt>
+        <dt><span>Last Updated Current SS</span></dt>
         <dd>
-          <span>{{ material.flagMaterial }}</span>
+          <span>{{ material.lastUpdatedCurrentSS | formatMediumDate }}</span>
         </dd>
-        <dt><span>Comment</span></dt>
+        <dt><span>Last Updated Current ST</span></dt>
         <dd>
-          <span>{{ material.comment }}</span>
+          <span>{{ material.lastUpdatedCurrentST | formatMediumDate }}</span>
         </dd>
-        <dt><span>Flag Date</span></dt>
+        <dt><span>To Save Updates</span></dt>
         <dd>
-          <span>{{ material.flagDate | formatMediumDate }}</span>
+          <span>{{ material.toSaveUpdates }}</span>
         </dd>
-        <dt><span>Plant</span></dt>
+        <dt><span>Currency</span></dt>
         <dd>
-          <span>{{ material.plant }}</span>
-        </dd>
-        <dt><span>Mrp Controller</span></dt>
-        <dd>
-          <span>{{ material.mrpController }}</span>
-        </dd>
-        <dt><span>Last Edited</span></dt>
-        <dd>
-          <span>{{ material.lastEdited | formatMediumDate }}</span>
-        </dd>
-        <dt><span>To Save Last Edited</span></dt>
-        <dd>
-          <span>{{ material.toSaveLastEdited }}</span>
-        </dd>
-        <dt><span>Currency Type</span></dt>
-        <dd>
-          <span>{{ material.currencyType }}</span>
+          <span>{{ material.currency }}</span>
         </dd>
       </dl>
 

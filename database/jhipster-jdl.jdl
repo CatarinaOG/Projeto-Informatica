@@ -1,6 +1,3 @@
-
-
-
 entity Material {
 	material String
     description String
@@ -21,10 +18,49 @@ entity Material {
     avgInventoryEffectAfterChange Float
     flagMaterial Boolean
     comment String
+    plant String
+    mrpController String
+    lastUpdatedCurrentSS LocalDate
+    lastUpdatedCurrentST LocalDate
+    toSaveUpdates Boolean
+    currency Coin
 }
 
 enum ABCClassification {
     A, B, C
+}
+
+enum Coin {
+    EUR,
+    USD,
+    AUD,
+    GBP,
+    XCD,
+    XOF,
+    NZD,
+    XAF,
+    ZAR,
+    XPF,
+    DKK,
+    RUB,
+    INR,
+    JOD,
+    MAD,
+    BND,
+    HKD,
+    SGD,
+    AMD,
+    CHF,
+    ANG,
+    TRY,
+    MRU,
+    SHP,
+    FKP,
+    ILS,
+    CAD,
+    NOK,
+    CLP,
+    CNY
 }
 
 // Set pagination options

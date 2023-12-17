@@ -44,6 +44,12 @@ public class Material implements Serializable {
     @Column(name = "service_level")
     private Float serviceLevel;
 
+    @Column(name = "plant")
+    private String plant;
+
+    @Column(name = "mrp_controller")
+    private String mrpController;
+
     @Column(name = "curr_sap_safety_stock")
     private Integer currSAPSafetyStock;
 
@@ -77,36 +83,33 @@ public class Material implements Serializable {
     @Column(name = "avg_inventory_effect_after_change")
     private Float avgInventoryEffectAfterChange;
 
+    @Column(name = "flag_material")
+    private Boolean flagMaterial;
+
+    @Column(name = "flag_expiration_date")
+    private LocalDate flagExpirationDate;
+
+    @Column(name = "jhi_comment")
+    private String comment;
+
     @Column(name = "new_sap_safety_stock")
     private Integer newSAPSafetyStock;
 
     @Column(name = "new_sap_safety_time")
     private Integer newSAPSafetyTime;
 
-    @Column(name = "flag_material")
-    private Boolean flagMaterial;
+    @Column(name = "last_updated_current_ss")
+    private LocalDate lastUpdatedCurrentSS;
 
-    @Column(name = "jhi_comment")
-    private String comment;
+    @Column(name = "last_updated_current_st")
+    private LocalDate lastUpdatedCurrentST;
 
-    @Column(name = "flag_date")
-    private LocalDate flagDate;
-
-    @Column(name = "plant")
-    private String plant;
-
-    @Column(name = "mrp_controller")
-    private String mrpController;
-
-    @Column(name = "last_edited")
-    private LocalDate lastEdited;
-
-    @Column(name = "to_save_last_edited")
-    private Boolean toSaveLastEdited;
+    @Column(name = "to_save_updates")
+    private Boolean toSaveUpdates;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "currency_type")
-    private Coin currencyType;
+    @Column(name = "currency")
+    private Coin currency;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -199,6 +202,32 @@ public class Material implements Serializable {
 
     public void setServiceLevel(Float serviceLevel) {
         this.serviceLevel = serviceLevel;
+    }
+
+    public String getPlant() {
+        return this.plant;
+    }
+
+    public Material plant(String plant) {
+        this.setPlant(plant);
+        return this;
+    }
+
+    public void setPlant(String plant) {
+        this.plant = plant;
+    }
+
+    public String getMrpController() {
+        return this.mrpController;
+    }
+
+    public Material mrpController(String mrpController) {
+        this.setMrpController(mrpController);
+        return this;
+    }
+
+    public void setMrpController(String mrpController) {
+        this.mrpController = mrpController;
     }
 
     public Integer getCurrSAPSafetyStock() {
@@ -344,6 +373,45 @@ public class Material implements Serializable {
         this.avgInventoryEffectAfterChange = avgInventoryEffectAfterChange;
     }
 
+    public Boolean getFlagMaterial() {
+        return this.flagMaterial;
+    }
+
+    public Material flagMaterial(Boolean flagMaterial) {
+        this.setFlagMaterial(flagMaterial);
+        return this;
+    }
+
+    public void setFlagMaterial(Boolean flagMaterial) {
+        this.flagMaterial = flagMaterial;
+    }
+
+    public LocalDate getFlagExpirationDate() {
+        return this.flagExpirationDate;
+    }
+
+    public Material flagExpirationDate(LocalDate flagExpirationDate) {
+        this.setFlagExpirationDate(flagExpirationDate);
+        return this;
+    }
+
+    public void setFlagExpirationDate(LocalDate flagExpirationDate) {
+        this.flagExpirationDate = flagExpirationDate;
+    }
+
+    public String getComment() {
+        return this.comment;
+    }
+
+    public Material comment(String comment) {
+        this.setComment(comment);
+        return this;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
     public Integer getNewSAPSafetyStock() {
         return this.newSAPSafetyStock;
     }
@@ -370,108 +438,56 @@ public class Material implements Serializable {
         this.newSAPSafetyTime = newSAPSafetyTime;
     }
 
-    public Boolean getFlagMaterial() {
-        return this.flagMaterial;
+    public LocalDate getLastUpdatedCurrentSS() {
+        return this.lastUpdatedCurrentSS;
     }
 
-    public Material flagMaterial(Boolean flagMaterial) {
-        this.setFlagMaterial(flagMaterial);
+    public Material lastUpdatedCurrentSS(LocalDate lastUpdatedCurrentSS) {
+        this.setLastUpdatedCurrentSS(lastUpdatedCurrentSS);
         return this;
     }
 
-    public void setFlagMaterial(Boolean flagMaterial) {
-        this.flagMaterial = flagMaterial;
+    public void setLastUpdatedCurrentSS(LocalDate lastUpdatedCurrentSS) {
+        this.lastUpdatedCurrentSS = lastUpdatedCurrentSS;
     }
 
-    public String getComment() {
-        return this.comment;
+    public LocalDate getLastUpdatedCurrentST() {
+        return this.lastUpdatedCurrentST;
     }
 
-    public Material comment(String comment) {
-        this.setComment(comment);
+    public Material lastUpdatedCurrentST(LocalDate lastUpdatedCurrentST) {
+        this.setLastUpdatedCurrentST(lastUpdatedCurrentST);
         return this;
     }
 
-    public void setComment(String comment) {
-        this.comment = comment;
+    public void setLastUpdatedCurrentST(LocalDate lastUpdatedCurrentST) {
+        this.lastUpdatedCurrentST = lastUpdatedCurrentST;
     }
 
-    public LocalDate getFlagDate() {
-        return this.flagDate;
+    public Boolean getToSaveUpdates() {
+        return this.toSaveUpdates;
     }
 
-    public Material flagDate(LocalDate flagDate) {
-        this.setFlagDate(flagDate);
+    public Material toSaveUpdates(Boolean toSaveUpdates) {
+        this.setToSaveUpdates(toSaveUpdates);
         return this;
     }
 
-    public void setFlagDate(LocalDate flagDate) {
-        this.flagDate = flagDate;
+    public void setToSaveUpdates(Boolean toSaveUpdates) {
+        this.toSaveUpdates = toSaveUpdates;
     }
 
-    public String getPlant() {
-        return this.plant;
+    public Coin getCurrency() {
+        return this.currency;
     }
 
-    public Material plant(String plant) {
-        this.setPlant(plant);
+    public Material currency(Coin currency) {
+        this.setCurrency(currency);
         return this;
     }
 
-    public void setPlant(String plant) {
-        this.plant = plant;
-    }
-
-    public String getMrpController() {
-        return this.mrpController;
-    }
-
-    public Material mrpController(String mrpController) {
-        this.setMrpController(mrpController);
-        return this;
-    }
-
-    public void setMrpController(String mrpController) {
-        this.mrpController = mrpController;
-    }
-
-    public LocalDate getLastEdited() {
-        return this.lastEdited;
-    }
-
-    public Material lastEdited(LocalDate lastEdited) {
-        this.setLastEdited(lastEdited);
-        return this;
-    }
-
-    public void setLastEdited(LocalDate lastEdited) {
-        this.lastEdited = lastEdited;
-    }
-
-    public Boolean getToSaveLastEdited() {
-        return this.toSaveLastEdited;
-    }
-
-    public Material toSaveLastEdited(Boolean toSaveLastEdited) {
-        this.setToSaveLastEdited(toSaveLastEdited);
-        return this;
-    }
-
-    public void setToSaveLastEdited(Boolean toSaveLastEdited) {
-        this.toSaveLastEdited = toSaveLastEdited;
-    }
-
-    public Coin getCurrencyType() {
-        return this.currencyType;
-    }
-
-    public Material currencyType(Coin currencyType) {
-        this.setCurrencyType(currencyType);
-        return this;
-    }
-
-    public void setCurrencyType(Coin currencyType) {
-        this.currencyType = currencyType;
+    public void setCurrency(Coin currency) {
+        this.currency = currency;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
@@ -504,6 +520,8 @@ public class Material implements Serializable {
             ", avgSupplierDelay=" + getAvgSupplierDelay() +
             ", maxSupplierDelay=" + getMaxSupplierDelay() +
             ", serviceLevel=" + getServiceLevel() +
+            ", plant='" + getPlant() + "'" +
+            ", mrpController='" + getMrpController() + "'" +
             ", currSAPSafetyStock=" + getCurrSAPSafetyStock() +
             ", proposedSST=" + getProposedSST() +
             ", deltaSST=" + getDeltaSST() +
@@ -515,16 +533,15 @@ public class Material implements Serializable {
             ", unitCost=" + getUnitCost() +
             ", avgDemand=" + getAvgDemand() +
             ", avgInventoryEffectAfterChange=" + getAvgInventoryEffectAfterChange() +
+            ", flagMaterial='" + getFlagMaterial() + "'" +
+            ", flagExpirationDate='" + getFlagExpirationDate() + "'" +
+            ", comment='" + getComment() + "'" +
             ", newSAPSafetyStock=" + getNewSAPSafetyStock() +
             ", newSAPSafetyTime=" + getNewSAPSafetyTime() +
-            ", flagMaterial='" + getFlagMaterial() + "'" +
-            ", comment='" + getComment() + "'" +
-            ", flagDate='" + getFlagDate() + "'" +
-            ", plant='" + getPlant() + "'" +
-            ", mrpController='" + getMrpController() + "'" +
-            ", lastEdited='" + getLastEdited() + "'" +
-            ", toSaveLastEdited='" + getToSaveLastEdited() + "'" +
-            ", currencyType='" + getCurrencyType() + "'" +
+            ", lastUpdatedCurrentSS='" + getLastUpdatedCurrentSS() + "'" +
+            ", lastUpdatedCurrentST='" + getLastUpdatedCurrentST() + "'" +
+            ", toSaveUpdates='" + getToSaveUpdates() + "'" +
+            ", currency='" + getCurrency() + "'" +
             "}";
     }
 }

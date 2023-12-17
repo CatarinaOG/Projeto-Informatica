@@ -14,7 +14,7 @@ type PartialWithRequiredKeyOf<T extends { id: unknown }> = Partial<Omit<T, 'id'>
  */
 type MaterialFormGroupInput = IMaterial | PartialWithRequiredKeyOf<NewMaterial>;
 
-type MaterialFormDefaults = Pick<NewMaterial, 'id' | 'flagMaterial' | 'toSaveLastEdited'>;
+type MaterialFormDefaults = Pick<NewMaterial, 'id' | 'flagMaterial' | 'toSaveUpdates'>;
 
 type MaterialFormGroupContent = {
   id: FormControl<IMaterial['id'] | NewMaterial['id']>;
@@ -24,6 +24,8 @@ type MaterialFormGroupContent = {
   avgSupplierDelay: FormControl<IMaterial['avgSupplierDelay']>;
   maxSupplierDelay: FormControl<IMaterial['maxSupplierDelay']>;
   serviceLevel: FormControl<IMaterial['serviceLevel']>;
+  plant: FormControl<IMaterial['plant']>;
+  mrpController: FormControl<IMaterial['mrpController']>;
   currSAPSafetyStock: FormControl<IMaterial['currSAPSafetyStock']>;
   proposedSST: FormControl<IMaterial['proposedSST']>;
   deltaSST: FormControl<IMaterial['deltaSST']>;
@@ -35,16 +37,15 @@ type MaterialFormGroupContent = {
   unitCost: FormControl<IMaterial['unitCost']>;
   avgDemand: FormControl<IMaterial['avgDemand']>;
   avgInventoryEffectAfterChange: FormControl<IMaterial['avgInventoryEffectAfterChange']>;
+  flagMaterial: FormControl<IMaterial['flagMaterial']>;
+  flagExpirationDate: FormControl<IMaterial['flagExpirationDate']>;
+  comment: FormControl<IMaterial['comment']>;
   newSAPSafetyStock: FormControl<IMaterial['newSAPSafetyStock']>;
   newSAPSafetyTime: FormControl<IMaterial['newSAPSafetyTime']>;
-  flagMaterial: FormControl<IMaterial['flagMaterial']>;
-  comment: FormControl<IMaterial['comment']>;
-  flagDate: FormControl<IMaterial['flagDate']>;
-  plant: FormControl<IMaterial['plant']>;
-  mrpController: FormControl<IMaterial['mrpController']>;
-  lastEdited: FormControl<IMaterial['lastEdited']>;
-  toSaveLastEdited: FormControl<IMaterial['toSaveLastEdited']>;
-  currencyType: FormControl<IMaterial['currencyType']>;
+  lastUpdatedCurrentSS: FormControl<IMaterial['lastUpdatedCurrentSS']>;
+  lastUpdatedCurrentST: FormControl<IMaterial['lastUpdatedCurrentST']>;
+  toSaveUpdates: FormControl<IMaterial['toSaveUpdates']>;
+  currency: FormControl<IMaterial['currency']>;
 };
 
 export type MaterialFormGroup = FormGroup<MaterialFormGroupContent>;
@@ -70,6 +71,8 @@ export class MaterialFormService {
       avgSupplierDelay: new FormControl(materialRawValue.avgSupplierDelay),
       maxSupplierDelay: new FormControl(materialRawValue.maxSupplierDelay),
       serviceLevel: new FormControl(materialRawValue.serviceLevel),
+      plant: new FormControl(materialRawValue.plant),
+      mrpController: new FormControl(materialRawValue.mrpController),
       currSAPSafetyStock: new FormControl(materialRawValue.currSAPSafetyStock),
       proposedSST: new FormControl(materialRawValue.proposedSST),
       deltaSST: new FormControl(materialRawValue.deltaSST),
@@ -81,16 +84,15 @@ export class MaterialFormService {
       unitCost: new FormControl(materialRawValue.unitCost),
       avgDemand: new FormControl(materialRawValue.avgDemand),
       avgInventoryEffectAfterChange: new FormControl(materialRawValue.avgInventoryEffectAfterChange),
+      flagMaterial: new FormControl(materialRawValue.flagMaterial),
+      flagExpirationDate: new FormControl(materialRawValue.flagExpirationDate),
+      comment: new FormControl(materialRawValue.comment),
       newSAPSafetyStock: new FormControl(materialRawValue.newSAPSafetyStock),
       newSAPSafetyTime: new FormControl(materialRawValue.newSAPSafetyTime),
-      flagMaterial: new FormControl(materialRawValue.flagMaterial),
-      comment: new FormControl(materialRawValue.comment),
-      flagDate: new FormControl(materialRawValue.flagDate),
-      plant: new FormControl(materialRawValue.plant),
-      mrpController: new FormControl(materialRawValue.mrpController),
-      lastEdited: new FormControl(materialRawValue.lastEdited),
-      toSaveLastEdited: new FormControl(materialRawValue.toSaveLastEdited),
-      currencyType: new FormControl(materialRawValue.currencyType),
+      lastUpdatedCurrentSS: new FormControl(materialRawValue.lastUpdatedCurrentSS),
+      lastUpdatedCurrentST: new FormControl(materialRawValue.lastUpdatedCurrentST),
+      toSaveUpdates: new FormControl(materialRawValue.toSaveUpdates),
+      currency: new FormControl(materialRawValue.currency),
     });
   }
 
@@ -112,7 +114,7 @@ export class MaterialFormService {
     return {
       id: null,
       flagMaterial: false,
-      toSaveLastEdited: false,
+      toSaveUpdates: false,
     };
   }
 }

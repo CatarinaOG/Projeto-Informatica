@@ -79,6 +79,23 @@
         </div>
 
         <div class="row mb-3">
+          <label class="form-label" for="field_plant">Plant</label>
+          <input type="text" class="form-control" name="plant" id="field_plant" data-cy="plant" formControlName="plant" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_mrpController">Mrp Controller</label>
+          <input
+            type="text"
+            class="form-control"
+            name="mrpController"
+            id="field_mrpController"
+            data-cy="mrpController"
+            formControlName="mrpController"
+          />
+        </div>
+
+        <div class="row mb-3">
           <label class="form-label" for="field_currSAPSafetyStock">Curr SAP Safety Stock</label>
           <input
             type="number"
@@ -183,6 +200,42 @@
         </div>
 
         <div class="row mb-3">
+          <label class="form-label" for="field_flagMaterial">Flag Material</label>
+          <input
+            type="checkbox"
+            class="form-check"
+            name="flagMaterial"
+            id="field_flagMaterial"
+            data-cy="flagMaterial"
+            formControlName="flagMaterial"
+          />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_flagExpirationDate">Flag Expiration Date</label>
+          <div class="input-group">
+            <input
+              id="field_flagExpirationDate"
+              data-cy="flagExpirationDate"
+              type="text"
+              class="form-control"
+              name="flagExpirationDate"
+              ngbDatepicker
+              #flagExpirationDateDp="ngbDatepicker"
+              formControlName="flagExpirationDate"
+            />
+            <button type="button" class="btn btn-secondary" (click)="flagExpirationDateDp.toggle()">
+              <fa-icon icon="calendar-alt"></fa-icon>
+            </button>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_comment">Comment</label>
+          <input type="text" class="form-control" name="comment" id="field_comment" data-cy="comment" formControlName="comment" />
+        </div>
+
+        <div class="row mb-3">
           <label class="form-label" for="field_newSAPSafetyStock">New SAP Safety Stock</label>
           <input
             type="number"
@@ -207,88 +260,58 @@
         </div>
 
         <div class="row mb-3">
-          <label class="form-label" for="field_flagMaterial">Flag Material</label>
-          <input
-            type="checkbox"
-            class="form-check"
-            name="flagMaterial"
-            id="field_flagMaterial"
-            data-cy="flagMaterial"
-            formControlName="flagMaterial"
-          />
-        </div>
-
-        <div class="row mb-3">
-          <label class="form-label" for="field_comment">Comment</label>
-          <input type="text" class="form-control" name="comment" id="field_comment" data-cy="comment" formControlName="comment" />
-        </div>
-
-        <div class="row mb-3">
-          <label class="form-label" for="field_flagDate">Flag Date</label>
+          <label class="form-label" for="field_lastUpdatedCurrentSS">Last Updated Current SS</label>
           <div class="input-group">
             <input
-              id="field_flagDate"
-              data-cy="flagDate"
+              id="field_lastUpdatedCurrentSS"
+              data-cy="lastUpdatedCurrentSS"
               type="text"
               class="form-control"
-              name="flagDate"
+              name="lastUpdatedCurrentSS"
               ngbDatepicker
-              #flagDateDp="ngbDatepicker"
-              formControlName="flagDate"
+              #lastUpdatedCurrentSSDp="ngbDatepicker"
+              formControlName="lastUpdatedCurrentSS"
             />
-            <button type="button" class="btn btn-secondary" (click)="flagDateDp.toggle()"><fa-icon icon="calendar-alt"></fa-icon></button>
+            <button type="button" class="btn btn-secondary" (click)="lastUpdatedCurrentSSDp.toggle()">
+              <fa-icon icon="calendar-alt"></fa-icon>
+            </button>
           </div>
         </div>
 
         <div class="row mb-3">
-          <label class="form-label" for="field_plant">Plant</label>
-          <input type="text" class="form-control" name="plant" id="field_plant" data-cy="plant" formControlName="plant" />
-        </div>
-
-        <div class="row mb-3">
-          <label class="form-label" for="field_mrpController">Mrp Controller</label>
-          <input
-            type="text"
-            class="form-control"
-            name="mrpController"
-            id="field_mrpController"
-            data-cy="mrpController"
-            formControlName="mrpController"
-          />
-        </div>
-
-        <div class="row mb-3">
-          <label class="form-label" for="field_lastEdited">Last Edited</label>
+          <label class="form-label" for="field_lastUpdatedCurrentST">Last Updated Current ST</label>
           <div class="input-group">
             <input
-              id="field_lastEdited"
-              data-cy="lastEdited"
+              id="field_lastUpdatedCurrentST"
+              data-cy="lastUpdatedCurrentST"
               type="text"
               class="form-control"
-              name="lastEdited"
+              name="lastUpdatedCurrentST"
               ngbDatepicker
-              #lastEditedDp="ngbDatepicker"
-              formControlName="lastEdited"
+              #lastUpdatedCurrentSTDp="ngbDatepicker"
+              formControlName="lastUpdatedCurrentST"
             />
-            <button type="button" class="btn btn-secondary" (click)="lastEditedDp.toggle()"><fa-icon icon="calendar-alt"></fa-icon></button>
+            <button type="button" class="btn btn-secondary" (click)="lastUpdatedCurrentSTDp.toggle()">
+              <fa-icon icon="calendar-alt"></fa-icon>
+            </button>
           </div>
         </div>
 
         <div class="row mb-3">
-          <label class="form-label" for="field_toSaveLastEdited">To Save Last Edited</label>
+          <label class="form-label" for="field_toSaveUpdates">To Save Updates</label>
           <input
             type="checkbox"
             class="form-check"
-            name="toSaveLastEdited"
-            id="field_toSaveLastEdited"
-            data-cy="toSaveLastEdited"
-            formControlName="toSaveLastEdited"
+            name="toSaveUpdates"
+            id="field_toSaveUpdates"
+            data-cy="toSaveUpdates"
+            formControlName="toSaveUpdates"
           />
         </div>
 
         <div class="row mb-3">
-          <label class="form-label" for="field_currencyType">Currency Type</label>
-          <select class="form-control" name="currencyType" formControlName="currencyType" id="field_currencyType" data-cy="currencyType">
+          <label class="form-label" for="field_currency">Currency</label>
+          <select class="form-control" name="currency" formControlName="currency" id="field_currency" data-cy="currency">
             <option [ngValue]="null"></option>
             <option *ngFor="let coin of coinValues" [value]="coin">coin</option>
           </select>
