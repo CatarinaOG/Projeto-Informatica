@@ -41,6 +41,12 @@ describe('Material Form Service', () => {
             newSAPSafetyTime: expect.any(Object),
             flagMaterial: expect.any(Object),
             comment: expect.any(Object),
+            flagDate: expect.any(Object),
+            plant: expect.any(Object),
+            mrpController: expect.any(Object),
+            lastEdited: expect.any(Object),
+            toSaveLastEdited: expect.any(Object),
+            currencyType: expect.any(Object),
           })
         );
       });
@@ -72,6 +78,12 @@ describe('Material Form Service', () => {
             newSAPSafetyTime: expect.any(Object),
             flagMaterial: expect.any(Object),
             comment: expect.any(Object),
+            flagDate: expect.any(Object),
+            plant: expect.any(Object),
+            mrpController: expect.any(Object),
+            lastEdited: expect.any(Object),
+            toSaveLastEdited: expect.any(Object),
+            currencyType: expect.any(Object),
           })
         );
       });

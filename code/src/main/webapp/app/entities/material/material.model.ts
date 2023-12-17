@@ -1,4 +1,6 @@
+import dayjs from 'dayjs/esm';
 import { ABCClassification } from 'app/entities/enumerations/abc-classification.model';
+import { Coin } from 'app/entities/enumerations/coin.model';
 
 export interface IMaterial {
   id: number;
@@ -23,6 +25,12 @@ export interface IMaterial {
   newSAPSafetyTime?: number | null;
   flagMaterial?: boolean | null;
   comment?: string | null;
+  flagDate?: dayjs.Dayjs | null;
+  plant?: string | null;
+  mrpController?: string | null;
+  lastEdited?: dayjs.Dayjs | null;
+  toSaveLastEdited?: boolean | null;
+  currencyType?: Coin | null;
 }
 
 export type NewMaterial = Omit<IMaterial, 'id'> & { id: null };

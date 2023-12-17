@@ -222,6 +222,77 @@
           <label class="form-label" for="field_comment">Comment</label>
           <input type="text" class="form-control" name="comment" id="field_comment" data-cy="comment" formControlName="comment" />
         </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_flagDate">Flag Date</label>
+          <div class="input-group">
+            <input
+              id="field_flagDate"
+              data-cy="flagDate"
+              type="text"
+              class="form-control"
+              name="flagDate"
+              ngbDatepicker
+              #flagDateDp="ngbDatepicker"
+              formControlName="flagDate"
+            />
+            <button type="button" class="btn btn-secondary" (click)="flagDateDp.toggle()"><fa-icon icon="calendar-alt"></fa-icon></button>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_plant">Plant</label>
+          <input type="text" class="form-control" name="plant" id="field_plant" data-cy="plant" formControlName="plant" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_mrpController">Mrp Controller</label>
+          <input
+            type="text"
+            class="form-control"
+            name="mrpController"
+            id="field_mrpController"
+            data-cy="mrpController"
+            formControlName="mrpController"
+          />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_lastEdited">Last Edited</label>
+          <div class="input-group">
+            <input
+              id="field_lastEdited"
+              data-cy="lastEdited"
+              type="text"
+              class="form-control"
+              name="lastEdited"
+              ngbDatepicker
+              #lastEditedDp="ngbDatepicker"
+              formControlName="lastEdited"
+            />
+            <button type="button" class="btn btn-secondary" (click)="lastEditedDp.toggle()"><fa-icon icon="calendar-alt"></fa-icon></button>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_toSaveLastEdited">To Save Last Edited</label>
+          <input
+            type="checkbox"
+            class="form-check"
+            name="toSaveLastEdited"
+            id="field_toSaveLastEdited"
+            data-cy="toSaveLastEdited"
+            formControlName="toSaveLastEdited"
+          />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_currencyType">Currency Type</label>
+          <select class="form-control" name="currencyType" formControlName="currencyType" id="field_currencyType" data-cy="currencyType">
+            <option [ngValue]="null"></option>
+            <option *ngFor="let coin of coinValues" [value]="coin">coin</option>
+          </select>
+        </div>
       </div>
 
       <div>

@@ -1,13 +1,16 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
+import { DATE_FORMAT } from 'app/config/input.constants';
 import { IMaterial } from '../material.model';
 import { sampleWithRequiredData, sampleWithNewData, sampleWithPartialData, sampleWithFullData } from '../material.test-samples';
 
-import { MaterialService } from './material.service';
+import { MaterialService, RestMaterial } from './material.service';
 
-const requireRestSample: IMaterial = {
+const requireRestSample: RestMaterial = {
   ...sampleWithRequiredData,
+  flagDate: sampleWithRequiredData.flagDate?.format(DATE_FORMAT),
+  lastEdited: sampleWithRequiredData.lastEdited?.format(DATE_FORMAT),
 };
 
 describe('Material Service', () => {

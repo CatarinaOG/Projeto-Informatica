@@ -1,7 +1,9 @@
 package com.bosch.diabo.domain;
 
 import com.bosch.diabo.domain.enumeration.ABCClassification;
+import com.bosch.diabo.domain.enumeration.Coin;
 import java.io.Serializable;
+import java.time.LocalDate;
 import javax.persistence.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -86,6 +88,25 @@ public class Material implements Serializable {
 
     @Column(name = "jhi_comment")
     private String comment;
+
+    @Column(name = "flag_date")
+    private LocalDate flagDate;
+
+    @Column(name = "plant")
+    private String plant;
+
+    @Column(name = "mrp_controller")
+    private String mrpController;
+
+    @Column(name = "last_edited")
+    private LocalDate lastEdited;
+
+    @Column(name = "to_save_last_edited")
+    private Boolean toSaveLastEdited;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "currency_type")
+    private Coin currencyType;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -375,6 +396,84 @@ public class Material implements Serializable {
         this.comment = comment;
     }
 
+    public LocalDate getFlagDate() {
+        return this.flagDate;
+    }
+
+    public Material flagDate(LocalDate flagDate) {
+        this.setFlagDate(flagDate);
+        return this;
+    }
+
+    public void setFlagDate(LocalDate flagDate) {
+        this.flagDate = flagDate;
+    }
+
+    public String getPlant() {
+        return this.plant;
+    }
+
+    public Material plant(String plant) {
+        this.setPlant(plant);
+        return this;
+    }
+
+    public void setPlant(String plant) {
+        this.plant = plant;
+    }
+
+    public String getMrpController() {
+        return this.mrpController;
+    }
+
+    public Material mrpController(String mrpController) {
+        this.setMrpController(mrpController);
+        return this;
+    }
+
+    public void setMrpController(String mrpController) {
+        this.mrpController = mrpController;
+    }
+
+    public LocalDate getLastEdited() {
+        return this.lastEdited;
+    }
+
+    public Material lastEdited(LocalDate lastEdited) {
+        this.setLastEdited(lastEdited);
+        return this;
+    }
+
+    public void setLastEdited(LocalDate lastEdited) {
+        this.lastEdited = lastEdited;
+    }
+
+    public Boolean getToSaveLastEdited() {
+        return this.toSaveLastEdited;
+    }
+
+    public Material toSaveLastEdited(Boolean toSaveLastEdited) {
+        this.setToSaveLastEdited(toSaveLastEdited);
+        return this;
+    }
+
+    public void setToSaveLastEdited(Boolean toSaveLastEdited) {
+        this.toSaveLastEdited = toSaveLastEdited;
+    }
+
+    public Coin getCurrencyType() {
+        return this.currencyType;
+    }
+
+    public Material currencyType(Coin currencyType) {
+        this.setCurrencyType(currencyType);
+        return this;
+    }
+
+    public void setCurrencyType(Coin currencyType) {
+        this.currencyType = currencyType;
+    }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -420,6 +519,12 @@ public class Material implements Serializable {
             ", newSAPSafetyTime=" + getNewSAPSafetyTime() +
             ", flagMaterial='" + getFlagMaterial() + "'" +
             ", comment='" + getComment() + "'" +
+            ", flagDate='" + getFlagDate() + "'" +
+            ", plant='" + getPlant() + "'" +
+            ", mrpController='" + getMrpController() + "'" +
+            ", lastEdited='" + getLastEdited() + "'" +
+            ", toSaveLastEdited='" + getToSaveLastEdited() + "'" +
+            ", currencyType='" + getCurrencyType() + "'" +
             "}";
     }
 }

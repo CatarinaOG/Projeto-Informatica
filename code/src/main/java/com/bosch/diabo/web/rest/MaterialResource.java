@@ -7,7 +7,6 @@ import com.bosch.diabo.service.MaterialService;
 import com.bosch.diabo.service.criteria.MaterialCriteria;
 import com.bosch.diabo.web.rest.errors.BadRequestAlertException;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -42,7 +41,7 @@ import java.io.IOException;
 @RestController
 @RequestMapping("/api")
 public class MaterialResource {
-
+    
     @Value("${file.upload.directory}")
     private String uploadDirectory;
 
@@ -57,7 +56,7 @@ public class MaterialResource {
 
     private final MaterialRepository materialRepository;
 
-    private final MaterialQueryService materialQueryService;
+     private final MaterialQueryService materialQueryService;
 
     public MaterialResource(
         MaterialService materialService,
@@ -176,7 +175,7 @@ public class MaterialResource {
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
-
+    
     /**
      * {@code GET  /materials/count} : count all the materials.
      *

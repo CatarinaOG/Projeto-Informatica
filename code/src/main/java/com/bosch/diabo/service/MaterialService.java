@@ -27,7 +27,7 @@ public interface MaterialService {
      * @return the persisted entity.
      */
     Material update(Material material);
-
+    
     /**
      * Updates a material identified by the name.
      *
@@ -60,7 +60,7 @@ public interface MaterialService {
      * @return the entity.
      */
     Optional<Material> findOne(Long id);
-
+    
     /**
      * Get all the materials.
      *

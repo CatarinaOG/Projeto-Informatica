@@ -89,10 +89,35 @@
     {
       "fieldName": "comment",
       "fieldType": "String"
+    },
+    {
+      "fieldName": "flagDate",
+      "fieldType": "LocalDate"
+    },
+    {
+      "fieldName": "plant",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "mrpController",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "lastEdited",
+      "fieldType": "LocalDate"
+    },
+    {
+      "fieldName": "toSaveLastEdited",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "currencyType",
+      "fieldType": "Coin",
+      "fieldValues": "EUR,USD,AUD,GBP,XCD,XOF,NZD,XAF,ZAR,XPF,DKK,RUB,INR,JOD,MAD,BND,HKD,SGD,AMD,CHF,ANG,TRY,MRU,SHP,FKP,ILS,CAD,NOK,CLP,CNY"
     }
   ],
   "fluentMethods": true,
-  "jpaMetamodelFiltering": true,
+  "jpaMetamodelFiltering": false,
   "name": "Material",
   "pagination": "pagination",
   "readOnly": false,

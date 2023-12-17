@@ -77,6 +77,24 @@
             <column name="jhi_comment" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
+            <column name="flag_date" type="date">
+                <constraints nullable="true" />
+            </column>
+            <column name="plant" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="mrp_controller" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="last_edited" type="date">
+                <constraints nullable="true" />
+            </column>
+            <column name="to_save_last_edited" type="boolean">
+                <constraints nullable="true" />
+            </column>
+            <column name="currency_type" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
     </changeSet>
@@ -119,6 +137,12 @@
             <column name="new_sap_safety_time" type="numeric"/>
             <column name="flag_material" type="boolean"/>
             <column name="jhi_comment" type="string"/>
+            <column name="flag_date" type="date"/>
+            <column name="plant" type="string"/>
+            <column name="mrp_controller" type="string"/>
+            <column name="last_edited" type="date"/>
+            <column name="to_save_last_edited" type="boolean"/>
+            <column name="currency_type" type="string"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>

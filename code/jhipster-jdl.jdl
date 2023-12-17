@@ -23,10 +23,21 @@ entity Material {
     newSAPSafetyTime Integer
     flagMaterial Boolean
     comment String
+    flagDate LocalDate
+    plant String
+    mrpController String
+    lastEdited LocalDate
+    toSaveLastEdited Boolean
+    currencyType Coin
 }
 
 enum ABCClassification {
     A, B, C
+}
+
+enum Coin {
+	EUR, USD, AUD, GBP, XCD, XOF, NZD, XAF, ZAR, XPF, DKK, RUB, INR,
+    JOD, MAD, BND, HKD, SGD, AMD, CHF, ANG, TRY, MRU, SHP, FKP, ILS, CAD, NOK, CLP, CNY  
 }
 
 // Set pagination options

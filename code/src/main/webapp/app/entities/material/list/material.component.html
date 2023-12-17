@@ -3,7 +3,7 @@
     <span>Materials</span>
   </h2>
 
-    <options-bar (stringEmitter) = "receiveStringEvent($event)" (fileEmitter) = "onFileSelected($event)" (textFilterEmitter) = "receiveTextFilter($event)" (abcFilterEmitter) = "filterABCClassif($event)" (numberFilterEmitter) ="receiveNumberFilter($event)" [historyLength] = "history.length" [changesListLength]="this.linhas.size" [unselectedLines] = "getUnselectedLines()" [currencyEUR] = "currencyEUR" (currencyValEmitter) = "receiveCurrencyVal($event)" (dropdownNumberEmitter) = "receiveDropdownNumber($event)"></options-bar>
+    <options-bar (stringEmitter) = "receiveStringEvent($event)" (fileEmitter) = "onFileSelected($event)" (textFilterEmitter) = "receiveTextFilter($event)" (abcFilterEmitter) = "filterABCClassif($event)" (numberFilterEmitter) ="receiveNumberFilter($event)" [historyLength] = "history.length"></options-bar>
     
     
     <div *ngIf="this.filters.filterOptions.length > 0" >
@@ -11,7 +11,7 @@
       <div class="d-flex">
 
         <ng-container *ngFor="let filter of this.filters.filterOptions">
-          <div  *ngIf = "filter.name.split('.')[0] !== 'id' && filter.name.split('.')[0] !== 'flagMaterial'" class="activeFilterCell">
+          <div  *ngIf = "filter.name.split('.')[0] !== 'id'" class="activeFilterCell">
             <filter-display-cell [filter]=filter (filterRemoveMessage)="receiveFilterRemoveMessage($event)" ></filter-display-cell>
           </div>
         </ng-container>
@@ -25,7 +25,7 @@
         <div style="flex-grow: 1;"></div> 
         
         <div>
-          <button class="btn btn-info me-2 " style="margin-left: 8px;" (click)="resetFilters()" placement="top">
+          <button class="btn btn-info me-2 " style="margin-left: 8px;" (click)="resetFilters()" placement="top" ngbTooltip="Tooltip on top">
             <fa-icon icon="trash-alt"></fa-icon>
             <span>Reset Filters</span>
           </button>
@@ -39,15 +39,14 @@
         id="jh-create-entity"
         data-cy="entityCreateButton"
         class="btn btn-primary jh-create-entity create-material"
-        style="margin-left: 8px;"
         [routerLink]="['/material/new']"
       >
         <fa-icon icon="plus"></fa-icon>
         <span> Create a new Material </span>
       </button>
-    </div> -->
+    </div>
+  </h2>
 
-  
   <jhi-alert-error></jhi-alert-error>
 
   <jhi-alert></jhi-alert>
@@ -284,6 +283,25 @@
           <th *ngIf = "!visibility.get('edit')" class ="edit headerRowEnd">
             ...
           </th>
+          <th scope="col" jhiSortBy="lastEdited">
+            <div class="d-flex">
+              <span>Last Edited</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="toSaveLastEdited">
+            <div class="d-flex">
+              <span>To Save Last Edited</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="currencyType">
+            <div class="d-flex">
+              <span>Currency Type</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col"></th>
         </tr>
       </thead>
       <tbody>
@@ -372,6 +390,11 @@
           <td *ngIf = "!visibility.get('edit')">
             ...
           </td>
+          <td>{{ material.plant }}</td>
+          <td>{{ material.mrpController }}</td>
+          <td>{{ material.lastEdited | formatMediumDate }}</td>
+          <td>{{ material.toSaveLastEdited }}</td>
+          <td>{{ material.currencyType }}</td>
 
 
 
@@ -404,7 +427,6 @@
               </button>
             </div>
           </td>
-          -->
         </tr>
       </tbody>
     </table>

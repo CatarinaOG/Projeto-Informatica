@@ -8,6 +8,7 @@ import { MaterialFormService, MaterialFormGroup } from './material-form.service'
 import { IMaterial } from '../material.model';
 import { MaterialService } from '../service/material.service';
 import { ABCClassification } from 'app/entities/enumerations/abc-classification.model';
+import { Coin } from 'app/entities/enumerations/coin.model';
 
 @Component({
   selector: 'jhi-material-update',
@@ -17,6 +18,7 @@ export class MaterialUpdateComponent implements OnInit {
   isSaving = false;
   material: IMaterial | null = null;
   aBCClassificationValues = Object.keys(ABCClassification);
+  coinValues = Object.keys(Coin);
 
   editForm: MaterialFormGroup = this.materialFormService.createMaterialFormGroup();
 

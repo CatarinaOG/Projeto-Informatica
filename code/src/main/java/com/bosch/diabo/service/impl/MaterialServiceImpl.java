@@ -16,7 +16,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Optional;
 
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,7 +58,7 @@ public class MaterialServiceImpl implements MaterialService {
         log.debug("Request to update Material : {}", material);
         return materialRepository.save(material);
     }
-
+    
     @Override
     public Optional<Material> updateByMaterialName(Material material){
         log.debug("Request to update Material by the name : {}", material);
@@ -158,6 +161,24 @@ public class MaterialServiceImpl implements MaterialService {
                 }
                 if (material.getComment() != null) {
                     existingMaterial.setComment(material.getComment());
+                }
+                if (material.getFlagDate() != null) {
+                    existingMaterial.setFlagDate(material.getFlagDate());
+                }
+                if (material.getPlant() != null) {
+                    existingMaterial.setPlant(material.getPlant());
+                }
+                if (material.getMrpController() != null) {
+                    existingMaterial.setMrpController(material.getMrpController());
+                }
+                if (material.getLastEdited() != null) {
+                    existingMaterial.setLastEdited(material.getLastEdited());
+                }
+                if (material.getToSaveLastEdited() != null) {
+                    existingMaterial.setToSaveLastEdited(material.getToSaveLastEdited());
+                }
+                if (material.getCurrencyType() != null) {
+                    existingMaterial.setCurrencyType(material.getCurrencyType());
                 }
 
                 return existingMaterial;

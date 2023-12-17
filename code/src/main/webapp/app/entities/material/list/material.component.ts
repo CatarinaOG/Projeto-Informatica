@@ -6,6 +6,7 @@ import { NgbModal, NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
 import { IEditCell } from '../editCell.model'
 import { specialFilter } from '../specialFilters.model'
 import { IMaterial } from '../material.model';
+
 import { ITEMS_PER_PAGE, PAGE_HEADER, TOTAL_COUNT_RESPONSE_HEADER } from 'app/config/pagination.constants';
 import { ASC, DESC, SORT, ITEM_DELETED_EVENT, DEFAULT_SORT_DATA } from 'app/config/navigation.constants';
 import { EntityArrayResponseType, MaterialService } from '../service/material.service';
@@ -17,7 +18,7 @@ import { NgbAlert } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'jhi-material',
-  templateUrl: './material.component.html'
+  templateUrl: './material.component.html',
 })
 
 
@@ -787,7 +788,6 @@ cellValueGenerator(valueName : string, material : IMaterial) : number {
     this.load();
   }
 
-
   delete(material: IMaterial): void {
     const modalRef = this.modalService.open(MaterialDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
     modalRef.componentInstance.material = material;
@@ -817,17 +817,17 @@ cellValueGenerator(valueName : string, material : IMaterial) : number {
   }
 
   navigateToWithComponentValues(): void {
-    this.handleNavigation(this.page, this.predicate, this.ascending, this.filters.filterOptions);
+    this.handleNavigation(this.page, this.predicate, this.ascending);
   }
 
   navigateToPage(page = this.page): void {
-     this.handleNavigation(page, this.predicate, this.ascending, this.filters.filterOptions);
+    this.handleNavigation(page, this.predicate, this.ascending);
   }
 
   protected loadFromBackendWithRouteInformations(): Observable<EntityArrayResponseType> {
     return combineLatest([this.activatedRoute.queryParamMap, this.activatedRoute.data]).pipe(
       tap(([params, data]) => this.fillComponentAttributeFromRoute(params, data)),
-      switchMap(() => this.queryBackend(this.page, this.predicate, this.ascending, this.filters.filterOptions))
+      switchMap(() => this.queryBackend(this.page, this.predicate, this.ascending))
     );
   }
 
@@ -837,7 +837,6 @@ cellValueGenerator(valueName : string, material : IMaterial) : number {
     const sort = (params.get(SORT) ?? data[DEFAULT_SORT_DATA]).split(',');
     this.predicate = sort[0];
     this.ascending = sort[1] === ASC;
-    this.filters.initializeFromParams(params);
   }
 
   protected onResponseSuccess(response: EntityArrayResponseType): void {
@@ -854,35 +853,23 @@ cellValueGenerator(valueName : string, material : IMaterial) : number {
     this.totalItems = Number(headers.get(TOTAL_COUNT_RESPONSE_HEADER));
   }
 
-  protected queryBackend(
-    page?: number,
-    predicate?: string,
-    ascending?: boolean,
-    filterOptions?: IFilterOption[]
-  ): Observable<EntityArrayResponseType> {
+  protected queryBackend(page?: number, predicate?: string, ascending?: boolean): Observable<EntityArrayResponseType> {
     this.isLoading = true;
     const pageToLoad: number = page ?? 1;
-    const queryObject: any = {
+    const queryObject = {
       page: pageToLoad - 1,
       size: this.itemsPerPage,
       sort: this.getSortQueryParam(predicate, ascending),
     };
-    filterOptions?.forEach(filterOption => {
-      queryObject[filterOption.name] = filterOption.values;
-    });
     return this.materialService.query(queryObject).pipe(tap(() => (this.isLoading = false)));
   }
 
-  protected handleNavigation(page = this.page, predicate?: string, ascending?: boolean, filterOptions?: IFilterOption[]): void {
-    const queryParamsObj: any = {
+  protected handleNavigation(page = this.page, predicate?: string, ascending?: boolean): void {
+    const queryParamsObj = {
       page,
       size: this.itemsPerPage,
       sort: this.getSortQueryParam(predicate, ascending),
     };
-
-    filterOptions?.forEach(filterOption => {
-      queryParamsObj[filterOption.nameAsQueryParam()] = filterOption.values;
-    });
 
     this.router.navigate(['./'], {
       relativeTo: this.activatedRoute,

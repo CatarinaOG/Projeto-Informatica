@@ -98,6 +98,30 @@
         <dd>
           <span>{{ material.comment }}</span>
         </dd>
+        <dt><span>Flag Date</span></dt>
+        <dd>
+          <span>{{ material.flagDate | formatMediumDate }}</span>
+        </dd>
+        <dt><span>Plant</span></dt>
+        <dd>
+          <span>{{ material.plant }}</span>
+        </dd>
+        <dt><span>Mrp Controller</span></dt>
+        <dd>
+          <span>{{ material.mrpController }}</span>
+        </dd>
+        <dt><span>Last Edited</span></dt>
+        <dd>
+          <span>{{ material.lastEdited | formatMediumDate }}</span>
+        </dd>
+        <dt><span>To Save Last Edited</span></dt>
+        <dd>
+          <span>{{ material.toSaveLastEdited }}</span>
+        </dd>
+        <dt><span>Currency Type</span></dt>
+        <dd>
+          <span>{{ material.currencyType }}</span>
+        </dd>
       </dl>
 
       <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">

@@ -14,7 +14,7 @@ type PartialWithRequiredKeyOf<T extends { id: unknown }> = Partial<Omit<T, 'id'>
  */
 type MaterialFormGroupInput = IMaterial | PartialWithRequiredKeyOf<NewMaterial>;
 
-type MaterialFormDefaults = Pick<NewMaterial, 'id' | 'flagMaterial'>;
+type MaterialFormDefaults = Pick<NewMaterial, 'id' | 'flagMaterial' | 'toSaveLastEdited'>;
 
 type MaterialFormGroupContent = {
   id: FormControl<IMaterial['id'] | NewMaterial['id']>;
@@ -39,6 +39,12 @@ type MaterialFormGroupContent = {
   newSAPSafetyTime: FormControl<IMaterial['newSAPSafetyTime']>;
   flagMaterial: FormControl<IMaterial['flagMaterial']>;
   comment: FormControl<IMaterial['comment']>;
+  flagDate: FormControl<IMaterial['flagDate']>;
+  plant: FormControl<IMaterial['plant']>;
+  mrpController: FormControl<IMaterial['mrpController']>;
+  lastEdited: FormControl<IMaterial['lastEdited']>;
+  toSaveLastEdited: FormControl<IMaterial['toSaveLastEdited']>;
+  currencyType: FormControl<IMaterial['currencyType']>;
 };
 
 export type MaterialFormGroup = FormGroup<MaterialFormGroupContent>;
@@ -79,6 +85,12 @@ export class MaterialFormService {
       newSAPSafetyTime: new FormControl(materialRawValue.newSAPSafetyTime),
       flagMaterial: new FormControl(materialRawValue.flagMaterial),
       comment: new FormControl(materialRawValue.comment),
+      flagDate: new FormControl(materialRawValue.flagDate),
+      plant: new FormControl(materialRawValue.plant),
+      mrpController: new FormControl(materialRawValue.mrpController),
+      lastEdited: new FormControl(materialRawValue.lastEdited),
+      toSaveLastEdited: new FormControl(materialRawValue.toSaveLastEdited),
+      currencyType: new FormControl(materialRawValue.currencyType),
     });
   }
 
@@ -100,6 +112,7 @@ export class MaterialFormService {
     return {
       id: null,
       flagMaterial: false,
+      toSaveLastEdited: false,
     };
   }
 }
