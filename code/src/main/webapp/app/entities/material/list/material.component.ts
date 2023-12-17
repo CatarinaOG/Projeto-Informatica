@@ -18,7 +18,7 @@ import { NgbAlert } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'jhi-material',
-  templateUrl: './material.component.html',
+  templateUrl: './material.component.html'
 })
 
 
@@ -817,17 +817,17 @@ cellValueGenerator(valueName : string, material : IMaterial) : number {
   }
 
   navigateToWithComponentValues(): void {
-    this.handleNavigation(this.page, this.predicate, this.ascending);
+    this.handleNavigation(this.page, this.predicate, this.ascending, this.filters.filterOptions);
   }
 
   navigateToPage(page = this.page): void {
-    this.handleNavigation(page, this.predicate, this.ascending);
+    this.handleNavigation(page, this.predicate, this.ascending, this.filters.filterOptions);
   }
 
   protected loadFromBackendWithRouteInformations(): Observable<EntityArrayResponseType> {
     return combineLatest([this.activatedRoute.queryParamMap, this.activatedRoute.data]).pipe(
       tap(([params, data]) => this.fillComponentAttributeFromRoute(params, data)),
-      switchMap(() => this.queryBackend(this.page, this.predicate, this.ascending))
+      switchMap(() => this.queryBackend(this.page, this.predicate, this.ascending, this.filters.filterOptions))
     );
   }
 
@@ -837,6 +837,7 @@ cellValueGenerator(valueName : string, material : IMaterial) : number {
     const sort = (params.get(SORT) ?? data[DEFAULT_SORT_DATA]).split(',');
     this.predicate = sort[0];
     this.ascending = sort[1] === ASC;
+    this.filters.initializeFromParams(params);
   }
 
   protected onResponseSuccess(response: EntityArrayResponseType): void {
@@ -853,24 +854,34 @@ cellValueGenerator(valueName : string, material : IMaterial) : number {
     this.totalItems = Number(headers.get(TOTAL_COUNT_RESPONSE_HEADER));
   }
 
-  protected queryBackend(page?: number, predicate?: string, ascending?: boolean): Observable<EntityArrayResponseType> {
+  protected queryBackend(
+    page?: number,
+    predicate?: string,
+    ascending?: boolean,
+    filterOptions?: IFilterOption[]
+  ): Observable<EntityArrayResponseType> {
     this.isLoading = true;
     const pageToLoad: number = page ?? 1;
-    const queryObject = {
+    const queryObject: any = {
       page: pageToLoad - 1,
       size: this.itemsPerPage,
       sort: this.getSortQueryParam(predicate, ascending),
     };
+    filterOptions?.forEach(filterOption => {
+      queryObject[filterOption.name] = filterOption.values;
+    });
     return this.materialService.query(queryObject).pipe(tap(() => (this.isLoading = false)));
   }
 
-  protected handleNavigation(page = this.page, predicate?: string, ascending?: boolean): void {
-    const queryParamsObj = {
+  protected handleNavigation(page = this.page, predicate?: string, ascending?: boolean, filterOptions?: IFilterOption[]): void {
+    const queryParamsObj: any = {
       page,
       size: this.itemsPerPage,
       sort: this.getSortQueryParam(predicate, ascending),
     };
-
+    filterOptions?.forEach(filterOption => {
+      queryParamsObj[filterOption.nameAsQueryParam()] = filterOption.values;
+    });
     this.router.navigate(['./'], {
       relativeTo: this.activatedRoute,
       queryParams: queryParamsObj,

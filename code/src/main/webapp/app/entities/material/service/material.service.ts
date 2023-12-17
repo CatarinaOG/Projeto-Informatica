@@ -33,42 +33,60 @@ export class MaterialService {
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
   create(material: NewMaterial): Observable<EntityResponseType> {
-    const copy = this.convertDateFromClient(material);
-    return this.http
-      .post<RestMaterial>(this.resourceUrl, copy, { observe: 'response' })
-      .pipe(map(res => this.convertResponseFromServer(res)));
+    return this.http.post<IMaterial>(this.resourceUrl, material, { observe: 'response' });
   }
 
   update(material: IMaterial): Observable<EntityResponseType> {
-    const copy = this.convertDateFromClient(material);
-    return this.http
-      .put<RestMaterial>(`${this.resourceUrl}/${this.getMaterialIdentifier(material)}`, copy, { observe: 'response' })
-      .pipe(map(res => this.convertResponseFromServer(res)));
+    return this.http.put<IMaterial>(`${this.resourceUrl}/${this.getMaterialIdentifier(material)}`, material, { observe: 'response' });
   }
 
   partialUpdate(material: PartialUpdateMaterial): Observable<EntityResponseType> {
-    const copy = this.convertDateFromClient(material);
-    return this.http
-      .patch<RestMaterial>(`${this.resourceUrl}/${this.getMaterialIdentifier(material)}`, copy, { observe: 'response' })
-      .pipe(map(res => this.convertResponseFromServer(res)));
+    return this.http.patch<IMaterial>(`${this.resourceUrl}/${this.getMaterialIdentifier(material)}`, material, { observe: 'response' });
   }
 
   find(id: number): Observable<EntityResponseType> {
-    return this.http
-      .get<RestMaterial>(`${this.resourceUrl}/${id}`, { observe: 'response' })
-      .pipe(map(res => this.convertResponseFromServer(res)));
+    return this.http.get<IMaterial>(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
   query(req?: any): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
-    return this.http
-      .get<RestMaterial[]>(this.resourceUrl, { params: options, observe: 'response' })
-      .pipe(map(res => this.convertResponseArrayFromServer(res)));
+    return this.http.get<IMaterial[]>(this.resourceUrl, { params: options, observe: 'response' });
   }
 
   delete(id: number): Observable<HttpResponse<{}>> {
     return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
+
+  submitChanges(data : any[]): Observable<Blob>{
+    return this.http.post<Blob>(`${this.resourceUrl}/submitChanges/`,data, {
+      responseType: 'blob' as 'json',
+      headers: {
+        Accept: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      },
+    });
+  }
+
+  uploadFileReplace(file: File): Observable<HttpResponse<{}>> {
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.http.post(`${this.resourceUrl}/uploadFileReplace`, formData, { observe: 'response' });
+  }
+  
+  uploadFileAddOrUpdate(file: File): Observable<HttpResponse<{}>> {
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.http.post(`${this.resourceUrl}/uploadFileAddOrUpdate`, formData, { observe: 'response' });
+  }
+
+  exportFileAsExcel(): Observable<Blob> {
+    return this.http.get<Blob>(`${this.resourceUrl}/download/`, {
+      responseType: 'blob' as 'json',
+      headers: {
+        Accept: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      },
+    });
+  }
+
 
   getMaterialIdentifier(material: Pick<IMaterial, 'id'>): number {
     return material.id;

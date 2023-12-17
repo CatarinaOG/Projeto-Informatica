@@ -3,7 +3,7 @@
     <span>Materials</span>
   </h2>
 
-    <options-bar (stringEmitter) = "receiveStringEvent($event)" (fileEmitter) = "onFileSelected($event)" (textFilterEmitter) = "receiveTextFilter($event)" (abcFilterEmitter) = "filterABCClassif($event)" (numberFilterEmitter) ="receiveNumberFilter($event)" [historyLength] = "history.length"></options-bar>
+  <options-bar (stringEmitter) = "receiveStringEvent($event)" (fileEmitter) = "onFileSelected($event)" (textFilterEmitter) = "receiveTextFilter($event)" (abcFilterEmitter) = "filterABCClassif($event)" (numberFilterEmitter) ="receiveNumberFilter($event)" [historyLength] = "history.length" [changesListLength]="this.linhas.size" [unselectedLines] = "getUnselectedLines()" [currencyEUR] = "currencyEUR" (currencyValEmitter) = "receiveCurrencyVal($event)" (dropdownNumberEmitter) = "receiveDropdownNumber($event)"></options-bar>
     
     
     <div *ngIf="this.filters.filterOptions.length > 0" >
@@ -11,7 +11,7 @@
       <div class="d-flex">
 
         <ng-container *ngFor="let filter of this.filters.filterOptions">
-          <div  *ngIf = "filter.name.split('.')[0] !== 'id'" class="activeFilterCell">
+          <div  *ngIf = "filter.name.split('.')[0] !== 'id' && filter.name.split('.')[0] !== 'flagMaterial'" class="activeFilterCell">
             <filter-display-cell [filter]=filter (filterRemoveMessage)="receiveFilterRemoveMessage($event)" ></filter-display-cell>
           </div>
         </ng-container>
@@ -25,7 +25,7 @@
         <div style="flex-grow: 1;"></div> 
         
         <div>
-          <button class="btn btn-info me-2 " style="margin-left: 8px;" (click)="resetFilters()" placement="top" ngbTooltip="Tooltip on top">
+          <button class="btn btn-info me-2 " style="margin-left: 8px;" (click)="resetFilters()" placement="top">
             <fa-icon icon="trash-alt"></fa-icon>
             <span>Reset Filters</span>
           </button>
@@ -46,6 +46,7 @@
       </button>
     </div>
   </h2>
+      -->
 
   <jhi-alert-error></jhi-alert-error>
 
@@ -396,8 +397,6 @@
           <td>{{ material.toSaveLastEdited }}</td>
           <td>{{ material.currencyType }}</td>
 
-
-
           <!--
           <td class="text-end">
             <div class="btn-group">
@@ -426,7 +425,7 @@
                 <span class="d-none d-md-inline">Delete</span>
               </button>
             </div>
-          </td>
+          </td> -->
         </tr>
       </tbody>
     </table>
