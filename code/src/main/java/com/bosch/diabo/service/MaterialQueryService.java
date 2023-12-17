@@ -152,6 +152,12 @@ public class MaterialQueryService extends QueryService<Material> {
             if (criteria.getComment() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getComment(), Material_.comment));
             }
+            if (criteria.getPlant() != null) {
+                specification = specification.and(buildSpecification(criteria.getPlant(), Material_.plant));
+            }
+            if (criteria.getMRPcontroller() != null) {
+                specification = specification.and(buildSpecification(criteria.getMRPcontroller(), Material_.mrpController));
+            }
         }
         return specification;
     }

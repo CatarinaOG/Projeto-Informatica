@@ -1,6 +1,8 @@
 package com.bosch.diabo.service.criteria;
 
 import com.bosch.diabo.domain.enumeration.ABCClassification;
+import com.bosch.diabo.domain.enumeration.Coin;
+
 import java.io.Serializable;
 import java.util.Objects;
 import org.springdoc.api.annotations.ParameterObject;
@@ -34,6 +36,23 @@ public class MaterialCriteria implements Serializable, Criteria {
         @Override
         public ABCClassificationFilter copy() {
             return new ABCClassificationFilter(this);
+        }
+    }
+
+    /**
+     * Class for filtering Coin
+     */
+    public static class CoinFilter extends Filter<Coin> {
+
+        public CoinFilter() {}
+
+        public CoinFilter(CoinFilter filter) {
+            super(filter);
+        }
+
+        @Override
+        public CoinFilter copy() {
+            return new CoinFilter(this);
         }
     }
 
@@ -83,6 +102,12 @@ public class MaterialCriteria implements Serializable, Criteria {
 
     private StringFilter comment;
 
+    private StringFilter plant;
+
+    private StringFilter mrpController;
+
+    private CoinFilter currency;
+
     private Boolean distinct;
 
     public MaterialCriteria() {}
@@ -111,6 +136,9 @@ public class MaterialCriteria implements Serializable, Criteria {
         this.newSAPSafetyTime = other.newSAPSafetyTime == null ? null : other.newSAPSafetyTime.copy();
         this.flagMaterial = other.flagMaterial == null ? null : other.flagMaterial.copy();
         this.comment = other.comment == null ? null : other.comment.copy();
+        this.plant = other.plant == null ? null : other.plant.copy();
+        this.mrpController = other.mrpController == null ? null : other.mrpController.copy();
+        this.currency = other.currency == null ? null : other.currency.copy();
         this.distinct = other.distinct;
     }
 
@@ -449,6 +477,51 @@ public class MaterialCriteria implements Serializable, Criteria {
         this.comment = comment;
     }
 
+    public StringFilter getPlant() {
+        return plant;
+    }
+
+    public StringFilter plant() {
+        if (plant == null) {
+            plant = new StringFilter();
+        }
+        return plant;
+    }
+
+    public void setPlant(StringFilter plant) {
+        this.plant = plant;
+    }
+
+    public StringFilter getMRPcontroller() {
+        return mrpController;
+    }
+
+    public StringFilter mrpController() {
+        if (mrpController == null) {
+            mrpController = new StringFilter();
+        }
+        return mrpController;
+    }
+
+    public void setMrpController(StringFilter mrpController) {
+        this.mrpController = mrpController;
+    }
+
+    public CoinFilter getCurrency() {
+        return currency;
+    }
+
+    public CoinFilter currency() {
+        if (currency == null) {
+            currency = new CoinFilter();
+        }
+        return currency;
+    }
+
+    public void setCurrency(CoinFilter currency) {
+        this.currency = currency;
+    }
+
     public Boolean getDistinct() {
         return distinct;
     }
@@ -489,6 +562,9 @@ public class MaterialCriteria implements Serializable, Criteria {
             Objects.equals(newSAPSafetyTime, that.newSAPSafetyTime) &&
             Objects.equals(flagMaterial, that.flagMaterial) &&
             Objects.equals(comment, that.comment) &&
+            Objects.equals(plant, that.plant) &&
+            Objects.equals(mrpController, that.mrpController) &&
+            Objects.equals(currency, that.currency) &&
             Objects.equals(distinct, that.distinct)
         );
     }
@@ -518,6 +594,9 @@ public class MaterialCriteria implements Serializable, Criteria {
             newSAPSafetyTime,
             flagMaterial,
             comment,
+            plant,
+            mrpController,
+            currency,
             distinct
         );
     }
@@ -548,6 +627,9 @@ public class MaterialCriteria implements Serializable, Criteria {
             (newSAPSafetyTime != null ? "newSAPSafetyTime=" + newSAPSafetyTime + ", " : "") +
             (flagMaterial != null ? "flagMaterial=" + flagMaterial + ", " : "") +
             (comment != null ? "comment=" + comment + ", " : "") +
+            (plant != null ? "plant=" + plant + ", " : "") +
+            (mrpController != null ? "mrpController=" + mrpController + ", " : "") +
+            (currency != null ? "currency=" + currency + ", " : "") +
             (distinct != null ? "distinct=" + distinct + ", " : "") +
             "}";
     }
