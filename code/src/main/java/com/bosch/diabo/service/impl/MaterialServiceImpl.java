@@ -13,6 +13,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -28,6 +29,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.thymeleaf.templateparser.text.TextParseException;
 import org.apache.poi.ss.usermodel.*;
 
 import com.opencsv.CSVReader;
@@ -503,25 +505,39 @@ public class MaterialServiceImpl implements MaterialService {
     @Override
     public void submitChanges(List<Object> data){
 
-        System.out.println("------------------"+data);
-
         for (Object item : data) {
             if (item instanceof Map) {
                 Map<String, Object> dataMap = (Map<String, Object>) item;
 
-                updateObject(
-                    extractLong(dataMap.get("materialId")),
-                    extractInt(dataMap.get("newSST")),
-                    extractInt(dataMap.get("newST")),
-                    (String) dataMap.get("newComment"),
-                    (Boolean) dataMap.get("flag"),
-                    LocalDate.parse((String) dataMap.get("dateFlag"))
-                );
+                String stringFlagDate;
+
+                try{
+                    stringFlagDate = (String) dataMap.get("dateFlag");
+
+                    updateObject(
+                        extractLong(dataMap.get("materialId")),
+                        extractInt(dataMap.get("newSST")),
+                        extractInt(dataMap.get("newST")),
+                        (String) dataMap.get("newComment"),
+                        (Boolean) dataMap.get("flag"),
+                        LocalDate.parse(stringFlagDate)
+                    );
+                } catch (NullPointerException e) {
+
+                    updateObject(
+                        extractLong(dataMap.get("materialId")),
+                        extractInt(dataMap.get("newSST")),
+                        extractInt(dataMap.get("newST")),
+                        (String) dataMap.get("newComment"),
+                        (Boolean) dataMap.get("flag"),
+                        LocalDate.now()
+                    );
+                }
             }
         }
     }
 
-    public List<Material> getMatrialChanged(List<Object> data){
+    public List<Material> getMaterialChanged(List<Object> data){
         ArrayList<Material> l = new ArrayList<>();
         for (Object item : data) {
             if (item instanceof Map) {
@@ -535,22 +551,39 @@ public class MaterialServiceImpl implements MaterialService {
 
     public void updateObject(Long materialId, int newSST, int newST, String newComment, Boolean flag, LocalDate flagDate){
 
+        System.out.println("-----------------------newSST: "+newSST+"----------------");
+        System.out.println("-----------------------newST: "+newST+"----------------");
+
         materialRepository
         .findById(materialId)
-        .map(existingMaterial -> {
+        .ifPresent(existingMaterial -> {
+
+            LocalDate currentDate = LocalDate.now();
+
+            if(existingMaterial.getNewSAPSafetyStock() != newSST){
+                existingMaterial.setLastUpdatedCurrentSS(currentDate);
+            }
+
+            if(existingMaterial.getNewSAPSafetyTime() != newST){
+                existingMaterial.setLastUpdatedCurrentST(currentDate);
+            }
+            
             existingMaterial.setNewSAPSafetyStock(newSST);
             existingMaterial.setNewSAPSafetyTime(newST);
             existingMaterial.setDeltaSST(existingMaterial.getProposedSST() - newSST);
             existingMaterial.setDeltaST(existingMaterial.getProposedST() - newST);
             existingMaterial.setComment(newComment);
             existingMaterial.setFlagMaterial(flag);
-            existingMaterial.setFlagExpirationDate(flagDate);
-            return existingMaterial;
-        })
-        .map(materialRepository::save);
+            if(flag) existingMaterial.setFlagExpirationDate(flagDate);
+            
+            materialRepository.save(existingMaterial);
+        });
 
     }
 
+    /*
+     * 
+     */
     private Long extractLong(Object value) {
 
         if (value instanceof Number) {
@@ -573,6 +606,8 @@ public class MaterialServiceImpl implements MaterialService {
 
 
     /* --------------------------- FLAG ROUTINE --------------------------- */
+
+    
     @Scheduled(cron = "0 0 1 * * ?")
     public void removeExpiredFlags(){
 

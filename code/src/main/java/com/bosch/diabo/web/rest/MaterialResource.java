@@ -277,7 +277,7 @@ public class MaterialResource {
     public ResponseEntity<ByteArrayResource> submitChanges(@RequestBody List<Object> data) {
         log.debug("REST request submit changes");
         materialService.submitChanges(data);
-        List<Material> data2 = materialService.getMatrialChanged(data);
+        List<Material> data2 = materialService.getMaterialChanged(data);
         byte[] file;
         
         try {

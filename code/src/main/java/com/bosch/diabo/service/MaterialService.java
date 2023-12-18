@@ -98,6 +98,12 @@ public interface MaterialService {
      */
     void submitChanges(List<Object> data);
 
-    List<Material> getMatrialChanged(List<Object> data);
+
+    /**
+     * Get materials given a list of the updated values
+     *
+     * @param data list of the updated values
+     */
+    List<Material> getMaterialChanged(List<Object> data);
 
 }
