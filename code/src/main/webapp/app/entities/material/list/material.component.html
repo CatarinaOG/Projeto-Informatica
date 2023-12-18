@@ -1,247 +1,381 @@
 <div>
   <h2 id="page-heading" data-cy="MaterialHeading">
     <span>Materials</span>
+  </h2>
 
-    <div class="d-flex justify-content-end">
-      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
-        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
-        <span>Refresh list</span>
-      </button>
+    <options-bar (stringEmitter) = "receiveStringEvent($event)" (fileEmitter) = "onFileSelected($event)" (textFilterEmitter) = "receiveTextFilter($event)" (abcFilterEmitter) = "filterABCClassif($event)" (numberFilterEmitter) ="receiveNumberFilter($event)" [historyLength] = "history.length" [changesListLength]="this.linhas.size" [unselectedLines] = "getUnselectedLines()" [currencyEUR] = "currencyEUR" (currencyValEmitter) = "receiveCurrencyVal($event)" (dropdownNumberEmitter) = "receiveDropdownNumber($event)"></options-bar>
+    
+    
+    <div *ngIf="this.filters.filterOptions.length > 0" >
+      <div style="font-weight: bold; text-align: start;">Active Filters:</div>
+      <div class="d-flex">
 
+        <ng-container *ngFor="let filter of this.filters.filterOptions">
+          <div  *ngIf = "filter.name.split('.')[0] !== 'id' && filter.name.split('.')[0] !== 'flagMaterial'" class="activeFilterCell">
+            <filter-display-cell [filter]=filter (filterRemoveMessage)="receiveFilterRemoveMessage($event)" ></filter-display-cell>
+          </div>
+        </ng-container>
+
+        <ng-container *ngFor="let specialFilter of this.specialFiltersList">
+          <div  *ngIf = "specialFilter.isActive" class="activeFilterCell">
+            <filter-display-cell [specialFilter]="specialFilter" (spFilterRemoveMessage)="receiveSpFilterRemoveMessage($event)" ></filter-display-cell>
+          </div>
+        </ng-container>
+
+        <div style="flex-grow: 1;"></div> 
+        
+        <div>
+          <button class="btn btn-info me-2 " style="margin-left: 8px;" (click)="resetFilters()" placement="top">
+            <fa-icon icon="trash-alt"></fa-icon>
+            <span>Reset Filters</span>
+          </button>
+          
+        </div>
+      </div>
+    </div>
+    
+    <!--
       <button
         id="jh-create-entity"
         data-cy="entityCreateButton"
         class="btn btn-primary jh-create-entity create-material"
+        style="margin-left: 8px;"
         [routerLink]="['/material/new']"
       >
         <fa-icon icon="plus"></fa-icon>
         <span> Create a new Material </span>
       </button>
-    </div>
-  </h2>
+    </div> -->
 
+  
   <jhi-alert-error></jhi-alert-error>
 
   <jhi-alert></jhi-alert>
+
+  <p *ngIf="alertMessage!=='n/a'">
+    <ngb-alert [dismissible]="true" >
+      {{alertMessage}}
+    </ngb-alert>
+  </p> 
+
+
 
   <div class="alert alert-warning" id="no-result" *ngIf="materials?.length === 0">
     <span>No Materials found</span>
   </div>
 
-  <div class="table-responsive table-entities" id="entities" *ngIf="materials && materials.length > 0">
-    <table class="table table-striped" aria-describedby="page-heading">
-      <thead>
-        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
-          <th scope="col" jhiSortBy="id">
-            <div class="d-flex">
-              <span>ID</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
+  <div class="table-responsive table-entities " id="entities" *ngIf="materials && materials.length > 0" >
+    <table class="table table-striped " aria-describedby="page-heading">
+      <thead class = "navbar-dark">
+        <tr class = "headerRow1">
+
+          <th [attr.colspan]="visibility.get('materialInfo') ? 5 : 1" class="tableHeader">
+            <header-group [headerName] = "'Material Info'" [visibilityValue] = "visibility.get('materialInfo')" groupName = 'materialInfo' (visibilityEmitter)="switchVisibility($event)"></header-group>
           </th>
-          <th scope="col" jhiSortBy="material">
-            <div class="d-flex">
+
+          <th [attr.colspan]="visibility.get('supplierDelay') ? 2 : 1" class="tableHeader">
+            <header-group [headerName] = "'Supplier Delay Info'" [visibilityValue] = "visibility.get('supplierDelay')" groupName = 'supplierDelay' (visibilityEmitter)="switchVisibility($event)"></header-group>
+          </th>
+
+          <th [attr.colspan]="visibility.get('safetyStock') ? 2 : 1" class="tableHeader">
+            <header-group [headerName] = "'Safety Stock Info'" [visibilityValue] = "visibility.get('safetyStock')" groupName = 'safetyStock' (visibilityEmitter)="switchVisibility($event)"></header-group>
+          </th>
+
+          <th [attr.colspan]="visibility.get('safetyTime') ? 2 : 1" class="tableHeader">
+            <header-group [headerName] = "'Safety Time Info'" [visibilityValue] = "visibility.get('materialInfo')" groupName = 'safetyTime' (visibilityEmitter)="switchVisibility($event)"></header-group>
+          </th>
+
+          <th [attr.colspan]="visibility.get('inventory') ? 6 : 1" class="tableHeader">
+            <header-group [headerName] = "'Inventory'" [visibilityValue] = "visibility.get('inventory')" groupName = 'inventory' (visibilityEmitter)="switchVisibility($event)"></header-group>
+          </th>
+
+          <th [attr.colspan]="visibility.get('edit') ? 5 : 1" class="tableHeader">
+            <header-group [headerName] = "'Edit'" [visibilityValue] = "visibility.get('edit')" groupName = 'edit' (visibilityEmitter)="switchVisibility($event)"></header-group>
+          </th>
+        </tr>
+
+        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()" class="headerRow2" >
+          
+          <th scope="col" jhiSortBy="material" class ="materialInfo headerRowStart" [ngClass] ="editCellClasses('materialInfo')">
+            <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{msg.get('Material')}}" >
               <span>Material</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="description">
-            <div class="d-flex">
-              <span>Description</span>
+
+          <th scope="col" jhiSortBy="description" class ="materialInfo" [ngClass] ="editCellClasses('materialInfo')">
+            <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{msg.get('Material Description')}}">
+              <span>Material Description</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="abcClassification">
-            <div class="d-flex">
-              <span>Abc Classification</span>
+
+          <th scope="col" jhiSortBy="abcClassification" class ="materialInfo" [ngClass] ="editCellClasses('materialInfo')">
+            <div class="d-flex" style="place-content: center;" placement="top" [ngbTooltip]="msg.get('ABC Classification')">
+              <span>ABC Classification</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="avgSupplierDelay">
-            <div class="d-flex">
-              <span>Avg Supplier Delay</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="maxSupplierDelay">
-            <div class="d-flex">
-              <span>Max Supplier Delay</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="serviceLevel">
-            <div class="d-flex">
-              <span>Service Level</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="plant">
-            <div class="d-flex">
+
+
+
+          <th scope="col" jhiSortBy="plant" class ="materialInfo" [ngClass] ="editCellClasses('materialInfo')">
+            <div class="d-flex" style="place-content: center;" placement="top" [ngbTooltip]="msg.get('Plant')">
               <span>Plant</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="mrpController">
-            <div class="d-flex">
-              <span>Mrp Controller</span>
+
+          <th scope="col" jhiSortBy="mrpController" class ="materialInfo headerRowEnd" [ngClass] ="editCellClasses('materialInfo')">
+            <div class="d-flex" style="place-content: center;" placement="top" [ngbTooltip]="msg.get('MRP Controller')">
+              <span>MRP Controller</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="currSAPSafetyStock">
-            <div class="d-flex">
-              <span>Curr SAP Safety Stock</span>
+
+
+
+
+
+          <th *ngIf = "!visibility.get('materialInfo')" class ="materialInfo headerRowEnd">
+            ...
+          </th>
+          
+          <th scope="col" jhiSortBy="avgSupplierDelay" class ="supplierDelay" [ngClass] ="editCellClasses('supplierDelay')">
+            <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{msg.get('Avg Supplier Delay')}}">
+              <span>Avg Supplier Delay</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="proposedSST">
-            <div class="d-flex">
-              <span>Proposed SST</span>
+          
+          <th scope="col" jhiSortBy="maxSupplierDelay" class ="supplierDelay headerRowEnd" [ngClass] ="editCellClasses('supplierDelay')">
+            <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{msg.get('Max Supplier Delay')}}">
+              <span>Max Supplier Delay</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="deltaSST">
-            <div class="d-flex">
-              <span>Delta SST</span>
+
+          <th *ngIf = "!visibility.get('supplierDelay')" class ="supplierDelay headerRowEnd">
+            ...
+          </th>
+
+          <th scope="col" jhiSortBy="currSAPSafetyStock" class ="safetyStock" [ngClass] ="editCellClasses('safetyStock')">
+            <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{msg.get('Current Sap Safety Stock')}}">
+              <span>Current Sap Safety Stock</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="currentSAPSafeTime">
-            <div class="d-flex">
-              <span>Current SAP Safe Time</span>
+          
+          <th scope="col" jhiSortBy="proposedSST" class = "safetyStock headerRowEnd" [ngClass] ="editCellClasses('safetyStock')">
+            <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{msg.get('Proposed Safety Stock')}}">
+              <span>Proposed Safety Stock</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="proposedST">
-            <div class="d-flex">
-              <span>Proposed ST</span>
+
+         
+
+          <th *ngIf = "!visibility.get('safetyStock')" class ="safetyStock headerRowEnd">
+            ...
+          </th>
+
+          <th scope="col" jhiSortBy="currentSAPSafeTime" class = "safetyTime" [ngClass] ="editCellClasses('safetyTime')">
+            <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{msg.get('Current Sap Safety Time')}}">
+              <span>Current SAP Safety Time</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="deltaST">
-            <div class="d-flex">
-              <span>Delta ST</span>
+
+          <th scope="col" jhiSortBy="proposedST" class = "safetyTime headerRowEnd" [ngClass] ="editCellClasses('safetyTime')">
+            <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{msg.get('Proposed Safety Time')}}">
+              <span>Proposed Safety Time</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="openSAPmd04">
-            <div class="d-flex">
-              <span>Open SA Pmd 04</span>
+
+          
+          
+          <th *ngIf = "!visibility.get('safetyTime')" class ="safetyTime headerRowEnd">
+            ...
+          </th>
+          
+          <th scope="col" jhiSortBy="serviceLevel" class = "inventory" [ngClass] ="editCellClasses('inventory')">
+            <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{msg.get('Service Level')}}">
+              <span>Service Level</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="currentInventoryValue">
-            <div class="d-flex">
+
+          <th scope="col" jhiSortBy="openSAPmd04" class = "inventory" [ngClass] ="editCellClasses('inventory')">
+            <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{msg.get('Open SAP Md 04')}}">
+              <span>Open SAP Md 04</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+
+          <th scope="col" jhiSortBy="currentInventoryValue" class="inventory" [ngClass] ="editCellClasses('inventory')">
+            <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{msg.get('Current Inventory Value')}}">
               <span>Current Inventory Value</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="unitCost">
-            <div class="d-flex">
-              <span>Unit Cost</span>
+
+          <th scope="col" jhiSortBy="deltaSST" class = "inventory" [ngClass] ="editCellClasses('inventory')">
+            <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{msg.get('Delta Safety Stock')}}">
+              <span>Delta Safety Stock</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="avgDemand">
-            <div class="d-flex">
-              <span>Avg Demand</span>
+
+          <th scope="col" jhiSortBy="deltaST" class = "inventory" [ngClass] ="editCellClasses('inventory')">
+            <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{msg.get('Delta Safety Time')}}">
+              <span>Delta Safety Time</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="avgInventoryEffectAfterChange">
-            <div class="d-flex">
-              <span>Avg Inventory Effect After Change</span>
+          
+          <th scope="col" jhiSortBy="avgInventoryEffectAfterChange" class = "headerRowEnd" [ngClass] ="editCellClasses('inventory')">
+            <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{msg.get('Average Inventory Effect After Change')}}">
+              <span>Average Inventory Effect After Change</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="flagMaterial">
-            <div class="d-flex">
-              <span>Flag Material</span>
+          
+          <th *ngIf = "!visibility.get('inventory')" class ="inventory headerRowEnd">
+            ...
+          </th>
+          
+          <th scope="col" jhiSortBy="newSapSafetyStock" class="edit" [ngClass] ="editCellClasses('edit')">
+            <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{msg.get('New SAP Safety Stock')}}">
+              <span>New Sap Safety Stock</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="flagExpirationDate">
-            <div class="d-flex">
-              <span>Flag Expiration Date</span>
+          <th scope="col" jhiSortBy="newSapSafetyTime" class="edit" [ngClass] ="editCellClasses('edit')">
+            <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{msg.get('New SAP Safety Time')}}">
+              <span>New Sap Safety Time</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="comment">
-            <div class="d-flex">
+          <th scope="col" jhiSortBy="selectEntriesForChangeInSap" class="edit" [ngClass] ="editCellClasses('edit')">
+            <div  >
+              <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{msg.get('Select Entries For Change')}}">
+                <span>Select Entries For Change In Sap</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+              <input type="checkbox" [disabled]="linhas.size === 0" (click)="checkUncheckAll($event)">
+
+            </div>
+          </th>
+
+          <th scope="col" jhiSortBy="flagMaterial" class="edit" [ngClass] ="editCellClasses('edit')">
+            <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{msg.get('Flag Material as Special Case')}}">
+              <span>Flag Material As Special Case</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+
+          <th scope="col" jhiSortBy="comment" class="setWidth edit headerRowEnd" [ngClass] ="editCellClasses('edit')">
+            <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{msg.get('Comment')}}">
               <span>Comment</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="newSAPSafetyStock">
-            <div class="d-flex">
-              <span>New SAP Safety Stock</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
+          <th *ngIf = "!visibility.get('edit')" class ="edit headerRowEnd">
+            ...
           </th>
-          <th scope="col" jhiSortBy="newSAPSafetyTime">
-            <div class="d-flex">
-              <span>New SAP Safety Time</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="lastUpdatedCurrentSS">
-            <div class="d-flex">
-              <span>Last Updated Current SS</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="lastUpdatedCurrentST">
-            <div class="d-flex">
-              <span>Last Updated Current ST</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="toSaveUpdates">
-            <div class="d-flex">
-              <span>To Save Updates</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="currency">
-            <div class="d-flex">
-              <span>Currency</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col"></th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let material of materials; trackBy: trackId" data-cy="entityTable">
-          <td>
-            <a [routerLink]="['/material', material.id, 'view']">{{ material.id }}</a>
+        <tr *ngFor="let material of materials; trackBy: trackId; let i = index;" data-cy="entityTable" [ngClass] = "func(material.id)">
+          <td class ="materialInfo" [ngClass] ="editCellClasses('materialInfo')">{{ material.material }}</td>
+          <td class ="materialInfo" [ngClass] ="editCellClasses('materialInfo')">{{ material.description }}</td>
+          <td class ="materialInfo" [ngClass] ="editCellClasses('materialInfo')">{{ material.abcClassification }}</td>
+          <td class ="materialInfo" [ngClass] ="editCellClasses('materialInfo')">{{ "Lomar, Braga, PT" }}</td>
+          <td class ="materialInfo headerRowEnd" [ngClass] ="editCellClasses('materialInfo')">{{ "md04" }}</td>
+
+          <td *ngIf = "!visibility.get('materialInfo')" class="headerRowEnd">
+            ...
           </td>
-          <td>{{ material.material }}</td>
-          <td>{{ material.description }}</td>
-          <td>{{ material.abcClassification }}</td>
-          <td>{{ material.avgSupplierDelay }}</td>
-          <td>{{ material.maxSupplierDelay }}</td>
-          <td>{{ material.serviceLevel }}</td>
-          <td>{{ material.plant }}</td>
-          <td>{{ material.mrpController }}</td>
-          <td>{{ material.currSAPSafetyStock }}</td>
-          <td>{{ material.proposedSST }}</td>
-          <td>{{ material.deltaSST }}</td>
-          <td>{{ material.currentSAPSafeTime }}</td>
-          <td>{{ material.proposedST }}</td>
-          <td>{{ material.deltaST }}</td>
-          <td>{{ material.openSAPmd04 }}</td>
-          <td>{{ material.currentInventoryValue }}</td>
-          <td>{{ material.unitCost }}</td>
-          <td>{{ material.avgDemand }}</td>
-          <td>{{ material.avgInventoryEffectAfterChange }}</td>
-          <td>{{ material.flagMaterial }}</td>
-          <td>{{ material.flagExpirationDate | formatMediumDate }}</td>
-          <td>{{ material.comment }}</td>
-          <td>{{ material.newSAPSafetyStock }}</td>
-          <td>{{ material.newSAPSafetyTime }}</td>
-          <td>{{ material.lastUpdatedCurrentSS | formatMediumDate }}</td>
-          <td>{{ material.lastUpdatedCurrentST | formatMediumDate }}</td>
-          <td>{{ material.toSaveUpdates }}</td>
-          <td>{{ material.currency }}</td>
+
+          <td class ="supplierDelay" [ngClass] ="editCellClasses('supplierDelay')">{{ material.avgSupplierDelay }}</td>
+          <td class ="supplierDelay headerRowEnd" [ngClass] ="editCellClasses('supplierDelay')">{{ material.maxSupplierDelay }}</td>
+          <td *ngIf = "!visibility.get('supplierDelay')" class="headerRowEnd">
+            ...
+          </td>
+
+          <td class ="safetyStock" [ngClass] ="editCellClasses('safetyStock')">
+            <ng-template #safetyStockContent>   
+              Changed on: 12.04.2023  
+              <p>Previous Safety Stock: 2000</p>
+            </ng-template>
+            <span placement="top" tooltipClass="custom-tooltip-smaller" [ngbTooltip]="safetyStockContent">{{ material.currSAPSafetyStock }}</span>
+          </td>
+          <td class ="safetyStock headerRowEnd" [ngClass] ="editCellClasses('safetyStock')">{{ material.proposedSST }}</td>
+          <td *ngIf = "!visibility.get('safetyStock')" class="headerRowEnd">
+            ...
+          </td>
+
+          <td class ="safetyTime" [ngClass] ="editCellClasses('safetyTime')">
+            <ng-template #safetyTimeContent>   
+              Changed on: 12.04.2023  
+              <p>Previous Safety Time: 2000</p>
+            </ng-template>
+            <span placement="top" tooltipClass="custom-tooltip-smaller" [ngbTooltip]="safetyStockContent">{{ material.currentSAPSafeTime }}</span>
+          </td>
+          <td class ="safetyTime headerRowEnd" [ngClass] ="editCellClasses('safetyTime')">{{ material.proposedST }}</td>
+          <td *ngIf = "!visibility.get('safetyTime')" class="headerRowEnd">
+            ...
+          </td>
+
+          <td  class ="inventory" [ngClass] ="editCellClasses('inventory')">{{ material.serviceLevel }}</td>
+          <td class ="inventory" [ngClass] ="editCellClasses('inventory')"><button class="buttonNoBorder">
+            <a href="{{sapLinkBuilder(material.id)}}"><fa-icon icon="external-link" style="color: #2D8DFF;"></fa-icon></a>
+            </button> <!--{{ diabo.openSapMd04 }}-->
+          </td>
+          <td  class ="inventory" [ngClass] ="editCellClasses('inventory')">{{ material.currentInventoryValue }}</td>
+          <td class ="inventory" [ngClass] ="editCellClasses('inventory')">{{ material.deltaSST }}</td>
+          <td class ="inventory" [ngClass] ="editCellClasses('inventory')">{{ material.deltaST }}</td>
+
+          <td  class ="inventory headerRowEnd" [ngClass] ="editCellClasses('inventory')">{{ calcNewValueAvg(material) }}</td>
+          <td *ngIf = "!visibility.get('inventory')" class="headerRowEnd">
+            ...
+          </td>
+
+         
+          
+          <td class ="edit" *ngIf="isEditable[0] === material.id && isEditable[1] === 0 " ><input class = "inputWidth" type="number" min=0 [placeholder]="placeholderGeneratorNum('SST',material)" (change)="input($event,'newSST',material.id)"></td>
+
+          <td class ="edit" *ngIf="!(isEditable[0] === material.id && isEditable[1] === 0) " (click)="makeEditable(material.id,0)"  [ngClass] ="editCellClasses('edit',material,'SST')"><tooltip-cell [oldValue] = "material.newSAPSafetyStock" [generatedValue] = "cellValueGenerator('SST',material)"></tooltip-cell></td>
+
+          
+
+          <td class ="edit " *ngIf="isEditable[0] === material.id && isEditable[1] === 1"><input class = "inputWidth" type="number" min=0 [placeholder]="placeholderGeneratorNum('ST',material)" (change)="input($event,'newST',material.id)"></td>
+          
+          <td class ="edit" *ngIf="!(isEditable[0] === material.id && isEditable[1] === 1)" (click)="makeEditable(material.id,1)"  [ngClass] ="editCellClasses('edit',material,'ST')" ><tooltip-cell [oldValue] = "material.newSAPSafetyTime" [generatedValue] = "cellValueGenerator('ST',material)"></tooltip-cell></td>
+
+
+
+
+          <td class ="edit" [ngClass] ="editCellClasses('edit')"><input type="checkbox" [checked]="linhas.get(material.id)?.selected" [disabled]="!linhas.has(material.id)" (click)="input($event,'selected',material.id)"></td>
+
+          <td class ="edit" [ngClass] ="editCellClasses('edit')">
+            <flag-modal [material]="material" [linhas] = "linhas" (flagDateEmmiter) = "receiveFlagEmission($event)"></flag-modal>
+          </td>
+
+          
+          <td class ="edit setWidth" *ngIf="isEditable[0] === material.id && isEditable[1] === 2"><input class="inputWidth" [placeholder]="placeholderGeneratorString(material)" (change)="input($event,'newComment',material.id)"></td>
+         
+          <td class ="edit setWidth" *ngIf="!(isEditable[0] === material.id && isEditable[1] === 2)" (click)="makeEditable(material.id,2)" [ngClass] ="editCellClasses('edit',material,'Comment')" >{{((linhas.has(material.id) && (linhas.get(material.id)?.newComment !== material.comment))) ? linhas.get(material.id)?.newComment : material.comment }}</td>
+
+
+          <td *ngIf = "!visibility.get('edit')">
+            ...
+          </td>
+
+
+
+          <!--
           <td class="text-end">
             <div class="btn-group">
               <button
@@ -270,10 +404,12 @@
               </button>
             </div>
           </td>
+          -->
         </tr>
       </tbody>
     </table>
   </div>
+
 
   <div *ngIf="materials && materials.length > 0">
     <div class="d-flex justify-content-center">
