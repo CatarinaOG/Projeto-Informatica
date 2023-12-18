@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileReader;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -17,8 +18,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Optional;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -26,9 +25,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 
 import com.opencsv.CSVReader;
@@ -571,4 +570,26 @@ public class MaterialServiceImpl implements MaterialService {
         }
         throw new IllegalArgumentException("Invalid type for key " + value);
     }
+
+
+    /* --------------------------- FLAG ROUTINE --------------------------- */
+    @Scheduled(cron = "0 0 1 * * ?")
+    public void removeExpiredFlags(){
+
+        LocalDate currentDate = LocalDate.now();
+        List<Material> allMaterials = materialRepository.findAll();
+
+        allMaterials = allMaterials.stream()
+            .filter(material -> material.getFlagExpirationDate().isBefore(currentDate))
+            .map(material -> {
+                material.setFlagMaterial(false);
+                material.setFlagExpirationDate(null);
+                return material;
+            })
+            .collect(Collectors.toList());
+
+        materialRepository.saveAll(allMaterials);
+    }
+
+
 }
