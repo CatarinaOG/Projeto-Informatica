@@ -11,6 +11,7 @@ import java.io.FileInputStream;
 import java.io.FileReader;
 import java.util.Optional;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -284,9 +285,8 @@ public class MaterialServiceImpl implements MaterialService {
             // Get header names and their column indices
             Map<String, Integer> headerMap = getHeaderMap(headerRow);
 
-            int rownr = 0;
 
-            while (rowIterator.hasNext() && rownr < 3) {
+            while (rowIterator.hasNext() ) {
                 Row row = rowIterator.next();
                 Material material = parseMaterialXLSX(row, headerMap);
                 Optional<Material> opcMaterial = materialRepository.findByMaterial(material.getMaterial());
@@ -296,7 +296,6 @@ public class MaterialServiceImpl implements MaterialService {
                 else
                     save(material);
 
-                rownr++;
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -398,9 +397,8 @@ public class MaterialServiceImpl implements MaterialService {
             // Get header names and their column indices
             Map<String, Integer> headerMap = getHeaderMap(headerRow);
 
-            int rownr = 0;
 
-            while (rowIterator.hasNext() && rownr < 3) {
+            while (rowIterator.hasNext()) {
                 Row row = rowIterator.next();
                 Material material = parseMaterialXLSX(row, headerMap);
                 Optional<Material> opcMaterial = materialRepository.findByMaterial(material.getMaterial());
@@ -410,7 +408,6 @@ public class MaterialServiceImpl implements MaterialService {
                 else
                     save(material);
 
-                rownr++;
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -424,10 +421,9 @@ public class MaterialServiceImpl implements MaterialService {
         try (CSVReader csvReader = new CSVReader(new FileReader(file))) {
             String[] header = csvReader.readNext(); // Assuming the first row is the header
 
-            int rownr = 0;
             String[] nextRecord;
 
-            while ((nextRecord = csvReader.readNext()) != null && rownr < 3) {
+            while ((nextRecord = csvReader.readNext()) != null) {
                 Material material = parseMaterialCSV(header, nextRecord);
                 Optional<Material> opcMaterial = materialRepository.findByMaterial(material.getMaterial());
 
@@ -435,8 +431,6 @@ public class MaterialServiceImpl implements MaterialService {
                     updateByMaterialName(material);
                 else
                     save(material);
-
-                rownr++;
             }
         } catch (IOException | CsvValidationException e) {
             e.printStackTrace();
@@ -510,6 +504,8 @@ public class MaterialServiceImpl implements MaterialService {
     @Override
     public void submitChanges(List<Object> data){
 
+        System.out.println("------------------"+data);
+
         for (Object item : data) {
             if (item instanceof Map) {
                 Map<String, Object> dataMap = (Map<String, Object>) item;
@@ -519,7 +515,8 @@ public class MaterialServiceImpl implements MaterialService {
                     extractInt(dataMap.get("newSST")),
                     extractInt(dataMap.get("newST")),
                     (String) dataMap.get("newComment"),
-                    (Boolean) dataMap.get("flag")
+                    (Boolean) dataMap.get("flag"),
+                    LocalDate.parse((String) dataMap.get("dateFlag"))
                 );
             }
         }
@@ -537,7 +534,7 @@ public class MaterialServiceImpl implements MaterialService {
         return l;
     }
 
-    public void updateObject(Long materialId, int newSST, int newST, String newComment, Boolean flag){
+    public void updateObject(Long materialId, int newSST, int newST, String newComment, Boolean flag, LocalDate flagDate){
 
         materialRepository
         .findById(materialId)
@@ -548,6 +545,7 @@ public class MaterialServiceImpl implements MaterialService {
             existingMaterial.setDeltaST(existingMaterial.getProposedST() - newST);
             existingMaterial.setComment(newComment);
             existingMaterial.setFlagMaterial(flag);
+            existingMaterial.setFlagExpirationDate(flagDate);
             return existingMaterial;
         })
         .map(materialRepository::save);

@@ -279,6 +279,7 @@ public class MaterialResource {
         materialService.submitChanges(data);
         List<Material> data2 = materialService.getMatrialChanged(data);
         byte[] file;
+        
         try {
             file = generateExcelFile(data2);
         } catch (IOException e) {
