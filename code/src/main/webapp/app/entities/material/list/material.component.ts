@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild,ViewChildren,HostListener, QueryList } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild,ViewChildren,HostListener, QueryList } from '@angular/core';
 import { HttpHeaders } from '@angular/common/http';
 import { ActivatedRoute, Data, ParamMap, Router } from '@angular/router';
 import { combineLatest, filter, last, Observable, switchMap, tap } from 'rxjs';
@@ -12,6 +12,7 @@ import { EntityArrayResponseType, MaterialService } from '../service/material.se
 import { MaterialDeleteDialogComponent } from '../delete/material-delete-dialog.component';
 import { FilterOptions, IFilterOptions, IFilterOption } from 'app/shared/filter/filter.model';
 import { IHistoryEntity } from '../historyEntity.model';
+import { Coin } from '../../enumerations/coin.model'
 
 import { NgbAlert } from '@ng-bootstrap/ng-bootstrap';
 
@@ -64,10 +65,30 @@ export class MaterialComponent implements OnInit , OnDestroy {
     ["Comment", "Comment"],
   ]);
 
-  itemsPerPage = 5;//ITEMS_PER_PAGE;
+
+  currencyExchangeRates = new Map <string, number>([
+    ["EUR", 1],
+    ["USD", 0.915],
+    ["GBP", 1.158],
+    ["NZD", 0.568],
+    ["DKK", 0.134],
+    ["RUB", 0.010],
+    ["INR", 0.011],
+    ["HKD", 0.117],
+    ["SGD", 0.687],
+    ["CHF", 1.055],
+    ["TRY", 0.031],
+    ["ILS", 0.249],
+    ["CAD", 0.683],
+    ["CNY", 0.129]
+  ]);
+
+  itemsPerPage = 10;//ITEMS_PER_PAGE;
   totalItems = 0;
   page = 1;
   selectedFilterState = false;
+
+
 
   isVisible = true;
   masterSelected=false;
@@ -258,7 +279,21 @@ export class MaterialComponent implements OnInit , OnDestroy {
   }
 
 
-cellValueGenerator(valueName : string, material : IMaterial) : number {
+  currencyConverter( original : number | undefined | null , currency : Coin | null | undefined) : number{
+    let returnVal = 0;
+    if (original !== null && original !== undefined && currency !== null && currency !== undefined){
+    returnVal = original;
+    if (this.currencyEUR){
+      if (currency !== "EUR"){
+        let rate = this.currencyExchangeRates.get(currency);
+        if (rate !== undefined) returnVal = (Math.round(original*rate*100))/100;
+      }
+    }}
+    return returnVal;
+  }
+
+
+  cellValueGenerator(valueName : string, material : IMaterial) : number {
 
   let returnVal = 0;
   let editCell : IEditCell | undefined = this.linhas.get(material.id)
@@ -285,9 +320,6 @@ cellValueGenerator(valueName : string, material : IMaterial) : number {
 }
 
 
-
-
-
   mapToSubmit(): IEditCell[] {
 
     const list : IEditCell[] = [];
@@ -300,8 +332,6 @@ cellValueGenerator(valueName : string, material : IMaterial) : number {
     })
     return list
   }
-
-
 
   submitToSAP(){
     let list = this.mapToSubmit();

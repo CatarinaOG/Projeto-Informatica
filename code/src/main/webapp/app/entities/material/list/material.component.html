@@ -291,7 +291,7 @@
           <td class ="materialInfo" [ngClass] ="editCellClasses('materialInfo')">{{ material.material }}</td>
           <td class ="materialInfo" [ngClass] ="editCellClasses('materialInfo')">{{ material.description }}</td>
           <td class ="materialInfo" [ngClass] ="editCellClasses('materialInfo')">{{ material.abcClassification }}</td>
-          <td class ="materialInfo" [ngClass] ="editCellClasses('materialInfo')">{{ "Lomar, Braga, PT" }}</td>
+          <td class ="materialInfo" [ngClass] ="editCellClasses('materialInfo')">{{ material.plant }}</td>
           <td class ="materialInfo headerRowEnd" [ngClass] ="editCellClasses('materialInfo')">{{ "md04" }}</td>
 
           <td *ngIf = "!visibility.get('materialInfo')" class="headerRowEnd">
@@ -333,11 +333,14 @@
             <a href="{{sapLinkBuilder(material.id)}}"><fa-icon icon="external-link" style="color: #2D8DFF;"></fa-icon></a>
             </button> <!--{{ diabo.openSapMd04 }}-->
           </td>
-          <td  class ="inventory" [ngClass] ="editCellClasses('inventory')">{{ material.currentInventoryValue }}</td>
+
+          <td  class ="inventory" [ngClass] ="editCellClasses('inventory')"><currency-tooltip-cell [value] = "currencyConverter(material.currentInventoryValue,material.currency)" [currency]="material.currency" [currencyEUR] = "currencyEUR" ></currency-tooltip-cell></td>
+          
+
           <td class ="inventory" [ngClass] ="editCellClasses('inventory')">{{ material.deltaSST }}</td>
           <td class ="inventory" [ngClass] ="editCellClasses('inventory')">{{ material.deltaST }}</td>
 
-          <td  class ="inventory headerRowEnd" [ngClass] ="editCellClasses('inventory')">{{ calcNewValueAvg(material) }}</td>
+          <td  class ="inventory headerRowEnd" [ngClass] ="editCellClasses('inventory')"><currency-tooltip-cell [value] = "currencyConverter(calcNewValueAvg(material),material.currency)" [currency]="material.currency" [currencyEUR] = "currencyEUR" ></currency-tooltip-cell></td>
           <td *ngIf = "!visibility.get('inventory')" class="headerRowEnd">
             ...
           </td>
