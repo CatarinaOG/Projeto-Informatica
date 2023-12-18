@@ -6,34 +6,42 @@ package com.bosch.diabo.domain.enumeration;
 public enum Coin {
     EUR,
     USD,
-    AUD,
+    JPY,
     GBP,
-    XCD,
-    XOF,
-    NZD,
-    XAF,
-    ZAR,
-    XPF,
-    DKK,
-    RUB,
-    INR,
-    JOD,
-    MAD,
-    BND,
+    CNY,
+    AUD,
+    CAD,
+    CHF,
     HKD,
     SGD,
-    AMD,
-    CHF,
-    ANG,
-    TRY,
-    MRU,
-    SHP,
-    FKP,
-    ILS,
-    CAD,
+    SEK,
+    KRW,
     NOK,
+    NZD,
+    INR,
+    MXN,
+    TWD,
+    ZAR,
+    BRL,
+    DKK,
+    PLN,
+    THB,
+    ILS,
+    IDR,
+    CZK,
+    AED,
+    TRY,
+    HUF,
     CLP,
-    CNY;
+    SAR,
+    PHP,
+    MYR,
+    COP,
+    RUB,
+    RON,
+    PEN,
+    BHD,
+    BGN;
 
     public static Coin fromString(String value) {
         switch (value) {
@@ -43,58 +51,76 @@ public enum Coin {
                 return USD;
             case "GBP":
                 return GBP;
-            case "XCD":
-                return XCD;
-            case "XOF":
-                return XOF;
-            case "NZD":
-                return NZD;
-            case "XAF":
-                return XAF;
-            case "ZAR":
-                return ZAR;
-            case "XPF":
-                return XPF;
-            case "DKK":
-                return DKK;
-            case "RUB":
-                return RUB;
-            case "INR":
-                return INR;
-            case "JOD":
-                return JOD;
-            case "MAD":
-                return MAD;
-            case "BND":
-                return BND;
+            case "JPY":
+                return JPY;
+            case "CNY":
+                return CNY;
+            case "AUD":
+                return AUD;
+            case "CAD":
+                return CAD;
+            case "CHF":
+                return CHF;
             case "HKD":
                 return HKD;
             case "SGD":
                 return SGD;
-            case "AMD":
-                return AMD;
-            case "CHF":
-                return CHF;
-            case "ANG":
-                return ANG;
-            case "TRY":
-                return TRY;
-            case "MRU":
-                return MRU;
-            case "SHP":
-                return SHP;
-            case "FKP":
-                return FKP;
-            case "ILS":
-                return ILS;
-            case "CAD":
-                return CAD;
+            case "SEK":
+                return SEK;
+            case "KRW":
+                return KRW;
             case "NOK":
                 return NOK;
+            case "NZD":
+                return NZD;
+            case "INR":
+                return INR;
+            case "MXN":
+                return MXN;
+            case "TWD":
+                return TWD;
+            case "ZAR":
+                return ZAR;
+            case "BRL":
+                return BRL;
+            case "DKK":
+                return DKK;
+            case "PLN":
+                return PLN;
+            case "THB":
+                return THB;
+            case "ILS":
+                return ILS;
+            case "IDR":
+                return IDR;
+            case "CZK":
+                return CZK;
+            case "AED":
+                return AED;
+            case "TRY":
+                return TRY;
+            case "HUF":
+                return HUF;
             case "CLP":
                 return CLP;
-            case "CNY":
-                return CNY;
+            case "SAR":
+                return SAR;
+            case "PHP":
+                return PHP;
+            case "MYR":
+                return MYR;
+            case "COP":
+                return COP;
+            case "RUB":
+                return RUB;
+            case "RON":
+                return RON;
+            case "PEN":
+                return PEN;
+            case "BHD":
+                return BHD;
+            case "BGN":
+                return BGN;
             default:
                 return EUR;
         }

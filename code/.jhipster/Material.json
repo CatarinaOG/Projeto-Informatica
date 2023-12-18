@@ -117,7 +117,7 @@
     {
       "fieldName": "currency",
       "fieldType": "Coin",
-      "fieldValues": "EUR,USD,AUD,GBP,XCD,XOF,NZD,XAF,ZAR,XPF,DKK,RUB,INR,JOD,MAD,BND,HKD,SGD,AMD,CHF,ANG,TRY,MRU,SHP,FKP,ILS,CAD,NOK,CLP,CNY"
+      "fieldValues": "EUR,USD,JPY,GBP,CNY,AUD,CAD,CHF,HKD,SGD,SEK,KRW,NOK,NZD,INR,MXN,TWD,ZAR,BRL,DKK,PLN,THB,ILS,IDR,CZK,AED,TRY,HUF,CLP,SAR,PHP,MYR,COP,RUB,RON,PEN,BHD,BGN"
     }
   ],
   "fluentMethods": true,
