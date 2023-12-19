@@ -245,13 +245,13 @@
             ...
           </th>
           
-          <th scope="col" jhiSortBy="newSapSafetyStock" class="edit" [ngClass] ="editCellClasses('edit')">
+          <th scope="col" jhiSortBy="newSAPSafetyStock" class="edit" [ngClass] ="editCellClasses('edit')">
             <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{msg.get('New SAP Safety Stock')}}">
               <span>New Sap Safety Stock</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="newSapSafetyTime" class="edit" [ngClass] ="editCellClasses('edit')">
+          <th scope="col" jhiSortBy="newSAPSafetyTime" class="edit" [ngClass] ="editCellClasses('edit')">
             <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{msg.get('New SAP Safety Time')}}">
               <span>New Sap Safety Time</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
@@ -260,10 +260,12 @@
           <th scope="col" jhiSortBy="selectEntriesForChangeInSap" class="edit" [ngClass] ="editCellClasses('edit')">
             <div  >
               <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{msg.get('Select Entries For Change')}}">
-                <span>Select Entries For Change In Sap</span>
+                <span>Entries For Change In Sap</span>
                 <fa-icon class="p-1" icon="sort"></fa-icon>
+
               </div>
               <input type="checkbox" [disabled]="linhas.size === 0" (click)="checkUncheckAll($event)">
+              <p>Select All</p>
 
             </div>
           </th>
@@ -306,7 +308,7 @@
 
           <td class ="safetyStock" [ngClass] ="editCellClasses('safetyStock')">
             <ng-template #safetyStockContent>   
-              Changed on: 12.04.2023  
+              Changed on: {{material.lastUpdatedCurrentSS}}  
               <p>Previous Safety Stock: 2000</p>
             </ng-template>
             <span placement="top" tooltipClass="custom-tooltip-smaller" [ngbTooltip]="safetyStockContent">{{ material.currSAPSafetyStock }}</span>
@@ -318,7 +320,7 @@
 
           <td class ="safetyTime" [ngClass] ="editCellClasses('safetyTime')">
             <ng-template #safetyTimeContent>   
-              Changed on: 12.04.2023  
+              Changed on: {{material.lastUpdatedCurrentST}}  
               <p>Previous Safety Time: 2000</p>
             </ng-template>
             <span placement="top" tooltipClass="custom-tooltip-smaller" [ngbTooltip]="safetyStockContent">{{ material.currentSAPSafeTime }}</span>
