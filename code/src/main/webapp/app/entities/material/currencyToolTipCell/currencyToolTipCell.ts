@@ -63,7 +63,6 @@ export class CurrencyToolTipCell implements OnInit{
       }
 
     updateMessage() : void{
-        console.log("CurrencyEUR value is :", this.currencyEUR)
         if (this.currency !== "EUR" && this.currencyEUR && this.currency !== null && this.currency !== undefined){
             this.messageVal = "The value displayed was converted to EUR, with a " + this.currencyExchangeRates.get(this.currency) + " exchange rate from it's value in " + this.currency
         }

@@ -28,8 +28,6 @@ export class ValueCell implements AfterViewInit, OnInit{
         this.openToolTip();
     }
     openToolTip(){
-        console.log("Old Value is:" , this.oldValue)
-        console.log("Generated Value is:" , this.generatedValue)
         if(this.oldValue !== null && this.oldValue !== undefined){
             if( this.generatedValue > (this.oldValue * 2) || this.generatedValue < (this.oldValue/2)){
                 this.tooltip.open();

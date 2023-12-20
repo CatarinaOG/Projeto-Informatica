@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { AccountService } from 'app/core/auth/account.service';
 
 @Component({
   selector: 'options-bar',
@@ -6,6 +7,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 })
 export class OptionsBar implements OnInit {
 
+  @Input() tableSize! : number;
   @Input() historyLength! : number; 
   @Input() changesListLength! : number;
   @Input() unselectedLines! : number;
@@ -37,7 +39,7 @@ export class OptionsBar implements OnInit {
 
   undoSize : number= 10;
 
-  constructor( ) { }
+  constructor( private accountService: AccountService ) {}
   ngOnInit(): void { }
 
     sendLoad(): void{
@@ -136,9 +138,9 @@ export class OptionsBar implements OnInit {
         }
     }
 
-    optionStatus(dropdownValue : number) : string{
-        if (dropdownValue === this.undoSize) return "(active)"
-        else return ""
+    optionStatus(dropdownValue : number) : boolean{
+        if (dropdownValue === this.undoSize) return true
+        else return false
     }
 
     toggleCheckbox(){
@@ -149,5 +151,10 @@ export class OptionsBar implements OnInit {
             this.currencyValEmitter.emit(true)
         }
     }
+
+    isAdmin () : boolean {
+        return this.accountService.hasAnyAuthority("ROLE_ADMIN")
+    }
+
 };
 

@@ -302,6 +302,10 @@ export class MaterialComponent implements OnInit , OnDestroy {
     return returnVal;
   }
 
+  truncateComment (comment: string) {
+    
+  }
+
 
   currencyConverter( original : number | undefined | null , currency : Coin | null | undefined) : number{
     let returnVal = 0;
@@ -400,6 +404,19 @@ export class MaterialComponent implements OnInit , OnDestroy {
   receiveCurrencyVal(event : boolean){
     this.currencyEUR = event;
   }
+
+  receiveComment(event : any){
+    this.input(event,"newComment",event.id)
+  }
+
+  pickComment(id : number) : string {
+    let returnVal : string = this.materials?.find(e => e.id === id)?.comment ?? "";
+    if (this.linhas.get(id)){
+      returnVal = this.linhas.get(id)?.newComment ?? "";
+    }
+    return returnVal;
+  }
+
 
   createAndShowDownloadFile = (content: any, fileName: string, contentType: string): void => {
     const a = document.createElement('a');
@@ -662,28 +679,38 @@ export class MaterialComponent implements OnInit , OnDestroy {
           switch(lastEntry.column){
             case "newSST":
               if(!this.checkEditCell(lastEntry)){
-                editCell.newSST = lastEntry.oldValue;
-                this.linhas.set(lastEntry.materialId, editCell);
-                console.log("entrou no braço A SST")
+                if ( typeof lastEntry.oldValue === "number"){
+                  editCell.newSST = lastEntry.oldValue;
+                  this.linhas.set(lastEntry.materialId, editCell);
+                }
               }
               else {
                 this.linhas.delete(editCell.materialId);
-                console.log("entrou no braço B SST")
               }
               break;
             case "newST":
               if(!this.checkEditCell(lastEntry)){
-                editCell.newST = lastEntry.oldValue;
-                this.linhas.set(lastEntry.materialId, editCell);
-                console.log("entrou no braço A")
+                if ( typeof lastEntry.oldValue === "number"){
+                  editCell.newSST = lastEntry.oldValue;
+                  this.linhas.set(lastEntry.materialId, editCell);
+                }
               }
               else {
                 this.linhas.delete(editCell.materialId);
-                console.log("entrou no braço B")
+              }
+              break;
+            case "newComment":
+              if(!this.checkEditCell(lastEntry)){
+                if ( typeof lastEntry.oldValue === "string"){
+                  editCell.newComment = lastEntry.oldValue;
+                  this.linhas.set(lastEntry.materialId, editCell);
+                }
+              }
+              else {
+                this.linhas.delete(editCell.materialId);
               }
               break;
           }
-          console.log(this.linhas)
         }
       }
     }
@@ -694,13 +721,17 @@ export class MaterialComponent implements OnInit , OnDestroy {
       for(let i = 0 ; i<this.history.length-this.undoSize;i++){
         this.history.shift()
       }
-      this.alertMessage="UNDO SIZE CHANGED, OLDER STEPS WHERE LOST"
+      this.alertMessage="UNDO SIZE CHANGED, OLDER STEPS WERE LOST"
       this.autoDismissAlert();
+    }
+    else{
+      this.alertMessage="UNDO SIZE CHANGED, NO OLDER STEPS WERE LOST"
+
     }
   }
 
 
-  addToHistory(col_name : string, new_value : number , old_value : number, material_id : number) : void{
+  addToHistory(col_name : string, new_value : number | string, old_value : number | string, material_id : number) : void{
     // - if existe no history && nome da coluna está la
     //   adicionar ao índice e alterar new e old
     // - else
@@ -727,7 +758,7 @@ export class MaterialComponent implements OnInit , OnDestroy {
 
   input(event: any, col_name : string, id: number): void {
     let editCell: IEditCell | undefined;
-    let oldValue = 0;
+    let oldValue: number | string = 0;
     if (this.linhas.has(id)){
       editCell = this.linhas.get(id);
     }
@@ -750,7 +781,10 @@ export class MaterialComponent implements OnInit , OnDestroy {
         oldValue = editCell.newST;
         editCell.newST = Math.round(event.target.value);
       }
-      if (col_name === "newComment") editCell.newComment = event.target.value;
+      if (col_name === "newComment"){
+        oldValue = editCell.newComment ?? "";
+        editCell.newComment = event.newComment;
+      }
       if (col_name === "selected") {
         editCell.selected = event.target.checked;
         //this.selectedMaterials.push(this.materials?.find(e => e.id === id)?.material ?? "");
@@ -763,7 +797,8 @@ export class MaterialComponent implements OnInit , OnDestroy {
       if (col_name === "flag") editCell.flag = !editCell.flag
       this.linhas.set(id, editCell)
       this._isEditable = [-1,-1]
-      this.addToHistory(col_name, Math.round(Number(event.target.value)), oldValue, id);
+      if (col_name === "newComment") this.addToHistory(col_name,event.newComment, oldValue, id);
+      else this.addToHistory(col_name, Math.round(Number(event.target.value)), oldValue, id);
     }
 
   }

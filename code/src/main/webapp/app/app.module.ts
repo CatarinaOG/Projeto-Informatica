@@ -1,4 +1,5 @@
 import { NgModule, LOCALE_ID } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { registerLocaleData } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import locale from '@angular/common/locales/en';
@@ -28,6 +29,7 @@ import { ErrorComponent } from './layouts/error/error.component';
   imports: [
     BrowserModule,
     SharedModule,
+    FormsModule,
     HomeModule,
     // jhipster-needle-angular-add-module JHipster will add new module here
     AppRoutingModule,

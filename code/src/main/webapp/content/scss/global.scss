@@ -287,7 +287,7 @@ angular-cli removes postcss-rtl processed inline css, processed rules must be ad
 }
 
 .setWidth{
-  min-width: 20rem;
+  min-width: 15rem;
 }
 
 .inputWidth{
@@ -424,4 +424,9 @@ input[type=number] {
   .optionsBarResponsive {
     flex-direction: column;
   }
+}
+
+.checkIcon {
+  display: flex;
+  justify-content: space-between;
 }

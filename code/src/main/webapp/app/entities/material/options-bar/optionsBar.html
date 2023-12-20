@@ -231,19 +231,21 @@
           <fa-icon icon="caret-down" style="margin-left: 5px;"></fa-icon>
         </button>
         <ul ngbDropdownMenu aria-labelledby="dropdownMenuButton">
-          <li> 
+          <li *ngIf="isAdmin()"> 
             <button ngbDropdownItem color="primary" class="btn btn-primary" (click)="importReplaceInput.click()">
               <fa-icon icon="upload"></fa-icon>
               <span>Replace Data</span>
             </button>
           </li>
-          <li> 
+          <li *ngIf="isAdmin()"> 
             <button ngbDropdownItem color="primary" class="btn btn-primary" (click)="importAdd.click()">
               <fa-icon icon="upload"></fa-icon>
               <span>Add Data</span>
             </button>
           </li>
-          <div class="dropdown-divider"></div>
+    
+          <div *ngIf="isAdmin()" class="dropdown-divider"></div>
+          
           <li> 
             <button ngbDropdownItem color="primary" class="btn btn-primary" (click)="downloadExcel()">
               <fa-icon icon="download"></fa-icon>
@@ -261,54 +263,69 @@
         </button>
         <ul ngbDropdownMenu aria-labelledby="nestedDropdownButton">
           <li>
-            <button ngbDropdownItem  class="btn btn-primary" (click)="sendNumber('pageSize',10)">
+            <button ngbDropdownItem  class="btn btn-primary checkIcon" (click)="sendNumber('pageSize',10)">
               <span>10</span>
+              <fa-icon icon="check" *ngIf="tableSize === 10"></fa-icon>
             </button>
           </li>
           <li>
-            <button ngbDropdownItem class="btn btn-primary" (click)="sendNumber('pageSize',20)">
+            <button ngbDropdownItem class="btn btn-primary checkIcon" (click)="sendNumber('pageSize',20)">
               <span>20</span>
+              <fa-icon icon="check" *ngIf="tableSize === 20"></fa-icon>
             </button>
           </li>
           <li>
-            <button ngbDropdownItem class="btn btn-primary" (click)="sendNumber('pageSize',30)">
+            <button ngbDropdownItem class="btn btn-primary checkIcon" (click)="sendNumber('pageSize',30)">
               <span>30</span>
+              <fa-icon icon="check" *ngIf="tableSize === 30"></fa-icon>
             </button>
           </li>
         </ul>
       </div>
-
-      <div ngbDropdown class="dropdown d-flex justify-content-end" autoClose="outside">
-        <button ngbDropdownToggle class="btn btn-white" type="button"  id="dropdownMenuButton" aria-expanded="false">  
-          <span style="flex-grow: 1; text-align: left;">"Undo" Size</span>
-          <fa-icon icon="caret-down" style="margin-left: 10px;"></fa-icon>
-        </button>
-        <ul ngbDropdownMenu aria-labelledby="nestedDropdownButton">
-          <li>
-            <button ngbDropdownItem  class="btn btn-primary" (click)="sendNumber('undo',5)">
-              <span>5 steps {{optionStatus(5)}}</span>
-            </button>
-          </li>
-          <li>
-            <button ngbDropdownItem class="btn btn-primary" (click)="sendNumber('undo',10)">
-              <span>10 steps {{optionStatus(10)}} </span>
-            </button>
-          </li>
-          <li>
-            <button ngbDropdownItem class="btn btn-primary" (click)="sendNumber('undo',15)">
-              <span>15 steps {{optionStatus(15)}}</span>
-            </button>
-          </li>
-        </ul>
-      </div>
-
-
 
     
-    <button class="btn btn-info me-2" (click)="sendUndo()" [disabled]="historyLength==0">
-      <fa-icon icon="undo"></fa-icon>
-      <span class="font-weight-bold">Undo</span>
-    </button>
+    
+
+    <div class="btn-group">
+      <button class="btn btn-info" (click)="sendUndo()" [disabled]="historyLength==0">
+        <fa-icon icon="undo"></fa-icon>
+        <span class="font-weight-bold">Undo</span>
+      </button>
+
+      <div class="btn-group" role="group" ngbDropdown class="dropdown d-flex justify-content-end" placement="bottom-right" autoClose="outside">
+        <button ngbDropdownToggle class="btn btn-info" type="button"  id="dropdownMenuButton" aria-expanded="false">  
+          <fa-icon icon="caret-down"></fa-icon>
+        </button>
+        <ul ngbDropdownMenu aria-labelledby="nestedDropdownButton">
+          <li style="text-align: center;">
+            <span style="font-weight: bold;">Undo Steps</span>
+            <div class="dropdown-divider"></div>
+          </li>
+          <li>
+            <button ngbDropdownItem class="btn btn-primary checkIcon" (click)="sendNumber('undo',5)">
+              <span>5 steps </span>
+              <fa-icon icon="check" *ngIf="optionStatus(5)"></fa-icon>
+            </button>
+          </li>
+          <li>
+            <button ngbDropdownItem class="btn btn-primary checkIcon" (click)="sendNumber('undo',10)">
+              <span>10 steps</span>
+              <fa-icon icon="check" *ngIf="optionStatus(10)"></fa-icon>
+            </button>
+          </li>
+          <li>
+            <button ngbDropdownItem class="btn btn-primary checkIcon" (click)="sendNumber('undo',15)">
+              <span>15 steps</span>
+              <fa-icon icon="check" *ngIf="optionStatus(15)"></fa-icon>
+            </button>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+
+
+
 
     <button class="btn btn-info me-2" (click)="sendLoad()" >
       <fa-icon icon="sync"></fa-icon>

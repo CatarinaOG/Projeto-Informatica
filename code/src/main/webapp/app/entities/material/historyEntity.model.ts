@@ -1,6 +1,6 @@
 export interface IHistoryEntity {
     materialId : number,
-    oldValue: number,
-    currentValue: number,
+    oldValue: number | string,
+    currentValue: number | string,
     column: string
 }

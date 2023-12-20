@@ -15,9 +15,10 @@ import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { SubmitModal } from './submit-modal/submitModal';
 import {ValueCell} from './tooltipCell/tooltipCell'
 import { CurrencyToolTipCell } from './currencyToolTipCell/currencyToolTipCell';
+import { CommentModal } from './comment-modal/commentModal'
 
 @NgModule({
   imports: [SharedModule, MaterialRoutingModule,NgbTooltipModule],
-  declarations: [MaterialComponent, MaterialDetailComponent, MaterialUpdateComponent, MaterialDeleteDialogComponent, OptionsBar, FilterDisplayCell, FilterForm,FlagModal,HeaderGroup,HeaderColumn,SubmitModal,ValueCell, CurrencyToolTipCell],
+  declarations: [MaterialComponent, MaterialDetailComponent, MaterialUpdateComponent, MaterialDeleteDialogComponent, OptionsBar, FilterDisplayCell, FilterForm,FlagModal,HeaderGroup,HeaderColumn,SubmitModal,ValueCell, CurrencyToolTipCell, CommentModal],
 })
 export class MaterialModule {}

@@ -3,7 +3,7 @@
     <span>Materials</span>
   </h2>
 
-    <options-bar (stringEmitter) = "receiveStringEvent($event)" (fileEmitter) = "onFileSelected($event)" (textFilterEmitter) = "receiveTextFilter($event)" (abcFilterEmitter) = "filterABCClassif($event)" (numberFilterEmitter) ="receiveNumberFilter($event)" [historyLength] = "history.length" [changesListLength]="this.linhas.size" [unselectedLines] = "getUnselectedLines()" [currencyEUR] = "currencyEUR" (currencyValEmitter) = "receiveCurrencyVal($event)" (dropdownNumberEmitter) = "receiveDropdownNumber($event)"></options-bar>
+    <options-bar (stringEmitter) = "receiveStringEvent($event)" (fileEmitter) = "onFileSelected($event)" (textFilterEmitter) = "receiveTextFilter($event)" (abcFilterEmitter) = "filterABCClassif($event)" (numberFilterEmitter) ="receiveNumberFilter($event)" [historyLength] = "history.length" [changesListLength]="this.linhas.size" [unselectedLines] = "getUnselectedLines()" [currencyEUR] = "currencyEUR" [tableSize]="itemsPerPage" (currencyValEmitter) = "receiveCurrencyVal($event)" (dropdownNumberEmitter) = "receiveDropdownNumber($event)"></options-bar>
     
     
     <div *ngIf="this.filters.filterOptions.length > 0" >
@@ -369,9 +369,16 @@
           </td>
 
           
-          <td class ="edit setWidth" *ngIf="isEditable[0] === material.id && isEditable[1] === 2"><input class="inputWidth" [placeholder]="placeholderGeneratorString(material)" (change)="input($event,'newComment',material.id)"></td>
+          <!-- <td class ="edit setWidth" *ngIf="isEditable[0] === material.id && isEditable[1] === 2"><input class="inputWidth" [placeholder]="placeholderGeneratorString(material)" (change)="input($event,'newComment',material.id)"></td> -->
          
-          <td class ="edit setWidth" *ngIf="!(isEditable[0] === material.id && isEditable[1] === 2)" (click)="makeEditable(material.id,2)" [ngClass] ="editCellClasses('edit',material,'Comment')" >{{((linhas.has(material.id) && (linhas.get(material.id)?.newComment !== material.comment))) ? linhas.get(material.id)?.newComment : material.comment }}</td>
+          <td class ="edit setWidth" [ngClass] ="editCellClasses('edit',material,'Comment')" >
+            <div class="d-flex justify-content-between">
+              <span class="d-inline-block text-truncate" style="max-width: 200px;" placement="top" ngbTooltip="{{pickComment(material.id)}}" tooltipClass="setWidth">
+                {{((linhas.has(material.id) && (linhas.get(material.id)?.newComment !== material.comment))) ? linhas.get(material.id)?.newComment : material.comment }}
+              </span>
+              <comment-modal [oldComment]="pickComment(material.id)" [id]="material.id" (commentEmitter)="receiveComment($event)"></comment-modal>
+            </div>
+          </td>
 
 
           <td *ngIf = "!visibility.get('edit')">

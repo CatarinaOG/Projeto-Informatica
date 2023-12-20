@@ -2,4 +2,4 @@
     {{messageVal}}
 </ng-template>
 
-<span placement="top" [ngbTooltip]="tipContent" #t="ngbTooltip" tooltipClass="custom-tooltip">{{value}} {{currencyEUR ? "EUR" : currency}}</span>
+<span placement="top" [ngbTooltip]="tipContent" #t="ngbTooltip" tooltipClass="custom-tooltip">{{value}} ({{currencyEUR ? "EUR" : currency}})</span>

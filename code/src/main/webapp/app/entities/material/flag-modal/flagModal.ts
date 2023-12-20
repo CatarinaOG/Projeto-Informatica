@@ -81,8 +81,11 @@ export class FlagModal  implements OnInit{
 		this.date = d.toISOString().split("T")[0];
 	}
 
-	tooltipDate() : string{
-		let returnVal : string = "n/a"
+	tooltipDate() : any{
+		let returnVal : any = "n/a"
+		if (this.material.flagExpirationDate) {
+			returnVal = this.material.flagExpirationDate
+		}
 		if (this.date !== ""){
 			returnVal = this.date
 		}

@@ -1,0 +1,26 @@
+
+
+
+<button class="buttonNoBorder" (click)="open(content)"> 
+    <fa-icon icon="pencil-alt"></fa-icon>
+</button>
+
+<ng-template #content let-modal>
+ <div class="modal-header">
+     <h4 class="modal-title" id="modal-basic-title">Write/Edit Comment </h4>
+     <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+ </div>
+ <div class="modal-body">
+     
+    <form style="margin-top: 20px;">
+        <label for="textarea">Comment:</label>
+        <textarea [(ngModel)]="comment" id="textarea" name="textarea" rows="4" cols="50">
+        </textarea>
+    </form>
+   
+</div>
+
+ <div class="modal-footer">
+     <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
+ </div>
+</ng-template>
