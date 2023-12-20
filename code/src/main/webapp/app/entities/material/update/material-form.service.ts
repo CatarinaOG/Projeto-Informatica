@@ -42,8 +42,10 @@ type MaterialFormGroupContent = {
   comment: FormControl<IMaterial['comment']>;
   newSAPSafetyStock: FormControl<IMaterial['newSAPSafetyStock']>;
   newSAPSafetyTime: FormControl<IMaterial['newSAPSafetyTime']>;
-  lastUpdatedCurrentSS: FormControl<IMaterial['lastUpdatedCurrentSS']>;
-  lastUpdatedCurrentST: FormControl<IMaterial['lastUpdatedCurrentST']>;
+  valueOfUpdatedSS: FormControl<IMaterial['valueOfUpdatedSS']>;
+  valueOfUpdatedST: FormControl<IMaterial['valueOfUpdatedST']>;
+  dateOfUpdatedSS: FormControl<IMaterial['dateOfUpdatedSS']>;
+  dateOfUpdatedST: FormControl<IMaterial['dateOfUpdatedST']>;
   toSaveUpdates: FormControl<IMaterial['toSaveUpdates']>;
   currency: FormControl<IMaterial['currency']>;
 };
@@ -89,8 +91,10 @@ export class MaterialFormService {
       comment: new FormControl(materialRawValue.comment),
       newSAPSafetyStock: new FormControl(materialRawValue.newSAPSafetyStock),
       newSAPSafetyTime: new FormControl(materialRawValue.newSAPSafetyTime),
-      lastUpdatedCurrentSS: new FormControl(materialRawValue.lastUpdatedCurrentSS),
-      lastUpdatedCurrentST: new FormControl(materialRawValue.lastUpdatedCurrentST),
+      valueOfUpdatedSS: new FormControl(materialRawValue.valueOfUpdatedSS),
+      valueOfUpdatedST: new FormControl(materialRawValue.valueOfUpdatedST),
+      dateOfUpdatedSS: new FormControl(materialRawValue.dateOfUpdatedSS),
+      dateOfUpdatedST: new FormControl(materialRawValue.dateOfUpdatedST),
       toSaveUpdates: new FormControl(materialRawValue.toSaveUpdates),
       currency: new FormControl(materialRawValue.currency),
     });

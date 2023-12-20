@@ -173,12 +173,6 @@ public class MaterialServiceImpl implements MaterialService {
                 if (material.getNewSAPSafetyTime() != null) {
                     existingMaterial.setNewSAPSafetyTime(material.getNewSAPSafetyTime());
                 }
-                if (material.getLastUpdatedCurrentSS() != null) {
-                    existingMaterial.setLastUpdatedCurrentSS(material.getLastUpdatedCurrentSS());
-                }
-                if (material.getLastUpdatedCurrentST() != null) {
-                    existingMaterial.setLastUpdatedCurrentST(material.getLastUpdatedCurrentST());
-                }
                 if (material.getToSaveUpdates() != null) {
                     existingMaterial.setToSaveUpdates(material.getToSaveUpdates());
                 }
@@ -561,11 +555,11 @@ public class MaterialServiceImpl implements MaterialService {
             LocalDate currentDate = LocalDate.now();
 
             if(existingMaterial.getNewSAPSafetyStock() != newSST){
-                existingMaterial.setLastUpdatedCurrentSS(currentDate);
+                existingMaterial.setDateOfUpdatedSS(currentDate);
             }
 
             if(existingMaterial.getNewSAPSafetyTime() != newST){
-                existingMaterial.setLastUpdatedCurrentST(currentDate);
+                existingMaterial.setDateOfUpdatedST(currentDate);
             }
             
             existingMaterial.setNewSAPSafetyStock(newSST);

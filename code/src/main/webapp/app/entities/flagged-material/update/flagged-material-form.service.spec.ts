@@ -1,21 +1,21 @@
 import { TestBed } from '@angular/core/testing';
 
-import { sampleWithRequiredData, sampleWithNewData } from '../material.test-samples';
+import { sampleWithRequiredData, sampleWithNewData } from '../flagged-material.test-samples';
 
-import { MaterialFormService } from './material-form.service';
+import { FlaggedMaterialFormService } from './flagged-material-form.service';
 
-describe('Material Form Service', () => {
-  let service: MaterialFormService;
+describe('FlaggedMaterial Form Service', () => {
+  let service: FlaggedMaterialFormService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(MaterialFormService);
+    service = TestBed.inject(FlaggedMaterialFormService);
   });
 
   describe('Service methods', () => {
-    describe('createMaterialFormGroup', () => {
+    describe('createFlaggedMaterialFormGroup', () => {
       it('should create a new form with FormControl', () => {
-        const formGroup = service.createMaterialFormGroup();
+        const formGroup = service.createFlaggedMaterialFormGroup();
 
         expect(formGroup.controls).toEqual(
           expect.objectContaining({
@@ -41,9 +41,6 @@ describe('Material Form Service', () => {
             avgInventoryEffectAfterChange: expect.any(Object),
             flagMaterial: expect.any(Object),
             flagExpirationDate: expect.any(Object),
-            comment: expect.any(Object),
-            newSAPSafetyStock: expect.any(Object),
-            newSAPSafetyTime: expect.any(Object),
             valueOfUpdatedSS: expect.any(Object),
             valueOfUpdatedST: expect.any(Object),
             dateOfUpdatedSS: expect.any(Object),
@@ -54,8 +51,8 @@ describe('Material Form Service', () => {
         );
       });
 
-      it('passing IMaterial should create a new form with FormGroup', () => {
-        const formGroup = service.createMaterialFormGroup(sampleWithRequiredData);
+      it('passing IFlaggedMaterial should create a new form with FormGroup', () => {
+        const formGroup = service.createFlaggedMaterialFormGroup(sampleWithRequiredData);
 
         expect(formGroup.controls).toEqual(
           expect.objectContaining({
@@ -81,9 +78,6 @@ describe('Material Form Service', () => {
             avgInventoryEffectAfterChange: expect.any(Object),
             flagMaterial: expect.any(Object),
             flagExpirationDate: expect.any(Object),
-            comment: expect.any(Object),
-            newSAPSafetyStock: expect.any(Object),
-            newSAPSafetyTime: expect.any(Object),
             valueOfUpdatedSS: expect.any(Object),
             valueOfUpdatedST: expect.any(Object),
             dateOfUpdatedSS: expect.any(Object),
@@ -95,36 +89,36 @@ describe('Material Form Service', () => {
       });
     });
 
-    describe('getMaterial', () => {
-      it('should return NewMaterial for default Material initial value', () => {
+    describe('getFlaggedMaterial', () => {
+      it('should return NewFlaggedMaterial for default FlaggedMaterial initial value', () => {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const formGroup = service.createMaterialFormGroup(sampleWithNewData);
+        const formGroup = service.createFlaggedMaterialFormGroup(sampleWithNewData);
 
-        const material = service.getMaterial(formGroup) as any;
+        const flaggedMaterial = service.getFlaggedMaterial(formGroup) as any;
 
-        expect(material).toMatchObject(sampleWithNewData);
+        expect(flaggedMaterial).toMatchObject(sampleWithNewData);
       });
 
-      it('should return NewMaterial for empty Material initial value', () => {
-        const formGroup = service.createMaterialFormGroup();
+      it('should return NewFlaggedMaterial for empty FlaggedMaterial initial value', () => {
+        const formGroup = service.createFlaggedMaterialFormGroup();
 
-        const material = service.getMaterial(formGroup) as any;
+        const flaggedMaterial = service.getFlaggedMaterial(formGroup) as any;
 
-        expect(material).toMatchObject({});
+        expect(flaggedMaterial).toMatchObject({});
       });
 
-      it('should return IMaterial', () => {
-        const formGroup = service.createMaterialFormGroup(sampleWithRequiredData);
+      it('should return IFlaggedMaterial', () => {
+        const formGroup = service.createFlaggedMaterialFormGroup(sampleWithRequiredData);
 
-        const material = service.getMaterial(formGroup) as any;
+        const flaggedMaterial = service.getFlaggedMaterial(formGroup) as any;
 
-        expect(material).toMatchObject(sampleWithRequiredData);
+        expect(flaggedMaterial).toMatchObject(sampleWithRequiredData);
       });
     });
 
     describe('resetForm', () => {
-      it('passing IMaterial should not enable id FormControl', () => {
-        const formGroup = service.createMaterialFormGroup();
+      it('passing IFlaggedMaterial should not enable id FormControl', () => {
+        const formGroup = service.createFlaggedMaterialFormGroup();
         expect(formGroup.controls.id.disabled).toBe(true);
 
         service.resetForm(formGroup, sampleWithRequiredData);
@@ -132,8 +126,8 @@ describe('Material Form Service', () => {
         expect(formGroup.controls.id.disabled).toBe(true);
       });
 
-      it('passing NewMaterial should disable id FormControl', () => {
-        const formGroup = service.createMaterialFormGroup(sampleWithRequiredData);
+      it('passing NewFlaggedMaterial should disable id FormControl', () => {
+        const formGroup = service.createFlaggedMaterialFormGroup(sampleWithRequiredData);
         expect(formGroup.controls.id.disabled).toBe(true);
 
         service.resetForm(formGroup, { id: null });

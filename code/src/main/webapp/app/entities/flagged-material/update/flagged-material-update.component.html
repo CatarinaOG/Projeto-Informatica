@@ -1,7 +1,7 @@
 <div class="d-flex justify-content-center">
   <div class="col-8">
     <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
-      <h2 id="jhi-material-heading" data-cy="MaterialCreateUpdateHeading">Create or edit a Material</h2>
+      <h2 id="jhi-flagged-material-heading" data-cy="FlaggedMaterialCreateUpdateHeading">Create or edit a Flagged Material</h2>
 
       <div>
         <jhi-alert-error></jhi-alert-error>
@@ -228,35 +228,6 @@
               <fa-icon icon="calendar-alt"></fa-icon>
             </button>
           </div>
-        </div>
-
-        <div class="row mb-3">
-          <label class="form-label" for="field_comment">Comment</label>
-          <input type="text" class="form-control" name="comment" id="field_comment" data-cy="comment" formControlName="comment" />
-        </div>
-
-        <div class="row mb-3">
-          <label class="form-label" for="field_newSAPSafetyStock">New SAP Safety Stock</label>
-          <input
-            type="number"
-            class="form-control"
-            name="newSAPSafetyStock"
-            id="field_newSAPSafetyStock"
-            data-cy="newSAPSafetyStock"
-            formControlName="newSAPSafetyStock"
-          />
-        </div>
-
-        <div class="row mb-3">
-          <label class="form-label" for="field_newSAPSafetyTime">New SAP Safety Time</label>
-          <input
-            type="number"
-            class="form-control"
-            name="newSAPSafetyTime"
-            id="field_newSAPSafetyTime"
-            data-cy="newSAPSafetyTime"
-            formControlName="newSAPSafetyTime"
-          />
         </div>
 
         <div class="row mb-3">

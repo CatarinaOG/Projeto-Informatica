@@ -105,11 +105,17 @@ class MaterialResourceIT {
     private static final Integer DEFAULT_NEW_SAP_SAFETY_TIME = 1;
     private static final Integer UPDATED_NEW_SAP_SAFETY_TIME = 2;
 
-    private static final LocalDate DEFAULT_LAST_UPDATED_CURRENT_SS = LocalDate.ofEpochDay(0L);
-    private static final LocalDate UPDATED_LAST_UPDATED_CURRENT_SS = LocalDate.now(ZoneId.systemDefault());
+    private static final Integer DEFAULT_VALUE_OF_UPDATED_SS = 1;
+    private static final Integer UPDATED_VALUE_OF_UPDATED_SS = 2;
 
-    private static final LocalDate DEFAULT_LAST_UPDATED_CURRENT_ST = LocalDate.ofEpochDay(0L);
-    private static final LocalDate UPDATED_LAST_UPDATED_CURRENT_ST = LocalDate.now(ZoneId.systemDefault());
+    private static final Integer DEFAULT_VALUE_OF_UPDATED_ST = 1;
+    private static final Integer UPDATED_VALUE_OF_UPDATED_ST = 2;
+
+    private static final LocalDate DEFAULT_DATE_OF_UPDATED_SS = LocalDate.ofEpochDay(0L);
+    private static final LocalDate UPDATED_DATE_OF_UPDATED_SS = LocalDate.now(ZoneId.systemDefault());
+
+    private static final LocalDate DEFAULT_DATE_OF_UPDATED_ST = LocalDate.ofEpochDay(0L);
+    private static final LocalDate UPDATED_DATE_OF_UPDATED_ST = LocalDate.now(ZoneId.systemDefault());
 
     private static final Boolean DEFAULT_TO_SAVE_UPDATES = false;
     private static final Boolean UPDATED_TO_SAVE_UPDATES = true;
@@ -166,8 +172,10 @@ class MaterialResourceIT {
             .comment(DEFAULT_COMMENT)
             .newSAPSafetyStock(DEFAULT_NEW_SAP_SAFETY_STOCK)
             .newSAPSafetyTime(DEFAULT_NEW_SAP_SAFETY_TIME)
-            .lastUpdatedCurrentSS(DEFAULT_LAST_UPDATED_CURRENT_SS)
-            .lastUpdatedCurrentST(DEFAULT_LAST_UPDATED_CURRENT_ST)
+            .valueOfUpdatedSS(DEFAULT_VALUE_OF_UPDATED_SS)
+            .valueOfUpdatedST(DEFAULT_VALUE_OF_UPDATED_ST)
+            .dateOfUpdatedSS(DEFAULT_DATE_OF_UPDATED_SS)
+            .dateOfUpdatedST(DEFAULT_DATE_OF_UPDATED_ST)
             .toSaveUpdates(DEFAULT_TO_SAVE_UPDATES)
             .currency(DEFAULT_CURRENCY);
         return material;
@@ -205,8 +213,10 @@ class MaterialResourceIT {
             .comment(UPDATED_COMMENT)
             .newSAPSafetyStock(UPDATED_NEW_SAP_SAFETY_STOCK)
             .newSAPSafetyTime(UPDATED_NEW_SAP_SAFETY_TIME)
-            .lastUpdatedCurrentSS(UPDATED_LAST_UPDATED_CURRENT_SS)
-            .lastUpdatedCurrentST(UPDATED_LAST_UPDATED_CURRENT_ST)
+            .valueOfUpdatedSS(UPDATED_VALUE_OF_UPDATED_SS)
+            .valueOfUpdatedST(UPDATED_VALUE_OF_UPDATED_ST)
+            .dateOfUpdatedSS(UPDATED_DATE_OF_UPDATED_SS)
+            .dateOfUpdatedST(UPDATED_DATE_OF_UPDATED_ST)
             .toSaveUpdates(UPDATED_TO_SAVE_UPDATES)
             .currency(UPDATED_CURRENCY);
         return material;
@@ -254,8 +264,10 @@ class MaterialResourceIT {
         assertThat(testMaterial.getComment()).isEqualTo(DEFAULT_COMMENT);
         assertThat(testMaterial.getNewSAPSafetyStock()).isEqualTo(DEFAULT_NEW_SAP_SAFETY_STOCK);
         assertThat(testMaterial.getNewSAPSafetyTime()).isEqualTo(DEFAULT_NEW_SAP_SAFETY_TIME);
-        assertThat(testMaterial.getLastUpdatedCurrentSS()).isEqualTo(DEFAULT_LAST_UPDATED_CURRENT_SS);
-        assertThat(testMaterial.getLastUpdatedCurrentST()).isEqualTo(DEFAULT_LAST_UPDATED_CURRENT_ST);
+        assertThat(testMaterial.getValueOfUpdatedSS()).isEqualTo(DEFAULT_VALUE_OF_UPDATED_SS);
+        assertThat(testMaterial.getValueOfUpdatedST()).isEqualTo(DEFAULT_VALUE_OF_UPDATED_ST);
+        assertThat(testMaterial.getDateOfUpdatedSS()).isEqualTo(DEFAULT_DATE_OF_UPDATED_SS);
+        assertThat(testMaterial.getDateOfUpdatedST()).isEqualTo(DEFAULT_DATE_OF_UPDATED_ST);
         assertThat(testMaterial.getToSaveUpdates()).isEqualTo(DEFAULT_TO_SAVE_UPDATES);
         assertThat(testMaterial.getCurrency()).isEqualTo(DEFAULT_CURRENCY);
     }
@@ -316,8 +328,10 @@ class MaterialResourceIT {
             .andExpect(jsonPath("$.[*].comment").value(hasItem(DEFAULT_COMMENT)))
             .andExpect(jsonPath("$.[*].newSAPSafetyStock").value(hasItem(DEFAULT_NEW_SAP_SAFETY_STOCK)))
             .andExpect(jsonPath("$.[*].newSAPSafetyTime").value(hasItem(DEFAULT_NEW_SAP_SAFETY_TIME)))
-            .andExpect(jsonPath("$.[*].lastUpdatedCurrentSS").value(hasItem(DEFAULT_LAST_UPDATED_CURRENT_SS.toString())))
-            .andExpect(jsonPath("$.[*].lastUpdatedCurrentST").value(hasItem(DEFAULT_LAST_UPDATED_CURRENT_ST.toString())))
+            .andExpect(jsonPath("$.[*].valueOfUpdatedSS").value(hasItem(DEFAULT_VALUE_OF_UPDATED_SS)))
+            .andExpect(jsonPath("$.[*].valueOfUpdatedST").value(hasItem(DEFAULT_VALUE_OF_UPDATED_ST)))
+            .andExpect(jsonPath("$.[*].dateOfUpdatedSS").value(hasItem(DEFAULT_DATE_OF_UPDATED_SS.toString())))
+            .andExpect(jsonPath("$.[*].dateOfUpdatedST").value(hasItem(DEFAULT_DATE_OF_UPDATED_ST.toString())))
             .andExpect(jsonPath("$.[*].toSaveUpdates").value(hasItem(DEFAULT_TO_SAVE_UPDATES.booleanValue())))
             .andExpect(jsonPath("$.[*].currency").value(hasItem(DEFAULT_CURRENCY.toString())));
     }
@@ -358,8 +372,10 @@ class MaterialResourceIT {
             .andExpect(jsonPath("$.comment").value(DEFAULT_COMMENT))
             .andExpect(jsonPath("$.newSAPSafetyStock").value(DEFAULT_NEW_SAP_SAFETY_STOCK))
             .andExpect(jsonPath("$.newSAPSafetyTime").value(DEFAULT_NEW_SAP_SAFETY_TIME))
-            .andExpect(jsonPath("$.lastUpdatedCurrentSS").value(DEFAULT_LAST_UPDATED_CURRENT_SS.toString()))
-            .andExpect(jsonPath("$.lastUpdatedCurrentST").value(DEFAULT_LAST_UPDATED_CURRENT_ST.toString()))
+            .andExpect(jsonPath("$.valueOfUpdatedSS").value(DEFAULT_VALUE_OF_UPDATED_SS))
+            .andExpect(jsonPath("$.valueOfUpdatedST").value(DEFAULT_VALUE_OF_UPDATED_ST))
+            .andExpect(jsonPath("$.dateOfUpdatedSS").value(DEFAULT_DATE_OF_UPDATED_SS.toString()))
+            .andExpect(jsonPath("$.dateOfUpdatedST").value(DEFAULT_DATE_OF_UPDATED_ST.toString()))
             .andExpect(jsonPath("$.toSaveUpdates").value(DEFAULT_TO_SAVE_UPDATES.booleanValue()))
             .andExpect(jsonPath("$.currency").value(DEFAULT_CURRENCY.toString()));
     }
@@ -408,8 +424,10 @@ class MaterialResourceIT {
             .comment(UPDATED_COMMENT)
             .newSAPSafetyStock(UPDATED_NEW_SAP_SAFETY_STOCK)
             .newSAPSafetyTime(UPDATED_NEW_SAP_SAFETY_TIME)
-            .lastUpdatedCurrentSS(UPDATED_LAST_UPDATED_CURRENT_SS)
-            .lastUpdatedCurrentST(UPDATED_LAST_UPDATED_CURRENT_ST)
+            .valueOfUpdatedSS(UPDATED_VALUE_OF_UPDATED_SS)
+            .valueOfUpdatedST(UPDATED_VALUE_OF_UPDATED_ST)
+            .dateOfUpdatedSS(UPDATED_DATE_OF_UPDATED_SS)
+            .dateOfUpdatedST(UPDATED_DATE_OF_UPDATED_ST)
             .toSaveUpdates(UPDATED_TO_SAVE_UPDATES)
             .currency(UPDATED_CURRENCY);
 
@@ -449,8 +467,10 @@ class MaterialResourceIT {
         assertThat(testMaterial.getComment()).isEqualTo(UPDATED_COMMENT);
         assertThat(testMaterial.getNewSAPSafetyStock()).isEqualTo(UPDATED_NEW_SAP_SAFETY_STOCK);
         assertThat(testMaterial.getNewSAPSafetyTime()).isEqualTo(UPDATED_NEW_SAP_SAFETY_TIME);
-        assertThat(testMaterial.getLastUpdatedCurrentSS()).isEqualTo(UPDATED_LAST_UPDATED_CURRENT_SS);
-        assertThat(testMaterial.getLastUpdatedCurrentST()).isEqualTo(UPDATED_LAST_UPDATED_CURRENT_ST);
+        assertThat(testMaterial.getValueOfUpdatedSS()).isEqualTo(UPDATED_VALUE_OF_UPDATED_SS);
+        assertThat(testMaterial.getValueOfUpdatedST()).isEqualTo(UPDATED_VALUE_OF_UPDATED_ST);
+        assertThat(testMaterial.getDateOfUpdatedSS()).isEqualTo(UPDATED_DATE_OF_UPDATED_SS);
+        assertThat(testMaterial.getDateOfUpdatedST()).isEqualTo(UPDATED_DATE_OF_UPDATED_ST);
         assertThat(testMaterial.getToSaveUpdates()).isEqualTo(UPDATED_TO_SAVE_UPDATES);
         assertThat(testMaterial.getCurrency()).isEqualTo(UPDATED_CURRENCY);
     }
@@ -538,7 +558,8 @@ class MaterialResourceIT {
             .avgDemand(UPDATED_AVG_DEMAND)
             .flagExpirationDate(UPDATED_FLAG_EXPIRATION_DATE)
             .comment(UPDATED_COMMENT)
-            .toSaveUpdates(UPDATED_TO_SAVE_UPDATES);
+            .dateOfUpdatedSS(UPDATED_DATE_OF_UPDATED_SS)
+            .currency(UPDATED_CURRENCY);
 
         restMaterialMockMvc
             .perform(
@@ -576,10 +597,12 @@ class MaterialResourceIT {
         assertThat(testMaterial.getComment()).isEqualTo(UPDATED_COMMENT);
         assertThat(testMaterial.getNewSAPSafetyStock()).isEqualTo(DEFAULT_NEW_SAP_SAFETY_STOCK);
         assertThat(testMaterial.getNewSAPSafetyTime()).isEqualTo(DEFAULT_NEW_SAP_SAFETY_TIME);
-        assertThat(testMaterial.getLastUpdatedCurrentSS()).isEqualTo(DEFAULT_LAST_UPDATED_CURRENT_SS);
-        assertThat(testMaterial.getLastUpdatedCurrentST()).isEqualTo(DEFAULT_LAST_UPDATED_CURRENT_ST);
-        assertThat(testMaterial.getToSaveUpdates()).isEqualTo(UPDATED_TO_SAVE_UPDATES);
-        assertThat(testMaterial.getCurrency()).isEqualTo(DEFAULT_CURRENCY);
+        assertThat(testMaterial.getValueOfUpdatedSS()).isEqualTo(DEFAULT_VALUE_OF_UPDATED_SS);
+        assertThat(testMaterial.getValueOfUpdatedST()).isEqualTo(DEFAULT_VALUE_OF_UPDATED_ST);
+        assertThat(testMaterial.getDateOfUpdatedSS()).isEqualTo(UPDATED_DATE_OF_UPDATED_SS);
+        assertThat(testMaterial.getDateOfUpdatedST()).isEqualTo(DEFAULT_DATE_OF_UPDATED_ST);
+        assertThat(testMaterial.getToSaveUpdates()).isEqualTo(DEFAULT_TO_SAVE_UPDATES);
+        assertThat(testMaterial.getCurrency()).isEqualTo(UPDATED_CURRENCY);
     }
 
     @Test
@@ -619,8 +642,10 @@ class MaterialResourceIT {
             .comment(UPDATED_COMMENT)
             .newSAPSafetyStock(UPDATED_NEW_SAP_SAFETY_STOCK)
             .newSAPSafetyTime(UPDATED_NEW_SAP_SAFETY_TIME)
-            .lastUpdatedCurrentSS(UPDATED_LAST_UPDATED_CURRENT_SS)
-            .lastUpdatedCurrentST(UPDATED_LAST_UPDATED_CURRENT_ST)
+            .valueOfUpdatedSS(UPDATED_VALUE_OF_UPDATED_SS)
+            .valueOfUpdatedST(UPDATED_VALUE_OF_UPDATED_ST)
+            .dateOfUpdatedSS(UPDATED_DATE_OF_UPDATED_SS)
+            .dateOfUpdatedST(UPDATED_DATE_OF_UPDATED_ST)
             .toSaveUpdates(UPDATED_TO_SAVE_UPDATES)
             .currency(UPDATED_CURRENCY);
 
@@ -660,8 +685,10 @@ class MaterialResourceIT {
         assertThat(testMaterial.getComment()).isEqualTo(UPDATED_COMMENT);
         assertThat(testMaterial.getNewSAPSafetyStock()).isEqualTo(UPDATED_NEW_SAP_SAFETY_STOCK);
         assertThat(testMaterial.getNewSAPSafetyTime()).isEqualTo(UPDATED_NEW_SAP_SAFETY_TIME);
-        assertThat(testMaterial.getLastUpdatedCurrentSS()).isEqualTo(UPDATED_LAST_UPDATED_CURRENT_SS);
-        assertThat(testMaterial.getLastUpdatedCurrentST()).isEqualTo(UPDATED_LAST_UPDATED_CURRENT_ST);
+        assertThat(testMaterial.getValueOfUpdatedSS()).isEqualTo(UPDATED_VALUE_OF_UPDATED_SS);
+        assertThat(testMaterial.getValueOfUpdatedST()).isEqualTo(UPDATED_VALUE_OF_UPDATED_ST);
+        assertThat(testMaterial.getDateOfUpdatedSS()).isEqualTo(UPDATED_DATE_OF_UPDATED_SS);
+        assertThat(testMaterial.getDateOfUpdatedST()).isEqualTo(UPDATED_DATE_OF_UPDATED_ST);
         assertThat(testMaterial.getToSaveUpdates()).isEqualTo(UPDATED_TO_SAVE_UPDATES);
         assertThat(testMaterial.getCurrency()).isEqualTo(UPDATED_CURRENCY);
     }

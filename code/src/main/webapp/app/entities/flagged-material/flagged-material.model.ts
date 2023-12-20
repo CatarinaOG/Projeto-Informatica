@@ -2,7 +2,7 @@ import dayjs from 'dayjs/esm';
 import { ABCClassification } from 'app/entities/enumerations/abc-classification.model';
 import { Coin } from 'app/entities/enumerations/coin.model';
 
-export interface IMaterial {
+export interface IFlaggedMaterial {
   id: number;
   material?: string | null;
   description?: string | null;
@@ -25,9 +25,6 @@ export interface IMaterial {
   avgInventoryEffectAfterChange?: number | null;
   flagMaterial?: boolean | null;
   flagExpirationDate?: dayjs.Dayjs | null;
-  comment?: string | null;
-  newSAPSafetyStock?: number | null;
-  newSAPSafetyTime?: number | null;
   valueOfUpdatedSS?: number | null;
   valueOfUpdatedST?: number | null;
   dateOfUpdatedSS?: dayjs.Dayjs | null;
@@ -36,4 +33,4 @@ export interface IMaterial {
   currency?: Coin | null;
 }
 
-export type NewMaterial = Omit<IMaterial, 'id'> & { id: null };
+export type NewFlaggedMaterial = Omit<IFlaggedMaterial, 'id'> & { id: null };

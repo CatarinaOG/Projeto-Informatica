@@ -9,13 +9,13 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
- * A Material.
+ * A FlaggedMaterial.
  */
 @Entity
-@Table(name = "material")
+@Table(name = "flagged_material")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class Material implements Serializable {
+public class FlaggedMaterial implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -89,15 +89,6 @@ public class Material implements Serializable {
     @Column(name = "flag_expiration_date")
     private LocalDate flagExpirationDate;
 
-    @Column(name = "jhi_comment")
-    private String comment;
-
-    @Column(name = "new_sap_safety_stock")
-    private Integer newSAPSafetyStock;
-
-    @Column(name = "new_sap_safety_time")
-    private Integer newSAPSafetyTime;
-
     @Column(name = "value_of_updated_ss")
     private Integer valueOfUpdatedSS;
 
@@ -123,7 +114,7 @@ public class Material implements Serializable {
         return this.id;
     }
 
-    public Material id(Long id) {
+    public FlaggedMaterial id(Long id) {
         this.setId(id);
         return this;
     }
@@ -136,7 +127,7 @@ public class Material implements Serializable {
         return this.material;
     }
 
-    public Material material(String material) {
+    public FlaggedMaterial material(String material) {
         this.setMaterial(material);
         return this;
     }
@@ -149,7 +140,7 @@ public class Material implements Serializable {
         return this.description;
     }
 
-    public Material description(String description) {
+    public FlaggedMaterial description(String description) {
         this.setDescription(description);
         return this;
     }
@@ -162,7 +153,7 @@ public class Material implements Serializable {
         return this.abcClassification;
     }
 
-    public Material abcClassification(ABCClassification abcClassification) {
+    public FlaggedMaterial abcClassification(ABCClassification abcClassification) {
         this.setAbcClassification(abcClassification);
         return this;
     }
@@ -175,7 +166,7 @@ public class Material implements Serializable {
         return this.avgSupplierDelay;
     }
 
-    public Material avgSupplierDelay(Float avgSupplierDelay) {
+    public FlaggedMaterial avgSupplierDelay(Float avgSupplierDelay) {
         this.setAvgSupplierDelay(avgSupplierDelay);
         return this;
     }
@@ -188,7 +179,7 @@ public class Material implements Serializable {
         return this.maxSupplierDelay;
     }
 
-    public Material maxSupplierDelay(Float maxSupplierDelay) {
+    public FlaggedMaterial maxSupplierDelay(Float maxSupplierDelay) {
         this.setMaxSupplierDelay(maxSupplierDelay);
         return this;
     }
@@ -201,7 +192,7 @@ public class Material implements Serializable {
         return this.serviceLevel;
     }
 
-    public Material serviceLevel(Float serviceLevel) {
+    public FlaggedMaterial serviceLevel(Float serviceLevel) {
         this.setServiceLevel(serviceLevel);
         return this;
     }
@@ -214,7 +205,7 @@ public class Material implements Serializable {
         return this.plant;
     }
 
-    public Material plant(String plant) {
+    public FlaggedMaterial plant(String plant) {
         this.setPlant(plant);
         return this;
     }
@@ -227,7 +218,7 @@ public class Material implements Serializable {
         return this.mrpController;
     }
 
-    public Material mrpController(String mrpController) {
+    public FlaggedMaterial mrpController(String mrpController) {
         this.setMrpController(mrpController);
         return this;
     }
@@ -240,7 +231,7 @@ public class Material implements Serializable {
         return this.currSAPSafetyStock;
     }
 
-    public Material currSAPSafetyStock(Integer currSAPSafetyStock) {
+    public FlaggedMaterial currSAPSafetyStock(Integer currSAPSafetyStock) {
         this.setCurrSAPSafetyStock(currSAPSafetyStock);
         return this;
     }
@@ -253,7 +244,7 @@ public class Material implements Serializable {
         return this.proposedSST;
     }
 
-    public Material proposedSST(Integer proposedSST) {
+    public FlaggedMaterial proposedSST(Integer proposedSST) {
         this.setProposedSST(proposedSST);
         return this;
     }
@@ -266,7 +257,7 @@ public class Material implements Serializable {
         return this.deltaSST;
     }
 
-    public Material deltaSST(Integer deltaSST) {
+    public FlaggedMaterial deltaSST(Integer deltaSST) {
         this.setDeltaSST(deltaSST);
         return this;
     }
@@ -279,7 +270,7 @@ public class Material implements Serializable {
         return this.currentSAPSafeTime;
     }
 
-    public Material currentSAPSafeTime(Integer currentSAPSafeTime) {
+    public FlaggedMaterial currentSAPSafeTime(Integer currentSAPSafeTime) {
         this.setCurrentSAPSafeTime(currentSAPSafeTime);
         return this;
     }
@@ -292,7 +283,7 @@ public class Material implements Serializable {
         return this.proposedST;
     }
 
-    public Material proposedST(Integer proposedST) {
+    public FlaggedMaterial proposedST(Integer proposedST) {
         this.setProposedST(proposedST);
         return this;
     }
@@ -305,7 +296,7 @@ public class Material implements Serializable {
         return this.deltaST;
     }
 
-    public Material deltaST(Integer deltaST) {
+    public FlaggedMaterial deltaST(Integer deltaST) {
         this.setDeltaST(deltaST);
         return this;
     }
@@ -318,7 +309,7 @@ public class Material implements Serializable {
         return this.openSAPmd04;
     }
 
-    public Material openSAPmd04(String openSAPmd04) {
+    public FlaggedMaterial openSAPmd04(String openSAPmd04) {
         this.setOpenSAPmd04(openSAPmd04);
         return this;
     }
@@ -331,7 +322,7 @@ public class Material implements Serializable {
         return this.currentInventoryValue;
     }
 
-    public Material currentInventoryValue(Float currentInventoryValue) {
+    public FlaggedMaterial currentInventoryValue(Float currentInventoryValue) {
         this.setCurrentInventoryValue(currentInventoryValue);
         return this;
     }
@@ -344,7 +335,7 @@ public class Material implements Serializable {
         return this.unitCost;
     }
 
-    public Material unitCost(Float unitCost) {
+    public FlaggedMaterial unitCost(Float unitCost) {
         this.setUnitCost(unitCost);
         return this;
     }
@@ -357,7 +348,7 @@ public class Material implements Serializable {
         return this.avgDemand;
     }
 
-    public Material avgDemand(Integer avgDemand) {
+    public FlaggedMaterial avgDemand(Integer avgDemand) {
         this.setAvgDemand(avgDemand);
         return this;
     }
@@ -370,7 +361,7 @@ public class Material implements Serializable {
         return this.avgInventoryEffectAfterChange;
     }
 
-    public Material avgInventoryEffectAfterChange(Float avgInventoryEffectAfterChange) {
+    public FlaggedMaterial avgInventoryEffectAfterChange(Float avgInventoryEffectAfterChange) {
         this.setAvgInventoryEffectAfterChange(avgInventoryEffectAfterChange);
         return this;
     }
@@ -383,7 +374,7 @@ public class Material implements Serializable {
         return this.flagMaterial;
     }
 
-    public Material flagMaterial(Boolean flagMaterial) {
+    public FlaggedMaterial flagMaterial(Boolean flagMaterial) {
         this.setFlagMaterial(flagMaterial);
         return this;
     }
@@ -396,7 +387,7 @@ public class Material implements Serializable {
         return this.flagExpirationDate;
     }
 
-    public Material flagExpirationDate(LocalDate flagExpirationDate) {
+    public FlaggedMaterial flagExpirationDate(LocalDate flagExpirationDate) {
         this.setFlagExpirationDate(flagExpirationDate);
         return this;
     }
@@ -405,50 +396,11 @@ public class Material implements Serializable {
         this.flagExpirationDate = flagExpirationDate;
     }
 
-    public String getComment() {
-        return this.comment;
-    }
-
-    public Material comment(String comment) {
-        this.setComment(comment);
-        return this;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
-
-    public Integer getNewSAPSafetyStock() {
-        return this.newSAPSafetyStock;
-    }
-
-    public Material newSAPSafetyStock(Integer newSAPSafetyStock) {
-        this.setNewSAPSafetyStock(newSAPSafetyStock);
-        return this;
-    }
-
-    public void setNewSAPSafetyStock(Integer newSAPSafetyStock) {
-        this.newSAPSafetyStock = newSAPSafetyStock;
-    }
-
-    public Integer getNewSAPSafetyTime() {
-        return this.newSAPSafetyTime;
-    }
-
-    public Material newSAPSafetyTime(Integer newSAPSafetyTime) {
-        this.setNewSAPSafetyTime(newSAPSafetyTime);
-        return this;
-    }
-
-    public void setNewSAPSafetyTime(Integer newSAPSafetyTime) {
-        this.newSAPSafetyTime = newSAPSafetyTime;
-    }
-
     public Integer getValueOfUpdatedSS() {
         return this.valueOfUpdatedSS;
     }
 
-    public Material valueOfUpdatedSS(Integer valueOfUpdatedSS) {
+    public FlaggedMaterial valueOfUpdatedSS(Integer valueOfUpdatedSS) {
         this.setValueOfUpdatedSS(valueOfUpdatedSS);
         return this;
     }
@@ -461,7 +413,7 @@ public class Material implements Serializable {
         return this.valueOfUpdatedST;
     }
 
-    public Material valueOfUpdatedST(Integer valueOfUpdatedST) {
+    public FlaggedMaterial valueOfUpdatedST(Integer valueOfUpdatedST) {
         this.setValueOfUpdatedST(valueOfUpdatedST);
         return this;
     }
@@ -474,7 +426,7 @@ public class Material implements Serializable {
         return this.dateOfUpdatedSS;
     }
 
-    public Material dateOfUpdatedSS(LocalDate dateOfUpdatedSS) {
+    public FlaggedMaterial dateOfUpdatedSS(LocalDate dateOfUpdatedSS) {
         this.setDateOfUpdatedSS(dateOfUpdatedSS);
         return this;
     }
@@ -487,7 +439,7 @@ public class Material implements Serializable {
         return this.dateOfUpdatedST;
     }
 
-    public Material dateOfUpdatedST(LocalDate dateOfUpdatedST) {
+    public FlaggedMaterial dateOfUpdatedST(LocalDate dateOfUpdatedST) {
         this.setDateOfUpdatedST(dateOfUpdatedST);
         return this;
     }
@@ -500,7 +452,7 @@ public class Material implements Serializable {
         return this.toSaveUpdates;
     }
 
-    public Material toSaveUpdates(Boolean toSaveUpdates) {
+    public FlaggedMaterial toSaveUpdates(Boolean toSaveUpdates) {
         this.setToSaveUpdates(toSaveUpdates);
         return this;
     }
@@ -513,7 +465,7 @@ public class Material implements Serializable {
         return this.currency;
     }
 
-    public Material currency(Coin currency) {
+    public FlaggedMaterial currency(Coin currency) {
         this.setCurrency(currency);
         return this;
     }
@@ -529,10 +481,10 @@ public class Material implements Serializable {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof Material)) {
+        if (!(o instanceof FlaggedMaterial)) {
             return false;
         }
-        return id != null && id.equals(((Material) o).id);
+        return id != null && id.equals(((FlaggedMaterial) o).id);
     }
 
     @Override
@@ -544,7 +496,7 @@ public class Material implements Serializable {
     // prettier-ignore
     @Override
     public String toString() {
-        return "Material{" +
+        return "FlaggedMaterial{" +
             "id=" + getId() +
             ", material='" + getMaterial() + "'" +
             ", description='" + getDescription() + "'" +
@@ -567,9 +519,6 @@ public class Material implements Serializable {
             ", avgInventoryEffectAfterChange=" + getAvgInventoryEffectAfterChange() +
             ", flagMaterial='" + getFlagMaterial() + "'" +
             ", flagExpirationDate='" + getFlagExpirationDate() + "'" +
-            ", comment='" + getComment() + "'" +
-            ", newSAPSafetyStock=" + getNewSAPSafetyStock() +
-            ", newSAPSafetyTime=" + getNewSAPSafetyTime() +
             ", valueOfUpdatedSS=" + getValueOfUpdatedSS() +
             ", valueOfUpdatedST=" + getValueOfUpdatedST() +
             ", dateOfUpdatedSS='" + getDateOfUpdatedSS() + "'" +

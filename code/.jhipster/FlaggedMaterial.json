@@ -1,9 +1,9 @@
 {
   "applications": "*",
-  "changelogDate": "20231114190645",
+  "changelogDate": "20231220232935",
   "dto": "no",
   "embedded": false,
-  "entityTableName": "material",
+  "entityTableName": "flagged_material",
   "fields": [
     {
       "fieldName": "material",
@@ -91,18 +91,6 @@
       "fieldType": "LocalDate"
     },
     {
-      "fieldName": "comment",
-      "fieldType": "String"
-    },
-    {
-      "fieldName": "newSAPSafetyStock",
-      "fieldType": "Integer"
-    },
-    {
-      "fieldName": "newSAPSafetyTime",
-      "fieldType": "Integer"
-    },
-    {
       "fieldName": "valueOfUpdatedSS",
       "fieldType": "Integer"
     },
@@ -130,8 +118,8 @@
   ],
   "fluentMethods": true,
   "jpaMetamodelFiltering": false,
-  "name": "Material",
-  "pagination": "pagination",
+  "name": "FlaggedMaterial",
+  "pagination": "no",
   "readOnly": false,
   "relationships": [],
   "service": "serviceImpl"

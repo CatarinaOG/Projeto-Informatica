@@ -1,6 +1,6 @@
 <div>
-  <h2 id="page-heading" data-cy="MaterialHeading">
-    <span>Materials</span>
+  <h2 id="page-heading" data-cy="FlaggedMaterialHeading">
+    <span>Flagged Materials</span>
 
     <div class="d-flex justify-content-end">
       <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
@@ -11,11 +11,11 @@
       <button
         id="jh-create-entity"
         data-cy="entityCreateButton"
-        class="btn btn-primary jh-create-entity create-material"
-        [routerLink]="['/material/new']"
+        class="btn btn-primary jh-create-entity create-flagged-material"
+        [routerLink]="['/flagged-material/new']"
       >
         <fa-icon icon="plus"></fa-icon>
-        <span> Create a new Material </span>
+        <span> Create a new Flagged Material </span>
       </button>
     </div>
   </h2>
@@ -24,11 +24,11 @@
 
   <jhi-alert></jhi-alert>
 
-  <div class="alert alert-warning" id="no-result" *ngIf="materials?.length === 0">
-    <span>No Materials found</span>
+  <div class="alert alert-warning" id="no-result" *ngIf="flaggedMaterials?.length === 0">
+    <span>No Flagged Materials found</span>
   </div>
 
-  <div class="table-responsive table-entities" id="entities" *ngIf="materials && materials.length > 0">
+  <div class="table-responsive table-entities" id="entities" *ngIf="flaggedMaterials && flaggedMaterials.length > 0">
     <table class="table table-striped" aria-describedby="page-heading">
       <thead>
         <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
@@ -164,24 +164,6 @@
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="comment">
-            <div class="d-flex">
-              <span>Comment</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="newSAPSafetyStock">
-            <div class="d-flex">
-              <span>New SAP Safety Stock</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="newSAPSafetyTime">
-            <div class="d-flex">
-              <span>New SAP Safety Time</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
           <th scope="col" jhiSortBy="valueOfUpdatedSS">
             <div class="d-flex">
               <span>Value Of Updated SS</span>
@@ -222,45 +204,42 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let material of materials; trackBy: trackId" data-cy="entityTable">
+        <tr *ngFor="let flaggedMaterial of flaggedMaterials; trackBy: trackId" data-cy="entityTable">
           <td>
-            <a [routerLink]="['/material', material.id, 'view']">{{ material.id }}</a>
+            <a [routerLink]="['/flagged-material', flaggedMaterial.id, 'view']">{{ flaggedMaterial.id }}</a>
           </td>
-          <td>{{ material.material }}</td>
-          <td>{{ material.description }}</td>
-          <td>{{ material.abcClassification }}</td>
-          <td>{{ material.avgSupplierDelay }}</td>
-          <td>{{ material.maxSupplierDelay }}</td>
-          <td>{{ material.serviceLevel }}</td>
-          <td>{{ material.plant }}</td>
-          <td>{{ material.mrpController }}</td>
-          <td>{{ material.currSAPSafetyStock }}</td>
-          <td>{{ material.proposedSST }}</td>
-          <td>{{ material.deltaSST }}</td>
-          <td>{{ material.currentSAPSafeTime }}</td>
-          <td>{{ material.proposedST }}</td>
-          <td>{{ material.deltaST }}</td>
-          <td>{{ material.openSAPmd04 }}</td>
-          <td>{{ material.currentInventoryValue }}</td>
-          <td>{{ material.unitCost }}</td>
-          <td>{{ material.avgDemand }}</td>
-          <td>{{ material.avgInventoryEffectAfterChange }}</td>
-          <td>{{ material.flagMaterial }}</td>
-          <td>{{ material.flagExpirationDate | formatMediumDate }}</td>
-          <td>{{ material.comment }}</td>
-          <td>{{ material.newSAPSafetyStock }}</td>
-          <td>{{ material.newSAPSafetyTime }}</td>
-          <td>{{ material.valueOfUpdatedSS }}</td>
-          <td>{{ material.valueOfUpdatedST }}</td>
-          <td>{{ material.dateOfUpdatedSS | formatMediumDate }}</td>
-          <td>{{ material.dateOfUpdatedST | formatMediumDate }}</td>
-          <td>{{ material.toSaveUpdates }}</td>
-          <td>{{ material.currency }}</td>
+          <td>{{ flaggedMaterial.material }}</td>
+          <td>{{ flaggedMaterial.description }}</td>
+          <td>{{ flaggedMaterial.abcClassification }}</td>
+          <td>{{ flaggedMaterial.avgSupplierDelay }}</td>
+          <td>{{ flaggedMaterial.maxSupplierDelay }}</td>
+          <td>{{ flaggedMaterial.serviceLevel }}</td>
+          <td>{{ flaggedMaterial.plant }}</td>
+          <td>{{ flaggedMaterial.mrpController }}</td>
+          <td>{{ flaggedMaterial.currSAPSafetyStock }}</td>
+          <td>{{ flaggedMaterial.proposedSST }}</td>
+          <td>{{ flaggedMaterial.deltaSST }}</td>
+          <td>{{ flaggedMaterial.currentSAPSafeTime }}</td>
+          <td>{{ flaggedMaterial.proposedST }}</td>
+          <td>{{ flaggedMaterial.deltaST }}</td>
+          <td>{{ flaggedMaterial.openSAPmd04 }}</td>
+          <td>{{ flaggedMaterial.currentInventoryValue }}</td>
+          <td>{{ flaggedMaterial.unitCost }}</td>
+          <td>{{ flaggedMaterial.avgDemand }}</td>
+          <td>{{ flaggedMaterial.avgInventoryEffectAfterChange }}</td>
+          <td>{{ flaggedMaterial.flagMaterial }}</td>
+          <td>{{ flaggedMaterial.flagExpirationDate | formatMediumDate }}</td>
+          <td>{{ flaggedMaterial.valueOfUpdatedSS }}</td>
+          <td>{{ flaggedMaterial.valueOfUpdatedST }}</td>
+          <td>{{ flaggedMaterial.dateOfUpdatedSS | formatMediumDate }}</td>
+          <td>{{ flaggedMaterial.dateOfUpdatedST | formatMediumDate }}</td>
+          <td>{{ flaggedMaterial.toSaveUpdates }}</td>
+          <td>{{ flaggedMaterial.currency }}</td>
           <td class="text-end">
             <div class="btn-group">
               <button
                 type="submit"
-                [routerLink]="['/material', material.id, 'view']"
+                [routerLink]="['/flagged-material', flaggedMaterial.id, 'view']"
                 class="btn btn-info btn-sm"
                 data-cy="entityDetailsButton"
               >
@@ -270,7 +249,7 @@
 
               <button
                 type="submit"
-                [routerLink]="['/material', material.id, 'edit']"
+                [routerLink]="['/flagged-material', flaggedMaterial.id, 'edit']"
                 class="btn btn-primary btn-sm"
                 data-cy="entityEditButton"
               >
@@ -278,7 +257,7 @@
                 <span class="d-none d-md-inline">Edit</span>
               </button>
 
-              <button type="submit" (click)="delete(material)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+              <button type="submit" (click)="delete(flaggedMaterial)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
                 <fa-icon icon="times"></fa-icon>
                 <span class="d-none d-md-inline">Delete</span>
               </button>
@@ -287,23 +266,5 @@
         </tr>
       </tbody>
     </table>
-  </div>
-
-  <div *ngIf="materials && materials.length > 0">
-    <div class="d-flex justify-content-center">
-      <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
-    </div>
-
-    <div class="d-flex justify-content-center">
-      <ngb-pagination
-        [collectionSize]="totalItems"
-        [page]="page"
-        [pageSize]="itemsPerPage"
-        [maxSize]="5"
-        [rotate]="true"
-        [boundaryLinks]="true"
-        (pageChange)="navigateToPage($event)"
-      ></ngb-pagination>
-    </div>
   </div>
 </div>

@@ -23,8 +23,40 @@ entity Material {
     comment String
     newSAPSafetyStock Integer
     newSAPSafetyTime Integer
-    lastUpdatedCurrentSS LocalDate
-    lastUpdatedCurrentST LocalDate
+    valueOfUpdatedSS Integer
+    valueOfUpdatedST Integer
+    dateOfUpdatedSS LocalDate
+    dateOfUpdatedST LocalDate
+    toSaveUpdates Boolean
+    currency Coin
+}
+
+entity FlaggedMaterial{
+	material String
+    description String
+    abcClassification ABCClassification
+    avgSupplierDelay Float
+    maxSupplierDelay Float
+    serviceLevel Float
+    plant String
+    mrpController String
+    currSAPSafetyStock Integer
+	proposedSST Integer
+    deltaSST Integer
+    currentSAPSafeTime Integer
+    proposedST Integer
+    deltaST Integer
+    openSAPmd04 String
+    currentInventoryValue Float
+    unitCost Float
+    avgDemand Integer
+    avgInventoryEffectAfterChange Float
+    flagMaterial Boolean
+    flagExpirationDate LocalDate
+    valueOfUpdatedSS Integer
+    valueOfUpdatedST Integer
+    dateOfUpdatedSS LocalDate
+    dateOfUpdatedST LocalDate
     toSaveUpdates Boolean
     currency Coin
 }

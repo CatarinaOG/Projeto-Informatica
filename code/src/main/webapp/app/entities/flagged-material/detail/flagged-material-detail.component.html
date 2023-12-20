@@ -1,7 +1,7 @@
 <div class="d-flex justify-content-center">
   <div class="col-8">
-    <div *ngIf="material">
-      <h2 data-cy="materialDetailsHeading"><span>Material</span></h2>
+    <div *ngIf="flaggedMaterial">
+      <h2 data-cy="flaggedMaterialDetailsHeading"><span>Flagged Material</span></h2>
 
       <hr />
 
@@ -12,127 +12,115 @@
       <dl class="row-md jh-entity-details">
         <dt><span>ID</span></dt>
         <dd>
-          <span>{{ material.id }}</span>
+          <span>{{ flaggedMaterial.id }}</span>
         </dd>
         <dt><span>Material</span></dt>
         <dd>
-          <span>{{ material.material }}</span>
+          <span>{{ flaggedMaterial.material }}</span>
         </dd>
         <dt><span>Description</span></dt>
         <dd>
-          <span>{{ material.description }}</span>
+          <span>{{ flaggedMaterial.description }}</span>
         </dd>
         <dt><span>Abc Classification</span></dt>
         <dd>
-          <span>{{ material.abcClassification }}</span>
+          <span>{{ flaggedMaterial.abcClassification }}</span>
         </dd>
         <dt><span>Avg Supplier Delay</span></dt>
         <dd>
-          <span>{{ material.avgSupplierDelay }}</span>
+          <span>{{ flaggedMaterial.avgSupplierDelay }}</span>
         </dd>
         <dt><span>Max Supplier Delay</span></dt>
         <dd>
-          <span>{{ material.maxSupplierDelay }}</span>
+          <span>{{ flaggedMaterial.maxSupplierDelay }}</span>
         </dd>
         <dt><span>Service Level</span></dt>
         <dd>
-          <span>{{ material.serviceLevel }}</span>
+          <span>{{ flaggedMaterial.serviceLevel }}</span>
         </dd>
         <dt><span>Plant</span></dt>
         <dd>
-          <span>{{ material.plant }}</span>
+          <span>{{ flaggedMaterial.plant }}</span>
         </dd>
         <dt><span>Mrp Controller</span></dt>
         <dd>
-          <span>{{ material.mrpController }}</span>
+          <span>{{ flaggedMaterial.mrpController }}</span>
         </dd>
         <dt><span>Curr SAP Safety Stock</span></dt>
         <dd>
-          <span>{{ material.currSAPSafetyStock }}</span>
+          <span>{{ flaggedMaterial.currSAPSafetyStock }}</span>
         </dd>
         <dt><span>Proposed SST</span></dt>
         <dd>
-          <span>{{ material.proposedSST }}</span>
+          <span>{{ flaggedMaterial.proposedSST }}</span>
         </dd>
         <dt><span>Delta SST</span></dt>
         <dd>
-          <span>{{ material.deltaSST }}</span>
+          <span>{{ flaggedMaterial.deltaSST }}</span>
         </dd>
         <dt><span>Current SAP Safe Time</span></dt>
         <dd>
-          <span>{{ material.currentSAPSafeTime }}</span>
+          <span>{{ flaggedMaterial.currentSAPSafeTime }}</span>
         </dd>
         <dt><span>Proposed ST</span></dt>
         <dd>
-          <span>{{ material.proposedST }}</span>
+          <span>{{ flaggedMaterial.proposedST }}</span>
         </dd>
         <dt><span>Delta ST</span></dt>
         <dd>
-          <span>{{ material.deltaST }}</span>
+          <span>{{ flaggedMaterial.deltaST }}</span>
         </dd>
         <dt><span>Open SA Pmd 04</span></dt>
         <dd>
-          <span>{{ material.openSAPmd04 }}</span>
+          <span>{{ flaggedMaterial.openSAPmd04 }}</span>
         </dd>
         <dt><span>Current Inventory Value</span></dt>
         <dd>
-          <span>{{ material.currentInventoryValue }}</span>
+          <span>{{ flaggedMaterial.currentInventoryValue }}</span>
         </dd>
         <dt><span>Unit Cost</span></dt>
         <dd>
-          <span>{{ material.unitCost }}</span>
+          <span>{{ flaggedMaterial.unitCost }}</span>
         </dd>
         <dt><span>Avg Demand</span></dt>
         <dd>
-          <span>{{ material.avgDemand }}</span>
+          <span>{{ flaggedMaterial.avgDemand }}</span>
         </dd>
         <dt><span>Avg Inventory Effect After Change</span></dt>
         <dd>
-          <span>{{ material.avgInventoryEffectAfterChange }}</span>
+          <span>{{ flaggedMaterial.avgInventoryEffectAfterChange }}</span>
         </dd>
         <dt><span>Flag Material</span></dt>
         <dd>
-          <span>{{ material.flagMaterial }}</span>
+          <span>{{ flaggedMaterial.flagMaterial }}</span>
         </dd>
         <dt><span>Flag Expiration Date</span></dt>
         <dd>
-          <span>{{ material.flagExpirationDate | formatMediumDate }}</span>
-        </dd>
-        <dt><span>Comment</span></dt>
-        <dd>
-          <span>{{ material.comment }}</span>
-        </dd>
-        <dt><span>New SAP Safety Stock</span></dt>
-        <dd>
-          <span>{{ material.newSAPSafetyStock }}</span>
-        </dd>
-        <dt><span>New SAP Safety Time</span></dt>
-        <dd>
-          <span>{{ material.newSAPSafetyTime }}</span>
+          <span>{{ flaggedMaterial.flagExpirationDate | formatMediumDate }}</span>
         </dd>
         <dt><span>Value Of Updated SS</span></dt>
         <dd>
-          <span>{{ material.valueOfUpdatedSS }}</span>
+          <span>{{ flaggedMaterial.valueOfUpdatedSS }}</span>
         </dd>
         <dt><span>Value Of Updated ST</span></dt>
         <dd>
-          <span>{{ material.valueOfUpdatedST }}</span>
+          <span>{{ flaggedMaterial.valueOfUpdatedST }}</span>
         </dd>
         <dt><span>Date Of Updated SS</span></dt>
         <dd>
-          <span>{{ material.dateOfUpdatedSS | formatMediumDate }}</span>
+          <span>{{ flaggedMaterial.dateOfUpdatedSS | formatMediumDate }}</span>
         </dd>
         <dt><span>Date Of Updated ST</span></dt>
         <dd>
-          <span>{{ material.dateOfUpdatedST | formatMediumDate }}</span>
+          <span>{{ flaggedMaterial.dateOfUpdatedST | formatMediumDate }}</span>
         </dd>
         <dt><span>To Save Updates</span></dt>
         <dd>
-          <span>{{ material.toSaveUpdates }}</span>
+          <span>{{ flaggedMaterial.toSaveUpdates }}</span>
         </dd>
         <dt><span>Currency</span></dt>
         <dd>
-          <span>{{ material.currency }}</span>
+          <span>{{ flaggedMaterial.currency }}</span>
         </dd>
       </dl>
 
@@ -140,7 +128,7 @@
         <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
       </button>
 
-      <button type="button" [routerLink]="['/material', material.id, 'edit']" class="btn btn-primary">
+      <button type="button" [routerLink]="['/flagged-material', flaggedMaterial.id, 'edit']" class="btn btn-primary">
         <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
       </button>
     </div>
