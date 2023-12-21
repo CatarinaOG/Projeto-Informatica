@@ -32,6 +32,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.thymeleaf.templateparser.text.TextParseException;
 import org.apache.poi.ss.usermodel.*;
 
+import com.github.miachm.sods.*;
+
 import com.opencsv.CSVReader;
 
 /**
@@ -598,6 +600,77 @@ public class MaterialServiceImpl implements MaterialService {
         throw new IllegalArgumentException("Invalid type for key " + value);
     }
 
+    // -------------> ODS <-------------
+
+    public void uploadFileODS(File file, Boolean toUpdate) {
+        try {
+            com.github.miachm.sods.Sheet sheet = new SpreadSheet(file).getSheet(0);
+            Range data = sheet.getDataRange();
+            String[][] materials = (String[][]) data.getValues();
+            // Assuming that the 1st row is the header
+            String[] header = materials[0];
+            for (int i = 1; i < data.getNumRows(); i++) {
+                System.out.println(materials[i]);
+                Material material = parseMaterialODS(materials[i], header);
+                Optional<Material> opcMaterial = materialRepository.findByMaterial(material.getMaterial());
+
+                if (toUpdate && opcMaterial.isPresent())
+                    updateByMaterialName(material);
+                else
+                    save(material); 
+            }
+
+        } catch (IOException | IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Material parseMaterialODS(String[] row, String[] header) {
+        Material material = new Material();
+
+        material.setMaterial(row[getIndex(header, "Material")]);
+        material.setDescription(row[getIndex(header, "Description")]);
+        material.setAbcClassification(ABCClassification.fromString(row[getIndex(header, "ABC Classification")]));
+        material.setAvgSupplierDelay(Float.parseFloat(row[getIndex(header, "Average Supplier Delay")]));
+        material.setMaxSupplierDelay(Float.parseFloat(row[getIndex(header, "Maximum Supplier delay")]));
+        material.setServiceLevel(Float.parseFloat(row[getIndex(header, "Service Level")]));
+        material.setCurrSAPSafetyStock(Integer.parseInt(row[getIndex(header, "Current SAP Safety Stock")]));
+        material.setProposedSST(Integer.parseInt(row[getIndex(header, "Proposed SST")]));
+        material.setDeltaSST(Integer.parseInt(row[getIndex(header, "Delta SST")]));
+        material.setCurrentSAPSafeTime(Integer.parseInt(row[getIndex(header, "Current SAP Safety Time")]));
+        material.setProposedST(Integer.parseInt(row[getIndex(header, "Proposed ST")]));
+        material.setDeltaST(Integer.parseInt(row[getIndex(header, "Delta ST")]));
+        material.setOpenSAPmd04(row[getIndex(header, "Open SAP md04")]);
+        material.setPlant(row[getIndex(header, "Plant")]);
+        material.setMrpController(row[getIndex(header, "MRP Controller")]);
+        material.setCurrentInventoryValue(parseNumericValue(row[getIndex(header, "Current Inventory Value")]));
+        material.setUnitCost(parseNumericValue(row[getIndex(header, "Unit Cost")]));
+        material.setAvgDemand(Integer.parseInt(row[getIndex(header, "Average Demand")]));
+        material.setAvgInventoryEffectAfterChange(parseNumericValue(row[getIndex(header, "Average Inventory Effect After Change")]));
+        material.setFlagMaterial(false);
+
+        if(getIndex(header, "New SAP SS") >= 0){
+            try {
+                material.setNewSAPSafetyStock(Integer.parseInt(row[getIndex(header, "New SAP SS")]));
+            } catch (NumberFormatException e) {
+                material.setNewSAPSafetyStock(material.getProposedSST());
+            }
+        }
+
+        if(getIndex(header, "New SAP Safety Time") >= 0){
+            try {
+                material.setNewSAPSafetyTime(Integer.parseInt(row[getIndex(header, "New SAP Safety Time")]));
+            } catch (NumberFormatException e) {
+                material.setNewSAPSafetyTime(material.getProposedST());
+            }
+        }
+
+        if(getIndex(header, "Comment") >= 0){
+            material.setComment(row[getIndex(header, "Comment")]);
+        }
+
+        return material;
+    }
 
     /* --------------------------- FLAG ROUTINE --------------------------- */
 
