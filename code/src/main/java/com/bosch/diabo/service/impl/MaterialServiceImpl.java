@@ -88,9 +88,12 @@ public class MaterialServiceImpl implements MaterialService {
                 existingMaterial.setAvgDemand(material.getAvgDemand());
                 existingMaterial.setAvgInventoryEffectAfterChange(material.getAvgInventoryEffectAfterChange());
                 existingMaterial.setFlagMaterial(material.getFlagMaterial());
+                existingMaterial.setFlagExpirationDate(material.getFlagExpirationDate());
                 existingMaterial.setComment(material.getComment());
-                
-                System.out.println("-----------------new name: "+material.getDescription()+"-----------------");
+                existingMaterial.setNewSAPSafetyStock(material.getNewSAPSafetyStock());
+                existingMaterial.setNewSAPSafetyTime(material.getNewSAPSafetyTime());
+                existingMaterial.setToSaveUpdates(material.getToSaveUpdates());
+                existingMaterial.setCurrency(material.getCurrency());
 
                 return existingMaterial;
             })
@@ -317,11 +320,8 @@ public class MaterialServiceImpl implements MaterialService {
 
     private Material parseMaterialXLSX(Row row, Map<String, Integer> headerMap){
         Material material = new Material();
-        System.out.println("column: Material ");
         material.setMaterial(getStringCellValue(row, headerMap, "Material"));
-        System.out.println("Material Description ");
         material.setDescription(getStringCellValue(row, headerMap, "Material Description"));
-        System.out.println("ABC Classification");
         material.setAbcClassification(ABCClassification.fromString(getStringCellValue(row, headerMap, "ABC Classification")));
         material.setAvgSupplierDelay(getFloatCellValue(row, headerMap, "Avg. Supplier Delay"));
         material.setMaxSupplierDelay(getFloatCellValue(row, headerMap, "Max Supplier delay"));

@@ -1,6 +1,10 @@
 package com.bosch.diabo.repository;
 
 import com.bosch.diabo.domain.FlaggedMaterial;
+import com.bosch.diabo.domain.Material;
+
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
 
@@ -9,4 +13,6 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface FlaggedMaterialRepository extends JpaRepository<FlaggedMaterial, Long> {}
+public interface FlaggedMaterialRepository extends JpaRepository<FlaggedMaterial, Long>,  JpaSpecificationExecutor<Material> {
+        Optional<Material> findByMaterial(String material);
+}

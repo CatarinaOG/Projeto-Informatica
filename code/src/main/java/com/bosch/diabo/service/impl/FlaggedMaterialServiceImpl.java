@@ -154,6 +154,55 @@ public class FlaggedMaterialServiceImpl implements FlaggedMaterialService {
 
     @Override
     public void updateFlaggedMaterials(Boolean flag, Material material){
-        System.out.println("--------------------------------flag:"+flag+"--------------------------------");
+        log.debug("Request to update FlaggedMaterial from a Material : {}", material.getId());
+        
+        if(flag) createNewFlagMaterial(material);
+        else deleteFlaggedMaterial(material.getMaterial());
+
+    }
+
+    public void createNewFlagMaterial(Material material){
+
+        FlaggedMaterial flaggedMaterial = new FlaggedMaterial();
+        flaggedMaterial.setMaterial(material.getMaterial());
+        flaggedMaterial.setDescription(material.getDescription());
+        flaggedMaterial.setAbcClassification(material.getAbcClassification());
+        flaggedMaterial.setAvgSupplierDelay(material.getAvgSupplierDelay());
+        flaggedMaterial.setMaxSupplierDelay(material.getMaxSupplierDelay());
+        flaggedMaterial.setServiceLevel(material.getServiceLevel());
+        flaggedMaterial.setPlant(material.getPlant());
+        flaggedMaterial.setMrpController(material.getMrpController());
+        flaggedMaterial.setCurrSAPSafetyStock(material.getCurrSAPSafetyStock());
+        flaggedMaterial.setProposedSST(material.getProposedSST());
+        flaggedMaterial.setDeltaSST(material.getDeltaSST());
+        flaggedMaterial.setCurrentSAPSafeTime(material.getCurrentSAPSafeTime());
+        flaggedMaterial.setProposedST(material.getProposedST());
+        flaggedMaterial.setDeltaST(material.getDeltaST());
+        flaggedMaterial.setOpenSAPmd04(material.getOpenSAPmd04());
+        flaggedMaterial.setCurrentInventoryValue(material.getCurrentInventoryValue());
+        flaggedMaterial.setUnitCost(material.getUnitCost());
+        flaggedMaterial.setAvgDemand(material.getAvgDemand());
+        flaggedMaterial.setAvgInventoryEffectAfterChange(material.getAvgInventoryEffectAfterChange());
+        flaggedMaterial.setFlagMaterial(material.getFlagMaterial());
+        flaggedMaterial.setFlagExpirationDate(material.getFlagExpirationDate());
+        flaggedMaterial.setValueOfUpdatedSS(material.getValueOfUpdatedSS());
+        flaggedMaterial.setValueOfUpdatedST(material.getValueOfUpdatedST());
+        flaggedMaterial.setDateOfUpdatedSS(material.getDateOfUpdatedSS());
+        flaggedMaterial.setDateOfUpdatedST(material.getDateOfUpdatedST());
+        flaggedMaterial.setToSaveUpdates(material.getToSaveUpdates());
+        flaggedMaterial.setCurrency(material.getCurrency());
+
+        this.save(flaggedMaterial);
+
+    }
+
+    public void deleteFlaggedMaterial(String material){
+
+        flaggedMaterialRepository
+            .findByMaterial(material)
+            .ifPresent(existingMaterial -> {
+                flaggedMaterialRepository.deleteById(existingMaterial.getId());
+            });
+
     }
 }
