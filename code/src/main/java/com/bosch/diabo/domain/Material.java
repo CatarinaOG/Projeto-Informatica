@@ -4,6 +4,8 @@ import com.bosch.diabo.domain.enumeration.ABCClassification;
 import com.bosch.diabo.domain.enumeration.Coin;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 import javax.persistence.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -394,6 +396,10 @@ public class Material implements Serializable {
 
     public LocalDate getFlagExpirationDate() {
         return this.flagExpirationDate;
+    }
+
+    public String getFlagExpirationDateString() {
+        return this.flagExpirationDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
     }
 
     public Material flagExpirationDate(LocalDate flagExpirationDate) {
