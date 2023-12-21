@@ -3,6 +3,7 @@ package com.bosch.diabo.service;
 import com.bosch.diabo.domain.FlaggedMaterial;
 import java.util.List;
 import java.util.Optional;
+import com.bosch.diabo.domain.Material;
 
 /**
  * Service Interface for managing {@link FlaggedMaterial}.
@@ -53,4 +54,12 @@ public interface FlaggedMaterialService {
      * @param id the id of the entity.
      */
     void delete(Long id);
+
+    /**
+     * Adds or removes material from flagged materials.
+     *
+     * @param flag flag of the material.
+     * @param material existing material.
+     */
+    void updateFlaggedMaterials(Boolean flag, Material material);
 }

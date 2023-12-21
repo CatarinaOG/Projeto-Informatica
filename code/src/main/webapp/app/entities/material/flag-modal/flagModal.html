@@ -6,7 +6,7 @@
 
 
 <button class="buttonNoBorder" (click)="open(content)" placement="top" [ngbTooltip]="tipContent" #t="ngbTooltip" tooltipClass="custom-tooltip"> 
-    <fa-icon class="p-1" icon="flag"  [ngStyle]="{'color': (linhas.get(material.id) ? linhas.get(material.id)?.flag : material.flagMaterial)  ? '#ff0000' : '#999999'}"></fa-icon>
+    <fa-icon class="p-1" icon="flag"  [ngStyle]="{'color': checkFlag  ? '#ff0000' : '#999999'}"></fa-icon>
 </button>
 
 <ng-template #content let-modal>

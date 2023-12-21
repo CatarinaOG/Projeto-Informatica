@@ -430,3 +430,13 @@ input[type=number] {
   display: flex;
   justify-content: space-between;
 }
+
+.textRed {
+  color: red !important;
+  font-weight: 900 !important;
+}
+
+.textGreen {
+  color: rgb(0, 192, 0) !important;
+  font-weight: 900 !important;
+}

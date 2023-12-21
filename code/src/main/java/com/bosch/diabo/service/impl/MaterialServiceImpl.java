@@ -24,12 +24,12 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.thymeleaf.templateparser.text.TextParseException;
 import org.apache.poi.ss.usermodel.*;
 
 import com.github.miachm.sods.*;
@@ -46,6 +46,9 @@ public class MaterialServiceImpl implements MaterialService {
     private final Logger log = LoggerFactory.getLogger(MaterialServiceImpl.class);
 
     private final MaterialRepository materialRepository;
+
+    @Autowired
+    private FlaggedMaterialServiceImpl flaggedMaterialServiceImpl;
 
     public MaterialServiceImpl(MaterialRepository materialRepository) {
         this.materialRepository = materialRepository;
@@ -87,9 +90,12 @@ public class MaterialServiceImpl implements MaterialService {
                 existingMaterial.setAvgDemand(material.getAvgDemand());
                 existingMaterial.setAvgInventoryEffectAfterChange(material.getAvgInventoryEffectAfterChange());
                 existingMaterial.setFlagMaterial(material.getFlagMaterial());
+                existingMaterial.setFlagExpirationDate(material.getFlagExpirationDate());
                 existingMaterial.setComment(material.getComment());
-                
-                System.out.println("-----------------new name: "+material.getDescription()+"-----------------");
+                existingMaterial.setNewSAPSafetyStock(material.getNewSAPSafetyStock());
+                existingMaterial.setNewSAPSafetyTime(material.getNewSAPSafetyTime());
+                existingMaterial.setToSaveUpdates(material.getToSaveUpdates());
+                existingMaterial.setCurrency(material.getCurrency());
 
                 return existingMaterial;
             })
@@ -316,11 +322,8 @@ public class MaterialServiceImpl implements MaterialService {
 
     private Material parseMaterialXLSX(Row row, Map<String, Integer> headerMap){
         Material material = new Material();
-        System.out.println("column: Material ");
         material.setMaterial(getStringCellValue(row, headerMap, "Material"));
-        System.out.println("Material Description ");
         material.setDescription(getStringCellValue(row, headerMap, "Material Description"));
-        System.out.println("ABC Classification");
         material.setAbcClassification(ABCClassification.fromString(getStringCellValue(row, headerMap, "ABC Classification")));
         material.setAvgSupplierDelay(getFloatCellValue(row, headerMap, "Avg. Supplier Delay"));
         material.setMaxSupplierDelay(getFloatCellValue(row, headerMap, "Max Supplier delay"));
@@ -507,9 +510,9 @@ public class MaterialServiceImpl implements MaterialService {
 
                 String stringFlagDate;
 
-                try{
+                if(dataMap.containsKey("dateFlag")){
                     stringFlagDate = (String) dataMap.get("dateFlag");
-
+                    
                     updateObject(
                         extractLong(dataMap.get("materialId")),
                         extractInt(dataMap.get("newSST")),
@@ -518,7 +521,7 @@ public class MaterialServiceImpl implements MaterialService {
                         (Boolean) dataMap.get("flag"),
                         LocalDate.parse(stringFlagDate)
                     );
-                } catch (NullPointerException e) {
+                } else {
 
                     updateObject(
                         extractLong(dataMap.get("materialId")),
@@ -547,9 +550,6 @@ public class MaterialServiceImpl implements MaterialService {
 
     public void updateObject(Long materialId, int newSST, int newST, String newComment, Boolean flag, LocalDate flagDate){
 
-        System.out.println("-----------------------newSST: "+newSST+"----------------");
-        System.out.println("-----------------------newST: "+newST+"----------------");
-
         materialRepository
         .findById(materialId)
         .ifPresent(existingMaterial -> {
@@ -558,10 +558,12 @@ public class MaterialServiceImpl implements MaterialService {
 
             if(existingMaterial.getNewSAPSafetyStock() != newSST){
                 existingMaterial.setDateOfUpdatedSS(currentDate);
+                existingMaterial.setValueOfUpdatedSS(newSST);
             }
 
             if(existingMaterial.getNewSAPSafetyTime() != newST){
                 existingMaterial.setDateOfUpdatedST(currentDate);
+                existingMaterial.setValueOfUpdatedST(newST);
             }
             
             existingMaterial.setNewSAPSafetyStock(newSST);
@@ -571,15 +573,19 @@ public class MaterialServiceImpl implements MaterialService {
             existingMaterial.setComment(newComment);
             existingMaterial.setFlagMaterial(flag);
             if(flag) existingMaterial.setFlagExpirationDate(flagDate);
+
+            updateFlaggedMaterials(flag, existingMaterial);
             
             materialRepository.save(existingMaterial);
         });
 
     }
 
-    /*
-     * 
-     */
+    public void updateFlaggedMaterials(Boolean flag, Material existingMaterial){
+        flaggedMaterialServiceImpl.updateFlaggedMaterials(flag,existingMaterial);
+    }
+
+
     private Long extractLong(Object value) {
 
         if (value instanceof Number) {

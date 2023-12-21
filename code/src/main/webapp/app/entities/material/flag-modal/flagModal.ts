@@ -1,8 +1,7 @@
 import { Component, inject, TemplateRef, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { NgbDateStruct, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import {formatDate} from '@angular/common';
-
 import { IMaterial } from '../material.model';
+import { EditCellService } from '../service/editCell.service'
 import { IEditCell } from '../editCell.model';
 
 @Component({
@@ -20,28 +19,21 @@ export class FlagModal  implements OnInit{
 	};
 
     @Input() material!: IMaterial;
-	@Input() linhas!: Map<number,IEditCell>;
+	@Input() checkFlag! : boolean;
 	@Output() flagDateEmmiter = new EventEmitter<{flag : boolean , date : string , id : number}>();
 
 	model: NgbDateStruct | undefined ;
 	private modalService = inject(NgbModal);
 	date : string = "" ; 
-	checkFlag : boolean = false;
+	//checkFlag : boolean = false;
 	disabled = true;
+	editedMaterial: IEditCell | undefined;
+
+	constructor( protected editCellService: EditCellService ) {}
 
 	ngOnInit(): void {
-		const value = this.linhas.get(this.material.id);
-		if(value !== undefined){
-			this.checkFlag = value.flag;
-		}
-		else{
-			const materialValue = this.material.flagMaterial;
-			if (materialValue !== undefined && materialValue !== null){
-				this.checkFlag = materialValue;
-			}
-			else this.checkFlag = false;
-		}
-
+		this.editedMaterial = this.editCellService.getMaterial(this.material.id);
+	
 	}
 
 	toggleCheckbox() {
@@ -50,9 +42,8 @@ export class FlagModal  implements OnInit{
   
 	definePlaceholder() : string{
 		let returnValue = "yyyy-mm-dd"
-		const lineVal = this.linhas.get(this.material.id)
-		if(lineVal !== null && lineVal !== undefined){
-			returnValue = lineVal.dateFlag
+		if(this.editedMaterial !== null && this.editedMaterial !== undefined){
+			returnValue = this.editedMaterial.dateFlag
 		}
 		return returnValue;
 	}

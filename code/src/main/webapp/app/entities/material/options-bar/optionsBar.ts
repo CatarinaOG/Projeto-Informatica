@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AccountService } from 'app/core/auth/account.service';
+import { Authority } from 'app/config/authority.constants';
 
 @Component({
   selector: 'options-bar',
@@ -153,7 +154,7 @@ export class OptionsBar implements OnInit {
     }
 
     isAdmin () : boolean {
-        return this.accountService.hasAnyAuthority("ROLE_ADMIN")
+        return this.accountService.hasAnyAuthority(Authority.ADMIN)
     }
 
 };
