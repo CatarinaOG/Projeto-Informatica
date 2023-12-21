@@ -556,10 +556,12 @@ public class MaterialServiceImpl implements MaterialService {
 
             if(existingMaterial.getNewSAPSafetyStock() != newSST){
                 existingMaterial.setDateOfUpdatedSS(currentDate);
+                existingMaterial.setValueOfUpdatedSS(newSST);
             }
 
             if(existingMaterial.getNewSAPSafetyTime() != newST){
                 existingMaterial.setDateOfUpdatedST(currentDate);
+                existingMaterial.setValueOfUpdatedST(newST);
             }
             
             existingMaterial.setNewSAPSafetyStock(newSST);
