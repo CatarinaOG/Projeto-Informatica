@@ -1,6 +1,7 @@
 package com.bosch.diabo.service.impl;
 
 import com.bosch.diabo.domain.FlaggedMaterial;
+import com.bosch.diabo.domain.Material;
 import com.bosch.diabo.repository.FlaggedMaterialRepository;
 import com.bosch.diabo.service.FlaggedMaterialService;
 import java.util.List;
@@ -149,5 +150,10 @@ public class FlaggedMaterialServiceImpl implements FlaggedMaterialService {
     public void delete(Long id) {
         log.debug("Request to delete FlaggedMaterial : {}", id);
         flaggedMaterialRepository.deleteById(id);
+    }
+
+    @Override
+    public void updateFlaggedMaterials(Boolean flag, Material material){
+        System.out.println("--------------------------------flag:"+flag+"--------------------------------");
     }
 }
