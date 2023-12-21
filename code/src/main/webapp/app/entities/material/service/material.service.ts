@@ -128,4 +128,34 @@ export class MaterialService {
       body: res.body ? res.body.map(item => this.convertDateFromServer(item)) : null,
     });
   }
+
+  submitChanges(data : any[]): Observable<Blob>{
+    return this.http.post<Blob>(`${this.resourceUrl}/submitChanges/`,data, {
+      responseType: 'blob' as 'json',
+      headers: {
+        Accept: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      },
+    });
+  }
+
+  uploadFileReplace(file: File): Observable<HttpResponse<{}>> {
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.http.post(`${this.resourceUrl}/uploadFileReplace`, formData, { observe: 'response' });
+  }
+  
+  uploadFileAddOrUpdate(file: File): Observable<HttpResponse<{}>> {
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.http.post(`${this.resourceUrl}/uploadFileAddOrUpdate`, formData, { observe: 'response' });
+  }
+
+  exportFileAsExcel(): Observable<Blob> {
+    return this.http.get<Blob>(`${this.resourceUrl}/download/`, {
+      responseType: 'blob' as 'json',
+      headers: {
+        Accept: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      },
+    });
+  }
 }
