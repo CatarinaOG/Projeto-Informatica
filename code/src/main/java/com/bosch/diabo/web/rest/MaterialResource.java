@@ -373,9 +373,9 @@ public class MaterialResource {
                 row.createCell(19).setCellValue(mat.getAvgInventoryEffectAfterChange());
                 row.createCell(20).setCellValue(mat.getNewSAPSafetyStock());
                 row.createCell(21).setCellValue(mat.getNewSAPSafetyTime());
-                if (mat.getFlagMaterial() == true)
-                    row.createCell(22).setCellValue((mat.getFlagExpirationDateString()));
-                else
+                //if (mat.getFlagMaterial())
+                //    row.createCell(22).setCellValue((mat.getFlagExpirationDateString()));
+                //else
                     row.createCell(22).setCellValue(false);
                 row.createCell(23).setCellValue(mat.getComment());
             }
