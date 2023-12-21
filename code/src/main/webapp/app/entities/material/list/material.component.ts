@@ -397,6 +397,8 @@ export class MaterialComponent implements OnInit , OnDestroy {
       this.undo()
     }
     if (this.message === "Check unselected"){
+      this.resetFilters();
+      console.log("AAAAAAAAAAAAAAAAAAAAAAA filters: ", this.filters)
       this.receiveSpecialFilter("Unselected");
     }
   }
