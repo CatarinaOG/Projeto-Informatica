@@ -9,12 +9,14 @@ import { IMaterial } from '../material.model';
 import { ITEMS_PER_PAGE, PAGE_HEADER, TOTAL_COUNT_RESPONSE_HEADER } from 'app/config/pagination.constants';
 import { ASC, DESC, SORT, ITEM_DELETED_EVENT, DEFAULT_SORT_DATA } from 'app/config/navigation.constants';
 import { EntityArrayResponseType, MaterialService } from '../service/material.service';
+import { EditCellService } from '../service/editCell.service';
 import { MaterialDeleteDialogComponent } from '../delete/material-delete-dialog.component';
 import { FilterOptions, IFilterOptions, IFilterOption } from 'app/shared/filter/filter.model';
 import { IHistoryEntity } from '../historyEntity.model';
 import { Coin } from '../../enumerations/coin.model'
 
 import { NgbAlert } from '@ng-bootstrap/ng-bootstrap';
+import { ABCClassification } from 'app/entities/enumerations/abc-classification.model';
 
 @Component({
   selector: 'jhi-material',
@@ -119,7 +121,6 @@ export class MaterialComponent implements OnInit , OnDestroy {
   visibility = new Map<string, boolean>();
   fileName = '';
   firstTime = true;
-  linhas = new Map<number,IEditCell>();
 
   specialFiltersList : specialFilter[] = [
     {name: "Selected", isActive: false, idList:[]},
@@ -140,29 +141,29 @@ export class MaterialComponent implements OnInit , OnDestroy {
   }
   set isEditable(value: number[]) {
     this._isEditable = [value[0], value[1]]
-
   }
 
 
   constructor(
     protected materialService: MaterialService,
+    public editCellService: EditCellService,
     protected activatedRoute: ActivatedRoute,
     public router: Router,
     protected modalService: NgbModal
   ) {
     this.visibility = new Map<string, boolean>([
-      ["materialInfo", true],
+      ["materialInfo", false],
       ["supplierDelay", false],
       ["safetyStock", false],
       ["safetyTime", false],
       ["inventory", true],
-      ["edit", false]
+      ["edit", true]
     ])
   }
 
   @HostListener('window:beforeunload', ['$event'])
     unloadNotification($event: any) {
-        if (this.linhas.size > 0) {
+        if (this.editCellService.getSize() > 0) {
             $event.returnValue =true;
         }
     }
@@ -180,7 +181,7 @@ export class MaterialComponent implements OnInit , OnDestroy {
   }
 
   ngOnDestroy(): void {
-      if (this.linhas.size > 0) {
+      if (this.editCellService.getSize() > 0) {
         if (!confirm("You have unsaved changed. Do you wish to proceed?")){
         }
       }
@@ -195,15 +196,12 @@ export class MaterialComponent implements OnInit , OnDestroy {
 
 
   checkUncheckAll(event:any): void {
-    this.linhas.forEach(function(value,key) {
-      value.selected = event.target.checked
-    })
+    this.editCellService.getUncheckAll(event);
     event.stopPropagation();
-
   }
 
   func(id :number): string {
-    if (this.linhas.has(id) && this.linhas.get(id)?.selected) {
+    if (this.editCellService.hasMaterial(id) && this.editCellService.getMaterial(id)?.selected) {
       return "selected-row"
     }
     else {
@@ -246,7 +244,7 @@ export class MaterialComponent implements OnInit , OnDestroy {
     let returnVal = ""
     switch (valueName){
       case ("SST"):
-        if (this.linhas.has(material.id) && (this.linhas.get(material.id)?.newSST !== material.newSAPSafetyStock)){
+        if (this.editCellService.hasMaterial(material.id) && (this.editCellService.getMaterial(material.id)?.newSST !== material.newSAPSafetyStock)){
           returnVal = "textBlue"
         }
         else {
@@ -254,7 +252,7 @@ export class MaterialComponent implements OnInit , OnDestroy {
         }
         break;
       case ("ST"):
-        if (this.linhas.has(material.id) && (this.linhas.get(material.id)?.newST !== material.newSAPSafetyTime)){
+        if (this.editCellService.hasMaterial(material.id) && (this.editCellService.getMaterial(material.id)?.newST !== material.newSAPSafetyTime)){
           returnVal = "textBlue"
         }
         else {
@@ -262,7 +260,7 @@ export class MaterialComponent implements OnInit , OnDestroy {
         }
         break;
       case ("Comment"):
-        if (this.linhas.has(material.id) && (this.linhas.get(material.id)?.newComment !== material.comment)){
+        if (this.editCellService.hasMaterial(material.id) && (this.editCellService.getMaterial(material.id)?.newComment !== material.comment)){
           returnVal = "textBlue"
         }
         else {
@@ -275,15 +273,15 @@ export class MaterialComponent implements OnInit , OnDestroy {
 
   placeholderGeneratorNum(valueName : string, material : IMaterial) : number {
     let returnVal = 0;
-    let editCell : IEditCell | undefined = this.linhas.get(material.id)
+    let editCell : IEditCell | undefined = this.editCellService.getMaterial(material.id)
     if (valueName === "SST"){
-      if ((editCell !== undefined && (this.linhas.get(material.id)?.newSST !== material.newSAPSafetyStock ))){
+      if ((editCell !== undefined && (this.editCellService.getMaterial(material.id)?.newSST !== material.newSAPSafetyStock ))){
         returnVal = editCell.newSST
       }
       else if (material.newSAPSafetyStock) returnVal = material.newSAPSafetyStock;
     }
     else if(valueName === "ST"){
-      if ((editCell !== undefined && (this.linhas.get(material.id)?.newST !== material.newSAPSafetyTime ))){
+      if ((editCell !== undefined && (this.editCellService.getMaterial(material.id)?.newST !== material.newSAPSafetyTime ))){
         returnVal = editCell.newST
       }
       else if (material.newSAPSafetyTime) returnVal = material.newSAPSafetyTime;
@@ -293,7 +291,7 @@ export class MaterialComponent implements OnInit , OnDestroy {
 
   placeholderGeneratorString(material : IMaterial) : string {
     let returnVal = "";
-    let editCell : IEditCell | undefined = this.linhas.get(material.id)
+    let editCell : IEditCell | undefined = this.editCellService.getMaterial(material.id)
     if ((editCell !== undefined && (editCell.newComment !== material.comment ))){
       returnVal = editCell.newComment ?? ""
     }
@@ -302,16 +300,21 @@ export class MaterialComponent implements OnInit , OnDestroy {
     return returnVal;
   }
 
-  truncateComment (comment: string) {
-    
+
+
+  routeToChangesPage() {
+    this.router.navigate(['/changes-page']);
   }
 
 
-  currencyConverter( original : number | undefined | null , currency : Coin | null | undefined) : number{
+
+
+
+  currencyConverter(original: number | undefined | null, currency: Coin | null | undefined) : number {
     let returnVal = 0;
     if (original !== null && original !== undefined && currency !== null && currency !== undefined){
     returnVal = original;
-    if (this.currencyEUR){
+    if (this.currencyEUR) {
       if (currency !== "EUR"){
         let rate = this.currencyExchangeRates.get(currency);
         if (rate !== undefined) returnVal = (Math.round(original*rate*100))/100;
@@ -324,7 +327,7 @@ export class MaterialComponent implements OnInit , OnDestroy {
   cellValueGenerator(valueName : string, material : IMaterial) : number {
 
   let returnVal = 0;
-  let editCell : IEditCell | undefined = this.linhas.get(material.id)
+  let editCell : IEditCell | undefined = this.editCellService.getMaterial(material.id)
 
   if (valueName === "SST"){
     if(editCell!==undefined && (editCell.newSST) !== material.proposedSST) returnVal = editCell.newSST
@@ -348,21 +351,9 @@ export class MaterialComponent implements OnInit , OnDestroy {
 }
 
 
-  mapToSubmit(): IEditCell[] {
-
-    const list : IEditCell[] = [];
-
-    this.linhas.forEach((value,key) => {
-      if (value.selected){
-        list.push(value);
-        this.linhas.delete(key);
-      }
-    })
-    return list
-  }
 
   submitToSAP(){
-    let list = this.mapToSubmit();
+    let list = this.editCellService.mapToSubmit();
     if (list.length == 0) {
       alert("No lines were selected");
     }
@@ -372,7 +363,8 @@ export class MaterialComponent implements OnInit , OnDestroy {
         this.load()
         this.alertMessage="DATA WAS SUBMITTED SUCCESSFULLY"
         this.autoDismissAlert();
-      })
+        this.routeToChangesPage();
+      });
       }
     };
 
@@ -398,7 +390,6 @@ export class MaterialComponent implements OnInit , OnDestroy {
     }
     if (this.message === "Check unselected"){
       this.resetFilters();
-      console.log("AAAAAAAAAAAAAAAAAAAAAAA filters: ", this.filters)
       this.receiveSpecialFilter("Unselected");
     }
   }
@@ -413,8 +404,8 @@ export class MaterialComponent implements OnInit , OnDestroy {
 
   pickComment(id : number) : string {
     let returnVal : string = this.materials?.find(e => e.id === id)?.comment ?? "";
-    if (this.linhas.get(id)){
-      returnVal = this.linhas.get(id)?.newComment ?? "";
+    if (this.editCellService.getMaterial(id)){
+      returnVal = this.editCellService.getMaterial(id)?.newComment ?? "";
     }
     return returnVal;
   }
@@ -546,47 +537,49 @@ export class MaterialComponent implements OnInit , OnDestroy {
   }
 
   getSelectedList(filterOp : string): number[] {
-    let res : number[] = []
-    this.linhas.forEach((linha) => {
-      if(filterOp === "Unedited"){
-        res.push(linha.materialId);
-      }
-      else{
-        if (linha.selected && filterOp === "Selected")
-          res.push(linha.materialId);
-        if (!linha.selected && filterOp === "Unselected")
-          res.push(linha.materialId);
-      }
-    })
-    return res;
+    return this.editCellService.getSelectedList(filterOp)
   }
 
 
-  receiveFlagEmission(emission : any){
-    let editCell: IEditCell | undefined;
+  // receiveFlagEmission(emission : any){
+  //   let editCell: IEditCell | undefined;
 
+  //   if (this.editCellService.hasMaterial(emission.id)) {
+  //     editCell = this.editCellService.getMaterial(emission.id);
+  //   }
+  //   else{
+  //     editCell = <IEditCell>{};
+  //     editCell.materialId = this.materials?.find(e => e.id == emission.id)?.id ?? -1;
+  //     editCell.newSST = this.materials?.find(e => e.id === emission.id)?.newSAPSafetyStock ?? -1;
+  //     editCell.newST = this.materials?.find(e => e.id === emission.id)?.newSAPSafetyTime ?? -1;
+  //     editCell.newComment = this.materials?.find(e => e.id === emission.id)?.comment ?? null;
+  //     editCell.selected = false;
+  //     editCell.flag = this.materials?.find(e => e.id === emission.id)?.flagMaterial ?? false;
+  //   }
 
-    if (this.linhas.has(emission.id)){
-      editCell = this.linhas.get(emission.id);
+  //   if (editCell) {
+  //     editCell.flag = emission.flag
+  //     if (emission.flag) {
+  //       editCell.dateFlag = emission.date;
+  //     }
+  //     this.editCellService.addMaterial(emission.id, editCell)
+  //   }
+  // }
+
+  getFlagVal(id : number) : boolean{
+    let returnVal = false;
+		const editedMaterial = this.editCellService.getMaterial(id);
+    if (editedMaterial !== undefined && editedMaterial !== null){
+      returnVal = editedMaterial.flag
     }
-    else{
-      editCell = <IEditCell>{};
-      editCell.materialId = this.materials?.find(e => e.id == emission.id)?.id ?? -1;
-      editCell.newSST = this.materials?.find(e => e.id === emission.id)?.newSAPSafetyStock ?? -1;
-      editCell.newST = this.materials?.find(e => e.id === emission.id)?.newSAPSafetyTime ?? -1;
-      editCell.newComment = this.materials?.find(e => e.id === emission.id)?.comment ?? null;
-      editCell.selected = false;
-      editCell.flag = this.materials?.find(e => e.id === emission.id)?.flagMaterial ?? false;
-    }
-    if (editCell){
-      editCell.flag = emission.flag
-      if (emission.flag){
-        editCell.dateFlag = emission.date;
+    else {
+      const matValue = this.materials?.find(e => e.id === id)?.flagMaterial;
+      if (matValue !== undefined && matValue !== null){
+        returnVal = matValue
       }
-      this.linhas.set(emission.id, editCell)
     }
+    return returnVal;
   }
-
 
   receiveNumberFilter(event : any) : void{
     const filterName :string = event.filterName;
@@ -637,19 +630,16 @@ export class MaterialComponent implements OnInit , OnDestroy {
 
   calcNewValueAvg(material : IMaterial) : number {
     let editCell: IEditCell | undefined;
-    editCell = this.linhas.get(material.id)
+    editCell = this.editCellService.getMaterial(material.id)
 
-    if (editCell){
+    if (editCell) {
       const newDeltaSST = (editCell.newSST ?? 1) - (material.currSAPSafetyStock ?? 1);
       const newDeltaST = (editCell.newST ?? 1) - (material.currentSAPSafeTime ?? 1);
       const unitCost = material.unitCost ?? 1
       return Number((newDeltaSST * unitCost + newDeltaST * unitCost * (material.avgDemand ?? 1)).toFixed(2));
     }
 
-    else {
-      return Number((material.avgInventoryEffectAfterChange ?? 1).toFixed(2));
-    }
-
+    else return Number((material.avgInventoryEffectAfterChange ?? 1).toFixed(2));
   }
 
 
@@ -658,12 +648,12 @@ export class MaterialComponent implements OnInit , OnDestroy {
     switch (lastEntry.column){
       case "newSST":
         if (materialValue?.newSAPSafetyStock === lastEntry.oldValue){
-          return (this.linhas.get(lastEntry.materialId)?.newSST !== materialValue?.proposedSST) || (this.linhas.get(lastEntry.materialId)?.newComment !== "")
+          return (this.editCellService.getMaterial(lastEntry.materialId)?.newSST !== materialValue?.proposedSST) || (this.editCellService.getMaterial(lastEntry.materialId)?.newComment !== "")
         }
         break;
       case "newST":
         if (materialValue?.newSAPSafetyTime === lastEntry.oldValue){
-          return (this.linhas.get(lastEntry.materialId)?.newST !== materialValue?.proposedST) || (this.linhas.get(lastEntry.materialId)?.newComment !== "")
+          return (this.editCellService.getMaterial(lastEntry.materialId)?.newST !== materialValue?.proposedST) || (this.editCellService.getMaterial(lastEntry.materialId)?.newComment !== "")
         }
         break;
     }
@@ -676,40 +666,40 @@ export class MaterialComponent implements OnInit , OnDestroy {
       let lastEntry = this.history.pop();
       if(lastEntry){
         let editCell: IEditCell | undefined;
-        editCell = this.linhas.get(lastEntry.materialId)
+        editCell = this.editCellService.getMaterial(lastEntry.materialId)
         if(editCell){
           switch(lastEntry.column){
             case "newSST":
               if(!this.checkEditCell(lastEntry)){
                 if ( typeof lastEntry.oldValue === "number"){
                   editCell.newSST = lastEntry.oldValue;
-                  this.linhas.set(lastEntry.materialId, editCell);
+                  this.editCellService.addMaterial(lastEntry.materialId, editCell);
                 }
               }
               else {
-                this.linhas.delete(editCell.materialId);
+                this.editCellService.removeMaterial(editCell.materialId);
               }
               break;
             case "newST":
               if(!this.checkEditCell(lastEntry)){
                 if ( typeof lastEntry.oldValue === "number"){
                   editCell.newSST = lastEntry.oldValue;
-                  this.linhas.set(lastEntry.materialId, editCell);
+                  this.editCellService.addMaterial(lastEntry.materialId, editCell);
                 }
               }
               else {
-                this.linhas.delete(editCell.materialId);
+                this.editCellService.removeMaterial(editCell.materialId);
               }
               break;
             case "newComment":
               if(!this.checkEditCell(lastEntry)){
                 if ( typeof lastEntry.oldValue === "string"){
                   editCell.newComment = lastEntry.oldValue;
-                  this.linhas.set(lastEntry.materialId, editCell);
+                  this.editCellService.addMaterial(lastEntry.materialId, editCell);
                 }
               }
               else {
-                this.linhas.delete(editCell.materialId);
+                this.editCellService.removeMaterial(editCell.materialId);
               }
               break;
           }
@@ -761,30 +751,42 @@ export class MaterialComponent implements OnInit , OnDestroy {
   input(event: any, col_name : string, id: number): void {
     let editCell: IEditCell | undefined;
     let oldValue: number | string = 0;
-    if (this.linhas.has(id)){
-      editCell = this.linhas.get(id);
+    if (this.editCellService.hasMaterial(id)){
+      editCell = this.editCellService.getMaterial(id);
     }
     else{
       editCell = <IEditCell>{};
-      editCell.materialId = this.materials?.find(e => e.id == id)?.id ?? -1;
-      editCell.newSST = this.materials?.find(e => e.id === id)?.newSAPSafetyStock ?? -1;
-      editCell.newST = this.materials?.find(e => e.id === id)?.newSAPSafetyTime ?? -1;
-      editCell.newComment = this.materials?.find(e => e.id === id)?.comment ?? null;
+      const material = this.materials?.find(e => e.id === id)
+      editCell.materialId = material?.id ?? -1;
+      editCell.materialName = material?.material ?? ""
+      editCell.materialDesc = material?.description ?? ""
+      editCell.abcClassification = material?.abcClassification ?? ABCClassification.A
+      editCell.plant = material?.plant ?? ""
+      editCell.mrpcontroller = material?.mrpController ?? "";
+      editCell.newSST = material?.newSAPSafetyStock ?? -1;
+      editCell.oldSST = editCell.newSST;
+      editCell.newST = material?.newSAPSafetyTime ?? -1;
+      editCell.oldST = editCell.newST;
+      editCell.newComment = material?.comment ?? null;
+      editCell.oldComment = editCell.newComment;
       editCell.selected = false;
-      editCell.flag = this.materials?.find(e => e.id === id)?.flagMaterial ?? false;
+      editCell.flag = material?.flagMaterial ?? false;
     }
     if (editCell){
       if (col_name === "newSST"){
         oldValue = editCell.newSST
+        editCell.oldSST = editCell.newSST;
         editCell.newSST = Math.round(event.target.value);
       }
       if (col_name === "newST"){
         //this.openTooltip(toolTip);
         oldValue = editCell.newST;
+        editCell.oldST = editCell.newST;
         editCell.newST = Math.round(event.target.value);
       }
       if (col_name === "newComment"){
         oldValue = editCell.newComment ?? "";
+        editCell.oldComment = editCell.oldComment;
         editCell.newComment = event.newComment;
       }
       if (col_name === "selected") {
@@ -796,11 +798,16 @@ export class MaterialComponent implements OnInit , OnDestroy {
         //   console.log("Seleted List", this.selectedMaterials)
         // }
       }
-      if (col_name === "flag") editCell.flag = !editCell.flag
-      this.linhas.set(id, editCell)
+      if (col_name === "flag") {
+        editCell.flag = event.flag
+        if (event.flag) {
+          editCell.dateFlag = event.date;
+        }
+      }
+      this.editCellService.addMaterial(id, editCell)
       this._isEditable = [-1,-1]
       if (col_name === "newComment") this.addToHistory(col_name,event.newComment, oldValue, id);
-      else this.addToHistory(col_name, Math.round(Number(event.target.value)), oldValue, id);
+      else if(col_name !== "flag") this.addToHistory(col_name, Math.round(Number(event.target.value)), oldValue, id);
     }
 
   }
@@ -830,14 +837,8 @@ export class MaterialComponent implements OnInit , OnDestroy {
   }
 
   getUnselectedLines() : number{
-    let count = 0;
-    this.linhas.forEach((value: IEditCell, key: number) => {
-        if(!value.selected){
-            count++;
-        }
-    });
-    return count;
-}
+      return this.editCellService.getUnselectedLines();
+  }
 
 
 

@@ -3,7 +3,12 @@
     <span>Materials</span>
   </h2>
 
-    <options-bar (stringEmitter) = "receiveStringEvent($event)" (fileEmitter) = "onFileSelected($event)" (textFilterEmitter) = "receiveTextFilter($event)" (abcFilterEmitter) = "filterABCClassif($event)" (numberFilterEmitter) ="receiveNumberFilter($event)" [historyLength] = "history.length" [changesListLength]="this.linhas.size" [unselectedLines] = "getUnselectedLines()" [currencyEUR] = "currencyEUR" [tableSize]="itemsPerPage" (currencyValEmitter) = "receiveCurrencyVal($event)" (dropdownNumberEmitter) = "receiveDropdownNumber($event)"></options-bar>
+    <button class="btn btn-info me-2 " style="margin-left: 8px;" (click)="routeToChangesPage()" placement="top">
+      <fa-icon icon="trash-alt"></fa-icon>
+      <span>redirect</span>
+    </button>
+
+    <options-bar (stringEmitter) = "receiveStringEvent($event)" (fileEmitter) = "onFileSelected($event)" (textFilterEmitter) = "receiveTextFilter($event)" (abcFilterEmitter) = "filterABCClassif($event)" (numberFilterEmitter) ="receiveNumberFilter($event)" [historyLength] = "history.length" [changesListLength]="this.editCellService.getSize()" [unselectedLines] = "getUnselectedLines()" [currencyEUR] = "currencyEUR" [tableSize]="itemsPerPage" (currencyValEmitter) = "receiveCurrencyVal($event)" (dropdownNumberEmitter) = "receiveDropdownNumber($event)"></options-bar>
     
     
     <div *ngIf="this.filters.filterOptions.length > 0" >
@@ -264,7 +269,7 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
 
               </div>
-              <input type="checkbox" [disabled]="linhas.size === 0" (click)="checkUncheckAll($event)">
+              <input type="checkbox" [disabled]="editCellService.getSize() === 0" (click)="checkUncheckAll($event)">
               <p>Select All</p>
 
             </div>
@@ -342,7 +347,7 @@
           <td class ="inventory" [ngClass] ="editCellClasses('inventory')">{{ material.deltaSST }}</td>
           <td class ="inventory" [ngClass] ="editCellClasses('inventory')">{{ material.deltaST }}</td>
 
-          <td  class ="inventory headerRowEnd" [ngClass] ="editCellClasses('inventory')"><currency-tooltip-cell [value] = "currencyConverter(calcNewValueAvg(material),material.currency)" [currency]="material.currency" [currencyEUR] = "currencyEUR" ></currency-tooltip-cell></td>
+          <td  class ="inventory headerRowEnd" [ngClass]="editCellClasses('inventory')"><currency-tooltip-cell [value]="currencyConverter(calcNewValueAvg(material),material.currency)" [currency]="material.currency" [currencyEUR]="currencyEUR" ></currency-tooltip-cell></td>
           <td *ngIf = "!visibility.get('inventory')" class="headerRowEnd">
             ...
           </td>
@@ -362,10 +367,10 @@
 
 
 
-          <td class ="edit" [ngClass] ="editCellClasses('edit')"><input type="checkbox" [checked]="linhas.get(material.id)?.selected" [disabled]="!linhas.has(material.id)" (click)="input($event,'selected',material.id)"></td>
+          <td class ="edit" [ngClass] ="editCellClasses('edit')"><input type="checkbox" [checked]="editCellService.getMaterial(material.id)?.selected" [disabled]="!editCellService.hasMaterial(material.id)" (click)="input($event,'selected',material.id)"></td>
 
           <td class ="edit" [ngClass] ="editCellClasses('edit')">
-            <flag-modal [material]="material" [linhas] = "linhas" (flagDateEmmiter) = "receiveFlagEmission($event)"></flag-modal>
+            <flag-modal [material]="material" [checkFlag] = getFlagVal(material.id) (flagDateEmmiter) = "input($event, 'flag', material.id)"></flag-modal>
           </td>
 
           
@@ -374,7 +379,7 @@
           <td class ="edit setWidth" [ngClass] ="editCellClasses('edit',material,'Comment')" >
             <div class="d-flex justify-content-between">
               <span class="d-inline-block text-truncate" style="max-width: 200px;" placement="top" ngbTooltip="{{pickComment(material.id)}}" tooltipClass="setWidth">
-                {{((linhas.has(material.id) && (linhas.get(material.id)?.newComment !== material.comment))) ? linhas.get(material.id)?.newComment : material.comment }}
+                {{((editCellService.hasMaterial(material.id) && (editCellService.getMaterial(material.id)?.newComment !== material.comment))) ? editCellService.getMaterial(material.id)?.newComment : material.comment }}
               </span>
               <comment-modal [oldComment]="pickComment(material.id)" [id]="material.id" (commentEmitter)="receiveComment($event)"></comment-modal>
             </div>
@@ -384,7 +389,6 @@
           <td *ngIf = "!visibility.get('edit')">
             ...
           </td>
-
 
 
           <!--

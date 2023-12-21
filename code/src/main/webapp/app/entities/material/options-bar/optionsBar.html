@@ -258,25 +258,26 @@
 
       <div ngbDropdown class="dropdown d-flex justify-content-end" autoClose="outside">
         <button ngbDropdownToggle class="btn btn-white" type="button"  id="dropdownMenuButton" aria-expanded="false">  
+          <fa-icon icon="cogs"></fa-icon>
           <span >Table Size</span>
           <fa-icon icon="caret-down" style="margin-left: 10px;"></fa-icon>
         </button>
         <ul ngbDropdownMenu aria-labelledby="nestedDropdownButton">
           <li>
             <button ngbDropdownItem  class="btn btn-primary checkIcon" (click)="sendNumber('pageSize',10)">
-              <span>10</span>
+              <span>10 rows</span>
               <fa-icon icon="check" *ngIf="tableSize === 10"></fa-icon>
             </button>
           </li>
           <li>
             <button ngbDropdownItem class="btn btn-primary checkIcon" (click)="sendNumber('pageSize',20)">
-              <span>20</span>
+              <span>20 rows</span>
               <fa-icon icon="check" *ngIf="tableSize === 20"></fa-icon>
             </button>
           </li>
           <li>
             <button ngbDropdownItem class="btn btn-primary checkIcon" (click)="sendNumber('pageSize',30)">
-              <span>30</span>
+              <span>30 rows</span>
               <fa-icon icon="check" *ngIf="tableSize === 30"></fa-icon>
             </button>
           </li>
