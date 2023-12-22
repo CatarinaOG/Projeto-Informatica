@@ -14,9 +14,14 @@ import { MaterialDeleteDialogComponent } from '../delete/material-delete-dialog.
 import { FilterOptions, IFilterOptions, IFilterOption } from 'app/shared/filter/filter.model';
 import { IHistoryEntity } from '../historyEntity.model';
 import { Coin } from '../../enumerations/coin.model'
+import { of } from 'rxjs';
 
 import { NgbAlert } from '@ng-bootstrap/ng-bootstrap';
 import { ABCClassification } from 'app/entities/enumerations/abc-classification.model';
+
+import { MSG } from './tooltipMsg';
+import { currencyExchangeRates } from './currencyExchangeRates';
+
 
 @Component({
   selector: 'jhi-material',
@@ -42,85 +47,23 @@ export class MaterialComponent implements OnInit , OnDestroy {
 
   history: IHistoryEntity[] = [];
 
-  msg = new Map<string, string>([
-    ["Material", "Material"],
-    ["Material Description", "Material Description"],
-    ["ABC Classification", "ABC Classification"],
-    ["Plant", "Plant"],
-    ["MRP Controller", "MRP Controller"],
-    ["Avg Supplier Delay", "Avg Supplier Delay"],
-    ["Max Supplier Delay", "Max Supplier Delay"],
-    ["Current Sap Safety Stock", "Current Sap Safety Stock"],
-    ["Proposed Safety Stock", "Proposed Safety Stock"],
-    ["Current Sap Safety Time", "Current Sap Safety Time"],
-    ["Proposed Safety Time", "Proposed Safety Time"],
-    ["Service Level", "Service Level"],
-    ["Open SAP Md 04", "Open SAP Md 04"],
-    ["Current Inventory Value", "Current Inventory Value"],
-    ["Delta Safety Stock", "Delta Safety Stock"],
-    ["Delta Safety Time", "Delta Safety Time"],
-    ["Average Inventory Effect After Change", "Average Inventory Effect After Change"],
-    ["New SAP Safety Stock", "New SAP Safety Stock"],
-    ["New SAP Safety Time", "New SAP Safety Time"],
-    ["Select Entries For Change", "Select Entries For Change"],
-    ["Flag Material as Special Case", "Flag Material as Special Case"],
-    ["Comment", "Comment"],
-  ]);
 
-
-  currencyExchangeRates = new Map <string, number>([
-    ["EUR", 1],
-        ["USD", 0.915],
-        ["GBP", 1.157],
-        ["AUD", 0.613],
-        ["JPY", 0.006],
-        ["CNY", 0.128],
-        ["CAD", 0.683],
-        ["CHF", 1.054],
-        ["HKD", 0.117],
-        ["SGD", 0.687],
-        ["SEK", 0.089],
-        ["KRW", 0.0007],
-        ["NOK", 0.088],
-        ["NZD", 0.568],
-        ["INR", 0.011],
-        ["MXN", 0.053],
-        ["TWD", 0.029],
-        ["ZAR", 0.049],
-        ["BRL", 0.186],
-        ["DKK", 0.134],
-        ["PLN", 0.231],
-        ["THB", 0.026],
-        ["ILS", 0.249],
-        ["IDR", 0.00006],
-        ["CZK", 0.040],
-        ["AED", 0.249],
-        ["TRY", 0.031],
-        ["HUF", 0.002],
-        ["CLP", 0.001],
-        ["SAR", 0.244],
-        ["PHP", 0.016],
-        ["MYR", 0.195],
-        ["COP", 0.0002],
-        ["RUB", 0.010],
-        ["RON", 0.201],
-        ["PEN", 0.244],
-        ["BHD", 2.435],
-        ["BGN", 0.511]
-  ]);
 
   itemsPerPage = 10;//ITEMS_PER_PAGE;
   totalItems = 0;
   page = 1;
   selectedFilterState = false;
 
-
+  toolTipMsg = MSG;
+  currencyExchangeRates = currencyExchangeRates;
 
   isVisible = true;
   masterSelected=false;
   visibility = new Map<string, boolean>();
   fileName = '';
   firstTime = true;
+
+  clickedSubmit = false;
 
   specialFiltersList : specialFilter[] = [
     {name: "Selected", isActive: false, idList:[]},
@@ -152,19 +95,19 @@ export class MaterialComponent implements OnInit , OnDestroy {
     protected modalService: NgbModal
   ) {
     this.visibility = new Map<string, boolean>([
-      ["materialInfo", false],
+      ["materialInfo", true],
       ["supplierDelay", false],
       ["safetyStock", false],
       ["safetyTime", false],
       ["inventory", true],
-      ["edit", true]
+      ["edit", false]
     ])
   }
 
   @HostListener('window:beforeunload', ['$event'])
     unloadNotification($event: any) {
-        if (this.editCellService.getSize() > 0) {
-            $event.returnValue =true;
+        if (this.editCellService.getSize() > 0 && !this.clickedSubmit) {
+            $event.returnValue = true;
         }
     }
 
@@ -182,7 +125,7 @@ export class MaterialComponent implements OnInit , OnDestroy {
 
   ngOnDestroy(): void {
       if (this.editCellService.getSize() > 0) {
-        if (!confirm("You have unsaved changed. Do you wish to proceed?")){
+        if (!this.clickedSubmit && !confirm("You have unsaved changed. Do you wish to proceed?")){
         }
       }
   }
@@ -354,6 +297,7 @@ export class MaterialComponent implements OnInit , OnDestroy {
 
   submitToSAP(){
     let list = this.editCellService.mapToSubmit();
+    this.clickedSubmit = true;
     if (list.length == 0) {
       alert("No lines were selected");
     }

@@ -31,6 +31,7 @@ import { EditCellService } from 'app/entities/material/service/editCell.service'
     BrowserModule,
     SharedModule,
     FormsModule,
+    HomeModule,
     // jhipster-needle-angular-add-module JHipster will add new module here
     AppRoutingModule,
     // Set this to true to enable service worker (PWA)

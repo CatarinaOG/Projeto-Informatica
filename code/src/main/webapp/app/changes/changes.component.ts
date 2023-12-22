@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { IEditCell } from 'app/entities/material/editCell.model';
 import { EditCellService } from 'app/entities/material/service/editCell.service';
 
@@ -13,7 +13,7 @@ export class ChangesComponent implements OnInit, OnDestroy {
     materials: Map<number, IEditCell> = new Map<number, IEditCell>();
     
 
-    constructor(private route: ActivatedRoute, private editCellService: EditCellService) { }
+    constructor(public router: Router, private editCellService: EditCellService) { }
 
     mapToList(): IEditCell[] {
 
@@ -56,4 +56,9 @@ export class ChangesComponent implements OnInit, OnDestroy {
       else return ""
     }
 
+
+    
+  routeToMaterialsPage() {
+    this.router.navigate(['/material']);
+  }
 }

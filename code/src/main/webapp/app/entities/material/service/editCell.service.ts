@@ -54,7 +54,6 @@ export class EditCellService {
         this.materials.forEach((value,key) => {
         if (value.selected){
             list.push(value);
-            this.materials.delete(key);
         }
         })
         return list

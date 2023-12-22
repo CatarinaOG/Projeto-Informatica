@@ -102,21 +102,21 @@
         <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()" class="headerRow2" >
           
           <th scope="col" jhiSortBy="material" class ="materialInfo headerRowStart" [ngClass] ="editCellClasses('materialInfo')">
-            <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{msg.get('Material')}}" >
+            <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{toolTipMsg.get('Material')}}" >
               <span>Material</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
 
           <th scope="col" jhiSortBy="description" class ="materialInfo" [ngClass] ="editCellClasses('materialInfo')">
-            <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{msg.get('Material Description')}}">
+            <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{toolTipMsg.get('Material Description')}}">
               <span>Material Description</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
 
           <th scope="col" jhiSortBy="abcClassification" class ="materialInfo" [ngClass] ="editCellClasses('materialInfo')">
-            <div class="d-flex" style="place-content: center;" placement="top" [ngbTooltip]="msg.get('ABC Classification')">
+            <div class="d-flex" style="place-content: center;" placement="top" [ngbTooltip]="toolTipMsg.get('ABC Classification')">
               <span>ABC Classification</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
@@ -125,14 +125,14 @@
 
 
           <th scope="col" jhiSortBy="plant" class ="materialInfo" [ngClass] ="editCellClasses('materialInfo')">
-            <div class="d-flex" style="place-content: center;" placement="top" [ngbTooltip]="msg.get('Plant')">
+            <div class="d-flex" style="place-content: center;" placement="top" [ngbTooltip]="toolTipMsg.get('Plant')">
               <span>Plant</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
 
           <th scope="col" jhiSortBy="mrpController" class ="materialInfo headerRowEnd" [ngClass] ="editCellClasses('materialInfo')">
-            <div class="d-flex" style="place-content: center;" placement="top" [ngbTooltip]="msg.get('MRP Controller')">
+            <div class="d-flex" style="place-content: center;" placement="top" [ngbTooltip]="toolTipMsg.get('MRP Controller')">
               <span>MRP Controller</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
@@ -147,14 +147,14 @@
           </th>
           
           <th scope="col" jhiSortBy="avgSupplierDelay" class ="supplierDelay" [ngClass] ="editCellClasses('supplierDelay')">
-            <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{msg.get('Avg Supplier Delay')}}">
+            <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{toolTipMsg.get('Avg Supplier Delay')}}">
               <span>Avg Supplier Delay</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
           
           <th scope="col" jhiSortBy="maxSupplierDelay" class ="supplierDelay headerRowEnd" [ngClass] ="editCellClasses('supplierDelay')">
-            <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{msg.get('Max Supplier Delay')}}">
+            <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{toolTipMsg.get('Max Supplier Delay')}}">
               <span>Max Supplier Delay</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
@@ -165,14 +165,14 @@
           </th>
 
           <th scope="col" jhiSortBy="currSAPSafetyStock" class ="safetyStock" [ngClass] ="editCellClasses('safetyStock')">
-            <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{msg.get('Current Sap Safety Stock')}}">
+            <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{toolTipMsg.get('Current Sap Safety Stock')}}">
               <span>Current Sap Safety Stock</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
           
           <th scope="col" jhiSortBy="proposedSST" class = "safetyStock headerRowEnd" [ngClass] ="editCellClasses('safetyStock')">
-            <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{msg.get('Proposed Safety Stock')}}">
+            <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{toolTipMsg.get('Proposed Safety Stock')}}">
               <span>Proposed Safety Stock</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
@@ -185,14 +185,14 @@
           </th>
 
           <th scope="col" jhiSortBy="currentSAPSafeTime" class = "safetyTime" [ngClass] ="editCellClasses('safetyTime')">
-            <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{msg.get('Current Sap Safety Time')}}">
+            <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{toolTipMsg.get('Current Sap Safety Time')}}">
               <span>Current SAP Safety Time</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
 
           <th scope="col" jhiSortBy="proposedST" class = "safetyTime headerRowEnd" [ngClass] ="editCellClasses('safetyTime')">
-            <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{msg.get('Proposed Safety Time')}}">
+            <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{toolTipMsg.get('Proposed Safety Time')}}">
               <span>Proposed Safety Time</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
@@ -205,42 +205,42 @@
           </th>
           
           <th scope="col" jhiSortBy="serviceLevel" class = "inventory" [ngClass] ="editCellClasses('inventory')">
-            <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{msg.get('Service Level')}}">
+            <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{toolTipMsg.get('Service Level')}}">
               <span>Service Level</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
 
           <th scope="col" jhiSortBy="openSAPmd04" class = "inventory" [ngClass] ="editCellClasses('inventory')">
-            <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{msg.get('Open SAP Md 04')}}">
+            <div class="d-flex" style="place-content: center;">
               <span>Open SAP Md 04</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
 
           <th scope="col" jhiSortBy="currentInventoryValue" class="inventory" [ngClass] ="editCellClasses('inventory')">
-            <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{msg.get('Current Inventory Value')}}">
+            <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{toolTipMsg.get('Current Inventory Value')}}">
               <span>Current Inventory Value</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
 
           <th scope="col" jhiSortBy="deltaSST" class = "inventory" [ngClass] ="editCellClasses('inventory')">
-            <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{msg.get('Delta Safety Stock')}}">
+            <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{toolTipMsg.get('Delta Safety Stock')}}">
               <span>Delta Safety Stock</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
 
           <th scope="col" jhiSortBy="deltaST" class = "inventory" [ngClass] ="editCellClasses('inventory')">
-            <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{msg.get('Delta Safety Time')}}">
+            <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{toolTipMsg.get('Delta Safety Time')}}">
               <span>Delta Safety Time</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
           
           <th scope="col" jhiSortBy="avgInventoryEffectAfterChange" class = "headerRowEnd" [ngClass] ="editCellClasses('inventory')">
-            <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{msg.get('Average Inventory Effect After Change')}}">
+            <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{toolTipMsg.get('Average Inventory Effect After Change')}}">
               <span>Average Inventory Effect After Change</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
@@ -251,20 +251,20 @@
           </th>
           
           <th scope="col" jhiSortBy="newSAPSafetyStock" class="edit" [ngClass] ="editCellClasses('edit')">
-            <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{msg.get('New SAP Safety Stock')}}">
+            <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{toolTipMsg.get('New SAP Safety Stock')}}">
               <span>New Sap Safety Stock</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
           <th scope="col" jhiSortBy="newSAPSafetyTime" class="edit" [ngClass] ="editCellClasses('edit')">
-            <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{msg.get('New SAP Safety Time')}}">
+            <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{toolTipMsg.get('New SAP Safety Time')}}">
               <span>New Sap Safety Time</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
           <th scope="col" jhiSortBy="selectEntriesForChangeInSap" class="edit" [ngClass] ="editCellClasses('edit')">
             <div  >
-              <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{msg.get('Select Entries For Change')}}">
+              <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{toolTipMsg.get('Select Entries For Change')}}">
                 <span>Entries For Change In Sap</span>
                 <fa-icon class="p-1" icon="sort"></fa-icon>
 
@@ -276,14 +276,14 @@
           </th>
 
           <th scope="col" jhiSortBy="flagMaterial" class="edit" [ngClass] ="editCellClasses('edit')">
-            <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{msg.get('Flag Material as Special Case')}}">
+            <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{toolTipMsg.get('Flag Material as Special Case')}}">
               <span>Flag Material As Special Case</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
 
           <th scope="col" jhiSortBy="comment" class="setWidth edit headerRowEnd" [ngClass] ="editCellClasses('edit')">
-            <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{msg.get('Comment')}}">
+            <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{toolTipMsg.get('Comment')}}">
               <span>Comment</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
