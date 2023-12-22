@@ -30,7 +30,7 @@ export class ChangesComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.materials = this.editCellService.getMaterials()
 
-        console.log("The materials are : ", this.materials)
+        if (this.materials.size === 0) this.routeToMaterialsPage()
     }
 
     ngOnDestroy(): void {

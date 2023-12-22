@@ -3,11 +3,6 @@
     <span>Materials</span>
   </h2>
 
-    <button class="btn btn-info me-2 " style="margin-left: 8px;" (click)="routeToChangesPage()" placement="top">
-      <fa-icon icon="trash-alt"></fa-icon>
-      <span>redirect</span>
-    </button>
-
     <options-bar (stringEmitter) = "receiveStringEvent($event)" (fileEmitter) = "onFileSelected($event)" (textFilterEmitter) = "receiveTextFilter($event)" (abcFilterEmitter) = "filterABCClassif($event)" (numberFilterEmitter) ="receiveNumberFilter($event)" [historyLength] = "history.length" [changesListLength]="this.editCellService.getSize()" [unselectedLines] = "getUnselectedLines()" [currencyEUR] = "currencyEUR" [tableSize]="itemsPerPage" (currencyValEmitter) = "receiveCurrencyVal($event)" (dropdownNumberEmitter) = "receiveDropdownNumber($event)"></options-bar>
     
     
