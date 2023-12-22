@@ -1,6 +1,10 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { AccountService } from 'app/core/auth/account.service';
 import { Authority } from 'app/config/authority.constants';
+import { Subscription } from 'rxjs';
+import { TourService } from '../service/tour.service';
+import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
+import { tourMessages } from '../data/tourMessage';
 
 @Component({
   selector: 'options-bar',
@@ -21,6 +25,14 @@ export class OptionsBar implements OnInit {
   @Output() dropdownNumberEmitter = new EventEmitter<{menuName:string, menuValue : number}>();
   @Output() currencyValEmitter = new EventEmitter<boolean>();
 
+  @ViewChild('t8') filtersTooltip!: NgbTooltip;
+  @ViewChild('t9') fileTooltip!: NgbTooltip; 
+  @ViewChild('t10') tableSizeTooltip!: NgbTooltip; 
+  @ViewChild('t11') undoTooltip!: NgbTooltip; 
+  @ViewChild('t12') switchTooltip!: NgbTooltip; 
+  @ViewChild('t13') submitTooltip!: NgbTooltip; 
+  tourMsgs = tourMessages
+
   filterStatus = new Map<string,boolean>([
     ["Material Name", false],
     ["Material Description",false],
@@ -37,11 +49,70 @@ export class OptionsBar implements OnInit {
     ["Current Inventory", false],
     ["Avg. Inv. Effect After Change", false]
   ]);
+  index: number = 0;
 
   undoSize : number= 10;
+  private subscription: Subscription = new Subscription();
 
-  constructor( private accountService: AccountService ) {}
-  ngOnInit(): void { }
+  constructor( private accountService: AccountService , public tourService: TourService ) {}
+  ngOnInit(): void {
+    this.subscription = this.tourService.index$.subscribe(value =>  {
+        this.index = value;
+        this.defineStepTour(value);
+      })
+   }
+
+
+   defineStepTour(value: number) {
+    if(this.filtersTooltip) this.filtersTooltip.close()
+    if(this.fileTooltip) this.fileTooltip.close()
+    if(this.tableSizeTooltip) this.tableSizeTooltip.close()
+    if(this.undoTooltip) this.undoTooltip.close()
+    if(this.switchTooltip) this.switchTooltip.close()
+    if(this.submitTooltip) this.submitTooltip.close()
+
+    switch(value) {
+      case 8: // filters dropdown menu
+        document.getElementById("dropdownMenuButtonFilterOptions")?.focus()
+        if (this.filtersTooltip ) this.filtersTooltip.open()
+
+        break;
+
+      case 9:  // file options dropdown menu
+        document.getElementById("dropdownMenuButtonFileOptions")?.focus()
+        if (this.fileTooltip ) this.fileTooltip.open()
+
+        break;
+
+      case 10:  // table size dropdown menu
+        document.getElementById("dropdownMenuButtonTableSize")?.focus()
+        if (this.tableSizeTooltip ) this.tableSizeTooltip.open()
+
+        break;
+
+      case 11:  // undo dropdown menu
+        document.getElementById("undoTooltipId")?.focus()
+        if (this.undoTooltip ) this.undoTooltip.open()
+
+        break;
+
+      case 12: // switch currency
+        document.getElementById("switchCurrencyId")?.focus()
+        if (this.switchTooltip ) this.switchTooltip.open()
+
+        break;
+
+      case 13: // submit
+        document.getElementById("submitTooltipId")?.focus()
+        if (this.submitTooltip ) this.submitTooltip.open()
+
+        break;
+      default:
+        break;
+    }
+  }
+
+
 
     sendLoad(): void{
         this.stringEmitter.emit("load");

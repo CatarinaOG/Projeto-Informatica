@@ -1,5 +1,5 @@
 <div>
-  <h2 id="page-heading" data-cy="MaterialHeading">
+  <h2 id="page-heading" data-cy="MaterialHeading" data-bs-toggle="tooltip" data-bs-placement="top" title="Step 1">
     <span>Materials</span>
   </h2>
 
@@ -25,7 +25,7 @@
         <div style="flex-grow: 1;"></div> 
         
         <div>
-          <button class="btn btn-info me-2 " style="margin-left: 8px;" (click)="resetFilters()" placement="top">
+          <button id="reset-filters" class="btn btn-info me-2 " style="margin-left: 8px;" (click)="resetFilters()" placement="top">
             <fa-icon icon="trash-alt"></fa-icon>
             <span>Reset Filters</span>
           </button>
@@ -59,6 +59,11 @@
   </p> 
 
 
+  <button id="start-tour" class="btn btn-danger me-2 " style="margin-bottom: 20px;" (click)="startTour()" placement="top">
+    <fa-icon icon="circle-question"></fa-icon>
+    <span>Start Tutorial</span>
+  </button>
+
 
   <div class="alert alert-warning" id="no-result" *ngIf="materials?.length === 0">
     <span>No Materials found</span>
@@ -89,8 +94,21 @@
             <header-group [headerName] = "'Inventory'" [visibilityValue] = "visibility.get('inventory')" groupName = 'inventory' (visibilityEmitter)="switchVisibility($event)"></header-group>
           </th>
 
-          <th [attr.colspan]="visibility.get('edit') ? 5 : 1" class="tableHeader">
-            <header-group [headerName] = "'Edit'" [visibilityValue] = "visibility.get('edit')" groupName = 'edit' (visibilityEmitter)="switchVisibility($event)"></header-group>
+          <ng-template #editMenuTooltip>   
+              <div class="tooltipTutorial">
+                  <span>{{ tourMsgs.get(3) }}</span>
+                  <div class="tooltipBtns">
+                      <button class="btn btn-danger" (click)="tourService.cancel($event)">Stop</button>
+                      <div>
+                          <button class="btn btn-info" (click)="tourService.previousStep($event)">&lt;</button>
+                          <button class="btn btn-info" (click) = "tourService.nextStep($event)">></button>
+                      </div>
+                  </div>
+              </div>
+          </ng-template>
+          <th [attr.colspan]="visibility.get('edit') ? 5 : 1" class="tableHeader" >
+            <header-group [headerName] = "'Edit'" [visibilityValue] = "visibility.get('edit')" groupName = 'edit' (visibilityEmitter)="switchVisibility($event)"
+            id="editMenuTooltip" placement="left" [ngbTooltip]="editMenuTooltip" #t3="ngbTooltip" triggers="manual" tooltipClass="custom-tooltip"></header-group>
           </th>
         </tr>
 
@@ -206,8 +224,22 @@
             </div>
           </th>
 
+
+          <ng-template #linkTourTooltip>   
+            <div class="tooltipTutorial">
+              <span>{{ tourMsgs.get(2) }}</span>
+              <div class="tooltipBtns">
+                  <button class="btn btn-danger" (click)="tourService.cancel($event)">Stop</button>
+                  <div>
+                      <button class="btn btn-info" (click)="tourService.previousStep($event)">&lt;</button>
+                      <button class="btn btn-info" (click) = "tourService.nextStep($event)">></button>
+                  </div>
+              </div>
+            </div>
+         </ng-template>
+
           <th scope="col" jhiSortBy="openSAPmd04" class = "inventory" [ngClass] ="editCellClasses('inventory')">
-            <div class="d-flex" style="place-content: center;">
+            <div id="openSAPHeader" class="d-flex" style="place-content: center;"  placement="top" [ngbTooltip]="linkTourTooltip" #t2="ngbTooltip" triggers="manual" tooltipClass="custom-tooltip">
               <span>Open SAP Md 04</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
@@ -245,9 +277,23 @@
             ...
           </th>
           
-          <th scope="col" jhiSortBy="newSAPSafetyStock" class="edit" [ngClass] ="editCellClasses('edit')">
-            <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{toolTipMsg.get('New SAP Safety Stock')}}">
-              <span>New Sap Safety Stock</span>
+
+          <ng-template #sapSafetyStockToolTip>   
+            <div class="tooltipTutorial">
+              <span>{{ tourMsgs.get(4) }}</span>
+              <div class="tooltipBtns">
+                  <button class="btn btn-danger" (click)="tourService.cancel($event)">Stop</button>
+                  <div>
+                      <button class="btn btn-info" (click)="tourService.previousStep($event)">&lt;</button>
+                      <button class="btn btn-info" (click) = "tourService.nextStep($event)">></button>
+                  </div>
+              </div>
+            </div>
+         </ng-template>
+
+          <th id="sapsafetytimestock" scope="col" jhiSortBy="newSAPSafetyStock" class="edit" [ngClass] ="editCellClasses('edit')">
+            <div class="d-flex" style="place-content: center;" placement="left" [ngbTooltip]="sapSafetyStockToolTip" #t4="ngbTooltip" triggers="manual" tooltipClass="custom-tooltip">
+              <span placement="top" ngbTooltip="{{toolTipMsg.get('New SAP Safety Stock')}}" >New Sap Safety Stock</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
@@ -257,12 +303,27 @@
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="selectEntriesForChangeInSap" class="edit" [ngClass] ="editCellClasses('edit')">
-            <div  >
-              <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{toolTipMsg.get('Select Entries For Change')}}">
-                <span>Entries For Change In Sap</span>
-                <fa-icon class="p-1" icon="sort"></fa-icon>
 
+          
+          <ng-template #selectEntryTooltip>   
+            <div class="tooltipTutorial">
+              <span>{{ tourMsgs.get(5) }}</span>
+              <div class="tooltipBtns">
+                  <button class="btn btn-danger" (click)="tourService.cancel($event)">Stop</button>
+                  <div>
+                      <button class="btn btn-info" (click)="tourService.previousStep($event)">&lt;</button>
+                      <button class="btn btn-info" (click) = "tourService.nextStep($event)">></button>
+                  </div>
+              </div>
+            </div>
+            
+          </ng-template>
+
+          <th id="selectEntryTooltipId" scope="col" jhiSortBy="selectEntriesForChangeInSap" class="edit" [ngClass] ="editCellClasses('edit')">
+            <div>
+              <div class="d-flex" style="place-content: center;" placement="left" [ngbTooltip]="selectEntryTooltip" #t5="ngbTooltip" triggers="manual" tooltipClass="custom-tooltip">
+                <span placement="top" ngbTooltip="{{toolTipMsg.get('Select Entries For Change')}}">Entries For Change In Sap</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
               <input type="checkbox" [disabled]="editCellService.getSize() === 0" (click)="checkUncheckAll($event)">
               <p>Select All</p>
@@ -270,16 +331,45 @@
             </div>
           </th>
 
-          <th scope="col" jhiSortBy="flagMaterial" class="edit" [ngClass] ="editCellClasses('edit')">
-            <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{toolTipMsg.get('Flag Material as Special Case')}}">
-              <span>Flag Material As Special Case</span>
+
+          
+          <ng-template #flagToolTip>   
+            <div class="tooltipTutorial">
+              <span>{{ tourMsgs.get(6) }}</span>
+              <div class="tooltipBtns">
+                  <button class="btn btn-danger" (click)="tourService.cancel($event)">Stop</button>
+                  <div>
+                      <button class="btn btn-info" (click)="tourService.previousStep($event)">&lt;</button>
+                      <button class="btn btn-info" (click) = "tourService.nextStep($event)">></button>
+                  </div>
+              </div>
+            </div>
+          </ng-template>
+
+          <th id="flagTooltipId" scope="col" jhiSortBy="flagMaterial" class="edit" [ngClass] ="editCellClasses('edit')">
+            <div class="d-flex" style="place-content: center;" placement="left" [ngbTooltip]="flagToolTip" #t6="ngbTooltip" triggers="manual" tooltipClass="custom-tooltip">
+              <span placement="top" ngbTooltip="{{toolTipMsg.get('Flag Material as Special Case')}}">Flag Material As Special Case</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
 
-          <th scope="col" jhiSortBy="comment" class="setWidth edit headerRowEnd" [ngClass] ="editCellClasses('edit')">
-            <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{toolTipMsg.get('Comment')}}">
-              <span>Comment</span>
+
+          <ng-template #commentToolTip>   
+            <div class="tooltipTutorial">
+              <span>{{ tourMsgs.get(7) }}</span>
+              <div class="tooltipBtns">
+                  <button class="btn btn-danger" (click)="tourService.cancel($event)">Stop</button>
+                  <div>
+                      <button class="btn btn-info" (click)="tourService.previousStep($event)">&lt;</button>
+                      <button class="btn btn-info" (click) = "tourService.nextStep($event)">></button>
+                  </div>
+              </div>
+            </div>
+          </ng-template>
+
+          <th id="commentTooltipId" scope="col" jhiSortBy="comment" class="setWidth edit headerRowEnd" [ngClass] ="editCellClasses('edit')">
+            <div class="d-flex" style="place-content: center;" placement="left" [ngbTooltip]="commentToolTip" #t7="ngbTooltip" triggers="manual" tooltipClass="custom-tooltip">
+              <span placement="top" ngbTooltip="{{toolTipMsg.get('Comment')}}">Comment</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>

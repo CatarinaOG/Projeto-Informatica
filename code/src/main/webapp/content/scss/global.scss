@@ -405,8 +405,27 @@ input[type=number] {
 }
 
 .custom-tooltip {
-  --bs-tooltip-bg: #0073ff;
+  --bs-tooltip-bg: rgb(167, 231, 255); 
+  --bs-tooltip-border: black;
+  --bs-tooltip-max-width: 400px !important;
+  --bs-tooltip-color: black;
+  --bs-tooltip-opacity: 1;
+  --bs-tooltip-arrow-width: 50px;
+  --bs-tooltip-arrow-height: 20px;
   font-size: large;
+}
+
+.tooltipTutorial {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  
+}
+
+.tooltipBtns {
+  display: flex;
+  justify-content: space-between;
 }
 
 .custom-tooltip-smaller {
@@ -439,4 +458,9 @@ input[type=number] {
 .textGreen {
   color: rgb(0, 192, 0) !important;
   font-weight: 900 !important;
+}
+
+.tour-step {
+  display: none;
+  /* Add styling for each tour step */
 }

@@ -25,6 +25,8 @@ import { FooterComponent } from './layouts/footer/footer.component';
 import { PageRibbonComponent } from './layouts/profiles/page-ribbon.component';
 import { ErrorComponent } from './layouts/error/error.component';
 import { EditCellService } from 'app/entities/material/service/editCell.service';
+import { TourService } from './entities/material/service/tour.service';
+
 
 @NgModule({
   imports: [
@@ -45,6 +47,7 @@ import { EditCellService } from 'app/entities/material/service/editCell.service'
     { provide: NgbDateAdapter, useClass: NgbDateDayjsAdapter },
     httpInterceptorProviders,
     EditCellService,
+    TourService,
   ],
   declarations: [MainComponent, NavbarComponent, ErrorComponent, PageRibbonComponent, FooterComponent],
   bootstrap: [MainComponent],

@@ -1,7 +1,33 @@
-<div class="d-flex" style="place-content: center;">
-    <span class="flexGrow">{{headerName}}</span>
+
+
+<ng-template #headerToolTip>
+    <div class="tooltipTutorial">
+        <span>{{ tourMsgs.get(0) }}</span>
+        <div class="tooltipBtns">
+            <button class="btn btn-danger" (click)="tourService.cancel($event)">Stop</button>
+            <button class="btn btn-info" (click) = "tourService.nextStep($event)">></button>
+        </div>
+    </div>   
+</ng-template>
+
+<ng-template #btnToolTip>   
+    <div class="tooltipTutorial">
+        <span>{{ tourMsgs.get(1) }}</span>
+        <div class="tooltipBtns">
+            <button class="btn btn-danger" (click)="tourService.cancel($event)">Stop</button>
+            <div>
+                <button class="btn btn-info" (click)="tourService.previousStep($event)">&lt;</button>
+                <button class="btn btn-info" (click) = "tourService.nextStep($event)">></button>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+
+<div [id]="headerName" class="d-flex" style="place-content: center;">
+    <span placement="top" [ngbTooltip]="headerToolTip" #t1="ngbTooltip" triggers="manual" tooltipClass="custom-tooltip" class="flexGrow">{{headerName}}</span>
     
-    <button class="buttonNoBorder" (click)="sendVisibilityMessage()">
+    <button placement="top" [ngbTooltip]="btnToolTip" #t2="ngbTooltip" triggers="manual" tooltipClass="custom-tooltip"  class="buttonNoBorder" (click)="sendVisibilityMessage()">
     <fa-icon [icon]="visibilityValue ? 'compress-alt' : 'expand-alt'"></fa-icon>
     </button>
 </div>

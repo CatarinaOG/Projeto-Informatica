@@ -1,7 +1,7 @@
 import { AfterContentInit, Component,  Input, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
 import { Coin } from '../../enumerations/coin.model'
-import { currencyExchangeRates } from '../list/currencyExchangeRates';
+import { currencyExchangeRates } from '../data/currencyExchangeRates';
 
 
 @Component({

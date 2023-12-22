@@ -49,7 +49,8 @@ import {
   faFilter,
   faCaretRight,
   faCaretDown,
-  faUndo
+  faUndo,
+  faCircleQuestion
   // jhipster-needle-add-icon-import
 } from '@fortawesome/free-solid-svg-icons';
 
@@ -105,6 +106,7 @@ export const fontAwesomeIcons = [
   faFilter,
   faCaretRight,
   faCaretDown,
-  faUndo
+  faUndo,
+  faCircleQuestion
   // jhipster-needle-add-icon-import
 ];

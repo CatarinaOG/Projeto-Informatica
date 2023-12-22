@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, ViewChild,ViewChildren,HostListener, QueryList } from '@angular/core';
 import { HttpHeaders } from '@angular/common/http';
 import { ActivatedRoute, Data, ParamMap, Router } from '@angular/router';
-import { combineLatest, filter, last, Observable, switchMap, tap } from 'rxjs';
+import { combineLatest, filter, last, Observable, Subscription, switchMap, tap } from 'rxjs';
 import { NgbModal, NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
 import { IEditCell } from '../editCell.model'
 import { specialFilter } from '../specialFilters.model'
@@ -19,8 +19,11 @@ import { of } from 'rxjs';
 import { NgbAlert } from '@ng-bootstrap/ng-bootstrap';
 import { ABCClassification } from 'app/entities/enumerations/abc-classification.model';
 
-import { MSG } from './tooltipMsg';
-import { currencyExchangeRates } from './currencyExchangeRates';
+import { MSG } from '../data/tooltipMsg';
+import { currencyExchangeRates } from '../data/currencyExchangeRates';
+import { TourService } from '../service/tour.service';
+import { tourMessages } from '../data/tourMessage';
+
 
 
 @Component({
@@ -34,6 +37,12 @@ export class MaterialComponent implements OnInit , OnDestroy {
 
   @ViewChild(NgbAlert, { static: false }) alert!: NgbAlert | undefined;
   @ViewChildren(NgbTooltip) tooltips!: QueryList<NgbTooltip>;
+  @ViewChild('t2') linkTourTooltip!: NgbTooltip; 
+  @ViewChild('t3') editMenuTooltip!: NgbTooltip; 
+  @ViewChild('t4') sapSafetyStockToolTip!: NgbTooltip; 
+  @ViewChild('t5') selectEntryTooltip!: NgbTooltip; 
+  @ViewChild('t6') flagTooltip!: NgbTooltip; 
+  @ViewChild('t7') commentTooltip!: NgbTooltip; 
 
   alertMessage = "n/a";
 
@@ -46,6 +55,7 @@ export class MaterialComponent implements OnInit , OnDestroy {
   currencyEUR : boolean = true;
 
   history: IHistoryEntity[] = [];
+  subscription: Subscription = new Subscription();
 
 
 
@@ -56,6 +66,7 @@ export class MaterialComponent implements OnInit , OnDestroy {
 
   toolTipMsg = MSG;
   currencyExchangeRates = currencyExchangeRates;
+  tourMsgs = tourMessages;
 
   isVisible = true;
   masterSelected=false;
@@ -90,9 +101,11 @@ export class MaterialComponent implements OnInit , OnDestroy {
   constructor(
     protected materialService: MaterialService,
     public editCellService: EditCellService,
+    public tourService: TourService,
     protected activatedRoute: ActivatedRoute,
     public router: Router,
-    protected modalService: NgbModal
+    protected modalService: NgbModal,
+    //private tourService: TourService
   ) {
     this.visibility = new Map<string, boolean>([
       ["materialInfo", true],
@@ -121,13 +134,76 @@ export class MaterialComponent implements OnInit , OnDestroy {
     this.filters.filterChanges.subscribe(filterOptions => this.handleNavigation(1, this.predicate, this.ascending, filterOptions));
     this.filters.removeAllFiltersName("id.in");
     this.filters.removeAllFiltersName("id.notIn");
+
   }
+
+  ngAfterViewInit(): void {
+    this.subscription = this.tourService.index$.subscribe(value =>  {
+      this.defineStepTour(value);
+    });
+  }
+
+
+  defineStepTour(value: number) {
+    if(this.linkTourTooltip) this.linkTourTooltip.close()
+    if (this.sapSafetyStockToolTip ) this.sapSafetyStockToolTip.close()
+    if (this.selectEntryTooltip) this.selectEntryTooltip.close()
+    if (this.flagTooltip) this.flagTooltip.close()
+    if (this.commentTooltip) this.commentTooltip.close()
+
+    switch(value) {
+      case 2: //apontar para o link
+        if (!this.visibility.get("inventory")) this.visibility.set("inventory", true);
+        if (this.linkTourTooltip ) this.linkTourTooltip.open()
+        break;
+
+      case 3: //No edit (temos que fazer expand do edit e focus)
+        this.visibility.set("edit", true);
+        document.getElementById("editMenuTooltip")?.scrollIntoView({behavior: 'smooth', inline : 'end', block:'center'})
+        if (this.editMenuTooltip) this.editMenuTooltip.open()
+        break;
+        break;
+        
+      case 4: // new sap safety stock e time
+        this.visibility.set("edit", true);
+        document.getElementById("sapsafetytimestock")?.focus()
+        if (this.sapSafetyStockToolTip ) this.sapSafetyStockToolTip.open()
+        break;
+
+      case 5: // select
+        this.visibility.set("edit", true);
+        document.getElementById("selectEntryTooltipId")?.scrollIntoView({behavior: 'smooth', inline:'start', block:'center'})
+        if (this.selectEntryTooltip) this.selectEntryTooltip.open()
+        break;
+
+      case 6: // flag
+        this.visibility.set("edit", true);
+        document.getElementById("flagTooltipId")?.scrollIntoView({behavior: 'smooth', inline : 'start', block:'center'})
+        if (this.flagTooltip) this.flagTooltip.open()
+        break;
+
+      case 7: // Comment
+        this.visibility.set("edit", true);
+        document.getElementById("commentTooltip")?.scrollIntoView({behavior: 'smooth', inline : 'start', block:'center'})
+        if (this.commentTooltip) this.commentTooltip.open()
+        break;
+
+      default:
+        break;
+    }
+  }
+
 
   ngOnDestroy(): void {
       if (this.editCellService.getSize() > 0) {
         if (!this.clickedSubmit && !confirm("You have unsaved changed. Do you wish to proceed?")){
         }
       }
+      this.subscription.unsubscribe()
+  }
+
+  startTour() {
+    this.tourService.start();
   }
 
 
@@ -142,6 +218,8 @@ export class MaterialComponent implements OnInit , OnDestroy {
     this.editCellService.getUncheckAll(event);
     event.stopPropagation();
   }
+
+
 
   func(id :number): string {
     if (this.editCellService.hasMaterial(id) && this.editCellService.getMaterial(id)?.selected) {
