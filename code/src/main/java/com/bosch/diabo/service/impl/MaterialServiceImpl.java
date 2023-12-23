@@ -2,6 +2,7 @@ package com.bosch.diabo.service.impl;
 
 import com.bosch.diabo.domain.Material;
 import com.bosch.diabo.domain.enumeration.ABCClassification;
+import com.bosch.diabo.domain.enumeration.Coin;
 import com.bosch.diabo.repository.MaterialRepository;
 import com.bosch.diabo.service.MaterialService;
 import com.opencsv.exceptions.CsvValidationException;
@@ -96,6 +97,13 @@ public class MaterialServiceImpl implements MaterialService {
                 existingMaterial.setNewSAPSafetyTime(material.getNewSAPSafetyTime());
                 existingMaterial.setToSaveUpdates(material.getToSaveUpdates());
                 existingMaterial.setCurrency(material.getCurrency());
+                existingMaterial.setDateOfUpdatedSS(material.getDateOfUpdatedSS());
+                existingMaterial.setDateOfUpdatedST(material.getDateOfUpdatedST());
+                existingMaterial.setMrpController(material.getMrpController());
+                existingMaterial.setPlant(material.getPlant());
+                existingMaterial.setToSaveUpdates(material.getToSaveUpdates());
+                existingMaterial.setValueOfUpdatedSS(material.getValueOfUpdatedSS());
+                existingMaterial.setValueOfUpdatedST(material.getValueOfUpdatedST());
 
                 return existingMaterial;
             })
@@ -243,6 +251,9 @@ public class MaterialServiceImpl implements MaterialService {
             case "xls":
                 uploadFileXLS(file,false);
                 break;
+            case "ods":
+                uploadFileODS(file, false);
+                break;
             default:
                 break;
         }
@@ -252,24 +263,32 @@ public class MaterialServiceImpl implements MaterialService {
 
     @Override
     public void uploadFileAddOrUpdate(File file){
-        log.debug("Request to new source file : {}", file.getName());   
-        
-        String fileName = file.getName();
-        int lastDotIndex = fileName.lastIndexOf('.');
-        String fileExtension = lastDotIndex == -1 ? "" : fileName.substring(lastDotIndex + 1);
-        
-        switch (fileExtension.toLowerCase()) {
-            case "xlsx":
-                uploadFileXLSX(file,true);
-                break;
-            case "csv":
-                uploadFileCSV(file,true);
-                break;
-            case "xls":
-                uploadFileXLS(file,true);
-                break;
-            default:
-                break;
+        try
+        { 
+            log.debug("Request to new source file : {}", file.getName());   
+            
+            String fileName = file.getName();
+            int lastDotIndex = fileName.lastIndexOf('.');
+            String fileExtension = lastDotIndex == -1 ? "" : fileName.substring(lastDotIndex + 1);
+            
+            switch (fileExtension.toLowerCase()) {
+                case "xlsx":
+                    uploadFileXLSX(file,true);
+                    break;
+                case "csv":
+                    uploadFileCSV(file,true);
+                    break;
+                case "xls":
+                    uploadFileXLS(file,true);
+                    break;
+                case "ods":
+                    uploadFileODS(file, true);
+                default:
+                    break;
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
         }
         
     }
@@ -280,8 +299,8 @@ public class MaterialServiceImpl implements MaterialService {
     public void uploadFileXLSX(File file, Boolean toUpdate){
 
         try (FileInputStream fis = new FileInputStream(file);
-             Workbook workbook = new XSSFWorkbook(fis)) {
-            Sheet sheet = workbook.getSheetAt(0);
+            Workbook workbook = new XSSFWorkbook(fis)) {
+            org.apache.poi.ss.usermodel.Sheet sheet = workbook.getSheetAt(0);
             Iterator<Row> rowIterator = sheet.iterator();
             Row headerRow = rowIterator.next();
 
@@ -335,12 +354,14 @@ public class MaterialServiceImpl implements MaterialService {
         material.setProposedST(getIntCellValue(row, headerMap, "Proposed ST"));
         material.setDeltaST(getIntCellValue(row, headerMap, "delta ST"));
         material.setOpenSAPmd04(getStringCellValue(row, headerMap, "Open SAP md04"));
-
         material.setCurrentInventoryValue(getFloatCellValue(row, headerMap, "Current Inventory Value"));
         material.setUnitCost(getFloatCellValue(row, headerMap, "Unit Cost"));
         material.setAvgDemand(getIntCellValue(row, headerMap, "Avg Demand"));
         material.setAvgInventoryEffectAfterChange(getFloatCellValue(row, headerMap, "Average inventory effect after change"));
+        material.setCurrency(Coin.EUR);
         material.setFlagMaterial(false);
+        material.setMrpController(getStringCellValue(row, headerMap, "MRP Controller"));
+        material.setPlant(getStringCellValue(row, headerMap, "Plant"));
 
         if (headerMap.containsKey("New SAP SS")) {
             try {
@@ -390,7 +411,7 @@ public class MaterialServiceImpl implements MaterialService {
     public void uploadFileXLS(File file, Boolean toUpdate) {
         try (FileInputStream fis = new FileInputStream(file);
             Workbook workbook = new HSSFWorkbook(fis)) {
-            Sheet sheet = workbook.getSheetAt(0);
+            org.apache.poi.ss.usermodel.Sheet sheet = workbook.getSheetAt(0);
             Iterator<Row> rowIterator = sheet.iterator();
             Row headerRow = rowIterator.next();
 
@@ -453,12 +474,15 @@ public class MaterialServiceImpl implements MaterialService {
         material.setProposedST(Integer.parseInt(nextRecord[getIndex(header, "Proposed ST")]));
         material.setDeltaST(Integer.parseInt(nextRecord[getIndex(header, "delta ST")]));
         material.setOpenSAPmd04(nextRecord[getIndex(header, "Open SAP md04")]);
-
         material.setCurrentInventoryValue(parseNumericValue(nextRecord[getIndex(header, "Current Inventory Value")]));
         material.setUnitCost(parseNumericValue(nextRecord[getIndex(header, "Unit Cost")]));
         material.setAvgDemand(Integer.parseInt(nextRecord[getIndex(header, "Avg Demand")]));
         material.setAvgInventoryEffectAfterChange(parseNumericValue(nextRecord[getIndex(header, "Average inventory effect after change")]));
         material.setFlagMaterial(false);
+        material.setCurrency(Coin.EUR);
+        material.setFlagExpirationDate(null);
+        material.setMrpController(nextRecord[getIndex(header, "MRP Controller")]);
+        material.setPlant(nextRecord[getIndex(header, "Plant")]);
 
         if(getIndex(header, "New SAP SS") >= 0){
             try {
@@ -496,6 +520,93 @@ public class MaterialServiceImpl implements MaterialService {
     private float parseNumericValue(String cellValue) {
         String numericValue = cellValue.replaceAll("[^\\d.]", "");
         return Float.parseFloat(numericValue);
+    }
+
+    // -------------> ODS <-------------
+
+    public void uploadFileODS(File file, Boolean toUpdate) {
+        try {
+            com.github.miachm.sods.Sheet sheet = new SpreadSheet(file).getSheet(0);
+            Range data = sheet.getDataRange();
+            Object[][] materials = data.getValues();
+            System.out.println("Materials have " + materials.length + " rows and " + materials[0].length + "collumns");
+            // Assuming that the 1st row is the header
+            Object[] header = materials[0];
+            System.out.println("Starting parsing of ODS file");
+            for (int i = 1; i < data.getNumRows(); i++) {
+                System.out.println("Material " + i + " " + materials[i]);
+                Material material = parseMaterialODS(materials[i], header);
+                Optional<Material> opcMaterial = materialRepository.findByMaterial(material.getMaterial());
+
+                if (toUpdate && opcMaterial.isPresent())
+                    updateByMaterialName(material);
+                else
+                    save(material); 
+            }
+
+        } catch (IOException | IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Material parseMaterialODS(Object[] row, Object[] header) {
+        Material material = new Material();
+
+        material.setMaterial(row[getIndexOBJ(header, "Material")].toString());
+        material.setDescription(row[getIndexOBJ(header, "Description")].toString());
+        material.setAbcClassification(ABCClassification.fromString(row[getIndexOBJ(header, "ABC Classification")].toString()));
+        material.setAvgSupplierDelay(Float.parseFloat(row[getIndexOBJ(header, "Average Supplier Delay")].toString()));
+        material.setMaxSupplierDelay(Float.parseFloat(row[getIndexOBJ(header, "Maximum Supplier Delay")].toString()));
+        material.setServiceLevel(Float.parseFloat(row[getIndexOBJ(header, "Service Level")].toString()));
+        material.setCurrSAPSafetyStock((int) Float.parseFloat(row[getIndexOBJ(header, "Current SAP Safety Stock")].toString()));
+        material.setProposedSST((int) Float.parseFloat(row[getIndexOBJ(header, "Proposed SST")].toString()));
+        material.setDeltaSST((int) Float.parseFloat(row[getIndexOBJ(header, "Delta SST")].toString()));
+        material.setCurrentSAPSafeTime((int) Float.parseFloat(row[getIndexOBJ(header, "Current SAP Safety Time")].toString()));
+        material.setProposedST((int) Float.parseFloat(row[getIndexOBJ(header, "Proposed ST")].toString()));
+        material.setDeltaST((int) Float.parseFloat(row[getIndexOBJ(header, "Delta ST")].toString()));
+        material.setOpenSAPmd04(row[getIndexOBJ(header, "Open SAP md04")].toString());
+        material.setPlant(row[getIndexOBJ(header, "Plant")].toString());
+        material.setMrpController(row[getIndexOBJ(header, "MRP Controller")].toString());
+        material.setCurrentInventoryValue(parseNumericValue(row[getIndexOBJ(header, "Current Inventory Value")].toString()));
+        material.setUnitCost(parseNumericValue(row[getIndexOBJ(header, "Unit Cost")].toString()));
+        material.setAvgDemand((int) Float.parseFloat(row[getIndexOBJ(header, "Average Demand")].toString()));
+        material.setAvgInventoryEffectAfterChange(parseNumericValue(row[getIndexOBJ(header, "Average Inventory Effect After Change")].toString()));
+        material.setFlagMaterial(false);
+        material.setCurrency(Coin.EUR);
+        material.setFlagExpirationDate(null);
+        material.setMrpController(row[getIndexOBJ(header, "MRP Controller")].toString());
+        material.setPlant(row[getIndexOBJ(header, "Plant")].toString());
+
+        if(getIndexOBJ(header, "New SAP SS") >= 0){
+            try {
+                material.setNewSAPSafetyStock(Integer.parseInt(row[getIndexOBJ(header, "New SAP SS")].toString()));
+            } catch (NumberFormatException e) {
+                material.setNewSAPSafetyStock(material.getProposedSST());
+            }
+        }
+
+        if(getIndexOBJ(header, "New SAP Safety Time") >= 0){
+            try {
+                material.setNewSAPSafetyTime(Integer.parseInt(row[getIndexOBJ(header, "New SAP Safety Time")].toString()));
+            } catch (NumberFormatException e) {
+                material.setNewSAPSafetyTime(material.getProposedST());
+            }
+        }
+
+        if(getIndexOBJ(header, "Comment") >= 0){
+            material.setComment(row[getIndexOBJ(header, "Comment")].toString());
+        }
+
+        return material;
+    }
+
+    private int getIndexOBJ(Object[] header, String columnName) {
+        for (int i = 0; i < header.length; i++) {
+            if (header[i].toString().equals(columnName)) {
+                return i;
+            }
+        }
+        return -1; // Column not found
     }
 
 
@@ -604,78 +715,6 @@ public class MaterialServiceImpl implements MaterialService {
             return Integer.parseInt((String) value);
         }
         throw new IllegalArgumentException("Invalid type for key " + value);
-    }
-
-    // -------------> ODS <-------------
-
-    public void uploadFileODS(File file, Boolean toUpdate) {
-        try {
-            com.github.miachm.sods.Sheet sheet = new SpreadSheet(file).getSheet(0);
-            Range data = sheet.getDataRange();
-            String[][] materials = (String[][]) data.getValues();
-            // Assuming that the 1st row is the header
-            String[] header = materials[0];
-            for (int i = 1; i < data.getNumRows(); i++) {
-                System.out.println(materials[i]);
-                Material material = parseMaterialODS(materials[i], header);
-                Optional<Material> opcMaterial = materialRepository.findByMaterial(material.getMaterial());
-
-                if (toUpdate && opcMaterial.isPresent())
-                    updateByMaterialName(material);
-                else
-                    save(material); 
-            }
-
-        } catch (IOException | IllegalArgumentException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public Material parseMaterialODS(String[] row, String[] header) {
-        Material material = new Material();
-
-        material.setMaterial(row[getIndex(header, "Material")]);
-        material.setDescription(row[getIndex(header, "Description")]);
-        material.setAbcClassification(ABCClassification.fromString(row[getIndex(header, "ABC Classification")]));
-        material.setAvgSupplierDelay(Float.parseFloat(row[getIndex(header, "Average Supplier Delay")]));
-        material.setMaxSupplierDelay(Float.parseFloat(row[getIndex(header, "Maximum Supplier delay")]));
-        material.setServiceLevel(Float.parseFloat(row[getIndex(header, "Service Level")]));
-        material.setCurrSAPSafetyStock(Integer.parseInt(row[getIndex(header, "Current SAP Safety Stock")]));
-        material.setProposedSST(Integer.parseInt(row[getIndex(header, "Proposed SST")]));
-        material.setDeltaSST(Integer.parseInt(row[getIndex(header, "Delta SST")]));
-        material.setCurrentSAPSafeTime(Integer.parseInt(row[getIndex(header, "Current SAP Safety Time")]));
-        material.setProposedST(Integer.parseInt(row[getIndex(header, "Proposed ST")]));
-        material.setDeltaST(Integer.parseInt(row[getIndex(header, "Delta ST")]));
-        material.setOpenSAPmd04(row[getIndex(header, "Open SAP md04")]);
-        material.setPlant(row[getIndex(header, "Plant")]);
-        material.setMrpController(row[getIndex(header, "MRP Controller")]);
-        material.setCurrentInventoryValue(parseNumericValue(row[getIndex(header, "Current Inventory Value")]));
-        material.setUnitCost(parseNumericValue(row[getIndex(header, "Unit Cost")]));
-        material.setAvgDemand(Integer.parseInt(row[getIndex(header, "Average Demand")]));
-        material.setAvgInventoryEffectAfterChange(parseNumericValue(row[getIndex(header, "Average Inventory Effect After Change")]));
-        material.setFlagMaterial(false);
-
-        if(getIndex(header, "New SAP SS") >= 0){
-            try {
-                material.setNewSAPSafetyStock(Integer.parseInt(row[getIndex(header, "New SAP SS")]));
-            } catch (NumberFormatException e) {
-                material.setNewSAPSafetyStock(material.getProposedSST());
-            }
-        }
-
-        if(getIndex(header, "New SAP Safety Time") >= 0){
-            try {
-                material.setNewSAPSafetyTime(Integer.parseInt(row[getIndex(header, "New SAP Safety Time")]));
-            } catch (NumberFormatException e) {
-                material.setNewSAPSafetyTime(material.getProposedST());
-            }
-        }
-
-        if(getIndex(header, "Comment") >= 0){
-            material.setComment(row[getIndex(header, "Comment")]);
-        }
-
-        return material;
     }
 
     /* --------------------------- FLAG ROUTINE --------------------------- */
