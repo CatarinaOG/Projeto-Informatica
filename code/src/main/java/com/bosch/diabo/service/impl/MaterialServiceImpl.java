@@ -235,27 +235,33 @@ public class MaterialServiceImpl implements MaterialService {
     @Override
     public void uploadFileReplace(File file){
         log.debug("Request to new source file : {}", file.getName());   
-        deleteAll();
-
-        String fileName = file.getName();
-        int lastDotIndex = fileName.lastIndexOf('.');
-        String fileExtension = lastDotIndex == -1 ? "" : fileName.substring(lastDotIndex + 1);
         
-        switch (fileExtension.toLowerCase()) {
-            case "xlsx":
-                uploadFileXLSX(file,false);
-                break;
-            case "csv":
-                uploadFileCSV(file,false);
-                break;
-            case "xls":
-                uploadFileXLS(file,false);
-                break;
-            case "ods":
-                uploadFileODS(file, false);
-                break;
-            default:
-                break;
+        try{ 
+            deleteAll();
+
+            String fileName = file.getName();
+            int lastDotIndex = fileName.lastIndexOf('.');
+            String fileExtension = lastDotIndex == -1 ? "" : fileName.substring(lastDotIndex + 1);
+            
+            switch (fileExtension.toLowerCase()) {
+                case "xlsx":
+                    uploadFileXLSX(file,false);
+                    break;
+                case "csv":
+                    uploadFileCSV(file,false);
+                    break;
+                case "xls":
+                    uploadFileXLS(file,false);
+                    break;
+                case "ods":
+                    uploadFileODS(file, false);
+                    break;
+                default:
+                    break;
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
         }
 
     }
@@ -263,8 +269,7 @@ public class MaterialServiceImpl implements MaterialService {
 
     @Override
     public void uploadFileAddOrUpdate(File file){
-        try
-        { 
+        try{ 
             log.debug("Request to new source file : {}", file.getName());   
             
             String fileName = file.getName();
@@ -306,7 +311,6 @@ public class MaterialServiceImpl implements MaterialService {
 
             // Get header names and their column indices
             Map<String, Integer> headerMap = getHeaderMap(headerRow);
-
 
             while (rowIterator.hasNext() ) {
                 Row row = rowIterator.next();
@@ -360,9 +364,15 @@ public class MaterialServiceImpl implements MaterialService {
         material.setAvgInventoryEffectAfterChange(getFloatCellValue(row, headerMap, "Average inventory effect after change"));
         material.setCurrency(Coin.EUR);
         material.setFlagMaterial(false);
-        material.setMrpController(getStringCellValue(row, headerMap, "MRP Controller"));
-        material.setPlant(getStringCellValue(row, headerMap, "Plant"));
 
+        if (headerMap.containsKey("MRP Controller")) {
+            material.setMrpController(getStringCellValue(row, headerMap, "MRP Controller"));
+        }
+
+        if (headerMap.containsKey("Plant")) {
+            material.setPlant(getStringCellValue(row, headerMap, "Plant"));
+        }
+        
         if (headerMap.containsKey("New SAP SS")) {
             try {
                 material.setNewSAPSafetyStock(Integer.parseInt(getStringCellValue(row, headerMap, "New SAP SS")));
@@ -481,8 +491,15 @@ public class MaterialServiceImpl implements MaterialService {
         material.setFlagMaterial(false);
         material.setCurrency(Coin.EUR);
         material.setFlagExpirationDate(null);
-        material.setMrpController(nextRecord[getIndex(header, "MRP Controller")]);
-        material.setPlant(nextRecord[getIndex(header, "Plant")]);
+
+        if(getIndex(header, "MRP Controller") >= 0){
+            material.setMrpController(nextRecord[getIndex(header, "MRP Controller")]);
+        }
+
+        if(getIndex(header, "Plant") >= 0){
+            material.setPlant(nextRecord[getIndex(header, "Plant")]);
+        }
+
 
         if(getIndex(header, "New SAP SS") >= 0){
             try {
@@ -565,8 +582,6 @@ public class MaterialServiceImpl implements MaterialService {
         material.setProposedST((int) Float.parseFloat(row[getIndexOBJ(header, "Proposed ST")].toString()));
         material.setDeltaST((int) Float.parseFloat(row[getIndexOBJ(header, "Delta ST")].toString()));
         material.setOpenSAPmd04(row[getIndexOBJ(header, "Open SAP md04")].toString());
-        material.setPlant(row[getIndexOBJ(header, "Plant")].toString());
-        material.setMrpController(row[getIndexOBJ(header, "MRP Controller")].toString());
         material.setCurrentInventoryValue(parseNumericValue(row[getIndexOBJ(header, "Current Inventory Value")].toString()));
         material.setUnitCost(parseNumericValue(row[getIndexOBJ(header, "Unit Cost")].toString()));
         material.setAvgDemand((int) Float.parseFloat(row[getIndexOBJ(header, "Average Demand")].toString()));
@@ -574,8 +589,14 @@ public class MaterialServiceImpl implements MaterialService {
         material.setFlagMaterial(false);
         material.setCurrency(Coin.EUR);
         material.setFlagExpirationDate(null);
-        material.setMrpController(row[getIndexOBJ(header, "MRP Controller")].toString());
-        material.setPlant(row[getIndexOBJ(header, "Plant")].toString());
+
+        if(getIndexOBJ(header, "MRP Controller") >= 0){
+            material.setMrpController(row[getIndexOBJ(header, "MRP Controller")].toString());
+        }
+
+        if(getIndexOBJ(header, "Plant") >= 0){
+            material.setPlant(row[getIndexOBJ(header, "Plant")].toString());
+        }
 
         if(getIndexOBJ(header, "New SAP SS") >= 0){
             try {
