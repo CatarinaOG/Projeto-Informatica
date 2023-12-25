@@ -1,7 +1,0 @@
-Material,Material Description,ABC Classification,Avg. Supplier Delay,Max Supplier delay,Service Level,Current SAP Safety Stock,Proposed SST,Delta SST,Current SAP Safety Time,Proposed ST,delta ST,Open SAP md04,Current Inventory Value,Unit Cost,Avg Demand,Average inventory effect after change,New SAP SS,New SAP Safety Time,Select entries for change in SAP,Flag material,Comment
-6720645487,IM RC200 2012/06 it,C,25.5,33.1,0,144,964,820,12,13,1,link," 20,293.20 € ", 18.79 € ,78,"16,873.42 €",,,,,hello2
-6720645497,IO RC100 2012/06 div,B,0.6,0.8,0.8,362,739,377,26,18,2,link," 45,453.64 € ", 97.54 € ,4,"33,651.30 €",,,,,
-6720648744,OPERATING INSTRUCTIONS; tbd (NL),A,8.1,15.1,0.5,753,680,-73,21,30,9,link," 84,832.65 € ", 49.35 € ,46,"16,828.35 €",,,,,
-,,,,,,,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,,,,,,,

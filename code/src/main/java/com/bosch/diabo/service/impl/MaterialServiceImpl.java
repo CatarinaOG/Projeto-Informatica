@@ -32,6 +32,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
 
 import com.github.miachm.sods.*;
 
@@ -362,7 +364,6 @@ public class MaterialServiceImpl implements MaterialService {
         material.setUnitCost(getFloatCellValue(row, headerMap, "Unit Cost"));
         material.setAvgDemand(getIntCellValue(row, headerMap, "Avg Demand"));
         material.setAvgInventoryEffectAfterChange(getFloatCellValue(row, headerMap, "Average inventory effect after change"));
-        material.setCurrency(Coin.EUR);
         material.setFlagMaterial(false);
 
         if (headerMap.containsKey("MRP Controller")) {
@@ -393,7 +394,21 @@ public class MaterialServiceImpl implements MaterialService {
             material.setComment(getStringCellValue(row, headerMap, "Comment"));
         }
 
+        readAndSetTheCurrencyXLSX(row,headerMap,material);
+
         return material;
+
+    }
+
+    private void readAndSetTheCurrencyXLSX(Row row, Map<String, Integer> headerMap, Material material){
+
+        int columnIndex = headerMap.get("Current Inventory Value");
+        Cell cell = row.getCell(columnIndex);
+
+        CellStyle style = cell.getCellStyle();
+        String numberFormat = style.getDataFormatString();
+        Coin coin = getCoin(numberFormat);
+        material.setCurrency(coin);
 
     }
     
@@ -406,6 +421,7 @@ public class MaterialServiceImpl implements MaterialService {
     private float getFloatCellValue(Row row, Map<String, Integer> headerMap, String headerName) {
         int columnIndex = headerMap.get(headerName);
         Cell cell = row.getCell(columnIndex);
+
         return cell != null ? (float) cell.getNumericCellValue() : 0.0f; // Set a default value if the cell is null
     }
     
@@ -489,7 +505,6 @@ public class MaterialServiceImpl implements MaterialService {
         material.setAvgDemand(Integer.parseInt(nextRecord[getIndex(header, "Avg Demand")]));
         material.setAvgInventoryEffectAfterChange(parseNumericValue(nextRecord[getIndex(header, "Average inventory effect after change")]));
         material.setFlagMaterial(false);
-        material.setCurrency(Coin.EUR);
         material.setFlagExpirationDate(null);
 
         if(getIndex(header, "MRP Controller") >= 0){
@@ -521,7 +536,16 @@ public class MaterialServiceImpl implements MaterialService {
             material.setComment(nextRecord[getIndex(header, "Comment")]);
         }
 
+        readAndSetTheCurrencyCSV(nextRecord[getIndex(header, "Current Inventory Value")],material);
+
         return material;
+    }
+
+    private void readAndSetTheCurrencyCSV(String value, Material material){
+
+        Coin coin = getCoin(value);
+        material.setCurrency(coin);
+
     }
 
 
@@ -759,5 +783,49 @@ public class MaterialServiceImpl implements MaterialService {
         materialRepository.saveAll(allMaterials);
     }
 
+
+    public Coin getCoin(String numberFormat){
+
+        if (numberFormat.contains("€")) return Coin.EUR;
+        if (numberFormat.contains("¥")) return Coin.JPY;
+        if (numberFormat.contains("£")) return Coin.GBP;
+        if (numberFormat.contains("¥")) return Coin.CNY;
+        if (numberFormat.contains("A$")) return Coin.AUD;
+        if (numberFormat.contains("¢")) return Coin.CAD;
+        if (numberFormat.contains("CHF")) return Coin.CHF;
+        if (numberFormat.contains("HK$")) return Coin.HKD;
+        if (numberFormat.contains("S$")) return Coin.SGD;
+        if (numberFormat.contains("kr")) return Coin.SEK;
+        if (numberFormat.contains("₩")) return Coin.KRW;
+        if (numberFormat.contains("NOK")) return Coin.NOK;
+        if (numberFormat.contains("NZ$")) return Coin.NZD;
+        if (numberFormat.contains("₹")) return Coin.INR;
+        if (numberFormat.contains("Mex$")) return Coin.MXN;
+        if (numberFormat.contains("NT$")) return Coin.TWD;
+        if (numberFormat.contains("R")) return Coin.ZAR;
+        if (numberFormat.contains("R$")) return Coin.BRL;
+        if (numberFormat.contains("Dkr")) return Coin.DKK;
+        if (numberFormat.contains("zł")) return Coin.PLN;
+        if (numberFormat.contains("฿")) return Coin.THB;
+        if (numberFormat.contains("₪")) return Coin.ILS;
+        if (numberFormat.contains("Rp")) return Coin.IDR;
+        if (numberFormat.contains("Kč")) return Coin.CZK;
+        if (numberFormat.contains("AED")) return Coin.AED;
+        if (numberFormat.contains("₺")) return Coin.TRY;
+        if (numberFormat.contains("Ft")) return Coin.HUF;
+        if (numberFormat.contains("CLP$")) return Coin.CLP;
+        if (numberFormat.contains("﷼")) return Coin.SAR;
+        if (numberFormat.contains("₱")) return Coin.PHP;
+        if (numberFormat.contains("RM")) return Coin.MYR;
+        if (numberFormat.contains("Col$")) return Coin.COP;
+        if (numberFormat.contains("₽")) return Coin.RUB;
+        if (numberFormat.contains("lei")) return Coin.RON;
+        if (numberFormat.contains("S/.")) return Coin.PEN;
+        if (numberFormat.contains("BD")) return Coin.BHD;
+        if (numberFormat.contains("лв")) return Coin.BGN;
+        if (numberFormat.contains("$")) return Coin.USD;
+
+        return Coin.EUR;
+    }
 
 }
