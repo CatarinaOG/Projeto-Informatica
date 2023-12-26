@@ -164,13 +164,13 @@ export class MaterialComponent implements OnInit , OnDestroy {
 
       case 2: //apontar para o link    
         if (!this.visibility.get("inventory")) this.visibility.set("inventory", true);
-        document.getElementById("openSAPHeader")?.scrollIntoView({behavior: 'smooth', inline : 'end', block:'center'})
+        document.getElementById("openSAPHeader")?.scrollIntoView({behavior: 'smooth', inline : 'start', block:'center'})
         if (this.linkTourTooltip ) this.linkTourTooltip.open()
         break;
 
       case 3: //No edit (temos que fazer expand do edit e focus)
         this.visibility.set("edit", true);
-        document.getElementById("editMenuTooltip")?.scrollIntoView({behavior: 'smooth', inline : 'end', block:'center'})
+        document.getElementById("editMenuTooltip")?.scrollIntoView({behavior: 'smooth', inline : 'start', block:'center'})
         if (this.editMenuTooltip) this.editMenuTooltip.open()
         break;
         break;
