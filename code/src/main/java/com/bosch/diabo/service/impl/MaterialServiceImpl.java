@@ -505,7 +505,6 @@ public class MaterialServiceImpl implements MaterialService {
         material.setAvgDemand(Integer.parseInt(nextRecord[getIndex(header, "Avg Demand")]));
         material.setAvgInventoryEffectAfterChange(parseNumericValue(nextRecord[getIndex(header, "Average inventory effect after change")]));
         material.setFlagMaterial(false);
-        material.setFlagExpirationDate(null);
 
         if(getIndex(header, "MRP Controller") >= 0){
             material.setMrpController(nextRecord[getIndex(header, "MRP Controller")]);
@@ -570,12 +569,9 @@ public class MaterialServiceImpl implements MaterialService {
             com.github.miachm.sods.Sheet sheet = new SpreadSheet(file).getSheet(0);
             Range data = sheet.getDataRange();
             Object[][] materials = data.getValues();
-            System.out.println("Materials have " + materials.length + " rows and " + materials[0].length + "collumns");
             // Assuming that the 1st row is the header
             Object[] header = materials[0];
-            System.out.println("Starting parsing of ODS file");
             for (int i = 1; i < data.getNumRows(); i++) {
-                System.out.println("Material " + i + " " + materials[i]);
                 Material material = parseMaterialODS(materials[i], header);
                 Optional<Material> opcMaterial = materialRepository.findByMaterial(material.getMaterial());
 
@@ -611,8 +607,6 @@ public class MaterialServiceImpl implements MaterialService {
         material.setAvgDemand((int) Float.parseFloat(row[getIndexOBJ(header, "Average Demand")].toString()));
         material.setAvgInventoryEffectAfterChange(parseNumericValue(row[getIndexOBJ(header, "Average Inventory Effect After Change")].toString()));
         material.setFlagMaterial(false);
-        material.setCurrency(Coin.EUR);
-        material.setFlagExpirationDate(null);
 
         if(getIndexOBJ(header, "MRP Controller") >= 0){
             material.setMrpController(row[getIndexOBJ(header, "MRP Controller")].toString());
@@ -642,6 +636,8 @@ public class MaterialServiceImpl implements MaterialService {
             material.setComment(row[getIndexOBJ(header, "Comment")].toString());
         }
 
+        readAndSetTheCurrencyODS(row[getIndexOBJ(header, "Current Inventory Value")],material);
+
         return material;
     }
 
@@ -652,6 +648,13 @@ public class MaterialServiceImpl implements MaterialService {
             }
         }
         return -1; // Column not found
+    }
+
+    private void readAndSetTheCurrencyODS(Object value, Material material){
+
+        Coin coin = getCoin(value.toString());
+        material.setCurrency(coin);
+
     }
 
 

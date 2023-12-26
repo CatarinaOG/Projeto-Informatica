@@ -22,8 +22,8 @@ public class Material implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQUENCEGENERATOR")
+    @SequenceGenerator(name = "SEQUENCEGENERATOR")
     @Column(name = "id")
     private Long id;
 
@@ -399,7 +399,10 @@ public class Material implements Serializable {
     }
 
     public String getFlagExpirationDateString() {
-        return this.flagExpirationDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        if (this.flagExpirationDate != null)
+            return this.flagExpirationDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        else
+            return null;
     }
 
     public Material flagExpirationDate(LocalDate flagExpirationDate) {
