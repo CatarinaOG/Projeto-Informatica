@@ -152,12 +152,12 @@ export class MaterialComponent implements OnInit , OnDestroy {
     if (this.commentTooltip) this.commentTooltip.close()
 
     switch(value) {
-      case 0:
+      case 0:  //material info header group 
         this.visibility.set("materialInfo", true);
         document.getElementById("materialInfoHeaderId")?.scrollIntoView({behavior: 'smooth', inline : 'end', block:'center'})
         break;
 
-      case 1:
+      case 1: //material info expand icon
         this.visibility.set("materialInfo", true);
         document.getElementById("materialInfoHeaderId")?.scrollIntoView({behavior: 'smooth', inline : 'end', block:'center'})
         break;
@@ -172,7 +172,6 @@ export class MaterialComponent implements OnInit , OnDestroy {
         this.visibility.set("edit", true);
         document.getElementById("editMenuTooltip")?.scrollIntoView({behavior: 'smooth', inline : 'start', block:'center'})
         if (this.editMenuTooltip) this.editMenuTooltip.open()
-        break;
         break;
         
       case 4: // new sap safety stock e time
@@ -435,12 +434,12 @@ export class MaterialComponent implements OnInit , OnDestroy {
     this.input(event,"newComment",event.id)
   }
 
-  pickComment(id : number) : string {
-    let returnVal : string = this.materials?.find(e => e.id === id)?.comment ?? "";
-    if (this.editCellService.getMaterial(id)){
-      returnVal = this.editCellService.getMaterial(id)?.newComment ?? "";
-    }
-    return returnVal;
+  pickComment(material : IMaterial) : string {
+    // let returnVal : string = this.materials?.find(e => e.id === id)?.comment ?? "";
+    // if (this.editCellService.getMaterial(id)){
+    //   returnVal = this.editCellService.getMaterial(id)?.newComment ?? "";
+    // }
+    return (((this.editCellService.hasMaterial(material.id) && (this.editCellService.getMaterial(material.id)?.newComment !== material.comment))) ? this.editCellService.getMaterial(material.id)?.newComment : material.comment) ?? ""
   }
 
 
@@ -681,14 +680,24 @@ export class MaterialComponent implements OnInit , OnDestroy {
     switch (lastEntry.column){
       case "newSST":
         if (materialValue?.newSAPSafetyStock === lastEntry.oldValue){
-          return (this.editCellService.getMaterial(lastEntry.materialId)?.newSST !== materialValue?.proposedSST) || (this.editCellService.getMaterial(lastEntry.materialId)?.newComment !== "")
+          return (this.editCellService.getMaterial(lastEntry.materialId)?.newST !== materialValue?.newSAPSafetyTime) || (this.editCellService.getMaterial(lastEntry.materialId)?.newComment !== materialValue?.comment) || (this.editCellService.getMaterial(lastEntry.materialId)?.flag !== materialValue?.flagMaterial)
         }
         break;
+        
       case "newST":
         if (materialValue?.newSAPSafetyTime === lastEntry.oldValue){
-          return (this.editCellService.getMaterial(lastEntry.materialId)?.newST !== materialValue?.proposedST) || (this.editCellService.getMaterial(lastEntry.materialId)?.newComment !== "")
+          return (this.editCellService.getMaterial(lastEntry.materialId)?.newSST !== materialValue?.newSAPSafetyStock) || (this.editCellService.getMaterial(lastEntry.materialId)?.newComment !== materialValue?.comment) || (this.editCellService.getMaterial(lastEntry.materialId)?.flag !== materialValue?.flagMaterial)
         }
         break;
+
+      case "newComment":
+        if (materialValue?.comment === lastEntry.oldValue){
+          return (this.editCellService.getMaterial(lastEntry.materialId)?.newSST !== materialValue?.newSAPSafetyStock) || (this.editCellService.getMaterial(lastEntry.materialId)?.newST !== materialValue?.newSAPSafetyTime) || (this.editCellService.getMaterial(lastEntry.materialId)?.flag !== materialValue?.flagMaterial)
+        }
+        break;
+      
+      default:
+        return false;
     }
     return false;
   }
@@ -703,7 +712,7 @@ export class MaterialComponent implements OnInit , OnDestroy {
         if(editCell){
           switch(lastEntry.column){
             case "newSST":
-              if(!this.checkEditCell(lastEntry)){
+              if(this.checkEditCell(lastEntry)){
                 if ( typeof lastEntry.oldValue === "number"){
                   editCell.newSST = lastEntry.oldValue;
                   this.editCellService.addMaterial(lastEntry.materialId, editCell);
@@ -714,9 +723,9 @@ export class MaterialComponent implements OnInit , OnDestroy {
               }
               break;
             case "newST":
-              if(!this.checkEditCell(lastEntry)){
+              if(this.checkEditCell(lastEntry)){
                 if ( typeof lastEntry.oldValue === "number"){
-                  editCell.newSST = lastEntry.oldValue;
+                  editCell.newST = lastEntry.oldValue;
                   this.editCellService.addMaterial(lastEntry.materialId, editCell);
                 }
               }
@@ -725,7 +734,7 @@ export class MaterialComponent implements OnInit , OnDestroy {
               }
               break;
             case "newComment":
-              if(!this.checkEditCell(lastEntry)){
+              if(this.checkEditCell(lastEntry)){
                 if ( typeof lastEntry.oldValue === "string"){
                   editCell.newComment = lastEntry.oldValue;
                   this.editCellService.addMaterial(lastEntry.materialId, editCell);
@@ -842,7 +851,6 @@ export class MaterialComponent implements OnInit , OnDestroy {
       if (col_name === "newComment") this.addToHistory(col_name,event.newComment, oldValue, id);
       else if(col_name !== "flag") this.addToHistory(col_name, Math.round(Number(event.target.value)), oldValue, id);
     }
-
   }
 
   // openTooltip(toolTip: NgbTooltip | undefined) {

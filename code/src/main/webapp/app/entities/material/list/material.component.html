@@ -463,10 +463,10 @@
          
           <td class ="edit setWidth" [ngClass] ="editCellClasses('edit',material,'Comment')" >
             <div class="d-flex justify-content-between">
-              <span class="d-inline-block text-truncate" style="max-width: 200px;" placement="top" ngbTooltip="{{pickComment(material.id)}}" tooltipClass="setWidth">
+              <span class="d-inline-block text-truncate" style="max-width: 200px;" placement="top" ngbTooltip="{{pickComment(material)}}" tooltipClass="setWidth">
                 {{((editCellService.hasMaterial(material.id) && (editCellService.getMaterial(material.id)?.newComment !== material.comment))) ? editCellService.getMaterial(material.id)?.newComment : material.comment }}
               </span>
-              <comment-modal [oldComment]="pickComment(material.id)" [id]="material.id" (commentEmitter)="receiveComment($event)"></comment-modal>
+              <comment-modal [oldComment]="pickComment(material)" [id]="material.id" (commentEmitter)="receiveComment($event)"></comment-modal>
             </div>
           </td>
 
