@@ -74,7 +74,7 @@
       <thead class = "navbar-dark">
         <tr class = "headerRow1">
 
-          <th [attr.colspan]="visibility.get('materialInfo') ? 5 : 1" class="tableHeader">
+          <th id="materialInfoHeaderId" [attr.colspan]="visibility.get('materialInfo') ? 5 : 1" class="tableHeader">
             <header-group [headerName] = "'Material Info'" [visibilityValue] = "visibility.get('materialInfo')" groupName = 'materialInfo' (visibilityEmitter)="switchVisibility($event)"></header-group>
           </th>
 

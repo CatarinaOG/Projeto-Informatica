@@ -152,8 +152,19 @@ export class MaterialComponent implements OnInit , OnDestroy {
     if (this.commentTooltip) this.commentTooltip.close()
 
     switch(value) {
-      case 2: //apontar para o link
+      case 0:
+        this.visibility.set("materialInfo", true);
+        document.getElementById("materialInfoHeaderId")?.scrollIntoView({behavior: 'smooth', inline : 'end', block:'center'})
+        break;
+
+      case 1:
+        this.visibility.set("materialInfo", true);
+        document.getElementById("materialInfoHeaderId")?.scrollIntoView({behavior: 'smooth', inline : 'end', block:'center'})
+        break;
+
+      case 2: //apontar para o link    
         if (!this.visibility.get("inventory")) this.visibility.set("inventory", true);
+        document.getElementById("openSAPHeader")?.scrollIntoView({behavior: 'smooth', inline : 'end', block:'center'})
         if (this.linkTourTooltip ) this.linkTourTooltip.open()
         break;
 
