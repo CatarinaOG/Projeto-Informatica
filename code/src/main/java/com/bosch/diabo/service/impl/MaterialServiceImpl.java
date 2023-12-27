@@ -98,14 +98,9 @@ public class MaterialServiceImpl implements MaterialService {
                 existingMaterial.setNewSAPSafetyStock(material.getNewSAPSafetyStock());
                 existingMaterial.setNewSAPSafetyTime(material.getNewSAPSafetyTime());
                 existingMaterial.setToSaveUpdates(material.getToSaveUpdates());
-                existingMaterial.setCurrency(material.getCurrency());
-                existingMaterial.setDateOfUpdatedSS(material.getDateOfUpdatedSS());
-                existingMaterial.setDateOfUpdatedST(material.getDateOfUpdatedST());
                 existingMaterial.setMrpController(material.getMrpController());
                 existingMaterial.setPlant(material.getPlant());
-                existingMaterial.setToSaveUpdates(material.getToSaveUpdates());
-                existingMaterial.setValueOfUpdatedSS(material.getValueOfUpdatedSS());
-                existingMaterial.setValueOfUpdatedST(material.getValueOfUpdatedST());
+                existingMaterial.setToSaveUpdates(true);
 
                 return existingMaterial;
             })
@@ -233,14 +228,35 @@ public class MaterialServiceImpl implements MaterialService {
         materialRepository.deleteAll();
     }
 
+    public void deleteEveryMaterialNotSaved(){
+        materialRepository
+            .findAll()
+            .stream()
+            .filter(material -> material.getToSaveUpdates() != true)
+            .forEach(material -> {
+                materialRepository.deleteById(material.getId());
+                System.out.println("delete----------------"+material.getMaterial());
+            });
+
+    }
+
+    public void setEveryMaterialToNotSave(){
+        materialRepository
+        .findAll()
+        .stream()
+        .peek(material -> {
+            material.setToSaveUpdates(false);
+        })
+        .forEach(materialRepository::save);
+    }
+
 
     @Override
     public void uploadFileReplace(File file){
         log.debug("Request to new source file : {}", file.getName());   
         
         try{ 
-            deleteAll();
-
+            
             String fileName = file.getName();
             int lastDotIndex = fileName.lastIndexOf('.');
             String fileExtension = lastDotIndex == -1 ? "" : fileName.substring(lastDotIndex + 1);
@@ -261,6 +277,10 @@ public class MaterialServiceImpl implements MaterialService {
                 default:
                     break;
             }
+
+            deleteEveryMaterialNotSaved();
+            setEveryMaterialToNotSave();
+
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -293,6 +313,8 @@ public class MaterialServiceImpl implements MaterialService {
                 default:
                     break;
             }
+
+            setEveryMaterialToNotSave();
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -319,10 +341,12 @@ public class MaterialServiceImpl implements MaterialService {
                 Material material = parseMaterialXLSX(row, headerMap);
                 Optional<Material> opcMaterial = materialRepository.findByMaterial(material.getMaterial());
 
-                if (toUpdate && opcMaterial.isPresent())
+                if (opcMaterial.isPresent())
                     updateByMaterialName(material);
-                else
+                else{
+                    material.setToSaveUpdates(true);                    
                     save(material);
+                }
 
             }
         } catch (IOException e) {
@@ -450,7 +474,7 @@ public class MaterialServiceImpl implements MaterialService {
                 Material material = parseMaterialXLSX(row, headerMap);
                 Optional<Material> opcMaterial = materialRepository.findByMaterial(material.getMaterial());
 
-                if (toUpdate && opcMaterial.isPresent())
+                if (opcMaterial.isPresent())
                     updateByMaterialName(material);
                 else
                     save(material);
@@ -474,7 +498,7 @@ public class MaterialServiceImpl implements MaterialService {
                 Material material = parseMaterialCSV(header, nextRecord);
                 Optional<Material> opcMaterial = materialRepository.findByMaterial(material.getMaterial());
 
-                if (toUpdate && opcMaterial.isPresent())
+                if (opcMaterial.isPresent())
                     updateByMaterialName(material);
                 else
                     save(material);
@@ -575,7 +599,7 @@ public class MaterialServiceImpl implements MaterialService {
                 Material material = parseMaterialODS(materials[i], header);
                 Optional<Material> opcMaterial = materialRepository.findByMaterial(material.getMaterial());
 
-                if (toUpdate && opcMaterial.isPresent())
+                if (opcMaterial.isPresent())
                     updateByMaterialName(material);
                 else
                     save(material); 
