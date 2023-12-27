@@ -476,8 +476,10 @@ public class MaterialServiceImpl implements MaterialService {
 
                 if (opcMaterial.isPresent())
                     updateByMaterialName(material);
-                else
+                else{
+                    material.setToSaveUpdates(true);  
                     save(material);
+                }
 
             }
         } catch (IOException e) {
@@ -601,8 +603,10 @@ public class MaterialServiceImpl implements MaterialService {
 
                 if (opcMaterial.isPresent())
                     updateByMaterialName(material);
-                else
-                    save(material); 
+                else{
+                    material.setToSaveUpdates(true);  
+                    save(material);
+                }
             }
 
         } catch (IOException | IllegalArgumentException e) {
