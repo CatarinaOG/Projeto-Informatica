@@ -3,6 +3,7 @@ package com.bosch.diabo.web.rest;
 import com.bosch.diabo.domain.FlaggedMaterial;
 import com.bosch.diabo.repository.FlaggedMaterialRepository;
 import com.bosch.diabo.service.FlaggedMaterialService;
+import com.bosch.diabo.service.MaterialService;
 import com.bosch.diabo.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -33,11 +34,14 @@ public class FlaggedMaterialResource {
 
     private final FlaggedMaterialService flaggedMaterialService;
 
+    private final MaterialService materialService;
+
     private final FlaggedMaterialRepository flaggedMaterialRepository;
 
-    public FlaggedMaterialResource(FlaggedMaterialService flaggedMaterialService, FlaggedMaterialRepository flaggedMaterialRepository) {
+    public FlaggedMaterialResource(FlaggedMaterialService flaggedMaterialService, FlaggedMaterialRepository flaggedMaterialRepository, MaterialService materialService) {
         this.flaggedMaterialService = flaggedMaterialService;
         this.flaggedMaterialRepository = flaggedMaterialRepository;
+        this.materialService = materialService;
     }
 
     /**
@@ -168,5 +172,20 @@ public class FlaggedMaterialResource {
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    /**
+     * {@code DELETE  /flagged-materials/remove-flag/:id} : remove the flag from the material
+     *
+     * @param id the id of the flaggedMaterial to remove flag.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)}
+     */
+    @PostMapping("/flagged-materials/remove-flag/{id}")
+    public ResponseEntity<String> removeFlag(@PathVariable Long id) {
+        log.debug("REST request to remove flag from FlaggedMaterial : {}", id);
+        flaggedMaterialService.delete(id);
+        materialService.removeFlag(id);
+        
+        return ResponseEntity.ok("");
     }
 }

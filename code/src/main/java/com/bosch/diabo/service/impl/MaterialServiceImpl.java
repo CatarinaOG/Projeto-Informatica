@@ -824,4 +824,17 @@ public class MaterialServiceImpl implements MaterialService {
         return Coin.EUR;
     }
 
+    @Override
+    public void removeFlag(Long material_id){
+
+        materialRepository
+            .findById(material_id)
+            .ifPresent(material -> {
+                material.setFlagMaterial(false);
+                material.setFlagExpirationDate(null);
+
+                materialRepository.save(material);
+            });
+    }
+
 }

@@ -106,4 +106,5 @@ public interface MaterialService {
      */
     List<Material> getMaterialChanged(List<Object> data);
 
+    void removeFlag(Long material_id);
 }
