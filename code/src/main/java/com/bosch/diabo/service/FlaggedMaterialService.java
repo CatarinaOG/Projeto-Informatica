@@ -62,4 +62,14 @@ public interface FlaggedMaterialService {
      * @param material existing material.
      */
     void updateFlaggedMaterials(Boolean flag, Material material);
+
+
+
+    /**
+     * Find Material by the material name.
+     *
+     * @param material the material name.
+     * @return the entity.
+     */
+    Optional<FlaggedMaterial> findByMaterial(String material);
 }
