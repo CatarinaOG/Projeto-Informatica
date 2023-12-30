@@ -15,6 +15,8 @@ import java.util.Objects;
 import java.util.Optional;
 
 import org.apache.commons.io.output.ByteArrayOutputStream;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -326,8 +328,8 @@ public class MaterialResource {
         headerRow.createCell(3).setCellValue("ABC Classification");
         headerRow.createCell(4).setCellValue("Plant");
         headerRow.createCell(5).setCellValue("MRP Controller");
-        headerRow.createCell(6).setCellValue("Average Supplier Delay");
-        headerRow.createCell(7).setCellValue("Maximum Supplier Delay");
+        headerRow.createCell(6).setCellValue("Avg Supplier Delay");
+        headerRow.createCell(7).setCellValue("Max Supplier Delay");
         headerRow.createCell(8).setCellValue("Service Level");
         headerRow.createCell(9).setCellValue("Current SAP Safety Stock");
         headerRow.createCell(10).setCellValue("Proposed SST");
@@ -338,7 +340,7 @@ public class MaterialResource {
         headerRow.createCell(15).setCellValue("Open SAP md04");
         headerRow.createCell(16).setCellValue("Current Inventory Value");
         headerRow.createCell(17).setCellValue("Unit Cost");
-        headerRow.createCell(18).setCellValue("Average Demand");
+        headerRow.createCell(18).setCellValue("Av Demand");
         headerRow.createCell(19).setCellValue("Average Inventory Effect After Change");
         headerRow.createCell(20).setCellValue("New SAP Safety Stock");
         headerRow.createCell(21).setCellValue("New SAP Safety Time");
@@ -351,6 +353,8 @@ public class MaterialResource {
             System.out.println("Added Material: " + rowNum);
             try{
                 XSSFRow row = sheet.createRow(rowNum++);
+                CellStyle cStyle = workbook.createCellStyle();
+                cStyle.setDataFormat(workbook.createDataFormat().getFormat(mat.getCurrency().getStyle() + "#,##0.00"));
                 row.createCell(0).setCellValue(mat.getId());
                 row.createCell(1).setCellValue(mat.getMaterial());
                 row.createCell(2).setCellValue(mat.getDescription());
@@ -367,16 +371,22 @@ public class MaterialResource {
                 row.createCell(13).setCellValue(mat.getProposedST());
                 row.createCell(14).setCellValue(mat.getDeltaST());
                 row.createCell(15).setCellValue(mat.getOpenSAPmd04());
-                row.createCell(16).setCellValue(mat.getCurrentInventoryValue() + " " + mat.getCurrency().toString());
-                row.createCell(17).setCellValue(mat.getUnitCost() + " " + mat.getCurrency().toString());
+                Cell c = row.createCell(16);
+                c.setCellValue(mat.getCurrentInventoryValue());
+                c.setCellStyle(cStyle);
+                Cell c2 = row.createCell(17);
+                c2.setCellValue(mat.getUnitCost());
+                c2.setCellStyle(cStyle);
                 row.createCell(18).setCellValue(mat.getAvgDemand());
                 row.createCell(19).setCellValue(mat.getAvgInventoryEffectAfterChange());
                 row.createCell(20).setCellValue(mat.getNewSAPSafetyStock());
                 row.createCell(21).setCellValue(mat.getNewSAPSafetyTime());
-                //if (mat.getFlagMaterial())
-                //    row.createCell(22).setCellValue((mat.getFlagExpirationDateString()));
-                //else
+                if (mat.getFlagMaterial() == true) {
+                    row.createCell(22).setCellValue((mat.getFlagExpirationDateString()));
+                }
+                else {
                     row.createCell(22).setCellValue(false);
+                }
                 row.createCell(23).setCellValue(mat.getComment());
             }
             catch (Exception e){
