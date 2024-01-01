@@ -15,7 +15,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -371,63 +370,23 @@ public class MaterialServiceImpl implements MaterialService {
     private Material parseMaterialXLSX(Row row, Map<String, Integer> headerMap){
         Material material = new Material();
         material.setMaterial(getStringCellValue(row, headerMap, "Material"));
-        material.setDescription(getStringCellValue(row, headerMap, "Description"));
+        material.setDescription(getStringCellValue(row, headerMap, "Material Description"));
         material.setAbcClassification(ABCClassification.fromString(getStringCellValue(row, headerMap, "ABC Classification")));
         material.setAvgSupplierDelay(getFloatCellValue(row, headerMap, "Avg. Supplier Delay"));
-        material.setMaxSupplierDelay(getFloatCellValue(row, headerMap, "Max Supplier Delay"));
+        material.setMaxSupplierDelay(getFloatCellValue(row, headerMap, "Max Supplier delay"));
         material.setServiceLevel(getFloatCellValue(row, headerMap, "Service Level"));
         material.setCurrSAPSafetyStock(getIntCellValue(row, headerMap, "Current SAP Safety Stock"));
         material.setProposedSST(getIntCellValue(row, headerMap, "Proposed SST"));
         material.setDeltaSST(getIntCellValue(row, headerMap, "Delta SST"));
         material.setCurrentSAPSafeTime(getIntCellValue(row, headerMap, "Current SAP Safety Time"));
         material.setProposedST(getIntCellValue(row, headerMap, "Proposed ST"));
-        material.setDeltaST(getIntCellValue(row, headerMap, "Delta ST"));
+        material.setDeltaST(getIntCellValue(row, headerMap, "delta ST"));
         material.setOpenSAPmd04(getStringCellValue(row, headerMap, "Open SAP md04"));
-        material.setCurrentInventoryValue(getMoneyCellValue(row, headerMap, "Current Inventory Value"));
-        material.setUnitCost(getMoneyCellValue(row, headerMap, "Unit Cost"));
+        material.setCurrentInventoryValue(getFloatCellValue(row, headerMap, "Current Inventory Value"));
+        material.setUnitCost(getFloatCellValue(row, headerMap, "Unit Cost"));
         material.setAvgDemand(getIntCellValue(row, headerMap, "Avg Demand"));
-        material.setAvgInventoryEffectAfterChange(getFloatCellValue(row, headerMap, "Average Inventory Effect After Change"));
-        Optional<FlaggedMaterial> f = flaggedMaterialServiceImpl.findByMaterial(material.getMaterial());
-        if (f.isPresent()) {
-            FlaggedMaterial fm = f.get();
-            material.setFlagMaterial(true);
-            Cell cell = row.getCell(22);
-    
-            if (cell.getCellType() == CellType.STRING) {
-                String cellValue = cell.getStringCellValue();
-                try {
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-                    LocalDate date = LocalDate.parse(cellValue, formatter);
-                    material.setFlagExpirationDate(date); 
-                } catch (DateTimeParseException e) {
-                    material.setFlagExpirationDate(fm.getFlagExpirationDate());
-                    e.printStackTrace();
-                }
-            }
-            else {
-                material.setFlagExpirationDate(fm.getFlagExpirationDate());
-            }
-
-        }
-        else{
-
-            material.setFlagMaterial(false);
-            Cell cell = row.getCell(22);
-    
-            if (cell.getCellType() == CellType.BOOLEAN) {
-                material.setFlagMaterial(cell.getBooleanCellValue());
-            } else if (cell.getCellType() == CellType.STRING) {
-                String cellValue = cell.getStringCellValue();
-                try {
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-                    LocalDate date = LocalDate.parse(cellValue, formatter);
-                    material.setFlagMaterial(true);
-                    material.setFlagExpirationDate(date); 
-                } catch (DateTimeParseException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
+        material.setAvgInventoryEffectAfterChange(getFloatCellValue(row, headerMap, "Average inventory effect after change"));
+        material.setFlagMaterial(getFlagFromFlaggedMaterials(material.getMaterial()));
         material.setNewSAPSafetyStock(material.getProposedSST());
         material.setNewSAPSafetyTime(material.getProposedST());
         readAndSetTheCurrencyXLSX(row,headerMap,material);
@@ -449,15 +408,12 @@ public class MaterialServiceImpl implements MaterialService {
 
     }
 
-    private Float getMoneyCellValue(Row row, Map<String, Integer> headerMap, String headerName) {
-        int columnIndex = headerMap.get(headerName);
-        Cell cell = row.getCell(columnIndex);
-        if (cell != null){
-            Float cellVal = (float) cell.getNumericCellValue();
-            return cellVal;
-        }
-        else
-            return null;
+    private Boolean getFlagFromFlaggedMaterials(String materialName){
+
+        Optional<FlaggedMaterial> flaggedMaterial = flaggedMaterialServiceImpl.findByMaterial(materialName);
+        if(flaggedMaterial.isPresent()) return true;
+
+        return false;
     }
 
     private void readAndSetTheCurrencyXLSX(Row row, Map<String, Integer> headerMap, Material material){
@@ -469,6 +425,7 @@ public class MaterialServiceImpl implements MaterialService {
         String numberFormat = style.getDataFormatString();
         Coin coin = getCoin(numberFormat);
         material.setCurrency(coin);
+
     }
     
     private String getStringCellValue(Row row, Map<String, Integer> headerMap, String headerName) {
@@ -549,60 +506,23 @@ public class MaterialServiceImpl implements MaterialService {
         Material material = new Material();
 
         material.setMaterial(nextRecord[getIndex(header, "Material")]);
-        material.setDescription(nextRecord[getIndex(header, "Description")]);
+        material.setDescription(nextRecord[getIndex(header, "Material Description")]);
         material.setAbcClassification(ABCClassification.fromString(nextRecord[getIndex(header, "ABC Classification")]));
         material.setAvgSupplierDelay(Float.parseFloat(nextRecord[getIndex(header, "Avg. Supplier Delay")]));
-        material.setMaxSupplierDelay(Float.parseFloat(nextRecord[getIndex(header, "Max Supplier Delay")]));
+        material.setMaxSupplierDelay(Float.parseFloat(nextRecord[getIndex(header, "Max Supplier delay")]));
         material.setServiceLevel(Float.parseFloat(nextRecord[getIndex(header, "Service Level")]));
         material.setCurrSAPSafetyStock(Integer.parseInt(nextRecord[getIndex(header, "Current SAP Safety Stock")]));
         material.setProposedSST(Integer.parseInt(nextRecord[getIndex(header, "Proposed SST")]));
         material.setDeltaSST(Integer.parseInt(nextRecord[getIndex(header, "Delta SST")]));
         material.setCurrentSAPSafeTime(Integer.parseInt(nextRecord[getIndex(header, "Current SAP Safety Time")]));
         material.setProposedST(Integer.parseInt(nextRecord[getIndex(header, "Proposed ST")]));
-        material.setDeltaST(Integer.parseInt(nextRecord[getIndex(header, "Delta ST")]));
+        material.setDeltaST(Integer.parseInt(nextRecord[getIndex(header, "delta ST")]));
         material.setOpenSAPmd04(nextRecord[getIndex(header, "Open SAP md04")]);
         material.setCurrentInventoryValue(parseNumericValue(nextRecord[getIndex(header, "Current Inventory Value")]));
         material.setUnitCost(parseNumericValue(nextRecord[getIndex(header, "Unit Cost")]));
         material.setAvgDemand(Integer.parseInt(nextRecord[getIndex(header, "Avg Demand")]));
-        material.setAvgInventoryEffectAfterChange(parseNumericValue(nextRecord[getIndex(header, "Average Inventory Effect After Change")]));
-        Optional<FlaggedMaterial> f = flaggedMaterialServiceImpl.findByMaterial(material.getMaterial());
-        if (f.isPresent()) {
-            FlaggedMaterial fm = f.get();
-            material.setFlagMaterial(true);
-            String cell = nextRecord[getIndex(header, "Flag")];
-    
-            if (!Boolean.parseBoolean(cell)) {
-                try {
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-                    LocalDate date = LocalDate.parse(cell, formatter);
-                    material.setFlagExpirationDate(date); 
-                } catch (DateTimeParseException e) {
-                    material.setFlagExpirationDate(fm.getFlagExpirationDate());
-                    e.printStackTrace();
-                }
-            }
-            else {
-                material.setFlagExpirationDate(fm.getFlagExpirationDate());
-            }
-
-        }
-        else{
-            material.setFlagMaterial(false);
-            String cell = nextRecord[getIndex(header, "Flag")];
-    
-            if (cell.equalsIgnoreCase("true") || cell.equalsIgnoreCase("false")) {
-                material.setFlagMaterial(Boolean.parseBoolean(cell));
-            } else if (cell != null){
-                try {
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-                    LocalDate date = LocalDate.parse(cell, formatter);
-                    material.setFlagMaterial(true);
-                    material.setFlagExpirationDate(date); 
-                } catch (DateTimeParseException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
+        material.setAvgInventoryEffectAfterChange(parseNumericValue(nextRecord[getIndex(header, "Average inventory effect after change")]));
+        material.setFlagMaterial(getFlagFromFlaggedMaterials(material.getMaterial()));
         material.setNewSAPSafetyStock(material.getProposedSST());
         material.setNewSAPSafetyTime(material.getProposedST());
         readAndSetTheCurrencyCSV(nextRecord[getIndex(header, "Current Inventory Value")],material);
@@ -691,42 +611,7 @@ public class MaterialServiceImpl implements MaterialService {
         material.setUnitCost(parseNumericValue(row[getIndexOBJ(header, "Unit Cost")].toString()));
         material.setAvgDemand((int) Float.parseFloat(row[getIndexOBJ(header, "Average Demand")].toString()));
         material.setAvgInventoryEffectAfterChange(parseNumericValue(row[getIndexOBJ(header, "Average Inventory Effect After Change")].toString()));
-        Optional<FlaggedMaterial> f = flaggedMaterialServiceImpl.findByMaterial(material.getMaterial());
-        if (f.isPresent()) {
-            FlaggedMaterial fm = f.get();
-            material.setFlagMaterial(true);
-            String cell = row[getIndexOBJ(header, "Flag")].toString();
-    
-            if (!Boolean.parseBoolean(cell)) {
-                try {
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-                    LocalDate date = LocalDate.parse(cell, formatter);
-                    material.setFlagExpirationDate(date); 
-                } catch (DateTimeParseException e) {
-                    material.setFlagExpirationDate(fm.getFlagExpirationDate());
-                    e.printStackTrace();
-                }
-            }
-            else {
-                material.setFlagExpirationDate(fm.getFlagExpirationDate());
-            }
-
-        }
-        else{
-            String cell = row[getIndexOBJ(header, "Flag")].toString();
-    
-            if (cell.equalsIgnoreCase("true") || cell.equalsIgnoreCase("false")) {
-                material.setFlagMaterial(Boolean.parseBoolean(cell));
-            } else if (cell != null){
-                try {
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-                    LocalDate date = LocalDate.parse(cell, formatter);
-                    material.setFlagExpirationDate(date); 
-                } catch (DateTimeParseException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
+        material.setFlagMaterial(getFlagFromFlaggedMaterials(material.getMaterial()));
         material.setNewSAPSafetyStock(material.getProposedSST());
         material.setNewSAPSafetyTime(material.getProposedST());
         readAndSetTheCurrencyODS(row[getIndexOBJ(header, "Current Inventory Value")],material);
@@ -897,44 +782,44 @@ public class MaterialServiceImpl implements MaterialService {
 
     public Coin getCoin(String numberFormat){
 
-        if (numberFormat.contains("€") || numberFormat.contains("EUR")) return Coin.EUR;
-        if (numberFormat.contains("¥") || numberFormat.contains("JPY")) return Coin.JPY;
-        if (numberFormat.contains("£") || numberFormat.contains("GBP")) return Coin.GBP;
-        if (numberFormat.contains("¥") || numberFormat.contains("CNY")) return Coin.CNY;
-        if (numberFormat.contains("A$") || numberFormat.contains("AUD")) return Coin.AUD;
-        if (numberFormat.contains("¢") || numberFormat.contains("CAD")) return Coin.CAD;
-        if (numberFormat.contains("CHF") || numberFormat.contains("CHF")) return Coin.CHF;
-        if (numberFormat.contains("HK$") || numberFormat.contains("KHD")) return Coin.HKD;
-        if (numberFormat.contains("S$") || numberFormat.contains("SGD")) return Coin.SGD;
-        if (numberFormat.contains("kr") || numberFormat.contains("SEK")) return Coin.SEK;
-        if (numberFormat.contains("₩") || numberFormat.contains("KRW")) return Coin.KRW;
-        if (numberFormat.contains("NOK") || numberFormat.contains("NOK")) return Coin.NOK;
-        if (numberFormat.contains("NZ$") || numberFormat.contains("NZD")) return Coin.NZD;
-        if (numberFormat.contains("₹") || numberFormat.contains("INR")) return Coin.INR;
-        if (numberFormat.contains("Mex$") || numberFormat.contains("MXN")) return Coin.MXN;
-        if (numberFormat.contains("NT$") || numberFormat.contains("TWD")) return Coin.TWD;
-        if (numberFormat.contains("R") || numberFormat.contains("ZAR")) return Coin.ZAR;
-        if (numberFormat.contains("R$") || numberFormat.contains("BRL")) return Coin.BRL;
-        if (numberFormat.contains("Dkr") || numberFormat.contains("DKK")) return Coin.DKK;
-        if (numberFormat.contains("zł") || numberFormat.contains("PLN")) return Coin.PLN;
-        if (numberFormat.contains("฿") || numberFormat.contains("THB")) return Coin.THB;
-        if (numberFormat.contains("₪") || numberFormat.contains("ILS")) return Coin.ILS;
-        if (numberFormat.contains("Rp") || numberFormat.contains("IDR")) return Coin.IDR;
-        if (numberFormat.contains("Kč") || numberFormat.contains("CZK")) return Coin.CZK;
-        if (numberFormat.contains("AED") || numberFormat.contains("AED")) return Coin.AED;
-        if (numberFormat.contains("₺") || numberFormat.contains("TRY")) return Coin.TRY;
-        if (numberFormat.contains("Ft") || numberFormat.contains("HUF")) return Coin.HUF;
-        if (numberFormat.contains("CLP$") || numberFormat.contains("CLP")) return Coin.CLP;
-        if (numberFormat.contains("﷼") || numberFormat.contains("SAR")) return Coin.SAR;
-        if (numberFormat.contains("₱") || numberFormat.contains("PHP")) return Coin.PHP;
-        if (numberFormat.contains("RM") || numberFormat.contains("MYR")) return Coin.MYR;
-        if (numberFormat.contains("Col$") || numberFormat.contains("COP")) return Coin.COP;
-        if (numberFormat.contains("₽") || numberFormat.contains("RUB")) return Coin.RUB;
-        if (numberFormat.contains("lei") || numberFormat.contains("RON")) return Coin.RON;
-        if (numberFormat.contains("S/.") || numberFormat.contains("PEN")) return Coin.PEN;
-        if (numberFormat.contains("BD") || numberFormat.contains("BHD")) return Coin.BHD;
-        if (numberFormat.contains("лв") || numberFormat.contains("BGN")) return Coin.BGN;
-        if (numberFormat.contains("$") || numberFormat.contains("USD")) return Coin.USD;
+        if (numberFormat.contains("€")) return Coin.EUR;
+        if (numberFormat.contains("¥")) return Coin.JPY;
+        if (numberFormat.contains("£")) return Coin.GBP;
+        if (numberFormat.contains("¥")) return Coin.CNY;
+        if (numberFormat.contains("A$")) return Coin.AUD;
+        if (numberFormat.contains("¢")) return Coin.CAD;
+        if (numberFormat.contains("CHF")) return Coin.CHF;
+        if (numberFormat.contains("HK$")) return Coin.HKD;
+        if (numberFormat.contains("S$")) return Coin.SGD;
+        if (numberFormat.contains("kr")) return Coin.SEK;
+        if (numberFormat.contains("₩")) return Coin.KRW;
+        if (numberFormat.contains("NOK")) return Coin.NOK;
+        if (numberFormat.contains("NZ$")) return Coin.NZD;
+        if (numberFormat.contains("₹")) return Coin.INR;
+        if (numberFormat.contains("Mex$")) return Coin.MXN;
+        if (numberFormat.contains("NT$")) return Coin.TWD;
+        if (numberFormat.contains("R")) return Coin.ZAR;
+        if (numberFormat.contains("R$")) return Coin.BRL;
+        if (numberFormat.contains("Dkr")) return Coin.DKK;
+        if (numberFormat.contains("zł")) return Coin.PLN;
+        if (numberFormat.contains("฿")) return Coin.THB;
+        if (numberFormat.contains("₪")) return Coin.ILS;
+        if (numberFormat.contains("Rp")) return Coin.IDR;
+        if (numberFormat.contains("Kč")) return Coin.CZK;
+        if (numberFormat.contains("AED")) return Coin.AED;
+        if (numberFormat.contains("₺")) return Coin.TRY;
+        if (numberFormat.contains("Ft")) return Coin.HUF;
+        if (numberFormat.contains("CLP$")) return Coin.CLP;
+        if (numberFormat.contains("﷼")) return Coin.SAR;
+        if (numberFormat.contains("₱")) return Coin.PHP;
+        if (numberFormat.contains("RM")) return Coin.MYR;
+        if (numberFormat.contains("Col$")) return Coin.COP;
+        if (numberFormat.contains("₽")) return Coin.RUB;
+        if (numberFormat.contains("lei")) return Coin.RON;
+        if (numberFormat.contains("S/.")) return Coin.PEN;
+        if (numberFormat.contains("BD")) return Coin.BHD;
+        if (numberFormat.contains("лв")) return Coin.BGN;
+        if (numberFormat.contains("$")) return Coin.USD;
 
         return Coin.EUR;
     }

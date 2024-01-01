@@ -1,10 +1,5 @@
 package com.bosch.diabo.domain.enumeration;
 
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
 /**
  * The Coin enumeration.
  */
@@ -128,90 +123,6 @@ public enum Coin {
                 return BGN;
             default:
                 return EUR;
-        }
-    }
-
-    public String getStyle(){
-        switch(this){
-            case EUR:
-                return "€";
-            case USD:
-                return "$";
-            case GBP:
-                return "£";
-            case JPY:
-                return "¥";
-            case CNY:
-                return "¥";
-            case AUD:
-                return "A$";
-            case CAD:
-                return "¢";
-            case CHF:
-                return "CHF";
-            case HKD:
-                return "HK$";
-            case SGD:
-                return "S$";
-            case SEK:
-                return "kr";
-            case KRW:
-                return "₩";
-            case NOK:
-                return "NOK";
-            case NZD:
-                return "NZ$";
-            case INR:
-                return "₹";
-            case MXN:
-                return "Mex$";
-            case TWD:
-                return "NT$";
-            case ZAR:
-                return "R";
-            case BRL:
-                return "R$";
-            case DKK:
-                return "Dkr";
-            case PLN:
-                return "zł";
-            case THB:
-                return "฿";
-            case ILS:
-                return "₪";
-            case IDR:
-                return "Rp";
-            case CZK:
-                return "Kč";
-            case AED:
-                return "AED";
-            case TRY:
-                return "₺";
-            case HUF:
-                return "Ft";
-            case CLP:
-                return "CLP$";
-            case SAR:
-                return "﷼";
-            case PHP:
-                return "₱";
-            case MYR:
-                return "RM";
-            case COP:
-                return "Col$";
-            case RUB:
-                return "₽";
-            case RON:
-                return "lei";
-            case PEN:
-                return "S/.";
-            case BHD:
-                return "BD";
-            case BGN:
-                return "лв";
-            default:
-                return "€";
-
         }
     }
 }
