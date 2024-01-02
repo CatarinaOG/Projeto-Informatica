@@ -28,11 +28,13 @@ export class FlagModal  implements OnInit{
 	//checkFlag : boolean = false;
 	disabled = true;
 	editedMaterial: IEditCell | undefined;
+	placeholderText = ""
 
 	constructor( protected editCellService: EditCellService ) {}
 
 	ngOnInit(): void {
 		this.editedMaterial = this.editCellService.getMaterial(this.material.id);
+		this.placeholderText = this.definePlaceholder();
 	}
 
 	toggleCheckbox() {

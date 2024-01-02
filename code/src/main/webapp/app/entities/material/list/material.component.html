@@ -108,7 +108,7 @@
           </ng-template>
           <th [attr.colspan]="visibility.get('edit') ? 5 : 1" class="tableHeader" >
             <header-group [headerName] = "'Edit'" [visibilityValue] = "visibility.get('edit')" groupName = 'edit' (visibilityEmitter)="switchVisibility($event)"
-            id="editMenuTooltip" placement="left" [ngbTooltip]="editMenuTooltip" #t3="ngbTooltip" triggers="manual" tooltipClass="custom-tooltip"></header-group>
+            id="editMenuTooltip" placement="left" [ngbTooltip]="editMenuTooltip"  #t3="ngbTooltip" triggers="manual" [autoClose]="false" tooltipClass="custom-tooltip" ></header-group>
           </th>
         </tr>
 
@@ -239,7 +239,7 @@
          </ng-template>
 
           <th scope="col" jhiSortBy="openSAPmd04" class = "inventory" [ngClass] ="editCellClasses('inventory')">
-            <div id="openSAPHeader" class="d-flex" style="place-content: center;"  placement="top" [ngbTooltip]="linkTourTooltip" #t2="ngbTooltip" triggers="manual" tooltipClass="custom-tooltip">
+            <div id="openSAPHeader" class="d-flex" style="place-content: center;"  placement="top" [ngbTooltip]="linkTourTooltip" [autoClose]="false" #t2="ngbTooltip" triggers="manual" tooltipClass="custom-tooltip">
               <span>Open SAP Md 04</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
@@ -292,7 +292,7 @@
          </ng-template>
 
           <th id="sapsafetytimestock" scope="col" jhiSortBy="newSAPSafetyStock" class="edit" [ngClass] ="editCellClasses('edit')">
-            <div class="d-flex" style="place-content: center;" placement="left" [ngbTooltip]="sapSafetyStockToolTip" #t4="ngbTooltip" triggers="manual" tooltipClass="custom-tooltip">
+            <div class="d-flex" style="place-content: center;" placement="left" [ngbTooltip]="sapSafetyStockToolTip" #t4="ngbTooltip" triggers="manual" [autoClose]="false" tooltipClass="custom-tooltip">
               <span placement="top" ngbTooltip="{{toolTipMsg.get('New SAP Safety Stock')}}" >New Sap Safety Stock</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
@@ -321,7 +321,7 @@
 
           <th id="selectEntryTooltipId" scope="col" jhiSortBy="selectEntriesForChangeInSap" class="edit" [ngClass] ="editCellClasses('edit')">
             <div>
-              <div class="d-flex" style="place-content: center;" placement="left" [ngbTooltip]="selectEntryTooltip" #t5="ngbTooltip" triggers="manual" tooltipClass="custom-tooltip">
+              <div class="d-flex" style="place-content: center;" placement="left" [ngbTooltip]="selectEntryTooltip" #t5="ngbTooltip" triggers="manual" tooltipClass="custom-tooltip" [autoClose]="false">
                 <span placement="top" ngbTooltip="{{toolTipMsg.get('Select Entries For Change')}}">Entries For Change In Sap</span>
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
@@ -347,7 +347,7 @@
           </ng-template>
 
           <th id="flagTooltipId" scope="col" jhiSortBy="flagMaterial" class="edit" [ngClass] ="editCellClasses('edit')">
-            <div class="d-flex" style="place-content: center;" placement="left" [ngbTooltip]="flagToolTip" #t6="ngbTooltip" triggers="manual" tooltipClass="custom-tooltip">
+            <div class="d-flex" style="place-content: center;" placement="left" [ngbTooltip]="flagToolTip" [autoClose]="false" #t6="ngbTooltip" triggers="manual" tooltipClass="custom-tooltip">
               <span placement="top" ngbTooltip="{{toolTipMsg.get('Flag Material as Special Case')}}">Flag Material As Special Case</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
@@ -368,7 +368,7 @@
           </ng-template>
 
           <th id="commentTooltipId" scope="col" jhiSortBy="comment" class="setWidth edit headerRowEnd" [ngClass] ="editCellClasses('edit')">
-            <div class="d-flex" style="place-content: center;" placement="left" [ngbTooltip]="commentToolTip" #t7="ngbTooltip" triggers="manual" tooltipClass="custom-tooltip">
+            <div class="d-flex" style="place-content: center;" placement="left" [ngbTooltip]="commentToolTip" #t7="ngbTooltip" triggers="manual" tooltipClass="custom-tooltip" [autoClose]="false">
               <span placement="top" ngbTooltip="{{toolTipMsg.get('Comment')}}">Comment</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>

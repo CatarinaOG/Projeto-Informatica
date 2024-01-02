@@ -1,6 +1,6 @@
 <div class="optionsBarResponsive" style=" margin-bottom: 20px;">
     
-    <div ngbDropdown class="dropdown d-flex justify-content-end" autoClose="outside" placement="right" [ngbTooltip]="filterOptionsToolTip" #t8="ngbTooltip" triggers="manual" tooltipClass="custom-tooltip">
+    <div ngbDropdown class="dropdown d-flex justify-content-end" autoClose="outside" placement="right" [ngbTooltip]="filterOptionsToolTip" [autoClose]="false" #t8="ngbTooltip" triggers="manual" tooltipClass="custom-tooltip">
 
       <ng-template #filterOptionsToolTip>   
         <div class="tooltipTutorial">
@@ -239,7 +239,7 @@
       <input type="file" class="file-input" accept=".csv,.ods,.xlsx,.xls"  (change)="sendFileMessage($event,true)" (click)="importReplaceInput.value=''" #importReplaceInput>
       <input type="file" class="file-input" accept=".csv,.ods,.xlsx,.xls"  (change)="sendFileMessage($event,false)" (click)="importAdd.value=''" #importAdd>
   
-      <div ngbDropdown class="dropdown d-flex justify-content-end" placement="right" [ngbTooltip]="fileOptionsToolTip" #t9="ngbTooltip" triggers="manual" tooltipClass="custom-tooltip">
+      <div ngbDropdown class="dropdown d-flex justify-content-end" placement="right" [ngbTooltip]="fileOptionsToolTip" [autoClose]="false" #t9="ngbTooltip" triggers="manual" tooltipClass="custom-tooltip">
         <ng-template #fileOptionsToolTip>   
           <div class="tooltipTutorial">
             <span>{{ tourMsgs.get(9) }}</span>
@@ -296,7 +296,7 @@
       </div>
      </ng-template>
 
-      <div ngbDropdown class="dropdown d-flex justify-content-end" autoClose="outside" placement="right" [ngbTooltip]="tableSizeToolTip" #t10="ngbTooltip" triggers="manual" tooltipClass="custom-tooltip">
+      <div ngbDropdown class="dropdown d-flex justify-content-end" autoClose="outside" placement="right" [ngbTooltip]="tableSizeToolTip" [autoClose]="false" #t10="ngbTooltip" triggers="manual" tooltipClass="custom-tooltip">
         <button ngbDropdownToggle class="btn btn-white" type="button"  id="dropdownMenuButtonTableSize" aria-expanded="false" >  
           <fa-icon icon="cogs"></fa-icon>
           <span >Table Size</span>
@@ -339,7 +339,7 @@
       </div>
      </ng-template>
 
-    <div id="undoTooltipId" class="btn-group" placement="bottom" [ngbTooltip]="undoToolTip" #t11="ngbTooltip" triggers="manual" tooltipClass="custom-tooltip">
+    <div id="undoTooltipId" class="btn-group" placement="bottom" [ngbTooltip]="undoToolTip" [autoClose]="false" #t11="ngbTooltip" triggers="manual" tooltipClass="custom-tooltip">
       <button class="btn btn-info" (click)="sendUndo()" [disabled]="historyLength==0" >
         <fa-icon icon="undo"></fa-icon>
         <span class="font-weight-bold">Undo</span>
@@ -398,7 +398,7 @@
         </div>
     </div>
     </ng-template>
-    <div id="switchCurrencyId" class="form-check form-switch" style="display: flex;" placement="right" [ngbTooltip]="switchCurrencyTooltip" #t12="ngbTooltip" triggers="manual" tooltipClass="custom-tooltip">
+    <div id="switchCurrencyId" class="form-check form-switch" style="display: flex;" placement="right" [ngbTooltip]="switchCurrencyTooltip" [autoClose]="false" #t12="ngbTooltip" triggers="manual" tooltipClass="custom-tooltip">
       <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" [checked]="currencyEUR" (change)="toggleCheckbox()">
       <label class="form-check-label" for="flexSwitchCheckChecked" style="margin-left: 10px;">
           {{ currencyEUR ? "Euros €" : "Local Currency"}}
@@ -421,7 +421,7 @@
         </div>
     </div>
     </ng-template>
-    <submit-modal id="submitTooltipId" placement="left" [ngbTooltip]="submitTooltip" #t13="ngbTooltip" triggers="manual" tooltipClass="custom-tooltip" (confirmEmmiter) = "submitToSAP($event)" [totalLines] = "changesListLength" [unselectedLines] = "this.unselectedLines"></submit-modal>
+    <submit-modal id="submitTooltipId" placement="left" [ngbTooltip]="submitTooltip" [autoClose]="false" #t13="ngbTooltip" triggers="manual" tooltipClass="custom-tooltip" (confirmEmmiter) = "submitToSAP($event)" [totalLines] = "changesListLength" [unselectedLines] = "this.unselectedLines"></submit-modal>
 
     
 

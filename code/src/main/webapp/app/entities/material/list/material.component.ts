@@ -145,7 +145,8 @@ export class MaterialComponent implements OnInit , OnDestroy {
 
 
   defineStepTour(value: number) {
-    if(this.linkTourTooltip) this.linkTourTooltip.close()
+    if (this.linkTourTooltip) this.linkTourTooltip.close()
+    if (this.editMenuTooltip) this.editMenuTooltip.close()
     if (this.sapSafetyStockToolTip ) this.sapSafetyStockToolTip.close()
     if (this.selectEntryTooltip) this.selectEntryTooltip.close()
     if (this.flagTooltip) this.flagTooltip.close()

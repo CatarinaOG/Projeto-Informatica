@@ -25,9 +25,9 @@
 
 
 <div [id]="headerName" class="d-flex" style="place-content: center;">
-    <span placement="top" [ngbTooltip]="headerToolTip" #t1="ngbTooltip" triggers="manual" tooltipClass="custom-tooltip" class="flexGrow">{{headerName}}</span>
+    <span placement="top" [ngbTooltip]="headerToolTip" [autoClose]="false" #t1="ngbTooltip" triggers="manual" tooltipClass="custom-tooltip" class="flexGrow">{{headerName}}</span>
     
-    <button placement="top" [ngbTooltip]="btnToolTip" #t2="ngbTooltip" triggers="manual" tooltipClass="custom-tooltip"  class="buttonNoBorder" (click)="sendVisibilityMessage()">
+    <button placement="top" [ngbTooltip]="btnToolTip" [autoClose]="false" #t2="ngbTooltip" triggers="manual" tooltipClass="custom-tooltip"  class="buttonNoBorder" (click)="sendVisibilityMessage()">
     <fa-icon [icon]="visibilityValue ? 'compress-alt' : 'expand-alt'"></fa-icon>
     </button>
 </div>
