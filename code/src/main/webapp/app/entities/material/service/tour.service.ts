@@ -9,7 +9,7 @@ export class TourService {
     private maxSteps: number;
 
     constructor () {
-        this.maxSteps = 13;
+        this.maxSteps = 15;
     }
 
     start(){

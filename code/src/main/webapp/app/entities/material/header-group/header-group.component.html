@@ -5,6 +5,7 @@
         <span>{{ tourMsgs.get(0) }}</span>
         <div class="tooltipBtns">
             <button class="btn btn-danger" (click)="tourService.cancel($event)">Stop</button>
+            <span style="font-weight: bold;"> {{tourService.getIndex() + 1}}/15</span>
             <button class="btn btn-info" (click) = "tourService.nextStep($event)">></button>
         </div>
     </div>   
@@ -15,6 +16,7 @@
         <span>{{ tourMsgs.get(1) }}</span>
         <div class="tooltipBtns">
             <button class="btn btn-danger" (click)="tourService.cancel($event)">Stop</button>
+            <span style="font-weight: bold;"> {{tourService.getIndex() + 1}}/15</span>
             <div>
                 <button class="btn btn-info" (click)="tourService.previousStep($event)">&lt;</button>
                 <button class="btn btn-info" (click) = "tourService.nextStep($event)">></button>

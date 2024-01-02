@@ -99,6 +99,7 @@
                   <span>{{ tourMsgs.get(3) }}</span>
                   <div class="tooltipBtns">
                       <button class="btn btn-danger" (click)="tourService.cancel($event)">Stop</button>
+                      <span style="font-weight: bold;"> {{tourService.getIndex() + 1}}/15</span>
                       <div>
                           <button class="btn btn-info" (click)="tourService.previousStep($event)">&lt;</button>
                           <button class="btn btn-info" (click) = "tourService.nextStep($event)">></button>
@@ -236,6 +237,7 @@
               <span>{{ tourMsgs.get(2) }}</span>
               <div class="tooltipBtns">
                   <button class="btn btn-danger" (click)="tourService.cancel($event)">Stop</button>
+                  <span style="font-weight: bold;"> {{tourService.getIndex() + 1}}/15</span>
                   <div>
                       <button class="btn btn-info" (click)="tourService.previousStep($event)">&lt;</button>
                       <button class="btn btn-info" (click) = "tourService.nextStep($event)">></button>
@@ -289,6 +291,7 @@
               <span>{{ tourMsgs.get(4) }}</span>
               <div class="tooltipBtns">
                   <button class="btn btn-danger" (click)="tourService.cancel($event)">Stop</button>
+                  <span style="font-weight: bold;"> {{tourService.getIndex() + 1}}/15</span>
                   <div>
                       <button class="btn btn-info" (click)="tourService.previousStep($event)">&lt;</button>
                       <button class="btn btn-info" (click) = "tourService.nextStep($event)">></button>
@@ -316,6 +319,7 @@
               <span>{{ tourMsgs.get(5) }}</span>
               <div class="tooltipBtns">
                   <button class="btn btn-danger" (click)="tourService.cancel($event)">Stop</button>
+                  <span style="font-weight: bold;"> {{tourService.getIndex() + 1}}/15</span>
                   <div>
                       <button class="btn btn-info" (click)="tourService.previousStep($event)">&lt;</button>
                       <button class="btn btn-info" (click) = "tourService.nextStep($event)">></button>
@@ -344,6 +348,7 @@
               <span>{{ tourMsgs.get(6) }}</span>
               <div class="tooltipBtns">
                   <button class="btn btn-danger" (click)="tourService.cancel($event)">Stop</button>
+                  <span style="font-weight: bold;"> {{tourService.getIndex() + 1}}/15</span>
                   <div>
                       <button class="btn btn-info" (click)="tourService.previousStep($event)">&lt;</button>
                       <button class="btn btn-info" (click) = "tourService.nextStep($event)">></button>
@@ -365,6 +370,7 @@
               <span>{{ tourMsgs.get(7) }}</span>
               <div class="tooltipBtns">
                   <button class="btn btn-danger" (click)="tourService.cancel($event)">Stop</button>
+                  <span style="font-weight: bold;"> {{tourService.getIndex() + 1}}/15</span>
                   <div>
                       <button class="btn btn-info" (click)="tourService.previousStep($event)">&lt;</button>
                       <button class="btn btn-info" (click) = "tourService.nextStep($event)">></button>
@@ -429,7 +435,7 @@
           <td class ="inventory" [ngClass] ="editCellClasses('inventory')">{{ material.serviceLevel }}</td>
           <td class ="inventory" [ngClass] ="editCellClasses('inventory')"><button class="buttonNoBorder">
             <a href="{{sapLinkBuilder(material.id)}}"><fa-icon icon="external-link" style="color: #2D8DFF;"></fa-icon></a>
-            </button> <!--{{ diabo.openSapMd04 }}-->
+            </button> 
           </td>
 
           <td  class ="inventory" [ngClass] ="editCellClasses('inventory')"><currency-tooltip-cell [value] = "currencyConverter(material.currentInventoryValue,material.currency)" [currency]="material.currency" [currencyEUR] = "currencyEUR" ></currency-tooltip-cell></td>
@@ -445,7 +451,7 @@
 
          
           
-          <td class ="edit" *ngIf="isEditable[0] === material.id && isEditable[1] === 0 " ><input class = "inputWidth" type="number" min=0 [placeholder]="placeholderGeneratorNum('SST',material)" (change)="input($event,'newSST',material.id)"></td>
+          <td class ="edit" *ngIf="isEditable[0] === material.id && isEditable[1] === 0 " ><input class="inputWidth" type="number" min=0 [placeholder]="placeholderGeneratorNum('SST',material)" (change)="input($event,'newSST',material.id)"></td>
 
           <td class ="edit" *ngIf="!(isEditable[0] === material.id && isEditable[1] === 0) " (click)="makeEditable(material.id,0)"  [ngClass] ="editCellClasses('edit',material,'SST')"><tooltip-cell [oldValue] = "material.newSAPSafetyStock" [generatedValue] = "cellValueGenerator('SST',material)"></tooltip-cell></td>
 
