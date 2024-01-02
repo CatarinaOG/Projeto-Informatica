@@ -1,5 +1,6 @@
 package com.bosch.diabo.service.impl;
 
+import com.bosch.diabo.domain.FlaggedMaterial;
 import com.bosch.diabo.domain.Material;
 import com.bosch.diabo.domain.enumeration.ABCClassification;
 import com.bosch.diabo.domain.enumeration.Coin;
@@ -97,15 +98,9 @@ public class MaterialServiceImpl implements MaterialService {
                 existingMaterial.setComment(material.getComment());
                 existingMaterial.setNewSAPSafetyStock(material.getNewSAPSafetyStock());
                 existingMaterial.setNewSAPSafetyTime(material.getNewSAPSafetyTime());
-                existingMaterial.setToSaveUpdates(material.getToSaveUpdates());
-                existingMaterial.setCurrency(material.getCurrency());
-                existingMaterial.setDateOfUpdatedSS(material.getDateOfUpdatedSS());
-                existingMaterial.setDateOfUpdatedST(material.getDateOfUpdatedST());
                 existingMaterial.setMrpController(material.getMrpController());
                 existingMaterial.setPlant(material.getPlant());
-                existingMaterial.setToSaveUpdates(material.getToSaveUpdates());
-                existingMaterial.setValueOfUpdatedSS(material.getValueOfUpdatedSS());
-                existingMaterial.setValueOfUpdatedST(material.getValueOfUpdatedST());
+                existingMaterial.setToSaveUpdates(true);
 
                 return existingMaterial;
             })
@@ -233,34 +228,57 @@ public class MaterialServiceImpl implements MaterialService {
         materialRepository.deleteAll();
     }
 
+    public void deleteEveryMaterialNotSaved(){
+        materialRepository
+            .findAll()
+            .stream()
+            .filter(material -> material.getToSaveUpdates() != true)
+            .forEach(material -> {
+                materialRepository.deleteById(material.getId());
+            });
+    }
+
+    public void setEveryMaterialToNotSave(){
+        materialRepository
+        .findAll()
+        .stream()
+        .peek(material -> {
+            material.setToSaveUpdates(false);
+        })
+        .forEach(materialRepository::save);
+    }
+
 
     @Override
     public void uploadFileReplace(File file){
         log.debug("Request to new source file : {}", file.getName());   
         
         try{ 
-            deleteAll();
-
+            
             String fileName = file.getName();
             int lastDotIndex = fileName.lastIndexOf('.');
             String fileExtension = lastDotIndex == -1 ? "" : fileName.substring(lastDotIndex + 1);
             
             switch (fileExtension.toLowerCase()) {
                 case "xlsx":
-                    uploadFileXLSX(file,false);
+                    uploadFileXLSX(file);
                     break;
                 case "csv":
-                    uploadFileCSV(file,false);
+                    uploadFileCSV(file);
                     break;
                 case "xls":
-                    uploadFileXLS(file,false);
+                    uploadFileXLS(file);
                     break;
                 case "ods":
-                    uploadFileODS(file, false);
+                    uploadFileODS(file);
                     break;
                 default:
                     break;
             }
+
+            deleteEveryMaterialNotSaved();
+            setEveryMaterialToNotSave();
+
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -280,19 +298,21 @@ public class MaterialServiceImpl implements MaterialService {
             
             switch (fileExtension.toLowerCase()) {
                 case "xlsx":
-                    uploadFileXLSX(file,true);
+                    uploadFileXLSX(file);
                     break;
                 case "csv":
-                    uploadFileCSV(file,true);
+                    uploadFileCSV(file);
                     break;
                 case "xls":
-                    uploadFileXLS(file,true);
+                    uploadFileXLS(file);
                     break;
                 case "ods":
-                    uploadFileODS(file, true);
+                    uploadFileODS(file);
                 default:
                     break;
             }
+
+            setEveryMaterialToNotSave();
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -303,7 +323,7 @@ public class MaterialServiceImpl implements MaterialService {
 
     // ---------- > XLSX < ----------
 
-    public void uploadFileXLSX(File file, Boolean toUpdate){
+    public void uploadFileXLSX(File file){
 
         try (FileInputStream fis = new FileInputStream(file);
             Workbook workbook = new XSSFWorkbook(fis)) {
@@ -319,10 +339,12 @@ public class MaterialServiceImpl implements MaterialService {
                 Material material = parseMaterialXLSX(row, headerMap);
                 Optional<Material> opcMaterial = materialRepository.findByMaterial(material.getMaterial());
 
-                if (toUpdate && opcMaterial.isPresent())
+                if (opcMaterial.isPresent())
                     updateByMaterialName(material);
-                else
+                else{
+                    material.setToSaveUpdates(true);                    
                     save(material);
+                }
 
             }
         } catch (IOException e) {
@@ -364,7 +386,11 @@ public class MaterialServiceImpl implements MaterialService {
         material.setUnitCost(getFloatCellValue(row, headerMap, "Unit Cost"));
         material.setAvgDemand(getIntCellValue(row, headerMap, "Avg Demand"));
         material.setAvgInventoryEffectAfterChange(getFloatCellValue(row, headerMap, "Average inventory effect after change"));
-        material.setFlagMaterial(false);
+        material.setFlagMaterial(getFlagFromFlaggedMaterials(material.getMaterial()));
+        material.setNewSAPSafetyStock(material.getProposedSST());
+        material.setNewSAPSafetyTime(material.getProposedST());
+        readAndSetTheCurrencyXLSX(row,headerMap,material);
+
 
         if (headerMap.containsKey("MRP Controller")) {
             material.setMrpController(getStringCellValue(row, headerMap, "MRP Controller"));
@@ -373,31 +399,21 @@ public class MaterialServiceImpl implements MaterialService {
         if (headerMap.containsKey("Plant")) {
             material.setPlant(getStringCellValue(row, headerMap, "Plant"));
         }
-        
-        if (headerMap.containsKey("New SAP SS")) {
-            try {
-                material.setNewSAPSafetyStock(Integer.parseInt(getStringCellValue(row, headerMap, "New SAP SS")));
-            } catch (NumberFormatException e) {
-                material.setNewSAPSafetyStock(material.getProposedSST());
-            }
-        }
-
-        if (headerMap.containsKey("New SAP Safety Time")) {
-            try {
-                material.setNewSAPSafetyTime(Integer.parseInt(getStringCellValue(row, headerMap, "New SAP Safety Time")));
-            } catch (NumberFormatException e) {
-                material.setNewSAPSafetyTime(material.getProposedST());
-            }
-        }
 
         if (headerMap.containsKey("Comment")) {
             material.setComment(getStringCellValue(row, headerMap, "Comment"));
         }
 
-        readAndSetTheCurrencyXLSX(row,headerMap,material);
-
         return material;
 
+    }
+
+    private Boolean getFlagFromFlaggedMaterials(String materialName){
+
+        Optional<FlaggedMaterial> flaggedMaterial = flaggedMaterialServiceImpl.findByMaterial(materialName);
+        if(flaggedMaterial.isPresent()) return true;
+
+        return false;
     }
 
     private void readAndSetTheCurrencyXLSX(Row row, Map<String, Integer> headerMap, Material material){
@@ -434,7 +450,7 @@ public class MaterialServiceImpl implements MaterialService {
 
     // ---------- > XLS < ----------
 
-    public void uploadFileXLS(File file, Boolean toUpdate) {
+    public void uploadFileXLS(File file) {
         try (FileInputStream fis = new FileInputStream(file);
             Workbook workbook = new HSSFWorkbook(fis)) {
             org.apache.poi.ss.usermodel.Sheet sheet = workbook.getSheetAt(0);
@@ -450,10 +466,12 @@ public class MaterialServiceImpl implements MaterialService {
                 Material material = parseMaterialXLSX(row, headerMap);
                 Optional<Material> opcMaterial = materialRepository.findByMaterial(material.getMaterial());
 
-                if (toUpdate && opcMaterial.isPresent())
+                if (opcMaterial.isPresent())
                     updateByMaterialName(material);
-                else
+                else{
+                    material.setToSaveUpdates(true);  
                     save(material);
+                }
 
             }
         } catch (IOException e) {
@@ -464,7 +482,7 @@ public class MaterialServiceImpl implements MaterialService {
 
     // ---------- > CSV < ----------
 
-    public void uploadFileCSV(File file, Boolean toUpdate) {
+    public void uploadFileCSV(File file) {
         try (CSVReader csvReader = new CSVReader(new FileReader(file))) {
             String[] header = csvReader.readNext(); // Assuming the first row is the header
 
@@ -474,7 +492,7 @@ public class MaterialServiceImpl implements MaterialService {
                 Material material = parseMaterialCSV(header, nextRecord);
                 Optional<Material> opcMaterial = materialRepository.findByMaterial(material.getMaterial());
 
-                if (toUpdate && opcMaterial.isPresent())
+                if (opcMaterial.isPresent())
                     updateByMaterialName(material);
                 else
                     save(material);
@@ -504,8 +522,11 @@ public class MaterialServiceImpl implements MaterialService {
         material.setUnitCost(parseNumericValue(nextRecord[getIndex(header, "Unit Cost")]));
         material.setAvgDemand(Integer.parseInt(nextRecord[getIndex(header, "Avg Demand")]));
         material.setAvgInventoryEffectAfterChange(parseNumericValue(nextRecord[getIndex(header, "Average inventory effect after change")]));
-        material.setFlagMaterial(false);
-
+        material.setFlagMaterial(getFlagFromFlaggedMaterials(material.getMaterial()));
+        material.setNewSAPSafetyStock(material.getProposedSST());
+        material.setNewSAPSafetyTime(material.getProposedST());
+        readAndSetTheCurrencyCSV(nextRecord[getIndex(header, "Current Inventory Value")],material);
+        
         if(getIndex(header, "MRP Controller") >= 0){
             material.setMrpController(nextRecord[getIndex(header, "MRP Controller")]);
         }
@@ -514,28 +535,10 @@ public class MaterialServiceImpl implements MaterialService {
             material.setPlant(nextRecord[getIndex(header, "Plant")]);
         }
 
-
-        if(getIndex(header, "New SAP SS") >= 0){
-            try {
-                material.setNewSAPSafetyStock(Integer.parseInt(nextRecord[getIndex(header, "New SAP SS")]));
-            } catch (NumberFormatException e) {
-                material.setNewSAPSafetyStock(material.getProposedSST());
-            }
-        }
-
-        if(getIndex(header, "New SAP Safety Time") >= 0){
-            try {
-                material.setNewSAPSafetyTime(Integer.parseInt(nextRecord[getIndex(header, "New SAP Safety Time")]));
-            } catch (NumberFormatException e) {
-                material.setNewSAPSafetyTime(material.getProposedST());
-            }
-        }
-
         if(getIndex(header, "Comment") >= 0){
             material.setComment(nextRecord[getIndex(header, "Comment")]);
         }
 
-        readAndSetTheCurrencyCSV(nextRecord[getIndex(header, "Current Inventory Value")],material);
 
         return material;
     }
@@ -564,7 +567,7 @@ public class MaterialServiceImpl implements MaterialService {
 
     // -------------> ODS <-------------
 
-    public void uploadFileODS(File file, Boolean toUpdate) {
+    public void uploadFileODS(File file) {
         try {
             com.github.miachm.sods.Sheet sheet = new SpreadSheet(file).getSheet(0);
             Range data = sheet.getDataRange();
@@ -575,10 +578,12 @@ public class MaterialServiceImpl implements MaterialService {
                 Material material = parseMaterialODS(materials[i], header);
                 Optional<Material> opcMaterial = materialRepository.findByMaterial(material.getMaterial());
 
-                if (toUpdate && opcMaterial.isPresent())
+                if (opcMaterial.isPresent())
                     updateByMaterialName(material);
-                else
-                    save(material); 
+                else{
+                    material.setToSaveUpdates(true);  
+                    save(material);
+                }
             }
 
         } catch (IOException | IllegalArgumentException e) {
@@ -606,7 +611,12 @@ public class MaterialServiceImpl implements MaterialService {
         material.setUnitCost(parseNumericValue(row[getIndexOBJ(header, "Unit Cost")].toString()));
         material.setAvgDemand((int) Float.parseFloat(row[getIndexOBJ(header, "Average Demand")].toString()));
         material.setAvgInventoryEffectAfterChange(parseNumericValue(row[getIndexOBJ(header, "Average Inventory Effect After Change")].toString()));
-        material.setFlagMaterial(false);
+        material.setFlagMaterial(getFlagFromFlaggedMaterials(material.getMaterial()));
+        material.setNewSAPSafetyStock(material.getProposedSST());
+        material.setNewSAPSafetyTime(material.getProposedST());
+        readAndSetTheCurrencyODS(row[getIndexOBJ(header, "Current Inventory Value")],material);
+
+
 
         if(getIndexOBJ(header, "MRP Controller") >= 0){
             material.setMrpController(row[getIndexOBJ(header, "MRP Controller")].toString());
@@ -616,27 +626,10 @@ public class MaterialServiceImpl implements MaterialService {
             material.setPlant(row[getIndexOBJ(header, "Plant")].toString());
         }
 
-        if(getIndexOBJ(header, "New SAP SS") >= 0){
-            try {
-                material.setNewSAPSafetyStock(Integer.parseInt(row[getIndexOBJ(header, "New SAP SS")].toString()));
-            } catch (NumberFormatException e) {
-                material.setNewSAPSafetyStock(material.getProposedSST());
-            }
-        }
-
-        if(getIndexOBJ(header, "New SAP Safety Time") >= 0){
-            try {
-                material.setNewSAPSafetyTime(Integer.parseInt(row[getIndexOBJ(header, "New SAP Safety Time")].toString()));
-            } catch (NumberFormatException e) {
-                material.setNewSAPSafetyTime(material.getProposedST());
-            }
-        }
-
         if(getIndexOBJ(header, "Comment") >= 0){
             material.setComment(row[getIndexOBJ(header, "Comment")].toString());
         }
 
-        readAndSetTheCurrencyODS(row[getIndexOBJ(header, "Current Inventory Value")],material);
 
         return material;
     }
@@ -829,6 +822,19 @@ public class MaterialServiceImpl implements MaterialService {
         if (numberFormat.contains("$")) return Coin.USD;
 
         return Coin.EUR;
+    }
+
+    @Override
+    public void removeFlag(Long material_id){
+
+        materialRepository
+            .findById(material_id)
+            .ifPresent(material -> {
+                material.setFlagMaterial(false);
+                material.setFlagExpirationDate(null);
+
+                materialRepository.save(material);
+            });
     }
 
 }

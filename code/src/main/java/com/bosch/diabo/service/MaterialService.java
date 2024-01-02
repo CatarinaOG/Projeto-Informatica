@@ -62,10 +62,10 @@ public interface MaterialService {
     Optional<Material> findOne(Long id);
     
     /**
-     * Get all the materials.
+     * Find Material by the material name.
      *
-     * @param material the pagination information.
-     * @return the list of entities.
+     * @param material the material name.
+     * @return the entity.
      */
     Optional<Material> findByMaterial(String material);
 
@@ -106,4 +106,5 @@ public interface MaterialService {
      */
     List<Material> getMaterialChanged(List<Object> data);
 
+    void removeFlag(Long material_id);
 }

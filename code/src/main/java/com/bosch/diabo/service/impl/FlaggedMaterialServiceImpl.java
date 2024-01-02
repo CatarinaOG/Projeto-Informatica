@@ -239,4 +239,10 @@ public class FlaggedMaterialServiceImpl implements FlaggedMaterialService {
             .filter(material -> material.getFlagExpirationDate().isBefore(currentDate))
             .forEach(material -> flaggedMaterialRepository.delete(material));
     }
+
+    @Override
+    public Optional<FlaggedMaterial> findByMaterial(String material){
+        log.debug("Request to find Material by name");
+        return flaggedMaterialRepository.findByMaterial(material);
+    }
 }
