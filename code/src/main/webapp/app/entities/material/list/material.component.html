@@ -151,13 +151,13 @@
             </div>
           </th>
 
-
-
-
-
           <th *ngIf = "!visibility.get('materialInfo')" class ="materialInfo headerRowEnd">
             ...
           </th>
+
+
+
+          
           
           <th scope="col" jhiSortBy="avgSupplierDelay" class ="supplierDelay" [ngClass] ="editCellClasses('supplierDelay')">
             <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{toolTipMsg.get('Avg Supplier Delay')}}">
@@ -177,6 +177,8 @@
             ...
           </th>
 
+          
+
           <th scope="col" jhiSortBy="currSAPSafetyStock" class ="safetyStock" [ngClass] ="editCellClasses('safetyStock')">
             <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{toolTipMsg.get('Current Sap Safety Stock')}}">
               <span>Current Sap Safety Stock</span>
@@ -190,12 +192,13 @@
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-
-         
-
           <th *ngIf = "!visibility.get('safetyStock')" class ="safetyStock headerRowEnd">
             ...
           </th>
+
+
+
+
 
           <th scope="col" jhiSortBy="currentSAPSafeTime" class = "safetyTime" [ngClass] ="editCellClasses('safetyTime')">
             <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{toolTipMsg.get('Current Sap Safety Time')}}">
@@ -211,11 +214,14 @@
             </div>
           </th>
 
-          
-          
           <th *ngIf = "!visibility.get('safetyTime')" class ="safetyTime headerRowEnd">
             ...
           </th>
+
+
+
+
+
           
           <th scope="col" jhiSortBy="serviceLevel" class = "inventory" [ngClass] ="editCellClasses('inventory')">
             <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{toolTipMsg.get('Service Level')}}">
@@ -384,7 +390,7 @@
           <td class ="materialInfo" [ngClass] ="editCellClasses('materialInfo')">{{ material.description }}</td>
           <td class ="materialInfo" [ngClass] ="editCellClasses('materialInfo')">{{ material.abcClassification }}</td>
           <td class ="materialInfo" [ngClass] ="editCellClasses('materialInfo')">{{ material.plant }}</td>
-          <td class ="materialInfo headerRowEnd" [ngClass] ="editCellClasses('materialInfo')">{{ "md04" }}</td>
+          <td class ="materialInfo headerRowEnd" [ngClass] ="editCellClasses('materialInfo')">{{ material.mrpController }}</td>
 
           <td *ngIf = "!visibility.get('materialInfo')" class="headerRowEnd">
             ...
@@ -420,7 +426,7 @@
             ...
           </td>
 
-          <td  class ="inventory" [ngClass] ="editCellClasses('inventory')">{{ material.serviceLevel }}</td>
+          <td class ="inventory" [ngClass] ="editCellClasses('inventory')">{{ material.serviceLevel }}</td>
           <td class ="inventory" [ngClass] ="editCellClasses('inventory')"><button class="buttonNoBorder">
             <a href="{{sapLinkBuilder(material.id)}}"><fa-icon icon="external-link" style="color: #2D8DFF;"></fa-icon></a>
             </button> <!--{{ diabo.openSapMd04 }}-->

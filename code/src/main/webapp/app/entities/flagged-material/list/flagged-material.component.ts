@@ -17,6 +17,8 @@ export class FlaggedMaterialComponent implements OnInit {
   flaggedMaterials?: IFlaggedMaterial[];
   isLoading = false;
 
+  visibility = new Map<string, boolean>();
+
   predicate = 'id';
   ascending = true;
 
@@ -26,7 +28,16 @@ export class FlaggedMaterialComponent implements OnInit {
     public router: Router,
     protected sortService: SortService,
     protected modalService: NgbModal
-  ) {}
+  ) {
+    this.visibility = new Map<string, boolean>([
+      ["materialInfo", true],
+      ["supplierDelay", false],
+      ["safetyStock", false],
+      ["safetyTime", false],
+      ["inventory", true],
+      ["edit", false]
+    ])
+  }
 
   trackId = (_index: number, item: IFlaggedMaterial): number => this.flaggedMaterialService.getFlaggedMaterialIdentifier(item);
 
@@ -113,6 +124,40 @@ export class FlaggedMaterialComponent implements OnInit {
       return [];
     } else {
       return [predicate + ',' + ascendingQueryParam];
+    }
+  }
+
+
+  editCellClasses(colName: string, material?: IFlaggedMaterial, editColName? : string) : string {
+    let returnVal = ""
+    if (colName === "materialInfo" && this.visibility.get('materialInfo') === false){
+      returnVal = "tableHide "
+    }
+    else if (colName === "edit" && this.visibility.get('edit') === false){
+      returnVal = "tableHide "
+    }
+    else if (colName === "supplierDelay" && this.visibility.get('supplierDelay') === false){
+      returnVal = "tableHide "
+    }
+    else if (colName === "safetyStock" && this.visibility.get('safetyStock') === false){
+      returnVal = "tableHide "
+    }
+    else if (colName === "safetyTime" && this.visibility.get('safetyTime') === false){
+      returnVal = "tableHide "
+    }
+    else if (colName === "inventory" && this.visibility.get('inventory') === false){
+      returnVal = "tableHide "
+    }
+    return returnVal
+  }
+
+  switchVisibility(event: any) : void {
+    var col_name = event.name;
+    if (this.visibility.get(col_name) == false){
+      this.visibility.set(col_name, true)
+    }
+    else {
+      this.visibility.set(col_name, false)
     }
   }
 }
