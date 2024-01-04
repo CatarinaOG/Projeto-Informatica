@@ -519,7 +519,9 @@ public class MaterialServiceImpl implements MaterialService {
         material.setDeltaST(Integer.parseInt(nextRecord[getIndex(header, "delta ST")]));
         material.setOpenSAPmd04(nextRecord[getIndex(header, "Open SAP md04")]);
         material.setCurrentInventoryValue(parseNumericValue(nextRecord[getIndex(header, "Current Inventory Value")]));
-        material.setUnitCost(parseNumericValue(nextRecord[getIndex(header, "Unit Cost")]));
+        int a = getIndex(header, "Unit Cost");
+        material.setUnitCost(parseNumericValue(nextRecord[a]));
+        material.setCurrency(Coin.fromString(nextRecord[a+1]));
         material.setAvgDemand(Integer.parseInt(nextRecord[getIndex(header, "Avg Demand")]));
         material.setAvgInventoryEffectAfterChange(parseNumericValue(nextRecord[getIndex(header, "Average inventory effect after change")]));
         material.setFlagMaterial(getFlagFromFlaggedMaterials(material.getMaterial()));
@@ -608,7 +610,9 @@ public class MaterialServiceImpl implements MaterialService {
         material.setDeltaST((int) Float.parseFloat(row[getIndexOBJ(header, "Delta ST")].toString()));
         material.setOpenSAPmd04(row[getIndexOBJ(header, "Open SAP md04")].toString());
         material.setCurrentInventoryValue(parseNumericValue(row[getIndexOBJ(header, "Current Inventory Value")].toString()));
-        material.setUnitCost(parseNumericValue(row[getIndexOBJ(header, "Unit Cost")].toString()));
+        int a = getIndexOBJ(header, "Unit Cost");
+        material.setUnitCost(parseNumericValue(row[a].toString()));
+        material.setCurrency(Coin.fromString(row[a+1].toString()));
         material.setAvgDemand((int) Float.parseFloat(row[getIndexOBJ(header, "Average Demand")].toString()));
         material.setAvgInventoryEffectAfterChange(parseNumericValue(row[getIndexOBJ(header, "Average Inventory Effect After Change")].toString()));
         material.setFlagMaterial(getFlagFromFlaggedMaterials(material.getMaterial()));

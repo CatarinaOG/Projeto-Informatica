@@ -337,13 +337,15 @@ public class MaterialResource {
         headerRow.createCell(14).setCellValue("Delta ST");
         headerRow.createCell(15).setCellValue("Open SAP md04");
         headerRow.createCell(16).setCellValue("Current Inventory Value");
-        headerRow.createCell(17).setCellValue("Unit Cost");
-        headerRow.createCell(18).setCellValue("Average Demand");
-        headerRow.createCell(19).setCellValue("Average Inventory Effect After Change");
-        headerRow.createCell(20).setCellValue("New SAP Safety Stock");
-        headerRow.createCell(21).setCellValue("New SAP Safety Time");
-        headerRow.createCell(22).setCellValue("Flag");
-        headerRow.createCell(23).setCellValue("Comments");
+        headerRow.createCell(17).setCellValue("Coin");
+        headerRow.createCell(18).setCellValue("Unit Cost");
+        headerRow.createCell(19).setCellValue("Coin");
+        headerRow.createCell(20).setCellValue("Average Demand");
+        headerRow.createCell(21).setCellValue("Average Inventory Effect After Change");
+        headerRow.createCell(22).setCellValue("New SAP Safety Stock");
+        headerRow.createCell(23).setCellValue("New SAP Safety Time");
+        headerRow.createCell(24).setCellValue("Flag");
+        headerRow.createCell(25).setCellValue("Comments");
         // Add data 
         System.out.println("Adding Data");
         int rowNum = 1;
@@ -367,17 +369,19 @@ public class MaterialResource {
                 row.createCell(13).setCellValue(mat.getProposedST());
                 row.createCell(14).setCellValue(mat.getDeltaST());
                 row.createCell(15).setCellValue(mat.getOpenSAPmd04());
-                row.createCell(16).setCellValue(mat.getCurrentInventoryValue() + " " + mat.getCurrency().toString());
-                row.createCell(17).setCellValue(mat.getUnitCost() + " " + mat.getCurrency().toString());
-                row.createCell(18).setCellValue(mat.getAvgDemand());
-                row.createCell(19).setCellValue(mat.getAvgInventoryEffectAfterChange());
-                row.createCell(20).setCellValue(mat.getNewSAPSafetyStock());
-                row.createCell(21).setCellValue(mat.getNewSAPSafetyTime());
+                row.createCell(16).setCellValue(mat.getCurrentInventoryValue());
+                row.createCell(17).setCellValue(mat.getCurrency().toString());
+                row.createCell(18).setCellValue(mat.getUnitCost());
+                row.createCell(19).setCellValue(mat.getCurrency().toString());
+                row.createCell(20).setCellValue(mat.getAvgDemand());
+                row.createCell(21).setCellValue(mat.getAvgInventoryEffectAfterChange());
+                row.createCell(22).setCellValue(mat.getNewSAPSafetyStock());
+                row.createCell(23).setCellValue(mat.getNewSAPSafetyTime());
                 //if (mat.getFlagMaterial())
                 //    row.createCell(22).setCellValue((mat.getFlagExpirationDateString()));
                 //else
-                    row.createCell(22).setCellValue(false);
-                row.createCell(23).setCellValue(mat.getComment());
+                    row.createCell(24).setCellValue(false);
+                row.createCell(25).setCellValue(mat.getComment());
             }
             catch (Exception e){
                 System.out.println("No Material for row " + rowNum);
