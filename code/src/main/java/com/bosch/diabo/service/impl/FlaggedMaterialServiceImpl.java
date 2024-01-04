@@ -7,6 +7,7 @@ import com.bosch.diabo.service.FlaggedMaterialService;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -244,5 +245,33 @@ public class FlaggedMaterialServiceImpl implements FlaggedMaterialService {
     public Optional<FlaggedMaterial> findByMaterial(String material){
         log.debug("Request to find Material by name");
         return flaggedMaterialRepository.findByMaterial(material);
+    }
+
+    @Override
+    public void updateFlag(List<Object> data){
+
+        for (Object item : data) {
+            if (item instanceof Map) {
+                Map<String, Object> dataMap = (Map<String, Object>) item;
+
+                String material = (String) dataMap.get("material");
+                LocalDate flagDate = LocalDate.parse((String) dataMap.get("dateFlag"));
+                Boolean flagged = (Boolean) dataMap.get("flag");
+                
+                if(flagged) updateFlaggedDate(material,flagDate); 
+                else deleteFlaggedMaterial(material);
+
+            }
+        }
+    }
+
+
+    private void updateFlaggedDate(String material, LocalDate date){
+        flaggedMaterialRepository
+            .findByMaterial(material)
+            .ifPresent(existingMaterial -> {
+                existingMaterial.setFlagExpirationDate(date);
+                flaggedMaterialRepository.save(existingMaterial);
+            });
     }
 }

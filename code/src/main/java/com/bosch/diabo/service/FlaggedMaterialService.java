@@ -72,4 +72,12 @@ public interface FlaggedMaterialService {
      * @return the entity.
      */
     Optional<FlaggedMaterial> findByMaterial(String material);
+
+
+    /**
+     * Update flagged.
+     *
+     * @param data data with id, flag and date of the flagged item to update.
+     */
+    void updateFlag(List<Object> data);
 }

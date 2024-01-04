@@ -106,5 +106,12 @@ public interface MaterialService {
      */
     List<Material> getMaterialChanged(List<Object> data);
 
-    void removeFlag(Long material_id);
+
+    /**
+     * Update Material givem changes in the Flagged Material
+     *
+     * @param data list of the updated values
+     */
+    void updateCorrespondingMaterial(List<Object> data);
+
 }

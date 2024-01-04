@@ -824,16 +824,44 @@ public class MaterialServiceImpl implements MaterialService {
         return Coin.EUR;
     }
 
+
+
     @Override
-    public void removeFlag(Long material_id){
+    public void updateCorrespondingMaterial(List<Object> data){
 
+        for (Object item : data) {
+            if (item instanceof Map) {
+                Map<String, Object> dataMap = (Map<String, Object>) item;
+
+                String material = (String) dataMap.get("material");
+                LocalDate flagDate = LocalDate.parse((String) dataMap.get("dateFlag"));
+                Boolean flagged = (Boolean) dataMap.get("flag");
+                
+                if(flagged) updateFlaggedDate(material,flagDate); 
+                else removeFlag(material);
+
+            }
+        }
+    }
+
+    private void updateFlaggedDate(String material, LocalDate date){
         materialRepository
-            .findById(material_id)
-            .ifPresent(material -> {
-                material.setFlagMaterial(false);
-                material.setFlagExpirationDate(null);
+            .findByMaterial(material)
+            .ifPresent(existingMaterial -> {
+                existingMaterial.setFlagExpirationDate(date);
+                materialRepository.save(existingMaterial);
+            });
+    }
 
-                materialRepository.save(material);
+
+    public void removeFlag(String material){
+        materialRepository
+            .findByMaterial(material)
+            .ifPresent(existingMaterial -> {
+                existingMaterial.setFlagMaterial(false);
+                existingMaterial.setFlagExpirationDate(null);
+
+                materialRepository.save(existingMaterial);
             });
     }
 

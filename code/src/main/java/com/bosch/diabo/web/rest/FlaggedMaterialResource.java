@@ -180,11 +180,11 @@ public class FlaggedMaterialResource {
      * @param id the id of the flaggedMaterial to remove flag.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)}
      */
-    @PostMapping("/flagged-materials/remove-flag/{id}")
-    public ResponseEntity<String> removeFlag(@PathVariable Long id) {
-        log.debug("REST request to remove flag from FlaggedMaterial : {}", id);
-        flaggedMaterialService.delete(id);
-        materialService.removeFlag(id);
+    @PostMapping("/flagged-materials/update-flag")
+    public ResponseEntity<String> updateFlag(@RequestBody List<Object> data) {
+        log.debug("REST request to update flag from FlaggedMaterial");
+        flaggedMaterialService.updateFlag(data);
+        materialService.updateCorrespondingMaterial(data);
         
         return ResponseEntity.ok("");
     }
