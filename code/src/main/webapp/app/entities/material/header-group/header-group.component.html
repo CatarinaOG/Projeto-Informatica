@@ -5,6 +5,7 @@
         <span>{{ tourMsgs.get(0) }}</span>
         <div class="tooltipBtns">
             <button class="btn btn-danger" (click)="tourService.cancel($event)">Stop</button>
+            <span style="font-weight: bold;"> {{tourService.getIndex() + 1}}/15</span>
             <button class="btn btn-info" (click) = "tourService.nextStep($event)">></button>
         </div>
     </div>   
@@ -15,6 +16,7 @@
         <span>{{ tourMsgs.get(1) }}</span>
         <div class="tooltipBtns">
             <button class="btn btn-danger" (click)="tourService.cancel($event)">Stop</button>
+            <span style="font-weight: bold;"> {{tourService.getIndex() + 1}}/15</span>
             <div>
                 <button class="btn btn-info" (click)="tourService.previousStep($event)">&lt;</button>
                 <button class="btn btn-info" (click) = "tourService.nextStep($event)">></button>
@@ -25,9 +27,9 @@
 
 
 <div [id]="headerName" class="d-flex" style="place-content: center;">
-    <span placement="top" [ngbTooltip]="headerToolTip" #t1="ngbTooltip" triggers="manual" tooltipClass="custom-tooltip" class="flexGrow">{{headerName}}</span>
+    <span placement="top" [ngbTooltip]="headerToolTip" [autoClose]="false" #t1="ngbTooltip" triggers="manual" tooltipClass="custom-tooltip" class="flexGrow">{{headerName}}</span>
     
-    <button placement="top" [ngbTooltip]="btnToolTip" #t2="ngbTooltip" triggers="manual" tooltipClass="custom-tooltip"  class="buttonNoBorder" (click)="sendVisibilityMessage()">
+    <button placement="top" [ngbTooltip]="btnToolTip" [autoClose]="false" #t2="ngbTooltip" triggers="manual" tooltipClass="custom-tooltip"  class="buttonNoBorder" (click)="sendVisibilityMessage()">
     <fa-icon [icon]="visibilityValue ? 'compress-alt' : 'expand-alt'"></fa-icon>
     </button>
 </div>

@@ -28,24 +28,35 @@ export class FlagModal  implements OnInit{
 	//checkFlag : boolean = false;
 	disabled = true;
 	editedMaterial: IEditCell | undefined;
+	placeholderText = ""
 
 	constructor( protected editCellService: EditCellService ) {}
 
 	ngOnInit(): void {
 		this.editedMaterial = this.editCellService.getMaterial(this.material.id);
-	
+		this.placeholderText = this.definePlaceholder();
 	}
 
 	toggleCheckbox() {
 	  this.checkFlag = !this.checkFlag;
 	}
   
-	definePlaceholder() : string{
-		let returnValue = "yyyy-mm-dd"
+	definePlaceholder() : string {
+		let returnValue = this.material.flagExpirationDate?.toString() ?? "";
 		if(this.editedMaterial !== null && this.editedMaterial !== undefined){
 			returnValue = this.editedMaterial.dateFlag
 		}
+		this.defineModel(returnValue)
 		return returnValue;
+	}
+
+	defineModel(date: string) {
+		const newDate = new Date(date)
+		this.model = {
+			day: newDate.getDay(),
+			month: newDate.getMonth() - 1,
+			year: newDate.getFullYear(),
+		}
 	}
 
 	inputHideShow() : string {
@@ -54,6 +65,7 @@ export class FlagModal  implements OnInit{
 	}
 	
 	open(content: TemplateRef<any>): void {
+		
 		this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then(
 			(result) => {
 				this.closeResult = `Closed with: ${result}`;
@@ -68,7 +80,6 @@ export class FlagModal  implements OnInit{
 
 	select(model : any) {
 		const d = new Date(model);
-		console.log("Date is : ", d.toISOString().split("T")[0])
 		this.date = d.toISOString().split("T")[0];
 	}
 

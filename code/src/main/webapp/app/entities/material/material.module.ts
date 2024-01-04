@@ -22,5 +22,6 @@ import { CommentModal } from './comment-modal/commentModal'
 @NgModule({
   imports: [SharedModule, MaterialRoutingModule,NgbTooltipModule],
   declarations: [MaterialComponent, MaterialDetailComponent, MaterialUpdateComponent, MaterialDeleteDialogComponent, OptionsBar, FilterDisplayCell, FilterForm,FlagModal,HeaderGroup,HeaderColumn,SubmitModal,ValueCell, CurrencyToolTipCell, CommentModal],
+  exports: [HeaderGroup]
 })
 export class MaterialModule {}

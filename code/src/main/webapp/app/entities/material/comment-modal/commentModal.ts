@@ -1,9 +1,6 @@
 import { Component, inject, TemplateRef, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { NgbDateStruct, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import {formatDate} from '@angular/common';
 
-import { IMaterial } from '../material.model';
-import { IEditCell } from '../editCell.model';
 
 @Component({
 	selector: 'comment-modal',
@@ -29,6 +26,7 @@ export class CommentModal  implements OnInit{
     
 
 	open(content: TemplateRef<any>): void {
+		this.comment = this.oldComment;
 		this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then(
 			(result) => {
 				this.closeResult = `Closed with: ${result}`;

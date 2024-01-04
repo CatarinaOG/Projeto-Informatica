@@ -1,236 +1,239 @@
 <div class="optionsBarResponsive" style=" margin-bottom: 20px;">
     
-    <div ngbDropdown class="dropdown d-flex justify-content-end" autoClose="outside" placement="right" [ngbTooltip]="filterOptionsToolTip" #t8="ngbTooltip" triggers="manual" tooltipClass="custom-tooltip">
-
-      <ng-template #filterOptionsToolTip>   
-        <div class="tooltipTutorial">
-          <span>{{ tourMsgs.get(8) }}</span>
-          <div class="tooltipBtns">
-              <button class="btn btn-danger" (click)="tourService.cancel($event)">Stop</button>
-              <div>
-                  <button class="btn btn-info" (click)="tourService.previousStep($event)">&lt;</button>
-                  <button class="btn btn-info" (click) = "tourService.nextStep($event)">></button>
-              </div>
+    <div placement="right" [ngbTooltip]="filterOptionsToolTip" [autoClose]="false" #t8="ngbTooltip" triggers="manual" tooltipClass="custom-tooltip" >
+      <div ngbDropdown class="dropdown d-flex justify-content-end" autoClose="outside">
+        <ng-template #filterOptionsToolTip>   
+          <div class="tooltipTutorial">
+            <span>{{ tourMsgs.get(8) }}</span>
+            <div class="tooltipBtns">
+                <button class="btn btn-danger" (click)="tourService.cancel($event)">Stop</button>
+                <span style="font-weight: bold;"> {{tourService.getIndex() + 1}}/15</span>
+                <div>
+                    <button class="btn btn-info" (click)="tourService.previousStep($event)">&lt;</button>
+                    <button class="btn btn-info" (click) = "tourService.nextStep($event)">></button>
+                </div>
+            </div>
           </div>
-        </div>
+        </ng-template>
+      
 
-      </ng-template>
-      <button ngbDropdownToggle class="btn btn-white" type="button" id="dropdownMenuButtonFilterOptions" aria-expanded="false" >
-        <fa-icon icon="filter"></fa-icon>
-        <span>Filter Options</span>
-        <fa-icon icon="caret-down"></fa-icon>
-      </button>
+        <button ngbDropdownToggle class="btn btn-white" type="button" id="dropdownMenuButtonFilterOptions" aria-expanded="false" >
+          <fa-icon icon="filter"></fa-icon>
+          <span>Filter Options</span>
+          <fa-icon icon="caret-down"></fa-icon>
+        </button>
 
-      <ul ngbDropdownMenu aria-labelledby="dropdownMenuButton">
-        <li>
-          <div ngbDropdown class="d-flex dropleft" placement="right-top" autoClose = "outside">
-            <button ngbDropdownToggle style="display: flex;" class="btn btn-primary buttonNoBorder inputWidth text-left" type="button" id="nestedDropdownButton" aria-expanded="false">
-              <span style="flex-grow: 1; text-align: left;">Material Info</span>
-              <fa-icon icon="caret-right"></fa-icon>
-            </button>
-            <ul ngbDropdownMenu aria-labelledby="nestedDropdownButton">
-              <li>
-                <button ngbDropdownItem color="primary" class="btn btn-primary" [ngStyle]="{'background-color': this.filterStatus.get('Material Name') ? '#3e8acc' : ''}" (click)="changeStatus('Material Name')">
-                  <span>Material Name</span>
-                </button>
-              </li>
-              <li>
-                <button ngbDropdownItem color="primary" class="btn btn-primary" [ngStyle]="{'background-color': this.filterStatus.get('Material Description') ? '#3e8acc' : ''}" (click)="changeStatus('Material Description')">
-                  <span>Material Description</span>
-                </button>
-              </li>
-              <li>
-                <button ngbDropdownItem color="primary" class="btn btn-primary" [ngStyle]="{'background-color': this.filterStatus.get('ABC Classification') ? '#3e8acc' : ''}" (click)="changeStatus('ABC Classification')">
-                  <span>ABC Classification</span>
-                </button>
-              </li>
-
-
-              <div class="dropdown-divider"  [ngClass] = "checkStatus() ? 'searchInputShow' : 'searchInputHide'"></div>
-              <h6 class="dropdown-header" [ngClass] = "this.filterStatus.get('Material Name') || this.filterStatus.get('Material Description') ? 'searchInputShow' : 'searchInputHide'"> Search in Column</h6>
-              <li class="paddingLeftRight" [ngClass] = "this.filterStatus.get('Material Name') || this.filterStatus.get('Material Description') ? 'searchInputShow' : 'searchInputHide'"> 
-                <input type="text" class="inputWidth paddingFive" (change)="sendFilterText($event)">
-              </li>
-
-              <h6 class="dropdown-header" [ngClass] = "this.filterStatus.get('ABC Classification') ? 'searchInputShow' : 'searchInputHide'"> Select categories</h6>
-              <li class="paddingLeftRight" [ngClass] = "this.filterStatus.get('ABC Classification') ? 'searchInputShow' : 'searchInputHide'"> 
-                <input type="checkbox"  (click)="sendABCFilter($event,'A')"><span> Category A</span>
-              </li>
-              <li class="paddingLeftRight" [ngClass] = "this.filterStatus.get('ABC Classification') ? 'searchInputShow' : 'searchInputHide'">          
-                <input type="checkbox"  (click)="sendABCFilter($event,'B')"><span> Category B</span>
-              </li>
-              <li class="paddingLeftRight" [ngClass] = "this.filterStatus.get('ABC Classification') ? 'searchInputShow' : 'searchInputHide'">
-                <input type="checkbox"  (click)="sendABCFilter($event,'C')"><span> Category C</span>              
-              </li>
-            </ul>
-          </div>
-          
-          <div ngbDropdown class="dropdown d-flex" placement="right-top" autoClose = "outside">
-            <button ngbDropdownToggle style="display: flex;" class="btn btn-primary buttonNoBorder inputWidth text-left dropdown-toggle" type="button" id="nestedDropdownButton" aria-expanded="false">
-              <span style="flex-grow: 1; text-align: left;">Supplier Delay Info</span>
-              <fa-icon icon="caret-right"></fa-icon>
-            </button>
-            <ul ngbDropdownMenu aria-labelledby="nestedDropdownButton">
-              <li>
-                <button ngbDropdownItem  class="btn btn-primary" [ngStyle]="{'background-color': this.filterStatus.get('Avg Supplier Delay') ? '#3e8acc' : ''}" (click)="changeStatus('Avg Supplier Delay')">
-                  <span>Avg Supplier Delay</span>
-                </button>
-              </li>
-              <li>
-                <button ngbDropdownItem class="btn btn-primary" [ngStyle]="{'background-color': this.filterStatus.get('Max Supplier Delay') ? '#3e8acc' : ''}" (click)="changeStatus('Max Supplier Delay')">
-                  <span>Max Supplier Delay</span>
-                </button>
-              </li> 
-
-              <li>
-                <filter-form *ngIf="this.filterStatus.get('Avg Supplier Delay')" [filterName] = "'avgSupplierDelay'" (numberFilterEmitter)="receiveFilterNumberMessage($event)"></filter-form>
-                <filter-form *ngIf="this.filterStatus.get('Max Supplier Delay')" [filterName] = "'maxSupplierDelay'" (numberFilterEmitter)="receiveFilterNumberMessage($event)"></filter-form>  
-              </li>
-            </ul>
-          </div>
-          
-
-          <div ngbDropdown class="dropdown d-flex" placement="right-top" autoClose = "outside">
-            <button ngbDropdownToggle style="display: flex;" class="btn btn-primary buttonNoBorder inputWidth text-left" type="button" id="nestedDropdownButton" aria-expanded="false"> 
-              <span style="flex-grow: 1; text-align: left;">Safety Stock Info</span>
-              <fa-icon icon="caret-right"></fa-icon>
-            </button>
-            <ul ngbDropdownMenu aria-labelledby="nestedDropdownButton">
-              <li>
-                <button ngbDropdownItem  class="btn btn-primary" [ngStyle]="{'background-color': this.filterStatus.get('Current SAP Safety Stock') ? '#3e8acc' : ''}" (click)="changeStatus('Current SAP Safety Stock')">
-                  <span>Current SAP Safety Stock</span>
-                </button>
-              </li>
-              <li>
-                <button ngbDropdownItem class="btn btn-primary" [ngStyle]="{'background-color': this.filterStatus.get('Proposed Safety Stock') ? '#3e8acc' : ''}" (click)="changeStatus('Proposed Safety Stock')">
-                  <span>Proposed Safety Stock</span>
-                </button>
-              </li>
-              <li>
-                <filter-form *ngIf="this.filterStatus.get('Current SAP Safety Stock')" [filterName] = "'currSAPSafetyStock'" (numberFilterEmitter)="receiveFilterNumberMessage($event)"></filter-form>
-                <filter-form *ngIf="this.filterStatus.get('Proposed Safety Stock')" [filterName] = "'proposedSST'" (numberFilterEmitter)="receiveFilterNumberMessage($event)"></filter-form>  
-              </li>
-            </ul>
-          </div>
+        <ul ngbDropdownMenu aria-labelledby="dropdownMenuButton">
+          <li>
+            <div ngbDropdown class="d-flex dropleft" placement="right-top" autoClose = "outside">
+              <button ngbDropdownToggle style="display: flex;" class="btn btn-primary buttonNoBorder inputWidth text-left" type="button" id="nestedDropdownButton" aria-expanded="false">
+                <span style="flex-grow: 1; text-align: left;">Material Info</span>
+                <fa-icon icon="caret-right"></fa-icon>
+              </button>
+              <ul ngbDropdownMenu aria-labelledby="nestedDropdownButton">
+                <li>
+                  <button ngbDropdownItem color="primary" class="btn btn-primary" [ngStyle]="{'background-color': this.filterStatus.get('Material Name') ? '#3e8acc' : ''}" (click)="changeStatus('Material Name')">
+                    <span>Material Name</span>
+                  </button>
+                </li>
+                <li>
+                  <button ngbDropdownItem color="primary" class="btn btn-primary" [ngStyle]="{'background-color': this.filterStatus.get('Material Description') ? '#3e8acc' : ''}" (click)="changeStatus('Material Description')">
+                    <span>Material Description</span>
+                  </button>
+                </li>
+                <li>
+                  <button ngbDropdownItem color="primary" class="btn btn-primary" [ngStyle]="{'background-color': this.filterStatus.get('ABC Classification') ? '#3e8acc' : ''}" (click)="changeStatus('ABC Classification')">
+                    <span>ABC Classification</span>
+                  </button>
+                </li>
 
 
+                <div class="dropdown-divider"  [ngClass] = "checkStatus() ? 'searchInputShow' : 'searchInputHide'"></div>
+                <h6 class="dropdown-header" [ngClass] = "this.filterStatus.get('Material Name') || this.filterStatus.get('Material Description') ? 'searchInputShow' : 'searchInputHide'"> Search in Column</h6>
+                <li class="paddingLeftRight" [ngClass] = "this.filterStatus.get('Material Name') || this.filterStatus.get('Material Description') ? 'searchInputShow' : 'searchInputHide'"> 
+                  <input type="text" class="inputWidth paddingFive" (change)="sendFilterText($event)">
+                </li>
+
+                <h6 class="dropdown-header" [ngClass] = "this.filterStatus.get('ABC Classification') ? 'searchInputShow' : 'searchInputHide'"> Select categories</h6>
+                <li class="paddingLeftRight" [ngClass] = "this.filterStatus.get('ABC Classification') ? 'searchInputShow' : 'searchInputHide'"> 
+                  <input type="checkbox"  (click)="sendABCFilter($event,'A')"><span> Category A</span>
+                </li>
+                <li class="paddingLeftRight" [ngClass] = "this.filterStatus.get('ABC Classification') ? 'searchInputShow' : 'searchInputHide'">          
+                  <input type="checkbox"  (click)="sendABCFilter($event,'B')"><span> Category B</span>
+                </li>
+                <li class="paddingLeftRight" [ngClass] = "this.filterStatus.get('ABC Classification') ? 'searchInputShow' : 'searchInputHide'">
+                  <input type="checkbox"  (click)="sendABCFilter($event,'C')"><span> Category C</span>              
+                </li>
+              </ul>
+            </div>
+            
+            <div ngbDropdown class="dropdown d-flex" placement="right-top" autoClose = "outside">
+              <button ngbDropdownToggle style="display: flex;" class="btn btn-primary buttonNoBorder inputWidth text-left dropdown-toggle" type="button" id="nestedDropdownButton" aria-expanded="false">
+                <span style="flex-grow: 1; text-align: left;">Supplier Delay Info</span>
+                <fa-icon icon="caret-right"></fa-icon>
+              </button>
+              <ul ngbDropdownMenu aria-labelledby="nestedDropdownButton">
+                <li>
+                  <button ngbDropdownItem  class="btn btn-primary" [ngStyle]="{'background-color': this.filterStatus.get('Avg Supplier Delay') ? '#3e8acc' : ''}" (click)="changeStatus('Avg Supplier Delay')">
+                    <span>Avg Supplier Delay</span>
+                  </button>
+                </li>
+                <li>
+                  <button ngbDropdownItem class="btn btn-primary" [ngStyle]="{'background-color': this.filterStatus.get('Max Supplier Delay') ? '#3e8acc' : ''}" (click)="changeStatus('Max Supplier Delay')">
+                    <span>Max Supplier Delay</span>
+                  </button>
+                </li> 
+
+                <li>
+                  <filter-form *ngIf="this.filterStatus.get('Avg Supplier Delay')" [filterName] = "'avgSupplierDelay'" (numberFilterEmitter)="receiveFilterNumberMessage($event)"></filter-form>
+                  <filter-form *ngIf="this.filterStatus.get('Max Supplier Delay')" [filterName] = "'maxSupplierDelay'" (numberFilterEmitter)="receiveFilterNumberMessage($event)"></filter-form>  
+                </li>
+              </ul>
+            </div>
+            
+
+            <div ngbDropdown class="dropdown d-flex" placement="right-top" autoClose = "outside">
+              <button ngbDropdownToggle style="display: flex;" class="btn btn-primary buttonNoBorder inputWidth text-left" type="button" id="nestedDropdownButton" aria-expanded="false"> 
+                <span style="flex-grow: 1; text-align: left;">Safety Stock Info</span>
+                <fa-icon icon="caret-right"></fa-icon>
+              </button>
+              <ul ngbDropdownMenu aria-labelledby="nestedDropdownButton">
+                <li>
+                  <button ngbDropdownItem  class="btn btn-primary" [ngStyle]="{'background-color': this.filterStatus.get('Current SAP Safety Stock') ? '#3e8acc' : ''}" (click)="changeStatus('Current SAP Safety Stock')">
+                    <span>Current SAP Safety Stock</span>
+                  </button>
+                </li>
+                <li>
+                  <button ngbDropdownItem class="btn btn-primary" [ngStyle]="{'background-color': this.filterStatus.get('Proposed Safety Stock') ? '#3e8acc' : ''}" (click)="changeStatus('Proposed Safety Stock')">
+                    <span>Proposed Safety Stock</span>
+                  </button>
+                </li>
+                <li>
+                  <filter-form *ngIf="this.filterStatus.get('Current SAP Safety Stock')" [filterName] = "'currSAPSafetyStock'" (numberFilterEmitter)="receiveFilterNumberMessage($event)"></filter-form>
+                  <filter-form *ngIf="this.filterStatus.get('Proposed Safety Stock')" [filterName] = "'proposedSST'" (numberFilterEmitter)="receiveFilterNumberMessage($event)"></filter-form>  
+                </li>
+              </ul>
+            </div>
 
 
 
 
-          <div ngbDropdown class="dropdown d-flex" placement="right-top" autoClose = "outside">
-            <button ngbDropdownToggle style="display: flex;" class="btn btn-primary buttonNoBorder inputWidth text-left" type="button" id="nestedDropdownButton" aria-expanded="false"> 
-              <span style="flex-grow: 1; text-align: left;">Safety Time Info</span>
-              <fa-icon icon="caret-right"></fa-icon>
-            </button>
-            <ul ngbDropdownMenu aria-labelledby="nestedDropdownButton">
-              <li>
-                <button ngbDropdownItem  class="btn btn-primary" [ngStyle]="{'background-color': this.filterStatus.get('Current SAP Safety Time') ? '#3e8acc' : ''}" (click)="changeStatus('Current SAP Safety Time')">
-                  <span>Current SAP Safety Time</span>
-                </button>
-              </li>
-              <li>
-                <button ngbDropdownItem class="btn btn-primary" [ngStyle]="{'background-color': this.filterStatus.get('Proposed Safety Time') ? '#3e8acc' : ''}" (click)="changeStatus('Proposed Safety Time')">
-                  <span>Proposed Safety Time</span>
-                </button>
-              </li>
-              <li>
-                <filter-form *ngIf="this.filterStatus.get('Current SAP Safety Time')" [filterName] = "'currentSAPSafeTime'" (numberFilterEmitter)="receiveFilterNumberMessage($event)"></filter-form>
-                <filter-form *ngIf="this.filterStatus.get('Proposed Safety Time')" [filterName] = "'proposedST'" (numberFilterEmitter)="receiveFilterNumberMessage($event)"></filter-form>
-              </li>
-            </ul>
-          </div>
 
-          
 
-          <div ngbDropdown class="dropdown d-flex" placement="right-top" autoClose = "outside">
-            <button ngbDropdownToggle style="display: flex;" class="btn btn-primary buttonNoBorder inputWidth text-left" type="button" id="nestedDropdownButton" aria-expanded="false"> 
-              <span style="flex-grow: 1; text-align: left;">Inv. Info & Service Lvl</span>
-              <fa-icon icon="caret-right" style="margin-left: 10px;"></fa-icon>
-            </button>
-            <ul ngbDropdownMenu aria-labelledby="nestedDropdownButton">
-              <li>
-                <button ngbDropdownItem  class="btn btn-primary" [ngStyle]="{'background-color': this.filterStatus.get('Service Level') ? '#3e8acc' : ''}" (click)="changeStatus('Service Level')">
-                  <span>Service Level</span>
-                </button>
-              </li>
-              <li>
-                <button ngbDropdownItem class="btn btn-primary" [ngStyle]="{'background-color': this.filterStatus.get('Current Inventory Value') ? '#3e8acc' : ''}" (click)="changeStatus('Current Inventory Value')">
-                  <span>Current Inventory Value</span>
-                </button>
-              </li>
-              <li>
-                <button ngbDropdownItem class="btn btn-primary" [ngStyle]="{'background-color': this.filterStatus.get('Delta Safety Stock') ? '#3e8acc' : ''}" (click)="changeStatus('Delta Safety Stock')">
-                  <span>Delta Safety Stock</span>
-                </button>
-              </li>
-              <li>
-                <button ngbDropdownItem class="btn btn-primary" [ngStyle]="{'background-color': this.filterStatus.get('Delta Safety Time') ? '#3e8acc' : ''}" (click)="changeStatus('Delta Safety Time')">
-                  <span>Delta Safety Time</span>
-                </button>
-              </li>
-              <li>
-                <button ngbDropdownItem class="btn btn-primary" [ngStyle]="{'background-color': this.filterStatus.get('Avg Inv. Effect After Change') ? '#3e8acc' : ''}" (click)="changeStatus('Avg Inv. Effect After Change')">
-                  <span>Avg Inv. Effect After Change</span>
-                </button>
-              </li>
-              <li>
-                <filter-form *ngIf="this.filterStatus.get('Service Level')" [filterName] = "'serviceLevel'" (numberFilterEmitter)="receiveFilterNumberMessage($event)"></filter-form>
-                <filter-form *ngIf="this.filterStatus.get('Current Inventory Value')" [filterName] = "'currentInventoryValue'" (numberFilterEmitter)="receiveFilterNumberMessage($event)"></filter-form> 
-                <filter-form *ngIf="this.filterStatus.get('Avg Inv. Effect After Change')" [filterName] = "'avgInventoryEffectAfterChange'" (numberFilterEmitter)="receiveFilterNumberMessage($event)"></filter-form>   
-                <filter-form *ngIf="this.filterStatus.get('Delta Safety Stock')" [filterName] = "'deltaSST'" (numberFilterEmitter)="receiveFilterNumberMessage($event)"></filter-form>  
-                <filter-form *ngIf="this.filterStatus.get('Delta Safety Time')" [filterName] = "'deltaST'" (numberFilterEmitter)="receiveFilterNumberMessage($event)"></filter-form>
-              </li>
-            </ul>
-          </div>
-          
-          <div class="dropdown-divider"></div>
-          
-          <div ngbDropdown class="dropdown d-flex" placement="right-top" autoClose = "outside">
-            <button ngbDropdownToggle style="display: flex;" class="btn btn-primary buttonNoBorder inputWidth text-left" type="button" id="nestedDropdownButton" aria-expanded="false"> 
-              <span style="flex-grow: 1; text-align: left;">Selected Materials</span>
-              <fa-icon icon="caret-right" style="margin-left: 10px;"></fa-icon>
-            </button>
-            <ul ngbDropdownMenu aria-labelledby="nestedDropdownButton">
-              <li>
-                <button ngbDropdownItem  class="btn btn-primary" (click)="sendFilterSpecial('Selected')" [disabled] = "this.changesListLength === 0">
-                  <span>Selected</span>
-                </button>
-              </li>
-              <li>
-                <button ngbDropdownItem class="btn btn-primary" (click)="sendFilterSpecial('Unselected')" [disabled] = "this.changesListLength === 0">
-                  <span>Unselected</span>
-                </button>
-              </li>
-              <li>
-                <button ngbDropdownItem class="btn btn-primary" (click)="sendFilterSpecial('Unedited')" [disabled] = "this.changesListLength === 0">
-                  <span>Unedited</span>
-                </button>
-              </li>
-            </ul>
-          </div>
+            <div ngbDropdown class="dropdown d-flex" placement="right-top" autoClose = "outside">
+              <button ngbDropdownToggle style="display: flex;" class="btn btn-primary buttonNoBorder inputWidth text-left" type="button" id="nestedDropdownButton" aria-expanded="false"> 
+                <span style="flex-grow: 1; text-align: left;">Safety Time Info</span>
+                <fa-icon icon="caret-right"></fa-icon>
+              </button>
+              <ul ngbDropdownMenu aria-labelledby="nestedDropdownButton">
+                <li>
+                  <button ngbDropdownItem  class="btn btn-primary" [ngStyle]="{'background-color': this.filterStatus.get('Current SAP Safety Time') ? '#3e8acc' : ''}" (click)="changeStatus('Current SAP Safety Time')">
+                    <span>Current SAP Safety Time</span>
+                  </button>
+                </li>
+                <li>
+                  <button ngbDropdownItem class="btn btn-primary" [ngStyle]="{'background-color': this.filterStatus.get('Proposed Safety Time') ? '#3e8acc' : ''}" (click)="changeStatus('Proposed Safety Time')">
+                    <span>Proposed Safety Time</span>
+                  </button>
+                </li>
+                <li>
+                  <filter-form *ngIf="this.filterStatus.get('Current SAP Safety Time')" [filterName] = "'currentSAPSafeTime'" (numberFilterEmitter)="receiveFilterNumberMessage($event)"></filter-form>
+                  <filter-form *ngIf="this.filterStatus.get('Proposed Safety Time')" [filterName] = "'proposedST'" (numberFilterEmitter)="receiveFilterNumberMessage($event)"></filter-form>
+                </li>
+              </ul>
+            </div>
 
-          <div ngbDropdown class="dropdown d-flex" placement="right-top" autoClose = "outside">
-            <button ngbDropdownToggle style="display: flex;" class="btn btn-primary buttonNoBorder inputWidth text-left" type="button" id="nestedDropdownButton" aria-expanded="false"> 
-              <span style="flex-grow: 1; text-align: left;">Flagged Materials</span>
-              <fa-icon icon="caret-right" style="margin-left: 10px;"></fa-icon>
-            </button>
-            <ul ngbDropdownMenu aria-labelledby="nestedDropdownButton">
-              <li>
-                <button ngbDropdownItem  class="btn btn-primary" (click)="sendFilterSpecial('Flagged')">
-                  <span>Flagged</span>
-                </button>
-              </li>
-              <li>
-                <button ngbDropdownItem class="btn btn-primary" (click)="sendFilterSpecial('Unflagged')">
-                  <span>Unflagged</span>
-                </button>
-              </li>
-            </ul>
-          </div>
+            
 
-        </li>
-      </ul>
+            <div ngbDropdown class="dropdown d-flex" placement="right-top" autoClose = "outside">
+              <button ngbDropdownToggle style="display: flex;" class="btn btn-primary buttonNoBorder inputWidth text-left" type="button" id="nestedDropdownButton" aria-expanded="false"> 
+                <span style="flex-grow: 1; text-align: left;">Inv. Info & Service Lvl</span>
+                <fa-icon icon="caret-right" style="margin-left: 10px;"></fa-icon>
+              </button>
+              <ul ngbDropdownMenu aria-labelledby="nestedDropdownButton">
+                <li>
+                  <button ngbDropdownItem  class="btn btn-primary" [ngStyle]="{'background-color': this.filterStatus.get('Service Level') ? '#3e8acc' : ''}" (click)="changeStatus('Service Level')">
+                    <span>Service Level</span>
+                  </button>
+                </li>
+                <li>
+                  <button ngbDropdownItem class="btn btn-primary" [ngStyle]="{'background-color': this.filterStatus.get('Current Inventory Value') ? '#3e8acc' : ''}" (click)="changeStatus('Current Inventory Value')">
+                    <span>Current Inventory Value</span>
+                  </button>
+                </li>
+                <li>
+                  <button ngbDropdownItem class="btn btn-primary" [ngStyle]="{'background-color': this.filterStatus.get('Delta Safety Stock') ? '#3e8acc' : ''}" (click)="changeStatus('Delta Safety Stock')">
+                    <span>Delta Safety Stock</span>
+                  </button>
+                </li>
+                <li>
+                  <button ngbDropdownItem class="btn btn-primary" [ngStyle]="{'background-color': this.filterStatus.get('Delta Safety Time') ? '#3e8acc' : ''}" (click)="changeStatus('Delta Safety Time')">
+                    <span>Delta Safety Time</span>
+                  </button>
+                </li>
+                <li>
+                  <button ngbDropdownItem class="btn btn-primary" [ngStyle]="{'background-color': this.filterStatus.get('Avg Inv. Effect After Change') ? '#3e8acc' : ''}" (click)="changeStatus('Avg Inv. Effect After Change')">
+                    <span>Avg Inv. Effect After Change</span>
+                  </button>
+                </li>
+                <li>
+                  <filter-form *ngIf="this.filterStatus.get('Service Level')" [filterName] = "'serviceLevel'" (numberFilterEmitter)="receiveFilterNumberMessage($event)"></filter-form>
+                  <filter-form *ngIf="this.filterStatus.get('Current Inventory Value')" [filterName] = "'currentInventoryValue'" (numberFilterEmitter)="receiveFilterNumberMessage($event)"></filter-form> 
+                  <filter-form *ngIf="this.filterStatus.get('Avg Inv. Effect After Change')" [filterName] = "'avgInventoryEffectAfterChange'" (numberFilterEmitter)="receiveFilterNumberMessage($event)"></filter-form>   
+                  <filter-form *ngIf="this.filterStatus.get('Delta Safety Stock')" [filterName] = "'deltaSST'" (numberFilterEmitter)="receiveFilterNumberMessage($event)"></filter-form>  
+                  <filter-form *ngIf="this.filterStatus.get('Delta Safety Time')" [filterName] = "'deltaST'" (numberFilterEmitter)="receiveFilterNumberMessage($event)"></filter-form>
+                </li>
+              </ul>
+            </div>
+            
+            <div class="dropdown-divider"></div>
+            
+            <div ngbDropdown class="dropdown d-flex" placement="right-top" autoClose = "outside">
+              <button ngbDropdownToggle style="display: flex;" class="btn btn-primary buttonNoBorder inputWidth text-left" type="button" id="nestedDropdownButton" aria-expanded="false"> 
+                <span style="flex-grow: 1; text-align: left;">Selected Materials</span>
+                <fa-icon icon="caret-right" style="margin-left: 10px;"></fa-icon>
+              </button>
+              <ul ngbDropdownMenu aria-labelledby="nestedDropdownButton">
+                <li>
+                  <button ngbDropdownItem  class="btn btn-primary" (click)="sendFilterSpecial('Selected')" [disabled] = "this.changesListLength === 0">
+                    <span>Selected</span>
+                  </button>
+                </li>
+                <li>
+                  <button ngbDropdownItem class="btn btn-primary" (click)="sendFilterSpecial('Unselected')" [disabled] = "this.changesListLength === 0">
+                    <span>Unselected</span>
+                  </button>
+                </li>
+                <li>
+                  <button ngbDropdownItem class="btn btn-primary" (click)="sendFilterSpecial('Unedited')" [disabled] = "this.changesListLength === 0">
+                    <span>Unedited</span>
+                  </button>
+                </li>
+              </ul>
+            </div>
+
+            <div ngbDropdown class="dropdown d-flex" placement="right-top" autoClose = "outside">
+              <button ngbDropdownToggle style="display: flex;" class="btn btn-primary buttonNoBorder inputWidth text-left" type="button" id="nestedDropdownButton" aria-expanded="false"> 
+                <span style="flex-grow: 1; text-align: left;">Flagged Materials</span>
+                <fa-icon icon="caret-right" style="margin-left: 10px;"></fa-icon>
+              </button>
+              <ul ngbDropdownMenu aria-labelledby="nestedDropdownButton">
+                <li>
+                  <button ngbDropdownItem  class="btn btn-primary" (click)="sendFilterSpecial('Flagged')">
+                    <span>Flagged</span>
+                  </button>
+                </li>
+                <li>
+                  <button ngbDropdownItem class="btn btn-primary" (click)="sendFilterSpecial('Unflagged')">
+                    <span>Unflagged</span>
+                  </button>
+                </li>
+              </ul>
+            </div>
+
+          </li>
+        </ul>
+      </div>
     </div>
 
 
@@ -239,89 +242,99 @@
       <input type="file" class="file-input" accept=".csv,.ods,.xlsx,.xls"  (change)="sendFileMessage($event,true)" (click)="importReplaceInput.value=''" #importReplaceInput>
       <input type="file" class="file-input" accept=".csv,.ods,.xlsx,.xls"  (change)="sendFileMessage($event,false)" (click)="importAdd.value=''" #importAdd>
   
-      <div ngbDropdown class="dropdown d-flex justify-content-end" placement="right" [ngbTooltip]="fileOptionsToolTip" #t9="ngbTooltip" triggers="manual" tooltipClass="custom-tooltip">
-        <ng-template #fileOptionsToolTip>   
-          <div class="tooltipTutorial">
-            <span>{{ tourMsgs.get(9) }}</span>
-            <div class="tooltipBtns">
-                <button class="btn btn-danger" (click)="tourService.cancel($event)">Stop</button>
-                <div>
-                    <button class="btn btn-info" (click)="tourService.previousStep($event)">&lt;</button>
-                    <button class="btn btn-info" (click) = "tourService.nextStep($event)">></button>
-                </div>
-            </div>
-        </div>
-        </ng-template>
-        <button ngbDropdownToggle class="btn btn-white" type="button" id="dropdownMenuButtonFileOptions" aria-expanded="false" > 
-          <fa-icon icon="file"></fa-icon>
-          <span>File Options</span>
-          <fa-icon icon="caret-down" style="margin-left: 5px;"></fa-icon>
-        </button>
-        <ul ngbDropdownMenu aria-labelledby="dropdownMenuButton">
-          <li *ngIf="isAdmin()"> 
-            <button ngbDropdownItem color="primary" class="btn btn-primary" (click)="importReplaceInput.click()">
-              <fa-icon icon="upload"></fa-icon>
-              <span>Replace Data</span>
-            </button>
-          </li>
-          <li *ngIf="isAdmin()"> 
-            <button ngbDropdownItem color="primary" class="btn btn-primary" (click)="importAdd.click()">
-              <fa-icon icon="upload"></fa-icon>
-              <span>Add Data</span>
-            </button>
-          </li>
-    
-          <div *ngIf="isAdmin()" class="dropdown-divider"></div>
-          
-          <li> 
-            <button ngbDropdownItem color="primary" class="btn btn-primary" (click)="downloadExcel()">
-              <fa-icon icon="download"></fa-icon>
-              <span>Download Data</span>
-            </button>
-          </li>
-        </ul>
-      </div>
-
-
-      <ng-template #tableSizeToolTip>   
-        <div class="tooltipTutorial">
-          <span>{{ tourMsgs.get(10) }}</span>
-          <div class="tooltipBtns">
-              <button class="btn btn-danger" (click)="tourService.cancel($event)">Stop</button>
-              <div>
-                  <button class="btn btn-info" (click)="tourService.previousStep($event)">&lt;</button>
-                  <button class="btn btn-info" (click) = "tourService.nextStep($event)">></button>
+      
+      <div placement="right" [ngbTooltip]="fileOptionsToolTip" [autoClose]="false" #t9="ngbTooltip" triggers="manual" tooltipClass="custom-tooltip">
+        <div ngbDropdown class="dropdown d-flex justify-content-end">
+          <ng-template #fileOptionsToolTip>   
+            <div class="tooltipTutorial">
+              <span>{{ tourMsgs.get(9) }}</span>
+              <div class="tooltipBtns">
+                  <button class="btn btn-danger" (click)="tourService.cancel($event)">Stop</button>
+                  <span style="font-weight: bold;"> {{tourService.getIndex() + 1}}/15</span>
+                  <div>
+                      <button class="btn btn-info" (click)="tourService.previousStep($event)">&lt;</button>
+                      <button class="btn btn-info" (click) = "tourService.nextStep($event)">></button>
+                  </div>
               </div>
           </div>
-      </div>
-     </ng-template>
+          </ng-template>
+          
+          
+          <button ngbDropdownToggle class="btn btn-white" type="button" id="dropdownMenuButtonFileOptions" aria-expanded="false" > 
+            <fa-icon icon="file"></fa-icon>
+            <span>File Options</span>
+            <fa-icon icon="caret-down" style="margin-left: 5px;"></fa-icon>
+          </button>
+          <ul ngbDropdownMenu aria-labelledby="dropdownMenuButton">
+            <li *ngIf="isAdmin()"> 
+              <button ngbDropdownItem color="primary" class="btn btn-primary" (click)="importReplaceInput.click()">
+                <fa-icon icon="upload"></fa-icon>
+                <span>Replace Data</span>
+              </button>
+            </li>
+            <li *ngIf="isAdmin()"> 
+              <button ngbDropdownItem color="primary" class="btn btn-primary" (click)="importAdd.click()">
+                <fa-icon icon="upload"></fa-icon>
+                <span>Add Data</span>
+              </button>
+            </li>
+      
+            <div *ngIf="isAdmin()" class="dropdown-divider"></div>
+            
+            <li> 
+              <button ngbDropdownItem color="primary" class="btn btn-primary" (click)="downloadExcel()">
+                <fa-icon icon="download"></fa-icon>
+                <span>Download Data</span>
+              </button>
+            </li>
+          </ul>
+        </div>
+    </div>
 
-      <div ngbDropdown class="dropdown d-flex justify-content-end" autoClose="outside" placement="right" [ngbTooltip]="tableSizeToolTip" #t10="ngbTooltip" triggers="manual" tooltipClass="custom-tooltip">
-        <button ngbDropdownToggle class="btn btn-white" type="button"  id="dropdownMenuButtonTableSize" aria-expanded="false" >  
-          <fa-icon icon="cogs"></fa-icon>
-          <span >Table Size</span>
-          <fa-icon icon="caret-down" style="margin-left: 10px;"></fa-icon>
-        </button>
-        <ul ngbDropdownMenu aria-labelledby="nestedDropdownButton">
-          <li>
-            <button ngbDropdownItem  class="btn btn-primary checkIcon" (click)="sendNumber('pageSize',10)">
-              <span>10 rows</span>
-              <fa-icon icon="check" *ngIf="tableSize === 10"></fa-icon>
-            </button>
-          </li>
-          <li>
-            <button ngbDropdownItem class="btn btn-primary checkIcon" (click)="sendNumber('pageSize',20)">
-              <span>20 rows</span>
-              <fa-icon icon="check" *ngIf="tableSize === 20"></fa-icon>
-            </button>
-          </li>
-          <li>
-            <button ngbDropdownItem class="btn btn-primary checkIcon" (click)="sendNumber('pageSize',30)">
-              <span>30 rows</span>
-              <fa-icon icon="check" *ngIf="tableSize === 30"></fa-icon>
-            </button>
-          </li>
-        </ul>
+      
+    <div placement="right" [ngbTooltip]="tableSizeToolTip" [autoClose]="false" #t10="ngbTooltip" triggers="manual" tooltipClass="custom-tooltip">
+      <div ngbDropdown class="dropdown d-flex justify-content-end" autoClose="outside">
+        
+          <ng-template #tableSizeToolTip>   
+            <div class="tooltipTutorial">
+              <span>{{ tourMsgs.get(10) }}</span>
+              <div class="tooltipBtns">
+                  <button class="btn btn-danger" (click)="tourService.cancel($event)">Stop</button>
+                  <span style="font-weight: bold;"> {{tourService.getIndex() + 1}}/15</span>
+                  <div>
+                      <button class="btn btn-info" (click)="tourService.previousStep($event)">&lt;</button>
+                      <button class="btn btn-info" (click) = "tourService.nextStep($event)">></button>
+                  </div>
+              </div>
+            </div>
+          </ng-template>
+          
+          <button ngbDropdownToggle class="btn btn-white" type="button"  id="dropdownMenuButtonTableSize" aria-expanded="false" >  
+            <fa-icon icon="cogs"></fa-icon>
+            <span >Table Size</span>
+            <fa-icon icon="caret-down" style="margin-left: 10px;"></fa-icon>
+          </button>
+          <ul ngbDropdownMenu aria-labelledby="nestedDropdownButton">
+            <li>
+              <button ngbDropdownItem  class="btn btn-primary checkIcon" (click)="sendNumber('pageSize',10)">
+                <span>10 rows</span>
+                <fa-icon icon="check" *ngIf="tableSize === 10"></fa-icon>
+              </button>
+            </li>
+            <li>
+              <button ngbDropdownItem class="btn btn-primary checkIcon" (click)="sendNumber('pageSize',20)">
+                <span>20 rows</span>
+                <fa-icon icon="check" *ngIf="tableSize === 20"></fa-icon>
+              </button>
+            </li>
+            <li>
+              <button ngbDropdownItem class="btn btn-primary checkIcon" (click)="sendNumber('pageSize',30)">
+                <span>30 rows</span>
+                <fa-icon icon="check" *ngIf="tableSize === 30"></fa-icon>
+              </button>
+            </li>
+          </ul>
+        </div>
       </div>
 
     
@@ -331,24 +344,44 @@
           <span>{{ tourMsgs.get(11) }}</span>
           <div class="tooltipBtns">
               <button class="btn btn-danger" (click)="tourService.cancel($event)">Stop</button>
+              <span style="font-weight: bold;"> {{tourService.getIndex() + 1}}/15</span>
               <div>
-                  <button class="btn btn-info" (click)="tourService.previousStep($event)">&lt;</button>
-                  <button class="btn btn-info" (click) = "tourService.nextStep($event)">></button>
+                <button class="btn btn-info" (click)="tourService.previousStep($event)">&lt;</button>
+                <button class="btn btn-info" (click) = "tourService.nextStep($event)">></button>
               </div>
           </div>
       </div>
      </ng-template>
 
-    <div id="undoTooltipId" class="btn-group" placement="bottom" [ngbTooltip]="undoToolTip" #t11="ngbTooltip" triggers="manual" tooltipClass="custom-tooltip">
-      <button class="btn btn-info" (click)="sendUndo()" [disabled]="historyLength==0" >
+    <ng-template #undoToolTip2>   
+      <div class="tooltipTutorial">
+        <span>{{ tourMsgs.get(12) }}</span>
+        <div class="tooltipBtns">
+            <button class="btn btn-danger" (click)="tourService.cancel($event)">Stop</button>
+            <span style="font-weight: bold;"> {{tourService.getIndex() + 1}}/15</span>
+            <div>
+              <button class="btn btn-info" (click)="tourService.previousStep($event)">&lt;</button>
+              <button class="btn btn-info" (click) = "tourService.nextStep($event)">></button>
+            </div>
+        </div>
+    </div>
+   </ng-template>
+
+    <div id="undoTooltipId" class="btn-group" placement="bottom"  [ngbTooltip]="undoToolTip" [autoClose]="false" #t11="ngbTooltip" triggers="manual" tooltipClass="custom-tooltip">
+      <button class="btn btn-info" (click)="sendUndo()" [disabled]="historyLength==0">
         <fa-icon icon="undo"></fa-icon>
         <span class="font-weight-bold">Undo</span>
       </button>
 
+
+    
       <div class="btn-group" role="group" ngbDropdown class="dropdown d-flex justify-content-end" placement="bottom-right" autoClose="outside">
-        <button ngbDropdownToggle class="btn btn-info" type="button"  id="dropdownMenuButton" aria-expanded="false">  
+        <button ngbDropdownToggle class="btn btn-info" type="button"  id="dropdownMenuButton" aria-expanded="false" 
+        [ngbTooltip]="undoToolTip2" [autoClose]="false" #t12="ngbTooltip" triggers="manual" placement="bottom" tooltipClass="custom-tooltip custom-tooltip-width ">  
           <fa-icon icon="caret-down"></fa-icon>
         </button>
+      
+
         <ul ngbDropdownMenu aria-labelledby="nestedDropdownButton">
           <li style="text-align: center;">
             <span style="font-weight: bold;">Undo Steps</span>
@@ -374,7 +407,8 @@
           </li>
         </ul>
       </div>
-    </div>
+   
+  </div>
 
 
 
@@ -388,9 +422,10 @@
     
     <ng-template #switchCurrencyTooltip>   
       <div class="tooltipTutorial">
-        <span>{{ tourMsgs.get(12) }}</span>
+        <span>{{ tourMsgs.get(13) }}</span>
         <div class="tooltipBtns">
             <button class="btn btn-danger" (click)="tourService.cancel($event)">Stop</button>
+            <span style="font-weight: bold;"> {{tourService.getIndex() + 1}}/15</span>
             <div>
                 <button class="btn btn-info" (click)="tourService.previousStep($event)">&lt;</button>
                 <button class="btn btn-info" (click) = "tourService.nextStep($event)">></button>
@@ -398,7 +433,7 @@
         </div>
     </div>
     </ng-template>
-    <div id="switchCurrencyId" class="form-check form-switch" style="display: flex;" placement="right" [ngbTooltip]="switchCurrencyTooltip" #t12="ngbTooltip" triggers="manual" tooltipClass="custom-tooltip">
+    <div id="switchCurrencyId" class="form-check form-switch" style="display: flex;" placement="right" [ngbTooltip]="switchCurrencyTooltip" [autoClose]="false" #t13="ngbTooltip" triggers="manual" tooltipClass="custom-tooltip">
       <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" [checked]="currencyEUR" (change)="toggleCheckbox()">
       <label class="form-check-label" for="flexSwitchCheckChecked" style="margin-left: 10px;">
           {{ currencyEUR ? "Euros €" : "Local Currency"}}
@@ -411,17 +446,15 @@
     
     <ng-template #submitTooltip>   
       <div class="tooltipTutorial">
-        <span>{{ tourMsgs.get(13) }}</span>
-        <div class="tooltipBtns">
-            <button class="btn btn-danger" (click)="tourService.cancel($event)">End</button>
-            <div>
-                <button class="btn btn-info" (click)="tourService.previousStep($event)">&lt;</button>
-                <button class="btn btn-info" (click)="tourService.cancel($event)">End</button>
-            </div>
+        <span>{{ tourMsgs.get(14) }}</span>
+        <div class="tooltipBtns">      
+          <button class="btn btn-info" (click)="tourService.previousStep($event)">&lt;</button>
+          <span style="font-weight: bold;"> {{tourService.getIndex() + 1}}/15</span>
+          <button class="btn btn-danger" (click)="tourService.cancel($event)">End</button>
         </div>
     </div>
     </ng-template>
-    <submit-modal id="submitTooltipId" placement="left" [ngbTooltip]="submitTooltip" #t13="ngbTooltip" triggers="manual" tooltipClass="custom-tooltip" (confirmEmmiter) = "submitToSAP($event)" [totalLines] = "changesListLength" [unselectedLines] = "this.unselectedLines"></submit-modal>
+    <submit-modal id="submitTooltipId" placement="left" [ngbTooltip]="submitTooltip" [autoClose]="false" #t14="ngbTooltip" triggers="manual" tooltipClass="custom-tooltip" (confirmEmmiter) = "submitToSAP($event)" [totalLines] = "changesListLength" [unselectedLines] = "this.unselectedLines"></submit-modal>
 
     
 

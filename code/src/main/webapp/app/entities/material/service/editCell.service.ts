@@ -17,7 +17,6 @@ export class EditCellService {
 
     addMaterial(id: number, cell: IEditCell): void {
         this.materials.set(id, cell)
-        console.log(this.materials)
     }
 
     removeMaterial(id: number): void {

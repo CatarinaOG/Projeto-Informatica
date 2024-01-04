@@ -29,8 +29,9 @@ export class OptionsBar implements OnInit {
   @ViewChild('t9') fileTooltip!: NgbTooltip; 
   @ViewChild('t10') tableSizeTooltip!: NgbTooltip; 
   @ViewChild('t11') undoTooltip!: NgbTooltip; 
-  @ViewChild('t12') switchTooltip!: NgbTooltip; 
-  @ViewChild('t13') submitTooltip!: NgbTooltip; 
+  @ViewChild('t12') undoToolTip2!: NgbTooltip;
+  @ViewChild('t13') switchTooltip!: NgbTooltip; 
+  @ViewChild('t14') submitTooltip!: NgbTooltip; 
   tourMsgs = tourMessages
 
   filterStatus = new Map<string,boolean>([
@@ -68,6 +69,7 @@ export class OptionsBar implements OnInit {
     if(this.fileTooltip) this.fileTooltip.close()
     if(this.tableSizeTooltip) this.tableSizeTooltip.close()
     if(this.undoTooltip) this.undoTooltip.close()
+    if(this.undoToolTip2) this.undoToolTip2.close()
     if(this.switchTooltip) this.switchTooltip.close()
     if(this.submitTooltip) this.submitTooltip.close()
 
@@ -75,38 +77,38 @@ export class OptionsBar implements OnInit {
       case 8: // filters dropdown menu
         document.getElementById("dropdownMenuButtonFilterOptions")?.focus()
         if (this.filtersTooltip ) this.filtersTooltip.open()
-
         break;
 
       case 9:  // file options dropdown menu
         document.getElementById("dropdownMenuButtonFileOptions")?.focus()
         if (this.fileTooltip ) this.fileTooltip.open()
-
         break;
 
       case 10:  // table size dropdown menu
         document.getElementById("dropdownMenuButtonTableSize")?.focus()
         if (this.tableSizeTooltip ) this.tableSizeTooltip.open()
-
         break;
 
-      case 11:  // undo dropdown menu
+      case 11:  // undo btn
         document.getElementById("undoTooltipId")?.focus()
         if (this.undoTooltip ) this.undoTooltip.open()
-
         break;
 
-      case 12: // switch currency
+      case 12: // undo dropdown menu
+        document.getElementById("undoTooltipId")?.focus()
+        if(this.undoToolTip2) this.undoToolTip2.open()
+        break;
+    
+      case 13: // switch currency
         document.getElementById("switchCurrencyId")?.focus()
         if (this.switchTooltip ) this.switchTooltip.open()
-
         break;
 
-      case 13: // submit
+      case 14: // submit
         document.getElementById("submitTooltipId")?.focus()
         if (this.submitTooltip ) this.submitTooltip.open()
-
         break;
+
       default:
         break;
     }
