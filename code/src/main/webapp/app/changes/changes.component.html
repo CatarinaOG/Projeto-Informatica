@@ -51,6 +51,12 @@
             </div>
           </th>
 
+          <th scope="col" [attr.colspan]=3 class="setWidth edit headerRowEnd">
+            <div class="d-flex" style="place-content: center;" placement="top">
+              <span>Flag</span>
+            </div>
+          </th>
+
           <th scope="col" [attr.colspan]=2 class="setWidth edit headerRowEnd">
             <div class="d-flex" style="place-content: center;" placement="top">
               <span>Comment</span>
@@ -90,6 +96,16 @@
             <span>{{ abs(valueVariation(material.oldST, material.newST)) }}%</span>
           </td>
           
+          <td>
+            <fa-icon class="p-1" icon="flag"  [ngStyle]="{'color': material.flag  ? '#ff0000' : '#999999'}"></fa-icon>    
+          </td>
+          <td> 
+            <fa-icon icon="arrow-right"></fa-icon>
+          </td>
+          <td>
+            <fa-icon class="p-1" icon="flag"  [ngStyle]="{'color': material.newFlag  ? '#ff0000' : '#999999'}"></fa-icon>
+          </td>
+
 
           <td class="text-truncate" style="max-width: 150px;">
             <span ngbTooltip="{{material.oldComment}}" tooltipClass="setWidth">{{ material.oldComment}}</span>

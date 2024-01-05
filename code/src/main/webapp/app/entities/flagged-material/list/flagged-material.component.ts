@@ -8,6 +8,7 @@ import { ASC, DESC, SORT, ITEM_DELETED_EVENT, DEFAULT_SORT_DATA } from 'app/conf
 import { EntityArrayResponseType, FlaggedMaterialService } from '../service/flagged-material.service';
 import { FlaggedMaterialDeleteDialogComponent } from '../delete/flagged-material-delete-dialog.component';
 import { SortService } from 'app/shared/sort/sort.service';
+import { FlagModal } from 'app/entities/material/flag-modal/flagModal';
 
 @Component({
   selector: 'jhi-flagged-material',
@@ -160,4 +161,6 @@ export class FlaggedMaterialComponent implements OnInit {
       this.visibility.set(col_name, false)
     }
   }
+
+
 }

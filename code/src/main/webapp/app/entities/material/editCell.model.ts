@@ -15,5 +15,6 @@ export interface IEditCell {
     oldComment: string | null,
     selected: boolean,
     flag: boolean,
+    newFlag: boolean,
     dateFlag : string
 }

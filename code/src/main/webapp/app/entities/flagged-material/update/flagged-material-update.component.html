@@ -1,203 +1,11 @@
 <div class="d-flex justify-content-center">
   <div class="col-8">
-    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
-      <h2 id="jhi-flagged-material-heading" data-cy="FlaggedMaterialCreateUpdateHeading">Create or edit a Flagged Material</h2>
+    <form name="editForm" role="form" novalidate (ngSubmit)="save(content)" [formGroup]="editForm">
+      <h2 id="jhi-flagged-material-heading" data-cy="FlaggedMaterialCreateUpdateHeading">Edit a Flagged Material</h2>
 
-      <div>
+      <div style="display: flex; justify-content: center; gap: 50px; margin-top: 50px; margin-bottom: 50px;">
         <jhi-alert-error></jhi-alert-error>
 
-        <div class="row mb-3" *ngIf="editForm.controls.id.value !== null">
-          <label class="form-label" for="field_id">ID</label>
-          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
-        </div>
-
-        <div class="row mb-3">
-          <label class="form-label" for="field_material">Material</label>
-          <input type="text" class="form-control" name="material" id="field_material" data-cy="material" formControlName="material" />
-        </div>
-
-        <div class="row mb-3">
-          <label class="form-label" for="field_description">Description</label>
-          <input
-            type="text"
-            class="form-control"
-            name="description"
-            id="field_description"
-            data-cy="description"
-            formControlName="description"
-          />
-        </div>
-
-        <div class="row mb-3">
-          <label class="form-label" for="field_abcClassification">Abc Classification</label>
-          <select
-            class="form-control"
-            name="abcClassification"
-            formControlName="abcClassification"
-            id="field_abcClassification"
-            data-cy="abcClassification"
-          >
-            <option [ngValue]="null"></option>
-            <option *ngFor="let aBCClassification of aBCClassificationValues" [value]="aBCClassification">aBCClassification</option>
-          </select>
-        </div>
-
-        <div class="row mb-3">
-          <label class="form-label" for="field_avgSupplierDelay">Avg Supplier Delay</label>
-          <input
-            type="number"
-            class="form-control"
-            name="avgSupplierDelay"
-            id="field_avgSupplierDelay"
-            data-cy="avgSupplierDelay"
-            formControlName="avgSupplierDelay"
-          />
-        </div>
-
-        <div class="row mb-3">
-          <label class="form-label" for="field_maxSupplierDelay">Max Supplier Delay</label>
-          <input
-            type="number"
-            class="form-control"
-            name="maxSupplierDelay"
-            id="field_maxSupplierDelay"
-            data-cy="maxSupplierDelay"
-            formControlName="maxSupplierDelay"
-          />
-        </div>
-
-        <div class="row mb-3">
-          <label class="form-label" for="field_serviceLevel">Service Level</label>
-          <input
-            type="number"
-            class="form-control"
-            name="serviceLevel"
-            id="field_serviceLevel"
-            data-cy="serviceLevel"
-            formControlName="serviceLevel"
-          />
-        </div>
-
-        <div class="row mb-3">
-          <label class="form-label" for="field_plant">Plant</label>
-          <input type="text" class="form-control" name="plant" id="field_plant" data-cy="plant" formControlName="plant" />
-        </div>
-
-        <div class="row mb-3">
-          <label class="form-label" for="field_mrpController">Mrp Controller</label>
-          <input
-            type="text"
-            class="form-control"
-            name="mrpController"
-            id="field_mrpController"
-            data-cy="mrpController"
-            formControlName="mrpController"
-          />
-        </div>
-
-        <div class="row mb-3">
-          <label class="form-label" for="field_currSAPSafetyStock">Curr SAP Safety Stock</label>
-          <input
-            type="number"
-            class="form-control"
-            name="currSAPSafetyStock"
-            id="field_currSAPSafetyStock"
-            data-cy="currSAPSafetyStock"
-            formControlName="currSAPSafetyStock"
-          />
-        </div>
-
-        <div class="row mb-3">
-          <label class="form-label" for="field_proposedSST">Proposed SST</label>
-          <input
-            type="number"
-            class="form-control"
-            name="proposedSST"
-            id="field_proposedSST"
-            data-cy="proposedSST"
-            formControlName="proposedSST"
-          />
-        </div>
-
-        <div class="row mb-3">
-          <label class="form-label" for="field_deltaSST">Delta SST</label>
-          <input type="number" class="form-control" name="deltaSST" id="field_deltaSST" data-cy="deltaSST" formControlName="deltaSST" />
-        </div>
-
-        <div class="row mb-3">
-          <label class="form-label" for="field_currentSAPSafeTime">Current SAP Safe Time</label>
-          <input
-            type="number"
-            class="form-control"
-            name="currentSAPSafeTime"
-            id="field_currentSAPSafeTime"
-            data-cy="currentSAPSafeTime"
-            formControlName="currentSAPSafeTime"
-          />
-        </div>
-
-        <div class="row mb-3">
-          <label class="form-label" for="field_proposedST">Proposed ST</label>
-          <input
-            type="number"
-            class="form-control"
-            name="proposedST"
-            id="field_proposedST"
-            data-cy="proposedST"
-            formControlName="proposedST"
-          />
-        </div>
-
-        <div class="row mb-3">
-          <label class="form-label" for="field_deltaST">Delta ST</label>
-          <input type="number" class="form-control" name="deltaST" id="field_deltaST" data-cy="deltaST" formControlName="deltaST" />
-        </div>
-
-        <div class="row mb-3">
-          <label class="form-label" for="field_openSAPmd04">Open SA Pmd 04</label>
-          <input
-            type="text"
-            class="form-control"
-            name="openSAPmd04"
-            id="field_openSAPmd04"
-            data-cy="openSAPmd04"
-            formControlName="openSAPmd04"
-          />
-        </div>
-
-        <div class="row mb-3">
-          <label class="form-label" for="field_currentInventoryValue">Current Inventory Value</label>
-          <input
-            type="number"
-            class="form-control"
-            name="currentInventoryValue"
-            id="field_currentInventoryValue"
-            data-cy="currentInventoryValue"
-            formControlName="currentInventoryValue"
-          />
-        </div>
-
-        <div class="row mb-3">
-          <label class="form-label" for="field_unitCost">Unit Cost</label>
-          <input type="number" class="form-control" name="unitCost" id="field_unitCost" data-cy="unitCost" formControlName="unitCost" />
-        </div>
-
-        <div class="row mb-3">
-          <label class="form-label" for="field_avgDemand">Avg Demand</label>
-          <input type="number" class="form-control" name="avgDemand" id="field_avgDemand" data-cy="avgDemand" formControlName="avgDemand" />
-        </div>
-
-        <div class="row mb-3">
-          <label class="form-label" for="field_avgInventoryEffectAfterChange">Avg Inventory Effect After Change</label>
-          <input
-            type="number"
-            class="form-control"
-            name="avgInventoryEffectAfterChange"
-            id="field_avgInventoryEffectAfterChange"
-            data-cy="avgInventoryEffectAfterChange"
-            formControlName="avgInventoryEffectAfterChange"
-          />
-        </div>
 
         <div class="row mb-3">
           <label class="form-label" for="field_flagMaterial">Flag Material</label>
@@ -211,7 +19,7 @@
           />
         </div>
 
-        <div class="row mb-3">
+        <div class="row mb-3" [ngClass] = "inputHideShow()">
           <label class="form-label" for="field_flagExpirationDate">Flag Expiration Date</label>
           <div class="input-group">
             <input
@@ -223,94 +31,17 @@
               ngbDatepicker
               #flagExpirationDateDp="ngbDatepicker"
               formControlName="flagExpirationDate"
+              [minDate]="minDate" 
             />
             <button type="button" class="btn btn-secondary" (click)="flagExpirationDateDp.toggle()">
               <fa-icon icon="calendar-alt"></fa-icon>
             </button>
           </div>
+
+          <span *ngIf="flagError" style="color: red;">Flag expiration date must be chosen</span>
         </div>
 
-        <div class="row mb-3">
-          <label class="form-label" for="field_valueOfUpdatedSS">Value Of Updated SS</label>
-          <input
-            type="number"
-            class="form-control"
-            name="valueOfUpdatedSS"
-            id="field_valueOfUpdatedSS"
-            data-cy="valueOfUpdatedSS"
-            formControlName="valueOfUpdatedSS"
-          />
-        </div>
 
-        <div class="row mb-3">
-          <label class="form-label" for="field_valueOfUpdatedST">Value Of Updated ST</label>
-          <input
-            type="number"
-            class="form-control"
-            name="valueOfUpdatedST"
-            id="field_valueOfUpdatedST"
-            data-cy="valueOfUpdatedST"
-            formControlName="valueOfUpdatedST"
-          />
-        </div>
-
-        <div class="row mb-3">
-          <label class="form-label" for="field_dateOfUpdatedSS">Date Of Updated SS</label>
-          <div class="input-group">
-            <input
-              id="field_dateOfUpdatedSS"
-              data-cy="dateOfUpdatedSS"
-              type="text"
-              class="form-control"
-              name="dateOfUpdatedSS"
-              ngbDatepicker
-              #dateOfUpdatedSSDp="ngbDatepicker"
-              formControlName="dateOfUpdatedSS"
-            />
-            <button type="button" class="btn btn-secondary" (click)="dateOfUpdatedSSDp.toggle()">
-              <fa-icon icon="calendar-alt"></fa-icon>
-            </button>
-          </div>
-        </div>
-
-        <div class="row mb-3">
-          <label class="form-label" for="field_dateOfUpdatedST">Date Of Updated ST</label>
-          <div class="input-group">
-            <input
-              id="field_dateOfUpdatedST"
-              data-cy="dateOfUpdatedST"
-              type="text"
-              class="form-control"
-              name="dateOfUpdatedST"
-              ngbDatepicker
-              #dateOfUpdatedSTDp="ngbDatepicker"
-              formControlName="dateOfUpdatedST"
-            />
-            <button type="button" class="btn btn-secondary" (click)="dateOfUpdatedSTDp.toggle()">
-              <fa-icon icon="calendar-alt"></fa-icon>
-            </button>
-          </div>
-        </div>
-
-        <div class="row mb-3">
-          <label class="form-label" for="field_toSaveUpdates">To Save Updates</label>
-          <input
-            type="checkbox"
-            class="form-check"
-            name="toSaveUpdates"
-            id="field_toSaveUpdates"
-            data-cy="toSaveUpdates"
-            formControlName="toSaveUpdates"
-          />
-        </div>
-
-        <div class="row mb-3">
-          <label class="form-label" for="field_currency">Currency</label>
-          <select class="form-control" name="currency" formControlName="currency" id="field_currency" data-cy="currency">
-            <option [ngValue]="null"></option>
-            <option *ngFor="let coin of coinValues" [value]="coin">coin</option>
-          </select>
-        </div>
       </div>
 
       <div>
@@ -322,12 +53,38 @@
           type="submit"
           id="save-entity"
           data-cy="entityCreateSaveButton"
-          [disabled]="editForm.invalid || isSaving"
           class="btn btn-primary"
+          [disabled]="buttonStatus"
         >
           <fa-icon icon="save"></fa-icon>&nbsp;<span>Save</span>
         </button>
       </div>
     </form>
   </div>
+
+
+
+
+  <ng-template #content let-modal>
+    <div class="modal-header">
+      <h3 class="modal-title" id="modal-basic-title">Before you save ...</h3>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+      <h5>
+        If you confirm, the special case will be 
+        <span style="color: red;font-weight: 900;">deleted </span> 
+      </h5>
+      <h6>Are you sure?</h6>
+    </div>
+
+    <div class="modal-footer submitModalBtns">
+      <button type="button" class="btn btn-info" (click)="modal.close('Back')">Back</button>
+      <button type="button" class="btn btn-outline-dark" (click)="modal.close('Proceed')">
+        Proceed
+      </button>
+    </div>
+  </ng-template>
+
+
 </div>

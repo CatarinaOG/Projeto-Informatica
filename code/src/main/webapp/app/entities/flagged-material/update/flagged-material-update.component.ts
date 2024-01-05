@@ -1,14 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject, TemplateRef } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
-
+import {  NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FlaggedMaterialFormService, FlaggedMaterialFormGroup } from './flagged-material-form.service';
 import { IFlaggedMaterial } from '../flagged-material.model';
 import { FlaggedMaterialService } from '../service/flagged-material.service';
 import { ABCClassification } from 'app/entities/enumerations/abc-classification.model';
 import { Coin } from 'app/entities/enumerations/coin.model';
+import { Dayjs } from 'dayjs';
 
 @Component({
   selector: 'jhi-flagged-material-update',
@@ -19,6 +20,19 @@ export class FlaggedMaterialUpdateComponent implements OnInit {
   flaggedMaterial: IFlaggedMaterial | null = null;
   aBCClassificationValues = Object.keys(ABCClassification);
   coinValues = Object.keys(Coin);
+	
+  flagError: boolean = false;
+
+  current = new Date();
+
+  private modalService = inject(NgbModal);
+  closeResult = '';
+
+  minDate = {
+	  year: this.current.getFullYear(),
+	  month: this.current.getMonth() + 1,
+	  day: this.current.getDate()
+	};
 
   editForm: FlaggedMaterialFormGroup = this.flaggedMaterialFormService.createFlaggedMaterialFormGroup();
 
@@ -33,23 +47,76 @@ export class FlaggedMaterialUpdateComponent implements OnInit {
       this.flaggedMaterial = flaggedMaterial;
       if (flaggedMaterial) {
         this.updateForm(flaggedMaterial);
+        this.onFormChange();
+        // Subscribe to form value changes
+        this.editForm.valueChanges.subscribe(() => {
+          this.onFormChange();
+        });
       }
     });
+  }
+
+  onFormChange(): void {
+    const formValue = this.editForm.value;
+    this.saveButtonStatus(formValue.flagMaterial, formValue.flagExpirationDate)
   }
 
   previousState(): void {
     window.history.back();
   }
 
-  save(): void {
+  inputHideShow() : string {
+		if (!this.editForm.get('flagMaterial')?.value) return "tableHide"
+		else return ""
+	}
+
+
+  buttonStatus = false;
+
+  saveButtonStatus(flag: boolean | null | undefined, date: Dayjs | null | undefined) { 
+    this.flagError = false;
+    if(flag === true && (date === null || date === undefined)) {
+      this.flagError = true;
+      this.buttonStatus= true;
+    }
+    else this.buttonStatus = false;
+  }
+
+
+  save(content: TemplateRef<any>): void {
     this.isSaving = true;
     const flaggedMaterial = this.flaggedMaterialFormService.getFlaggedMaterial(this.editForm);
     if (flaggedMaterial.id !== null) {
-      this.subscribeToSaveResponse(this.flaggedMaterialService.update(flaggedMaterial));
+      if(flaggedMaterial.flagMaterial === false){
+        this.open(content)
+        
+      }
+      else this.subscribeToSaveResponse(this.flaggedMaterialService.update(flaggedMaterial));
     } else {
       this.subscribeToSaveResponse(this.flaggedMaterialService.create(flaggedMaterial));
     }
   }
+
+  open(content: TemplateRef<any>): void {
+    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then(
+      (result) => {
+        this.closeResult = `Closed with: ${result}`;
+        if (result === "Proceed"){
+          if(this.flaggedMaterial){
+            this.flaggedMaterialService.delete(this.flaggedMaterial?.id).subscribe({
+              next: () => this.onSaveSuccess(),
+              error: () => this.onSaveError(),
+            });
+          }
+        }  
+        else {}
+      }, 
+      (reason) => {
+        // this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+      },
+    );
+
+	}
 
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IFlaggedMaterial>>): void {
     result.pipe(finalize(() => this.onSaveFinalize())).subscribe({
@@ -74,4 +141,9 @@ export class FlaggedMaterialUpdateComponent implements OnInit {
     this.flaggedMaterial = flaggedMaterial;
     this.flaggedMaterialFormService.resetForm(this.editForm, flaggedMaterial);
   }
+
+
+
+
+
 }

@@ -329,11 +329,10 @@
             
           </ng-template>
 
-          <th id="selectEntryTooltipId" scope="col" jhiSortBy="selectEntriesForChangeInSap" class="edit" [ngClass] ="editCellClasses('edit')">
+          <th id="selectEntryTooltipId" scope="col"  class="edit" [ngClass] ="editCellClasses('edit')">
             <div>
               <div class="d-flex" style="place-content: center;" placement="left" [ngbTooltip]="selectEntryTooltip" #t5="ngbTooltip" triggers="manual" tooltipClass="custom-tooltip" [autoClose]="false">
                 <span placement="top" ngbTooltip="{{toolTipMsg.get('Select Entries For Change')}}">Entries For Change In Sap</span>
-                <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
               <input type="checkbox" [disabled]="editCellService.getSize() === 0" (click)="checkUncheckAll($event)">
               <p>Select All</p>
@@ -357,13 +356,13 @@
             </div>
           </ng-template>
 
-          <th id="flagTooltipId" scope="col" jhiSortBy="flagMaterial" class="edit" [ngClass] ="editCellClasses('edit')">
+          <th id="flagTooltipId" scope="col" class="edit" [ngClass] ="editCellClasses('edit')">
             <div class="d-flex" style="place-content: center;" placement="left" [ngbTooltip]="flagToolTip" [autoClose]="false" #t6="ngbTooltip" triggers="manual" tooltipClass="custom-tooltip">
               <span placement="top" ngbTooltip="{{toolTipMsg.get('Flag Material as Special Case')}}">Flag Material As Special Case</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
 
+          
 
           <ng-template #commentToolTip>   
             <div class="tooltipTutorial">
@@ -391,7 +390,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let material of materials; trackBy: trackId; let i = index;" data-cy="entityTable" [ngClass] = "func(material.id)">
+        <tr class ="align-middle" *ngFor="let material of materials; trackBy: trackId; let i = index;" data-cy="entityTable" [ngClass] = "func(material.id)">
           <td class ="materialInfo" [ngClass] ="editCellClasses('materialInfo')">{{ material.material }}</td>
           <td class ="materialInfo" [ngClass] ="editCellClasses('materialInfo')">{{ material.description }}</td>
           <td class ="materialInfo" [ngClass] ="editCellClasses('materialInfo')">{{ material.abcClassification }}</td>
@@ -470,8 +469,7 @@
             <flag-modal [material]="material" [checkFlag] = getFlagVal(material.id) (flagDateEmmiter) = "input($event, 'flag', material.id)"></flag-modal>
           </td>
 
-          
-          <!-- <td class ="edit setWidth" *ngIf="isEditable[0] === material.id && isEditable[1] === 2"><input class="inputWidth" [placeholder]="placeholderGeneratorString(material)" (change)="input($event,'newComment',material.id)"></td> -->
+
          
           <td class ="edit setWidth" [ngClass] ="editCellClasses('edit',material,'Comment')" >
             <div class="d-flex justify-content-between">
@@ -486,38 +484,6 @@
           <td *ngIf = "!visibility.get('edit')">
             ...
           </td>
-
-
-          <!--
-          <td class="text-end">
-            <div class="btn-group">
-              <button
-                type="submit"
-                [routerLink]="['/material', material.id, 'view']"
-                class="btn btn-info btn-sm"
-                data-cy="entityDetailsButton"
-              >
-                <fa-icon icon="eye"></fa-icon>
-                <span class="d-none d-md-inline">View</span>
-              </button>
-
-              <button
-                type="submit"
-                [routerLink]="['/material', material.id, 'edit']"
-                class="btn btn-primary btn-sm"
-                data-cy="entityEditButton"
-              >
-                <fa-icon icon="pencil-alt"></fa-icon>
-                <span class="d-none d-md-inline">Edit</span>
-              </button>
-
-              <button type="submit" (click)="delete(material)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
-                <fa-icon icon="times"></fa-icon>
-                <span class="d-none d-md-inline">Delete</span>
-              </button>
-            </div>
-          </td>
-          -->
         </tr>
       </tbody>
     </table>

@@ -21,30 +21,12 @@ type FlaggedMaterialFormGroupContent = {
   material: FormControl<IFlaggedMaterial['material']>;
   description: FormControl<IFlaggedMaterial['description']>;
   abcClassification: FormControl<IFlaggedMaterial['abcClassification']>;
-  avgSupplierDelay: FormControl<IFlaggedMaterial['avgSupplierDelay']>;
-  maxSupplierDelay: FormControl<IFlaggedMaterial['maxSupplierDelay']>;
-  serviceLevel: FormControl<IFlaggedMaterial['serviceLevel']>;
+
   plant: FormControl<IFlaggedMaterial['plant']>;
   mrpController: FormControl<IFlaggedMaterial['mrpController']>;
-  currSAPSafetyStock: FormControl<IFlaggedMaterial['currSAPSafetyStock']>;
-  proposedSST: FormControl<IFlaggedMaterial['proposedSST']>;
-  deltaSST: FormControl<IFlaggedMaterial['deltaSST']>;
-  currentSAPSafeTime: FormControl<IFlaggedMaterial['currentSAPSafeTime']>;
-  proposedST: FormControl<IFlaggedMaterial['proposedST']>;
-  deltaST: FormControl<IFlaggedMaterial['deltaST']>;
-  openSAPmd04: FormControl<IFlaggedMaterial['openSAPmd04']>;
-  currentInventoryValue: FormControl<IFlaggedMaterial['currentInventoryValue']>;
-  unitCost: FormControl<IFlaggedMaterial['unitCost']>;
-  avgDemand: FormControl<IFlaggedMaterial['avgDemand']>;
-  avgInventoryEffectAfterChange: FormControl<IFlaggedMaterial['avgInventoryEffectAfterChange']>;
+  
   flagMaterial: FormControl<IFlaggedMaterial['flagMaterial']>;
   flagExpirationDate: FormControl<IFlaggedMaterial['flagExpirationDate']>;
-  valueOfUpdatedSS: FormControl<IFlaggedMaterial['valueOfUpdatedSS']>;
-  valueOfUpdatedST: FormControl<IFlaggedMaterial['valueOfUpdatedST']>;
-  dateOfUpdatedSS: FormControl<IFlaggedMaterial['dateOfUpdatedSS']>;
-  dateOfUpdatedST: FormControl<IFlaggedMaterial['dateOfUpdatedST']>;
-  toSaveUpdates: FormControl<IFlaggedMaterial['toSaveUpdates']>;
-  currency: FormControl<IFlaggedMaterial['currency']>;
 };
 
 export type FlaggedMaterialFormGroup = FormGroup<FlaggedMaterialFormGroupContent>;
@@ -67,30 +49,11 @@ export class FlaggedMaterialFormService {
       material: new FormControl(flaggedMaterialRawValue.material),
       description: new FormControl(flaggedMaterialRawValue.description),
       abcClassification: new FormControl(flaggedMaterialRawValue.abcClassification),
-      avgSupplierDelay: new FormControl(flaggedMaterialRawValue.avgSupplierDelay),
-      maxSupplierDelay: new FormControl(flaggedMaterialRawValue.maxSupplierDelay),
-      serviceLevel: new FormControl(flaggedMaterialRawValue.serviceLevel),
       plant: new FormControl(flaggedMaterialRawValue.plant),
       mrpController: new FormControl(flaggedMaterialRawValue.mrpController),
-      currSAPSafetyStock: new FormControl(flaggedMaterialRawValue.currSAPSafetyStock),
-      proposedSST: new FormControl(flaggedMaterialRawValue.proposedSST),
-      deltaSST: new FormControl(flaggedMaterialRawValue.deltaSST),
-      currentSAPSafeTime: new FormControl(flaggedMaterialRawValue.currentSAPSafeTime),
-      proposedST: new FormControl(flaggedMaterialRawValue.proposedST),
-      deltaST: new FormControl(flaggedMaterialRawValue.deltaST),
-      openSAPmd04: new FormControl(flaggedMaterialRawValue.openSAPmd04),
-      currentInventoryValue: new FormControl(flaggedMaterialRawValue.currentInventoryValue),
-      unitCost: new FormControl(flaggedMaterialRawValue.unitCost),
-      avgDemand: new FormControl(flaggedMaterialRawValue.avgDemand),
-      avgInventoryEffectAfterChange: new FormControl(flaggedMaterialRawValue.avgInventoryEffectAfterChange),
+      
       flagMaterial: new FormControl(flaggedMaterialRawValue.flagMaterial),
       flagExpirationDate: new FormControl(flaggedMaterialRawValue.flagExpirationDate),
-      valueOfUpdatedSS: new FormControl(flaggedMaterialRawValue.valueOfUpdatedSS),
-      valueOfUpdatedST: new FormControl(flaggedMaterialRawValue.valueOfUpdatedST),
-      dateOfUpdatedSS: new FormControl(flaggedMaterialRawValue.dateOfUpdatedSS),
-      dateOfUpdatedST: new FormControl(flaggedMaterialRawValue.dateOfUpdatedST),
-      toSaveUpdates: new FormControl(flaggedMaterialRawValue.toSaveUpdates),
-      currency: new FormControl(flaggedMaterialRawValue.currency),
     });
   }
 

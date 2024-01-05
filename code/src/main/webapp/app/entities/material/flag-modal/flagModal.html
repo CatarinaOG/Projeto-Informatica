@@ -30,7 +30,7 @@
 				<label for="dateOfBirth">Flag Expiration Date</label>
 				<div class="input-group">
 					<input
-						id="dateOfBirth"
+						id="date"
 						class="form-control"
 						placeholder={{placeholderText}}
 						name="dp"
@@ -41,7 +41,8 @@
 						[minDate]="minDate" 
 					/>
 						
-						<button class="btn btn-outline-secondary bi bi-calendar3" (click)="dp.toggle()" type="button" ></button>
+						<button class="btn btn-outline-secondary bi bi-calendar3" (click)="dp.toggle()" type="button" >              <fa-icon icon="calendar-alt"></fa-icon>
+						</button>
 				</div>
 			</div>
 		</form>

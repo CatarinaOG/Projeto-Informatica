@@ -814,6 +814,7 @@ export class MaterialComponent implements OnInit , OnDestroy {
       editCell.oldComment = editCell.newComment;
       editCell.selected = false;
       editCell.flag = material?.flagMaterial ?? false;
+      editCell.newFlag = editCell.flag
     }
     if (editCell){
       if (col_name === "newSST"){
@@ -842,7 +843,7 @@ export class MaterialComponent implements OnInit , OnDestroy {
         // }
       }
       if (col_name === "flag") {
-        editCell.flag = event.flag
+        editCell.newFlag = event.flag
         if (event.flag) {
           editCell.dateFlag = event.date;
         }

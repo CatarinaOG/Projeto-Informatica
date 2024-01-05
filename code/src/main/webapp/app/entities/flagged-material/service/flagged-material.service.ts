@@ -47,6 +47,13 @@ export class FlaggedMaterialService {
       .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
+  updateFlagged(flaggedMaterial: IFlaggedMaterial): Observable<EntityResponseType> {
+    const copy = this.convertDateFromClient(flaggedMaterial);
+    return this.http
+    .post<RestFlaggedMaterial>(`${this.resourceUrl}/update-flag`, [copy], { observe: 'response' })
+    .pipe(map(res => this.convertResponseFromServer(res)))
+  }
+
   partialUpdate(flaggedMaterial: PartialUpdateFlaggedMaterial): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(flaggedMaterial);
     return this.http

@@ -366,6 +366,9 @@ input[type=number] {
   border: none; /* Remove borders for cells */
 }
 
+.headerAlign{
+  text-align: center;
+}
 
 .tableHeader {
   border-color: rgb(219, 219, 219) !important;
@@ -467,4 +470,15 @@ input[type=number] {
 .tour-step {
   display: none;
   /* Add styling for each tour step */
+}
+
+.container {
+  display: flex;
+  justify-content:center;
+}
+
+.list {
+  list-style-type: none;
+  margin: 20px;
+  padding: 0;
 }
