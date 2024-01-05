@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild, OnDestroy } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
 import { TourService } from '../service/tour.service';
 import { tourMessages } from '../data/tourMessage';
@@ -19,7 +19,7 @@ export class HeaderGroup implements OnInit {
   @ViewChild('t2', { static: true }) btnToolTip!: NgbTooltip;
 
   tourMsgs = tourMessages
-  index: number = 0;
+  index = 0;
 
   private subscription: Subscription = new Subscription();
 
@@ -39,24 +39,27 @@ export class HeaderGroup implements OnInit {
     this.visibilityEmitter.emit({name : this.groupName,visibility : !this.visibilityValue})
   }
   
-  defineStepTour(value: number) {
-    if(this.headerToolTip) this.headerToolTip.close()
-    if(this.btnToolTip) this.btnToolTip.close()
+  defineStepTour(value: number) : void {
+    this.headerToolTip.close()
+    this.btnToolTip.close()
 
     switch(value) {
       case 0:
         document.getElementById("Material Info")?.focus()
-        if (this.headerToolTip && this.headerName === "Material Info") this.headerToolTip.open()
+        if (this.headerToolTip && this.headerName === "Material Info") {
+          this.headerToolTip.open()
+        }
         break;
 
       case 1:
-        if (this.btnToolTip && this.headerName === "Material Info") this.btnToolTip.open()
+        if (this.btnToolTip && this.headerName === "Material Info"){
+          this.btnToolTip.open()
+        } 
         break;
        
       default:
         break;
     }
   }
-
 
 };

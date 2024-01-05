@@ -12,26 +12,26 @@ export class TourService {
         this.maxSteps = 15;
     }
 
-    start(){
+    start() : void{
         this.variableSubject.next(0);
     }
 
-    getIndex() {
+    getIndex() : number{
         return this.variableSubject.value;
     }
   
     nextStep(event: any) {
-        if (this.variableSubject.value === this.maxSteps) this.variableSubject.next(-1);
-        else this.variableSubject.next(this.variableSubject.value + 1)
+        if (this.variableSubject.value === this.maxSteps) { this.variableSubject.next(-1)}
+        else {this.variableSubject.next(this.variableSubject.value + 1)}
         event.stopPropagation();
     }
 
-    previousStep(event: any) {
-        if (this.variableSubject.value !== 0) this.variableSubject.next(this.variableSubject.value - 1)
+    previousStep(event: any) :void {
+        if (this.variableSubject.value !== 0) { this.variableSubject.next(this.variableSubject.value - 1)}
         event.stopPropagation();
     }
 
-    cancel(event: any){
+    cancel(event: any) : void{
         this.variableSubject.next(-1)
         event.stopPropagation();
     }

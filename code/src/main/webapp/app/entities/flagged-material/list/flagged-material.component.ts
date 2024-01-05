@@ -8,7 +8,6 @@ import { ASC, DESC, SORT, ITEM_DELETED_EVENT, DEFAULT_SORT_DATA } from 'app/conf
 import { EntityArrayResponseType, FlaggedMaterialService } from '../service/flagged-material.service';
 import { FlaggedMaterialDeleteDialogComponent } from '../delete/flagged-material-delete-dialog.component';
 import { SortService } from 'app/shared/sort/sort.service';
-import { FlagModal } from 'app/entities/material/flag-modal/flagModal';
 
 @Component({
   selector: 'jhi-flagged-material',
@@ -74,6 +73,40 @@ export class FlaggedMaterialComponent implements OnInit {
     this.handleNavigation(this.predicate, this.ascending);
   }
 
+  editCellClasses(colName: string, material?: IFlaggedMaterial, editColName? : string) : string {
+    let returnVal = ""
+    if (colName === "materialInfo" && this.visibility.get('materialInfo') === false){
+      returnVal = "tableHide "
+    }
+    else if (colName === "edit" && this.visibility.get('edit') === false){
+      returnVal = "tableHide "
+    }
+    else if (colName === "supplierDelay" && this.visibility.get('supplierDelay') === false){
+      returnVal = "tableHide "
+    }
+    else if (colName === "safetyStock" && this.visibility.get('safetyStock') === false){
+      returnVal = "tableHide "
+    }
+    else if (colName === "safetyTime" && this.visibility.get('safetyTime') === false){
+      returnVal = "tableHide "
+    }
+    else if (colName === "inventory" && this.visibility.get('inventory') === false){
+      returnVal = "tableHide "
+    }
+    return returnVal
+  }
+
+  switchVisibility(event: any) : void {
+    let col_name = event.name;
+    if (this.visibility.get(col_name) === false){
+      this.visibility.set(col_name, true)
+    }
+    else {
+      this.visibility.set(col_name, false)
+    }
+  }
+
+
   protected loadFromBackendWithRouteInformations(): Observable<EntityArrayResponseType> {
     return combineLatest([this.activatedRoute.queryParamMap, this.activatedRoute.data]).pipe(
       tap(([params, data]) => this.fillComponentAttributeFromRoute(params, data)),
@@ -129,38 +162,7 @@ export class FlaggedMaterialComponent implements OnInit {
   }
 
 
-  editCellClasses(colName: string, material?: IFlaggedMaterial, editColName? : string) : string {
-    let returnVal = ""
-    if (colName === "materialInfo" && this.visibility.get('materialInfo') === false){
-      returnVal = "tableHide "
-    }
-    else if (colName === "edit" && this.visibility.get('edit') === false){
-      returnVal = "tableHide "
-    }
-    else if (colName === "supplierDelay" && this.visibility.get('supplierDelay') === false){
-      returnVal = "tableHide "
-    }
-    else if (colName === "safetyStock" && this.visibility.get('safetyStock') === false){
-      returnVal = "tableHide "
-    }
-    else if (colName === "safetyTime" && this.visibility.get('safetyTime') === false){
-      returnVal = "tableHide "
-    }
-    else if (colName === "inventory" && this.visibility.get('inventory') === false){
-      returnVal = "tableHide "
-    }
-    return returnVal
-  }
 
-  switchVisibility(event: any) : void {
-    var col_name = event.name;
-    if (this.visibility.get(col_name) == false){
-      this.visibility.set(col_name, true)
-    }
-    else {
-      this.visibility.set(col_name, false)
-    }
-  }
 
 
 }

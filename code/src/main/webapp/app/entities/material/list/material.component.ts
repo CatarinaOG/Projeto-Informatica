@@ -1,20 +1,18 @@
-import { Component, OnDestroy, OnInit, ViewChild,ViewChildren,HostListener, QueryList } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild,ViewChildren,HostListener, QueryList, AfterViewInit } from '@angular/core';
 import { HttpHeaders } from '@angular/common/http';
 import { ActivatedRoute, Data, ParamMap, Router } from '@angular/router';
-import { combineLatest, filter, last, Observable, Subscription, switchMap, tap } from 'rxjs';
+import { combineLatest, Observable, Subscription, switchMap, tap } from 'rxjs';
 import { NgbModal, NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
 import { IEditCell } from '../editCell.model'
 import { specialFilter } from '../specialFilters.model'
 import { IMaterial } from '../material.model';
-import { ITEMS_PER_PAGE, PAGE_HEADER, TOTAL_COUNT_RESPONSE_HEADER } from 'app/config/pagination.constants';
-import { ASC, DESC, SORT, ITEM_DELETED_EVENT, DEFAULT_SORT_DATA } from 'app/config/navigation.constants';
+import { PAGE_HEADER, TOTAL_COUNT_RESPONSE_HEADER } from 'app/config/pagination.constants';
+import { ASC, DESC, SORT, DEFAULT_SORT_DATA } from 'app/config/navigation.constants';
 import { EntityArrayResponseType, MaterialService } from '../service/material.service';
 import { EditCellService } from '../service/editCell.service';
-import { MaterialDeleteDialogComponent } from '../delete/material-delete-dialog.component';
 import { FilterOptions, IFilterOptions, IFilterOption } from 'app/shared/filter/filter.model';
 import { IHistoryEntity } from '../historyEntity.model';
 import { Coin } from '../../enumerations/coin.model'
-import { of } from 'rxjs';
 
 import { NgbAlert } from '@ng-bootstrap/ng-bootstrap';
 import { ABCClassification } from 'app/entities/enumerations/abc-classification.model';
@@ -33,7 +31,7 @@ import { tourMessages } from '../data/tourMessage';
 
 
 
-export class MaterialComponent implements OnInit , OnDestroy {
+export class MaterialComponent implements OnInit , OnDestroy , AfterViewInit{
 
   @ViewChild(NgbAlert, { static: false }) alert!: NgbAlert | undefined;
   @ViewChildren(NgbTooltip) tooltips!: QueryList<NgbTooltip>;
@@ -52,14 +50,14 @@ export class MaterialComponent implements OnInit , OnDestroy {
   predicate = 'id';
   ascending = true;
   filters: IFilterOptions = new FilterOptions();
-  currencyEUR : boolean = true;
+  currencyEUR  = true;
 
   history: IHistoryEntity[] = [];
   subscription: Subscription = new Subscription();
 
 
 
-  itemsPerPage = 10;//ITEMS_PER_PAGE;
+  itemsPerPage = 10;// ITEMS_PER_PAGE;
   totalItems = 0;
   page = 1;
   selectedFilterState = false;
@@ -75,6 +73,7 @@ export class MaterialComponent implements OnInit , OnDestroy {
   firstTime = true;
 
   clickedSubmit = false;
+  message:string | undefined;
 
   specialFiltersList : specialFilter[] = [
     {name: "Selected", isActive: false, idList:[]},
@@ -105,7 +104,7 @@ export class MaterialComponent implements OnInit , OnDestroy {
     protected activatedRoute: ActivatedRoute,
     public router: Router,
     protected modalService: NgbModal,
-    //private tourService: TourService
+    // private tourService: TourService
   ) {
     this.visibility = new Map<string, boolean>([
       ["materialInfo", true],
@@ -118,7 +117,7 @@ export class MaterialComponent implements OnInit , OnDestroy {
   }
 
   @HostListener('window:beforeunload', ['$event'])
-    unloadNotification($event: any) {
+    unloadNotification($event: any) : void {
         if (this.editCellService.getSize() > 0 && !this.clickedSubmit) {
             $event.returnValue = true;
         }
@@ -144,59 +143,59 @@ export class MaterialComponent implements OnInit , OnDestroy {
   }
 
 
-  defineStepTour(value: number) {
-    if (this.linkTourTooltip) this.linkTourTooltip.close()
-    if (this.editMenuTooltip) this.editMenuTooltip.close()
-    if (this.sapSafetyStockToolTip ) this.sapSafetyStockToolTip.close()
-    if (this.selectEntryTooltip) this.selectEntryTooltip.close()
-    if (this.flagTooltip) this.flagTooltip.close()
-    if (this.commentTooltip) this.commentTooltip.close()
+  defineStepTour(value: number) : void {
+    this.linkTourTooltip.close()
+    this.editMenuTooltip.close()
+    this.sapSafetyStockToolTip.close()
+    this.selectEntryTooltip.close()
+    this.flagTooltip.close()
+    this.commentTooltip.close()
 
     switch(value) {
-      case 0:  //material info header group 
+      case 0:  // material info header group 
         this.visibility.set("materialInfo", true);
         document.getElementById("materialInfoHeaderId")?.scrollIntoView({behavior: 'smooth', inline : 'end', block:'center'})
         break;
 
-      case 1: //material info expand icon
+      case 1: // material info expand icon
         this.visibility.set("materialInfo", true);
         document.getElementById("materialInfoHeaderId")?.scrollIntoView({behavior: 'smooth', inline : 'end', block:'center'})
         break;
 
-      case 2: //apontar para o link    
-        if (!this.visibility.get("inventory")) this.visibility.set("inventory", true);
+      case 2: // apontar para o link    
+        if (!this.visibility.get("inventory")) {this.visibility.set("inventory", true)};
         document.getElementById("openSAPHeader")?.scrollIntoView({behavior: 'smooth', inline : 'start', block:'center'})
-        if (this.linkTourTooltip ) this.linkTourTooltip.open()
+        this.linkTourTooltip.open()
         break;
 
-      case 3: //No edit (temos que fazer expand do edit e focus)
+      case 3: // No edit (temos que fazer expand do edit e focus)
         this.visibility.set("edit", true);
         document.getElementById("editMenuTooltip")?.scrollIntoView({behavior: 'smooth', inline : 'start', block:'center'})
-        if (this.editMenuTooltip) this.editMenuTooltip.open()
+        this.editMenuTooltip.open()
         break;
         
       case 4: // new sap safety stock e time
         this.visibility.set("edit", true);
         document.getElementById("sapsafetytimestock")?.focus()
-        if (this.sapSafetyStockToolTip ) this.sapSafetyStockToolTip.open()
+        this.sapSafetyStockToolTip.open()
         break;
 
       case 5: // select
         this.visibility.set("edit", true);
         document.getElementById("selectEntryTooltipId")?.scrollIntoView({behavior: 'smooth', inline:'start', block:'center'})
-        if (this.selectEntryTooltip) this.selectEntryTooltip.open()
+        this.selectEntryTooltip.open()
         break;
 
       case 6: // flag
         this.visibility.set("edit", true);
         document.getElementById("flagTooltipId")?.scrollIntoView({behavior: 'smooth', inline : 'start', block:'center'})
-        if (this.flagTooltip) this.flagTooltip.open()
+        this.flagTooltip.open()
         break;
 
       case 7: // Comment
         this.visibility.set("edit", true);
         document.getElementById("commentTooltip")?.scrollIntoView({behavior: 'smooth', inline : 'start', block:'center'})
-        if (this.commentTooltip) this.commentTooltip.open()
+        this.commentTooltip.open()
         break;
 
       default:
@@ -213,12 +212,12 @@ export class MaterialComponent implements OnInit , OnDestroy {
       this.subscription.unsubscribe()
   }
 
-  startTour() {
+  startTour() : void {
     this.tourService.start();
   }
 
 
-  autoDismissAlert() {
+  autoDismissAlert() : void {
     setTimeout(() => {
       this.alertMessage="n/a";
     }, 5000); // 5000ms = 5 seconds
@@ -305,36 +304,36 @@ export class MaterialComponent implements OnInit , OnDestroy {
 
   placeholderGeneratorNum(valueName : string, material : IMaterial) : number {
     let returnVal = 0;
-    let editCell : IEditCell | undefined = this.editCellService.getMaterial(material.id)
+    const editCell : IEditCell | undefined = this.editCellService.getMaterial(material.id)
     if (valueName === "SST"){
       if ((editCell !== undefined && (this.editCellService.getMaterial(material.id)?.newSST !== material.newSAPSafetyStock ))){
         returnVal = editCell.newSST
       }
-      else if (material.newSAPSafetyStock) returnVal = material.newSAPSafetyStock;
+      else if (material.newSAPSafetyStock) { returnVal = material.newSAPSafetyStock};
     }
     else if(valueName === "ST"){
       if ((editCell !== undefined && (this.editCellService.getMaterial(material.id)?.newST !== material.newSAPSafetyTime ))){
         returnVal = editCell.newST
       }
-      else if (material.newSAPSafetyTime) returnVal = material.newSAPSafetyTime;
+      else if (material.newSAPSafetyTime) {returnVal = material.newSAPSafetyTime};
     }
     return returnVal;
   }
 
   placeholderGeneratorString(material : IMaterial) : string {
     let returnVal = "";
-    let editCell : IEditCell | undefined = this.editCellService.getMaterial(material.id)
+    const editCell : IEditCell | undefined = this.editCellService.getMaterial(material.id)
     if ((editCell !== undefined && (editCell.newComment !== material.comment ))){
       returnVal = editCell.newComment ?? ""
     }
-    else if (material.comment) returnVal = material.comment;
+    else if (material.comment) {returnVal = material.comment};
 
     return returnVal;
   }
 
 
 
-  routeToChangesPage() {
+  routeToChangesPage() : void {
     this.router.navigate(['/changes-page']);
   }
 
@@ -348,8 +347,8 @@ export class MaterialComponent implements OnInit , OnDestroy {
     returnVal = original;
     if (this.currencyEUR) {
       if (currency !== "EUR"){
-        let rate = this.currencyExchangeRates.get(currency);
-        if (rate !== undefined) returnVal = (Math.round(original*rate*100))/100;
+        const rate = this.currencyExchangeRates.get(currency);
+        if (rate !== undefined) {returnVal = (Math.round(original*rate*100))/100};
       }
     }}
     return returnVal;
@@ -359,10 +358,10 @@ export class MaterialComponent implements OnInit , OnDestroy {
   cellValueGenerator(valueName : string, material : IMaterial) : number {
 
   let returnVal = 0;
-  let editCell : IEditCell | undefined = this.editCellService.getMaterial(material.id)
+  const editCell : IEditCell | undefined = this.editCellService.getMaterial(material.id)
 
   if (valueName === "SST"){
-    if(editCell!==undefined && (editCell.newSST) !== material.proposedSST) returnVal = editCell.newSST
+    if(editCell!==undefined && (editCell.newSST) !== material.proposedSST) {returnVal = editCell.newSST}
     else if ( material.newSAPSafetyStock && material.newSAPSafetyStock !== -1 ){
       returnVal = material.newSAPSafetyStock;
     }
@@ -371,7 +370,7 @@ export class MaterialComponent implements OnInit , OnDestroy {
     }
   }
   else if (valueName === "ST"){
-    if(editCell!==undefined && (editCell.newST) !== material.proposedST) returnVal = editCell.newST
+    if(editCell!==undefined && (editCell.newST) !== material.proposedST) {returnVal = editCell.newST}
     else if ( material.newSAPSafetyTime && material.newSAPSafetyTime !== -1 ){
       returnVal = material.newSAPSafetyTime;
     }
@@ -384,10 +383,10 @@ export class MaterialComponent implements OnInit , OnDestroy {
 
 
 
-  submitToSAP(){
-    let list = this.editCellService.mapToSubmit();
+  submitToSAP() : void{
+    const list = this.editCellService.mapToSubmit();
     this.clickedSubmit = true;
-    if (list.length == 0) {
+    if (list.length === 0) {
       alert("No lines were selected");
     }
     else {
@@ -402,7 +401,6 @@ export class MaterialComponent implements OnInit , OnDestroy {
     };
 
 
-  message:string | undefined;
 
   receiveStringEvent(messageText : string) : void{
     this.message = messageText;
@@ -427,11 +425,11 @@ export class MaterialComponent implements OnInit , OnDestroy {
     }
   }
 
-  receiveCurrencyVal(event : boolean){
+  receiveCurrencyVal(event : boolean) : void{
     this.currencyEUR = event;
   }
 
-  receiveComment(event : any){
+  receiveComment(event : any) : void{
     this.input(event,"newComment",event.id)
   }
 
@@ -456,7 +454,7 @@ export class MaterialComponent implements OnInit , OnDestroy {
 
 
   receiveFilterRemoveMessage (filter : IFilterOption) : void{
-    for(let value of filter.values){
+    for(const value of filter.values){
       this.filters.removeFilter(filter.name, value);
     }
   }
@@ -495,44 +493,34 @@ export class MaterialComponent implements OnInit , OnDestroy {
     this.load();
   }
 
-  receiveSpecialFilter(filterOp:string){
+  receiveSpecialFilter(filterOp:string) : void{
     this.specialFiltersList.forEach((actSpFilter) => {
       if (actSpFilter.name === filterOp){
         actSpFilter.isActive = true
-        if(filterOp !== "Flagged" && filterOp !== "Unflagged")
+        if(filterOp !== "Flagged" && filterOp !== "Unflagged"){
           actSpFilter.idList = this.getSelectedList(filterOp)
+        }
       }
-      //Ao ativar Unedited, desativar Selected e Unselected
+      // Ao ativar Unedited, desativar Selected e Unselected
       if (filterOp === "Unedited" && actSpFilter.name !== filterOp){
         actSpFilter.isActive = false
         actSpFilter.idList = []
       }
-      //Ao ativar Selected ou Unselected, desativar Unedited
+      // Ao ativar Selected ou Unselected, desativar Unedited
       if ((filterOp === "Selected" || filterOp === "Unselected") && actSpFilter.name === "Unedited"){
         actSpFilter.isActive = false
         actSpFilter.idList = []
       }
-      //Desativa Flagged quando Unflagged e Vice-Versa
-      if(filterOp === "Flagged" && actSpFilter.name === "Unflagged") actSpFilter.isActive = false
-      if(filterOp === "Unflagged" && actSpFilter.name === "Flagged") actSpFilter.isActive = false
+      // Desativa Flagged quando Unflagged e Vice-Versa
+      if(filterOp === "Flagged" && actSpFilter.name === "Unflagged") {actSpFilter.isActive = false}
+      if(filterOp === "Unflagged" && actSpFilter.name === "Flagged") {actSpFilter.isActive = false}
     })
 
     this.applySpecialFilters()
-    // let index = -1;
-    // if(filterOp === "Selected")
-    //   index = 0;
-    // else if(filterOp === "Unselected")
-    //   index = 1
-    // else if(filterOp === "Unedited")
-    //   index = 2;
-    // this.specialFiltersList[index].isActive = true
-    // this.specialFiltersList[index].idList = this.getSelectedList(filterOp)
-
-    // this.applySpecialFilters()
   }
 
 
-  receiveDropdownNumber(event : any){
+  receiveDropdownNumber(event : any) : void{
     if ( event.menuName === "undo"){
       this.undoSize = event.menuValue;
       this.undoChangeSize();
@@ -543,7 +531,7 @@ export class MaterialComponent implements OnInit , OnDestroy {
     }
   }
 
-  applySpecialFilters(){
+  applySpecialFilters() : void{
     this.filters.removeAllFiltersName("flagMaterial.equals")
     this.filters.removeAllFiltersName("id.in")
     this.filters.removeAllFiltersName("id.notIn")
@@ -558,8 +546,9 @@ export class MaterialComponent implements OnInit , OnDestroy {
         }
         else{
             let filterStr = "id.in"
-          if(spFilter.name === "Unedited")
+          if(spFilter.name === "Unedited"){
             filterStr = "id.notIn"
+          }
 
           spFilter.idList.forEach((num) => {
             this.filters.addFilter(filterStr,num.toString());
@@ -573,31 +562,6 @@ export class MaterialComponent implements OnInit , OnDestroy {
     return this.editCellService.getSelectedList(filterOp)
   }
 
-
-  // receiveFlagEmission(emission : any){
-  //   let editCell: IEditCell | undefined;
-
-  //   if (this.editCellService.hasMaterial(emission.id)) {
-  //     editCell = this.editCellService.getMaterial(emission.id);
-  //   }
-  //   else{
-  //     editCell = <IEditCell>{};
-  //     editCell.materialId = this.materials?.find(e => e.id == emission.id)?.id ?? -1;
-  //     editCell.newSST = this.materials?.find(e => e.id === emission.id)?.newSAPSafetyStock ?? -1;
-  //     editCell.newST = this.materials?.find(e => e.id === emission.id)?.newSAPSafetyTime ?? -1;
-  //     editCell.newComment = this.materials?.find(e => e.id === emission.id)?.comment ?? null;
-  //     editCell.selected = false;
-  //     editCell.flag = this.materials?.find(e => e.id === emission.id)?.flagMaterial ?? false;
-  //   }
-
-  //   if (editCell) {
-  //     editCell.flag = emission.flag
-  //     if (emission.flag) {
-  //       editCell.dateFlag = emission.date;
-  //     }
-  //     this.editCellService.addMaterial(emission.id, editCell)
-  //   }
-  // }
 
   getFlagVal(id : number) : boolean{
     let returnVal = false;
@@ -626,35 +590,35 @@ export class MaterialComponent implements OnInit , OnDestroy {
 
 
   onFileSelected(event:any): void {
-    //true -> replace
-    //false -> add
+    // true -> replace
+    // false -> add
     const file : File = event.file ;
     const typeReplace : boolean = event.opType;
     if (file && typeReplace) {
       this.materialService.uploadFileReplace(file).subscribe({
-        next: (res: any) => {
+        next: () => {
           this.load()
           this.alertMessage="DATA REPLACED SUCCESSFULLY"
           this.autoDismissAlert();
-        },error:(error:any) =>{
+        },error:() =>{
           alert("Error Uploading File")
         }
       });
     }
     else if (file && !typeReplace){
       this.materialService.uploadFileAddOrUpdate(file).subscribe({
-        next: (res: any) => {
+        next: () => {
           this.load()
           this.alertMessage="DATA ADDED SUCCESSFULLY"
           this.autoDismissAlert();
-        },error:(error:any) =>{
+        },error:() =>{
           alert("Error Uploading File")
         }
       });
     }
   }
 
-  makeEditable(a: number, b: number){
+  makeEditable(a: number, b: number) : void{
     this._isEditable = [a,b];
 
   }
@@ -662,22 +626,21 @@ export class MaterialComponent implements OnInit , OnDestroy {
 
 
   calcNewValueAvg(material : IMaterial) : number {
-    let editCell: IEditCell | undefined;
-    editCell = this.editCellService.getMaterial(material.id)
+    const editCell: IEditCell | undefined = this.editCellService.getMaterial(material.id)
 
     if (editCell) {
-      const newDeltaSST = (editCell.newSST ?? 1) - (material.currSAPSafetyStock ?? 1);
-      const newDeltaST = (editCell.newST ?? 1) - (material.currentSAPSafeTime ?? 1);
+      const newDeltaSST = (editCell.newSST ) - (material.currSAPSafetyStock ?? 1);
+      const newDeltaST = (editCell.newST) - (material.currentSAPSafeTime ?? 1);
       const unitCost = material.unitCost ?? 1
       return Number((newDeltaSST * unitCost + newDeltaST * unitCost * (material.avgDemand ?? 1)).toFixed(2));
     }
 
-    else return Number((material.avgInventoryEffectAfterChange ?? 1).toFixed(2));
+    else{ return Number((material.avgInventoryEffectAfterChange ?? 1).toFixed(2))};
   }
 
 
   checkEditCell(lastEntry : IHistoryEntity): boolean{
-    let materialValue : IMaterial | undefined = this.materials?.find(e => e.id === lastEntry?.materialId);
+    const materialValue : IMaterial | undefined = this.materials?.find(e => e.id === lastEntry?.materialId);
     switch (lastEntry.column){
       case "newSST":
         if (materialValue?.newSAPSafetyStock === lastEntry.oldValue){
@@ -708,8 +671,7 @@ export class MaterialComponent implements OnInit , OnDestroy {
     if(this.history.length > 0){
       let lastEntry = this.history.pop();
       if(lastEntry){
-        let editCell: IEditCell | undefined;
-        editCell = this.editCellService.getMaterial(lastEntry.materialId)
+        const editCell: IEditCell | undefined = this.editCellService.getMaterial(lastEntry.materialId)
         if(editCell){
           switch(lastEntry.column){
             case "newSST":
@@ -923,23 +885,23 @@ export class MaterialComponent implements OnInit , OnDestroy {
   }
 
 
-  delete(material: IMaterial): void {
-    const modalRef = this.modalService.open(MaterialDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
-    modalRef.componentInstance.material = material;
-    // unsubscribe not needed because closed completes on modal close
-    modalRef.closed
-      .pipe(
-        filter(reason => reason === ITEM_DELETED_EVENT),
-        switchMap(() => this.loadFromBackendWithRouteInformations())
-      )
-      .subscribe({
-        next: (res: EntityArrayResponseType) => {
-          this.onResponseSuccess(res);
-        },error:(error:any) =>{
-          alert("Error Deleting")
-        }
-      });
-  }
+  // delete(material: IMaterial): void {
+  //   const modalRef = this.modalService.open(MaterialDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
+  //   modalRef.componentInstance.material = material;
+  //   // unsubscribe not needed because closed completes on modal close
+  //   modalRef.closed
+  //     .pipe(
+  //       filter(reason => reason === ITEM_DELETED_EVENT),
+  //       switchMap(() => this.loadFromBackendWithRouteInformations())
+  //     )
+  //     .subscribe({
+  //       next: (res: EntityArrayResponseType) => {
+  //         this.onResponseSuccess(res);
+  //       },error:(error:any) =>{
+  //         alert("Error Deleting")
+  //       }
+  //     });
+  // }
 
   load(): void {
     this.loadFromBackendWithRouteInformations().subscribe({

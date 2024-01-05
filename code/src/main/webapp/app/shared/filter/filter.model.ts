@@ -127,8 +127,10 @@ export class FilterOptions implements IFilterOptions {
   }
 
   removeAllFiltersName(name: string) : void{
-    let ft = this.getFilterOptionByName(name)
-    if (ft) ft.values = [];
+    const ft = this.getFilterOptionByName(name)
+    if (ft) {
+      ft.values = []
+    };
     this.changed();
 
     // this.getFilterOptionByName(name)?.values.forEach((val) => {

@@ -31,17 +31,17 @@ export class EditCellService {
         return this.materials.size
     }
 
-    getMaterial(id: number) {
+    getMaterial(id: number) : IEditCell | undefined{
         return this.materials.get(id)
     }
 
-    getUncheckAll(event : any){
-        this.materials.forEach(function(value,key) {
+    getUncheckAll(event : any) : void{
+        this.materials.forEach(function(value,_) {
             value.selected = event.target.checked
         })
     }
 
-    hasMaterial (id: number) {
+    hasMaterial (id: number) : boolean{
         return this.materials.has(id)
     }
 
@@ -50,7 +50,7 @@ export class EditCellService {
 
         const list : IEditCell[] = [];
 
-        this.materials.forEach((value,key) => {
+        this.materials.forEach((value,_) => {
         if (value.selected){
             list.push(value);
         }
@@ -59,24 +59,27 @@ export class EditCellService {
     }
         
     getSelectedList(filterOp : string): number[] {
-        let res : number[] = []
+        const res : number[] = []
         this.materials.forEach((linha) => {
         if(filterOp === "Unedited"){
             res.push(linha.materialId);
         }
         else{
-            if (linha.selected && filterOp === "Selected")
-            res.push(linha.materialId);
-            if (!linha.selected && filterOp === "Unselected")
-            res.push(linha.materialId);
-        }
+            if (linha.selected && filterOp === "Selected"){
+
+                res.push(linha.materialId);
+            }
+            if (!linha.selected && filterOp === "Unselected"){
+                res.push(linha.materialId);
+                }
+            }
         })
         return res;
     }
 
     getUnselectedLines() : number{
         let count = 0;
-        this.materials.forEach((value: IEditCell, key: number) => {
+        this.materials.forEach((value: IEditCell, _) => {
             if(!value.selected){
                 count++;
             }
@@ -85,7 +88,7 @@ export class EditCellService {
     }
 
 
-    cleanMaterials() {
+    cleanMaterials() : void{
         this.materials.clear();
     }
 
