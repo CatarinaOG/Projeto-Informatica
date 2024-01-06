@@ -15,7 +15,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -50,6 +49,29 @@ public class MaterialServiceImpl implements MaterialService {
     private final Logger log = LoggerFactory.getLogger(MaterialServiceImpl.class);
 
     private final MaterialRepository materialRepository;
+
+    private final String file_material = "Material";
+    private final String file_material_description = "Material Description";
+    private final String file_abc_classification = "ABC Classification";
+    private final String file_avg_supplier_delay = "Avg. Supplier Delay";
+    private final String file_max_supplier_delay = "Max Supplier delay";
+    private final String file_service_level = "Service Level";
+    private final String file_current_sap_safety_stock = "Current SAP Safety Stock";
+    private final String file_proposed_sst = "Proposed SST";
+    private final String file_delta_sst = "Delta SST";
+    private final String file_current_sap_safety_time = "Current SAP Safety Time";
+    private final String file_proposed_st = "Proposed ST";
+    private final String file_delta_st = "delta ST";
+    private final String file_open_sap_md04 = "Open SAP md04";
+    private final String file_current_inventory_value = "Current Inventory Value";
+    private final String file_currency = "Currency";
+    private final String file_unit_cost = "Unit Cost";
+    private final String file_avg_demand = "Avg Demand";
+    private final String file_average_inventory_effect_after_change = "Average inventory effect after change";
+    private final String file_mrp_controller = "MRP Controller";
+    private final String file_plant = "Plant";
+    private final String file_comment = "Comment";
+
 
     @Autowired
     private FlaggedMaterialServiceImpl flaggedMaterialServiceImpl;
@@ -91,6 +113,7 @@ public class MaterialServiceImpl implements MaterialService {
                 existingMaterial.setOpenSAPmd04(material.getOpenSAPmd04());
                 existingMaterial.setCurrentInventoryValue(material.getCurrentInventoryValue());
                 existingMaterial.setUnitCost(material.getUnitCost());
+                existingMaterial.setCurrency(material.getCurrency());
                 existingMaterial.setAvgDemand(material.getAvgDemand());
                 existingMaterial.setAvgInventoryEffectAfterChange(material.getAvgInventoryEffectAfterChange());
                 existingMaterial.setFlagMaterial(material.getFlagMaterial());
@@ -367,42 +390,44 @@ public class MaterialServiceImpl implements MaterialService {
         return headerMap;
     }
 
+
     private Material parseMaterialXLSX(Row row, Map<String, Integer> headerMap){
         Material material = new Material();
-        material.setMaterial(getStringCellValue(row, headerMap, "Material"));
-        material.setDescription(getStringCellValue(row, headerMap, "Material Description"));
-        material.setAbcClassification(ABCClassification.fromString(getStringCellValue(row, headerMap, "ABC Classification")));
-        material.setAvgSupplierDelay(getFloatCellValue(row, headerMap, "Avg. Supplier Delay"));
-        material.setMaxSupplierDelay(getFloatCellValue(row, headerMap, "Max Supplier delay"));
-        material.setServiceLevel(getFloatCellValue(row, headerMap, "Service Level"));
-        material.setCurrSAPSafetyStock(getIntCellValue(row, headerMap, "Current SAP Safety Stock"));
-        material.setProposedSST(getIntCellValue(row, headerMap, "Proposed SST"));
-        material.setDeltaSST(getIntCellValue(row, headerMap, "Delta SST"));
-        material.setCurrentSAPSafeTime(getIntCellValue(row, headerMap, "Current SAP Safety Time"));
-        material.setProposedST(getIntCellValue(row, headerMap, "Proposed ST"));
-        material.setDeltaST(getIntCellValue(row, headerMap, "delta ST"));
-        material.setOpenSAPmd04(getStringCellValue(row, headerMap, "Open SAP md04"));
-        material.setCurrentInventoryValue(getFloatCellValue(row, headerMap, "Current Inventory Value"));
-        material.setUnitCost(getFloatCellValue(row, headerMap, "Unit Cost"));
-        material.setAvgDemand(getIntCellValue(row, headerMap, "Avg Demand"));
-        material.setAvgInventoryEffectAfterChange(getFloatCellValue(row, headerMap, "Average inventory effect after change"));
+        material.setMaterial(getStringCellValue(row, headerMap, file_material));
+        material.setDescription(getStringCellValue(row, headerMap, file_material_description));
+        material.setAbcClassification(ABCClassification.fromString(getStringCellValue(row, headerMap, file_abc_classification)));
+        material.setAvgSupplierDelay(getFloatCellValue(row, headerMap, file_avg_supplier_delay));
+        material.setMaxSupplierDelay(getFloatCellValue(row, headerMap, file_max_supplier_delay));
+        material.setServiceLevel(getFloatCellValue(row, headerMap, file_service_level));
+        material.setCurrSAPSafetyStock(getIntCellValue(row, headerMap, file_current_sap_safety_stock));
+        material.setProposedSST(getIntCellValue(row, headerMap, file_proposed_sst));
+        material.setDeltaSST(getIntCellValue(row, headerMap, file_delta_sst));
+        material.setCurrentSAPSafeTime(getIntCellValue(row, headerMap, file_current_sap_safety_time));
+        material.setProposedST(getIntCellValue(row, headerMap, file_proposed_st));
+        material.setDeltaST(getIntCellValue(row, headerMap, file_delta_st));
+        material.setOpenSAPmd04(getStringCellValue(row, headerMap, file_open_sap_md04));
+        material.setCurrentInventoryValue(getFloatCellValue(row, headerMap, file_current_inventory_value));
+        material.setCurrency(Coin.fromString(getStringCellValue(row, headerMap, file_currency)));
+        material.setUnitCost(getFloatCellValue(row, headerMap, file_unit_cost));
+        material.setAvgDemand(getIntCellValue(row, headerMap, file_avg_demand));
+        material.setAvgInventoryEffectAfterChange(getFloatCellValue(row, headerMap, file_average_inventory_effect_after_change));
         material.setFlagMaterial(getFlagFromFlaggedMaterials(material.getMaterial()));
         material.setNewSAPSafetyStock(material.getProposedSST());
         material.setNewSAPSafetyTime(material.getProposedST());
-        readAndSetTheCurrencyXLSX(row,headerMap,material);
 
 
-        if (headerMap.containsKey("MRP Controller")) {
-            material.setMrpController(getStringCellValue(row, headerMap, "MRP Controller"));
+        if (headerMap.containsKey(file_mrp_controller)) {
+            material.setMrpController(getStringCellValue(row, headerMap, file_mrp_controller));
         }
 
-        if (headerMap.containsKey("Plant")) {
-            material.setPlant(getStringCellValue(row, headerMap, "Plant"));
+        if (headerMap.containsKey(file_plant)) {
+            material.setPlant(getStringCellValue(row, headerMap, file_plant));
         }
 
-        if (headerMap.containsKey("Comment")) {
-            material.setComment(getStringCellValue(row, headerMap, "Comment"));
+        if (headerMap.containsKey(file_comment)) {
+            material.setComment(getStringCellValue(row, headerMap, file_comment));
         }
+
 
         return material;
 
@@ -414,18 +439,6 @@ public class MaterialServiceImpl implements MaterialService {
         if(flaggedMaterial.isPresent()) return true;
 
         return false;
-    }
-
-    private void readAndSetTheCurrencyXLSX(Row row, Map<String, Integer> headerMap, Material material){
-
-        int columnIndex = headerMap.get("Current Inventory Value");
-        Cell cell = row.getCell(columnIndex);
-
-        CellStyle style = cell.getCellStyle();
-        String numberFormat = style.getDataFormatString();
-        Coin coin = getCoin(numberFormat);
-        material.setCurrency(coin);
-
     }
     
     private String getStringCellValue(Row row, Map<String, Integer> headerMap, String headerName) {
@@ -505,51 +518,42 @@ public class MaterialServiceImpl implements MaterialService {
     public Material parseMaterialCSV(String[] header, String[] nextRecord) {
         Material material = new Material();
 
-        material.setMaterial(nextRecord[getIndex(header, "Material")]);
-        material.setDescription(nextRecord[getIndex(header, "Material Description")]);
-        material.setAbcClassification(ABCClassification.fromString(nextRecord[getIndex(header, "ABC Classification")]));
-        material.setAvgSupplierDelay(Float.parseFloat(nextRecord[getIndex(header, "Avg. Supplier Delay")]));
-        material.setMaxSupplierDelay(Float.parseFloat(nextRecord[getIndex(header, "Max Supplier delay")]));
-        material.setServiceLevel(Float.parseFloat(nextRecord[getIndex(header, "Service Level")]));
-        material.setCurrSAPSafetyStock(Integer.parseInt(nextRecord[getIndex(header, "Current SAP Safety Stock")]));
-        material.setProposedSST(Integer.parseInt(nextRecord[getIndex(header, "Proposed SST")]));
-        material.setDeltaSST(Integer.parseInt(nextRecord[getIndex(header, "Delta SST")]));
-        material.setCurrentSAPSafeTime(Integer.parseInt(nextRecord[getIndex(header, "Current SAP Safety Time")]));
-        material.setProposedST(Integer.parseInt(nextRecord[getIndex(header, "Proposed ST")]));
-        material.setDeltaST(Integer.parseInt(nextRecord[getIndex(header, "delta ST")]));
-        material.setOpenSAPmd04(nextRecord[getIndex(header, "Open SAP md04")]);
-        material.setCurrentInventoryValue(parseNumericValue(nextRecord[getIndex(header, "Current Inventory Value")]));
-        int a = getIndex(header, "Unit Cost");
-        material.setUnitCost(parseNumericValue(nextRecord[a]));
-        material.setCurrency(Coin.fromString(nextRecord[a+1]));
-        material.setAvgDemand(Integer.parseInt(nextRecord[getIndex(header, "Avg Demand")]));
-        material.setAvgInventoryEffectAfterChange(parseNumericValue(nextRecord[getIndex(header, "Average inventory effect after change")]));
+        material.setMaterial(nextRecord[getIndex(header, file_material)]);
+        material.setDescription(nextRecord[getIndex(header, file_material_description)]);
+        material.setAbcClassification(ABCClassification.fromString(nextRecord[getIndex(header, file_abc_classification)]));
+        material.setAvgSupplierDelay(Float.parseFloat(nextRecord[getIndex(header, file_avg_supplier_delay)]));
+        material.setMaxSupplierDelay(Float.parseFloat(nextRecord[getIndex(header, file_max_supplier_delay)]));
+        material.setServiceLevel(Float.parseFloat(nextRecord[getIndex(header, file_service_level)]));
+        material.setCurrSAPSafetyStock(Integer.parseInt(nextRecord[getIndex(header, file_current_sap_safety_stock)]));
+        material.setProposedSST(Integer.parseInt(nextRecord[getIndex(header, file_proposed_sst)]));
+        material.setDeltaSST(Integer.parseInt(nextRecord[getIndex(header, file_delta_sst)]));
+        material.setCurrentSAPSafeTime(Integer.parseInt(nextRecord[getIndex(header, file_current_sap_safety_time)]));
+        material.setProposedST(Integer.parseInt(nextRecord[getIndex(header, file_proposed_st)]));
+        material.setDeltaST(Integer.parseInt(nextRecord[getIndex(header, file_delta_st)]));
+        material.setOpenSAPmd04(nextRecord[getIndex(header, file_open_sap_md04)]);
+        material.setCurrentInventoryValue(parseNumericValue(nextRecord[getIndex(header, file_current_inventory_value)]));
+        material.setCurrency(Coin.fromString(nextRecord[getIndex(header, file_currency)]));
+        material.setUnitCost(parseNumericValue(nextRecord[getIndex(header, file_unit_cost)]));
+        material.setAvgDemand(Integer.parseInt(nextRecord[getIndex(header, file_avg_demand)]));
+        material.setAvgInventoryEffectAfterChange(parseNumericValue(nextRecord[getIndex(header, file_average_inventory_effect_after_change)]));
         material.setFlagMaterial(getFlagFromFlaggedMaterials(material.getMaterial()));
         material.setNewSAPSafetyStock(material.getProposedSST());
         material.setNewSAPSafetyTime(material.getProposedST());
-        readAndSetTheCurrencyCSV(nextRecord[getIndex(header, "Current Inventory Value")],material);
         
-        if(getIndex(header, "MRP Controller") >= 0){
-            material.setMrpController(nextRecord[getIndex(header, "MRP Controller")]);
+        if(getIndex(header, file_mrp_controller) >= 0){
+            material.setMrpController(nextRecord[getIndex(header, file_mrp_controller)]);
         }
 
-        if(getIndex(header, "Plant") >= 0){
-            material.setPlant(nextRecord[getIndex(header, "Plant")]);
+        if(getIndex(header, file_plant) >= 0){
+            material.setPlant(nextRecord[getIndex(header, file_plant)]);
         }
 
-        if(getIndex(header, "Comment") >= 0){
-            material.setComment(nextRecord[getIndex(header, "Comment")]);
+        if(getIndex(header, file_comment) >= 0){
+            material.setComment(nextRecord[getIndex(header, file_comment)]);
         }
 
 
         return material;
-    }
-
-    private void readAndSetTheCurrencyCSV(String value, Material material){
-
-        Coin coin = getCoin(value);
-        material.setCurrency(coin);
-
     }
 
 
@@ -596,42 +600,39 @@ public class MaterialServiceImpl implements MaterialService {
     public Material parseMaterialODS(Object[] row, Object[] header) {
         Material material = new Material();
 
-        material.setMaterial(row[getIndexOBJ(header, "Material")].toString());
-        material.setDescription(row[getIndexOBJ(header, "Description")].toString());
-        material.setAbcClassification(ABCClassification.fromString(row[getIndexOBJ(header, "ABC Classification")].toString()));
-        material.setAvgSupplierDelay(Float.parseFloat(row[getIndexOBJ(header, "Average Supplier Delay")].toString()));
-        material.setMaxSupplierDelay(Float.parseFloat(row[getIndexOBJ(header, "Maximum Supplier Delay")].toString()));
-        material.setServiceLevel(Float.parseFloat(row[getIndexOBJ(header, "Service Level")].toString()));
-        material.setCurrSAPSafetyStock((int) Float.parseFloat(row[getIndexOBJ(header, "Current SAP Safety Stock")].toString()));
-        material.setProposedSST((int) Float.parseFloat(row[getIndexOBJ(header, "Proposed SST")].toString()));
-        material.setDeltaSST((int) Float.parseFloat(row[getIndexOBJ(header, "Delta SST")].toString()));
-        material.setCurrentSAPSafeTime((int) Float.parseFloat(row[getIndexOBJ(header, "Current SAP Safety Time")].toString()));
-        material.setProposedST((int) Float.parseFloat(row[getIndexOBJ(header, "Proposed ST")].toString()));
-        material.setDeltaST((int) Float.parseFloat(row[getIndexOBJ(header, "Delta ST")].toString()));
-        material.setOpenSAPmd04(row[getIndexOBJ(header, "Open SAP md04")].toString());
-        material.setCurrentInventoryValue(parseNumericValue(row[getIndexOBJ(header, "Current Inventory Value")].toString()));
-        int a = getIndexOBJ(header, "Unit Cost");
-        material.setUnitCost(parseNumericValue(row[a].toString()));
-        material.setCurrency(Coin.fromString(row[a+1].toString()));
-        material.setAvgDemand((int) Float.parseFloat(row[getIndexOBJ(header, "Average Demand")].toString()));
-        material.setAvgInventoryEffectAfterChange(parseNumericValue(row[getIndexOBJ(header, "Average Inventory Effect After Change")].toString()));
+        material.setMaterial(row[getIndexOBJ(header, file_material)].toString());
+        material.setDescription(row[getIndexOBJ(header, file_material_description)].toString());
+        material.setAbcClassification(ABCClassification.fromString(row[getIndexOBJ(header, file_abc_classification)].toString()));
+        material.setAvgSupplierDelay(Float.parseFloat(row[getIndexOBJ(header, file_avg_supplier_delay)].toString()));
+        material.setMaxSupplierDelay(Float.parseFloat(row[getIndexOBJ(header, file_max_supplier_delay)].toString()));
+        material.setServiceLevel(Float.parseFloat(row[getIndexOBJ(header, file_service_level)].toString()));
+        material.setCurrSAPSafetyStock((int) Float.parseFloat(row[getIndexOBJ(header, file_current_sap_safety_stock)].toString()));
+        material.setProposedSST((int) Float.parseFloat(row[getIndexOBJ(header, file_proposed_sst)].toString()));
+        material.setDeltaSST((int) Float.parseFloat(row[getIndexOBJ(header, file_delta_sst)].toString()));
+        material.setCurrentSAPSafeTime((int) Float.parseFloat(row[getIndexOBJ(header, file_current_sap_safety_time)].toString()));
+        material.setProposedST((int) Float.parseFloat(row[getIndexOBJ(header, file_proposed_st)].toString()));
+        material.setDeltaST((int) Float.parseFloat(row[getIndexOBJ(header, file_delta_st)].toString()));
+        material.setOpenSAPmd04(row[getIndexOBJ(header, file_open_sap_md04)].toString());
+        material.setCurrentInventoryValue(parseNumericValue(row[getIndexOBJ(header, file_current_inventory_value)].toString()));
+        material.setCurrency(Coin.fromString(row[getIndexOBJ(header, file_currency)].toString()));
+        material.setUnitCost(parseNumericValue(row[getIndexOBJ(header, file_unit_cost)].toString()));
+        material.setAvgDemand((int) Float.parseFloat(row[getIndexOBJ(header, file_avg_demand)].toString()));
+        material.setAvgInventoryEffectAfterChange(parseNumericValue(row[getIndexOBJ(header, file_average_inventory_effect_after_change)].toString()));
         material.setFlagMaterial(getFlagFromFlaggedMaterials(material.getMaterial()));
         material.setNewSAPSafetyStock(material.getProposedSST());
         material.setNewSAPSafetyTime(material.getProposedST());
-        readAndSetTheCurrencyODS(row[getIndexOBJ(header, "Current Inventory Value")],material);
 
 
-
-        if(getIndexOBJ(header, "MRP Controller") >= 0){
-            material.setMrpController(row[getIndexOBJ(header, "MRP Controller")].toString());
+        if(getIndexOBJ(header, file_mrp_controller) >= 0){
+            material.setMrpController(row[getIndexOBJ(header, file_mrp_controller)].toString());
         }
 
-        if(getIndexOBJ(header, "Plant") >= 0){
-            material.setPlant(row[getIndexOBJ(header, "Plant")].toString());
+        if(getIndexOBJ(header, file_plant) >= 0){
+            material.setPlant(row[getIndexOBJ(header, file_plant)].toString());
         }
 
-        if(getIndexOBJ(header, "Comment") >= 0){
-            material.setComment(row[getIndexOBJ(header, "Comment")].toString());
+        if(getIndexOBJ(header, file_comment) >= 0){
+            material.setComment(row[getIndexOBJ(header, file_comment)].toString());
         }
 
 
@@ -645,13 +646,6 @@ public class MaterialServiceImpl implements MaterialService {
             }
         }
         return -1; // Column not found
-    }
-
-    private void readAndSetTheCurrencyODS(Object value, Material material){
-
-        Coin coin = getCoin(value.toString());
-        material.setCurrency(coin);
-
     }
 
 
@@ -782,52 +776,6 @@ public class MaterialServiceImpl implements MaterialService {
 
         materialRepository.saveAll(allMaterials);
     }
-
-
-    public Coin getCoin(String numberFormat){
-
-        if (numberFormat.contains("€")) return Coin.EUR;
-        if (numberFormat.contains("¥")) return Coin.JPY;
-        if (numberFormat.contains("£")) return Coin.GBP;
-        if (numberFormat.contains("¥")) return Coin.CNY;
-        if (numberFormat.contains("A$")) return Coin.AUD;
-        if (numberFormat.contains("¢")) return Coin.CAD;
-        if (numberFormat.contains("CHF")) return Coin.CHF;
-        if (numberFormat.contains("HK$")) return Coin.HKD;
-        if (numberFormat.contains("S$")) return Coin.SGD;
-        if (numberFormat.contains("kr")) return Coin.SEK;
-        if (numberFormat.contains("₩")) return Coin.KRW;
-        if (numberFormat.contains("NOK")) return Coin.NOK;
-        if (numberFormat.contains("NZ$")) return Coin.NZD;
-        if (numberFormat.contains("₹")) return Coin.INR;
-        if (numberFormat.contains("Mex$")) return Coin.MXN;
-        if (numberFormat.contains("NT$")) return Coin.TWD;
-        if (numberFormat.contains("R")) return Coin.ZAR;
-        if (numberFormat.contains("R$")) return Coin.BRL;
-        if (numberFormat.contains("Dkr")) return Coin.DKK;
-        if (numberFormat.contains("zł")) return Coin.PLN;
-        if (numberFormat.contains("฿")) return Coin.THB;
-        if (numberFormat.contains("₪")) return Coin.ILS;
-        if (numberFormat.contains("Rp")) return Coin.IDR;
-        if (numberFormat.contains("Kč")) return Coin.CZK;
-        if (numberFormat.contains("AED")) return Coin.AED;
-        if (numberFormat.contains("₺")) return Coin.TRY;
-        if (numberFormat.contains("Ft")) return Coin.HUF;
-        if (numberFormat.contains("CLP$")) return Coin.CLP;
-        if (numberFormat.contains("﷼")) return Coin.SAR;
-        if (numberFormat.contains("₱")) return Coin.PHP;
-        if (numberFormat.contains("RM")) return Coin.MYR;
-        if (numberFormat.contains("Col$")) return Coin.COP;
-        if (numberFormat.contains("₽")) return Coin.RUB;
-        if (numberFormat.contains("lei")) return Coin.RON;
-        if (numberFormat.contains("S/.")) return Coin.PEN;
-        if (numberFormat.contains("BD")) return Coin.BHD;
-        if (numberFormat.contains("лв")) return Coin.BGN;
-        if (numberFormat.contains("$")) return Coin.USD;
-
-        return Coin.EUR;
-    }
-
 
 
     @Override
