@@ -64,13 +64,13 @@ export class OptionsBar implements OnInit {
 
 
    defineStepTour(value: number) : void {
-    this.filtersTooltip.close()
-    this.fileTooltip.close()
-    this.tableSizeTooltip.close()
-    this.undoTooltip.close()
-    this.undoToolTip2.close()
-    this.switchTooltip.close()
-    this.submitTooltip.close()
+    if (this.filtersTooltip !== undefined) this.filtersTooltip.close()
+    if (this.fileTooltip !== undefined) this.fileTooltip.close()
+    if (this.tableSizeTooltip !== undefined) this.tableSizeTooltip.close()
+    if (this.undoTooltip !== undefined) this.undoTooltip.close()
+    if (this.undoToolTip2 !== undefined) this.undoToolTip2.close()
+    if (this.switchTooltip !== undefined) this.switchTooltip.close()
+    if (this.submitTooltip !== undefined) this.submitTooltip.close()
 
     switch(value) {
       case 8: // filters dropdown menu

@@ -130,26 +130,35 @@ export class MaterialComponent implements OnInit , OnDestroy , AfterViewInit{
 
   ngOnInit(): void {
     this.load();
-    this.filters.filterChanges.subscribe(filterOptions => this.handleNavigation(1, this.predicate, this.ascending, filterOptions));
+    this.filters.filterChanges.subscribe({
+      next: filterOptions => this.handleNavigation(1, this.predicate, this.ascending, filterOptions),
+      error(){
+        alert('Error on Init')
+      } 
+    });
     this.filters.removeAllFiltersName("id.in");
     this.filters.removeAllFiltersName("id.notIn");
 
   }
 
   ngAfterViewInit(): void {
-    this.subscription = this.tourService.index$.subscribe(value =>  {
-      this.defineStepTour(value);
+    this.subscription = this.tourService.index$.subscribe({
+      next: value => this.defineStepTour(value),
+      error(){
+        alert('Error on AfterViewInit')
+      } 
     });
+  
   }
 
 
   defineStepTour(value: number) : void {
-    this.linkTourTooltip.close()
-    this.editMenuTooltip.close()
-    this.sapSafetyStockToolTip.close()
-    this.selectEntryTooltip.close()
-    this.flagTooltip.close()
-    this.commentTooltip.close()
+    if (this.linkTourTooltip !== undefined) this.linkTourTooltip.close()
+    if (this.editMenuTooltip !== undefined) this.editMenuTooltip.close()
+    if (this.sapSafetyStockToolTip !== undefined) this.sapSafetyStockToolTip.close()
+    if (this.selectEntryTooltip !== undefined) this.selectEntryTooltip.close()
+    if (this.flagTooltip !== undefined) this.flagTooltip.close()
+    if (this.commentTooltip !== undefined) this.commentTooltip.close()
 
     switch(value) {
       case 0:  // material info header group 
@@ -386,12 +395,17 @@ export class MaterialComponent implements OnInit , OnDestroy , AfterViewInit{
       alert("No lines were selected");
     }
     else {
-      this.materialService.submitChanges(list).subscribe((res) => {
-        this.createAndShowDownloadFile(res, "DataChanged.xlsx", "application/vnd.ms-excel");
-        this.load()
-        this.alertMessage="DATA WAS SUBMITTED SUCCESSFULLY"
-        this.autoDismissAlert();
-        this.routeToChangesPage();
+      this.materialService.submitChanges(list).subscribe({
+        next: (res) => {
+          this.createAndShowDownloadFile(res, "DataChanged.xlsx", "application/vnd.ms-excel");
+          this.load();
+          this.alertMessage = "DATA WAS SUBMITTED SUCCESSFULLY";
+          this.autoDismissAlert();
+          this.routeToChangesPage();
+        },
+        error(){
+          alert('Error on Submit')
+        } 
       });
       }
     };
@@ -407,11 +421,14 @@ export class MaterialComponent implements OnInit , OnDestroy , AfterViewInit{
       this.submitToSAP()
     }
     if (this.message === "Download"){
-      this.materialService
-      .exportFileAsExcel()
-      .subscribe((res) =>
-        this.createAndShowDownloadFile(res, "dowload.xlsx", "application/vnd.ms-excel")
-      );  }
+      this.materialService.exportFileAsExcel().subscribe({
+        next: (res) => {
+          this.createAndShowDownloadFile(res, "download.xlsx", "application/vnd.ms-excel");
+        },
+        error(){
+          alert('Error on Submit')
+        } 
+      });  }
     if (this.message === "Undo"){
       this.undo()
     }
