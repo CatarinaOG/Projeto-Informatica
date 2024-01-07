@@ -205,10 +205,6 @@ export class MaterialComponent implements OnInit , OnDestroy , AfterViewInit{
 
 
   ngOnDestroy(): void {
-      if (this.editCellService.getSize() > 0) {
-        if (!this.clickedSubmit && !confirm("You have unsaved changed. Do you wish to proceed?")){
-        }
-      }
       this.subscription.unsubscribe()
   }
 
@@ -566,7 +562,7 @@ export class MaterialComponent implements OnInit , OnDestroy , AfterViewInit{
   getFlagVal(id : number) : boolean{
     let returnVal = false;
 		const editedMaterial = this.editCellService.getMaterial(id);
-    if (editedMaterial !== undefined && editedMaterial !== null){
+    if (editedMaterial !== undefined){
       returnVal = editedMaterial.flag
     }
     else {
@@ -594,24 +590,28 @@ export class MaterialComponent implements OnInit , OnDestroy , AfterViewInit{
     // false -> add
     const file : File = event.file ;
     const typeReplace : boolean = event.opType;
-    if (file && typeReplace) {
+    
+    if (typeReplace) {
+      this.alertMessage="DATA BEING REPLACED, PLEASE AWAIT TABLE REFRESH"
       this.materialService.uploadFileReplace(file).subscribe({
         next: () => {
+          this.alertMessage="n/a"
           this.load()
           this.alertMessage="DATA REPLACED SUCCESSFULLY"
           this.autoDismissAlert();
-        },error:() =>{
+        },error(){
           alert("Error Uploading File")
         }
       });
     }
-    else if (file && !typeReplace){
+    else{
+      this.alertMessage="DATA BEING ADDED, PLEASE AWAIT TABLE REFRESH"
       this.materialService.uploadFileAddOrUpdate(file).subscribe({
         next: () => {
           this.load()
           this.alertMessage="DATA ADDED SUCCESSFULLY"
           this.autoDismissAlert();
-        },error:() =>{
+        },error(){
           alert("Error Uploading File")
         }
       });
@@ -640,23 +640,23 @@ export class MaterialComponent implements OnInit , OnDestroy , AfterViewInit{
 
 
   checkEditCell(lastEntry : IHistoryEntity): boolean{
-    const materialValue : IMaterial | undefined = this.materials?.find(e => e.id === lastEntry?.materialId);
+    const materialValue : IMaterial | undefined = this.materials?.find(e => e.id === lastEntry.materialId);
     switch (lastEntry.column){
       case "newSST":
         if (materialValue?.newSAPSafetyStock === lastEntry.oldValue){
-          return (this.editCellService.getMaterial(lastEntry.materialId)?.newST !== materialValue?.newSAPSafetyTime) || (this.editCellService.getMaterial(lastEntry.materialId)?.newComment !== materialValue?.comment) || (this.editCellService.getMaterial(lastEntry.materialId)?.flag !== materialValue?.flagMaterial)
+          return (this.editCellService.getMaterial(lastEntry.materialId)?.newST !== materialValue.newSAPSafetyTime) || (this.editCellService.getMaterial(lastEntry.materialId)?.newComment !== materialValue.comment) || (this.editCellService.getMaterial(lastEntry.materialId)?.flag !== materialValue.flagMaterial)
         }
         break;
         
       case "newST":
         if (materialValue?.newSAPSafetyTime === lastEntry.oldValue){
-          return (this.editCellService.getMaterial(lastEntry.materialId)?.newSST !== materialValue?.newSAPSafetyStock) || (this.editCellService.getMaterial(lastEntry.materialId)?.newComment !== materialValue?.comment) || (this.editCellService.getMaterial(lastEntry.materialId)?.flag !== materialValue?.flagMaterial)
+          return (this.editCellService.getMaterial(lastEntry.materialId)?.newSST !== materialValue.newSAPSafetyStock) || (this.editCellService.getMaterial(lastEntry.materialId)?.newComment !== materialValue.comment) || (this.editCellService.getMaterial(lastEntry.materialId)?.flag !== materialValue.flagMaterial)
         }
         break;
 
       case "newComment":
         if (materialValue?.comment === lastEntry.oldValue){
-          return (this.editCellService.getMaterial(lastEntry.materialId)?.newSST !== materialValue?.newSAPSafetyStock) || (this.editCellService.getMaterial(lastEntry.materialId)?.newST !== materialValue?.newSAPSafetyTime) || (this.editCellService.getMaterial(lastEntry.materialId)?.flag !== materialValue?.flagMaterial)
+          return (this.editCellService.getMaterial(lastEntry.materialId)?.newSST !== materialValue.newSAPSafetyStock) || (this.editCellService.getMaterial(lastEntry.materialId)?.newST !== materialValue.newSAPSafetyTime) || (this.editCellService.getMaterial(lastEntry.materialId)?.flag !== materialValue.flagMaterial)
         }
         break;
       
@@ -669,7 +669,7 @@ export class MaterialComponent implements OnInit , OnDestroy , AfterViewInit{
 
   undo() : void{
     if(this.history.length > 0){
-      let lastEntry = this.history.pop();
+      const lastEntry = this.history.pop();
       if(lastEntry){
         const editCell: IEditCell | undefined = this.editCellService.getMaterial(lastEntry.materialId)
         if(editCell){
@@ -713,7 +713,7 @@ export class MaterialComponent implements OnInit , OnDestroy , AfterViewInit{
     }
   }
 
-  undoChangeSize(){
+  undoChangeSize() : void{
     if(this.undoSize < this.history.length){
       for(let i = 0 ; i<this.history.length-this.undoSize;i++){
         this.history.shift()
@@ -723,7 +723,7 @@ export class MaterialComponent implements OnInit , OnDestroy , AfterViewInit{
     }
     else{
       this.alertMessage="UNDO SIZE CHANGED, NO OLDER STEPS WERE LOST"
-
+      this.autoDismissAlert();
     }
   }
 
@@ -735,15 +735,15 @@ export class MaterialComponent implements OnInit , OnDestroy , AfterViewInit{
     //   criar nova entrada no history com indice a 0
 
     // check if value already exists in history, and if it does, update it
-    let index = this.history.findIndex((historyEntity) => {historyEntity.materialId == material_id && historyEntity.column == col_name})
+    const index = this.history.findIndex((historyEntity) => {historyEntity.materialId === material_id && historyEntity.column === col_name})
     // if it doesn't exist, create a new entry
     if(index === -1){
-      let newEntry = <IHistoryEntity>{materialId : material_id, column : col_name,
+      const newEntry = <IHistoryEntity>{materialId : material_id, column : col_name,
                                       oldValue : old_value , currentValue : new_value};
       this.history.push(newEntry);
     }
     else{
-      let newEntry = <IHistoryEntity>{}; // mudar old value
+      const newEntry = <IHistoryEntity>{}; // mudar old value
       newEntry.materialId = material_id;
       newEntry.oldValue = this.history[index].currentValue;
       newEntry.currentValue = new_value;
@@ -785,19 +785,19 @@ export class MaterialComponent implements OnInit , OnDestroy , AfterViewInit{
         editCell.newSST = Math.round(event.target.value);
       }
       if (col_name === "newST"){
-        //this.openTooltip(toolTip);
+        // this.openTooltip(toolTip);
         oldValue = editCell.newST;
         editCell.oldST = editCell.newST;
         editCell.newST = Math.round(event.target.value);
       }
       if (col_name === "newComment"){
         oldValue = editCell.newComment ?? "";
-        editCell.oldComment = editCell.oldComment;
+        editCell.oldComment = editCell.newComment;
         editCell.newComment = event.newComment;
       }
       if (col_name === "selected") {
         editCell.selected = event.target.checked;
-        //this.selectedMaterials.push(this.materials?.find(e => e.id === id)?.material ?? "");
+        // this.selectedMaterials.push(this.materials?.find(e => e.id === id)?.material ?? "");
         // const materialCopy = this.materials?.find(e => e.id=== id);
         // if (materialCopy !== undefined){
         //   this.selectedMaterials.push(materialCopy);
@@ -812,8 +812,12 @@ export class MaterialComponent implements OnInit , OnDestroy , AfterViewInit{
       }
       this.editCellService.addMaterial(id, editCell)
       this._isEditable = [-1,-1]
-      if (col_name === "newComment") this.addToHistory(col_name,event.newComment, oldValue, id);
-      else if(col_name !== "flag") this.addToHistory(col_name, Math.round(Number(event.target.value)), oldValue, id);
+      if (col_name === "newComment"){
+        this.addToHistory(col_name,event.newComment, oldValue, id);
+      } 
+      else if(col_name !== "flag"){
+        this.addToHistory(col_name, Math.round(Number(event.target.value)), oldValue, id);
+      } 
     }
   }
 
@@ -832,8 +836,8 @@ export class MaterialComponent implements OnInit , OnDestroy , AfterViewInit{
 
 
   switchVisibility(event: any) : void {
-    var col_name = event.name;
-    if (this.visibility.get(col_name) == false){
+    const col_name = event.name;
+    if (this.visibility.get(col_name) === false){
       this.visibility.set(col_name, true)
     }
     else {
@@ -861,14 +865,14 @@ export class MaterialComponent implements OnInit , OnDestroy , AfterViewInit{
 
 
   sapLinkBuilder (materialID : number) : string {
-    //https://rb3p72a4.server.bosch.com:44300/sap/bc/gui/sap/its/webgui?~transaction=md04&WERKS=208M&DISPO=208M&MATNR=012.1B0.0664-02
+
     let resultValue = "https://rb3p72a4.server.bosch.com:44300/sap/bc/gui/sap/its/webgui?~transaction=md04"
-    if(this.materials !== null && this.materials !== undefined){
-      let materialValue = this.materials?.find(e => e.id == materialID)
-      if (materialValue !==null && materialValue !== undefined){
-        resultValue += "&WERKS="+ "werksname"
+    if(this.materials !== undefined){
+      const materialValue = this.materials?.find(e => e.id === materialID)
+      if (materialValue !== undefined){
+        resultValue += "&WERKS="+ materialValue.plant?.toString
         resultValue += "&DISPO=" + "dispoName"
-        resultValue += "&MATNR=" + materialValue.material
+        resultValue += "&MATNR=" + materialValue.material?.toString
       }
     }
 
@@ -885,29 +889,11 @@ export class MaterialComponent implements OnInit , OnDestroy , AfterViewInit{
   }
 
 
-  // delete(material: IMaterial): void {
-  //   const modalRef = this.modalService.open(MaterialDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
-  //   modalRef.componentInstance.material = material;
-  //   // unsubscribe not needed because closed completes on modal close
-  //   modalRef.closed
-  //     .pipe(
-  //       filter(reason => reason === ITEM_DELETED_EVENT),
-  //       switchMap(() => this.loadFromBackendWithRouteInformations())
-  //     )
-  //     .subscribe({
-  //       next: (res: EntityArrayResponseType) => {
-  //         this.onResponseSuccess(res);
-  //       },error:(error:any) =>{
-  //         alert("Error Deleting")
-  //       }
-  //     });
-  // }
-
   load(): void {
     this.loadFromBackendWithRouteInformations().subscribe({
       next: (res: EntityArrayResponseType) => {
         this.onResponseSuccess(res);
-      },error:(error:any) =>{
+      },error(){
         alert("Error Loading")
       }
     });

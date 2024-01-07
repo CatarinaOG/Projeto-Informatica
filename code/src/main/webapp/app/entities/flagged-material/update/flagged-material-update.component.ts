@@ -107,7 +107,7 @@ export class FlaggedMaterialUpdateComponent implements OnInit {
         this.closeResult = `Closed with: ${result}`;
         if (result === "Proceed"){
           if(this.flaggedMaterial){
-            this.flaggedMaterialService.delete(this.flaggedMaterial?.id).subscribe({
+            this.flaggedMaterialService.delete(this.flaggedMaterial.id).subscribe({
               next: () => this.onSaveSuccess(),
               error: () => this.onSaveError(),
             });

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
 import { TourService } from '../service/tour.service';
 import { tourMessages } from '../data/tourMessage';
@@ -8,7 +8,7 @@ import { Subscription } from 'rxjs';
   selector: 'header-group',
   templateUrl: './header-group.component.html',
 })
-export class HeaderGroup implements OnInit {
+export class HeaderGroup implements OnInit ,OnDestroy {
 
   @Input() headerName!: string; 
   @Input() visibilityValue!: boolean | undefined;
@@ -46,13 +46,13 @@ export class HeaderGroup implements OnInit {
     switch(value) {
       case 0:
         document.getElementById("Material Info")?.focus()
-        if (this.headerToolTip && this.headerName === "Material Info") {
+        if (this.headerName === "Material Info") {
           this.headerToolTip.open()
         }
         break;
 
       case 1:
-        if (this.btnToolTip && this.headerName === "Material Info"){
+        if (this.headerName === "Material Info"){
           this.btnToolTip.open()
         } 
         break;

@@ -20,7 +20,7 @@ export class TourService {
         return this.variableSubject.value;
     }
   
-    nextStep(event: any) {
+    nextStep(event: any) :void {
         if (this.variableSubject.value === this.maxSteps) { this.variableSubject.next(-1)}
         else {this.variableSubject.next(this.variableSubject.value + 1)}
         event.stopPropagation();

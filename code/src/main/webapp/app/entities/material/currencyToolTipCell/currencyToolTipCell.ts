@@ -1,4 +1,4 @@
-import { AfterContentInit, Component,  Input, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import {Component,  Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
 import { Coin } from '../../enumerations/coin.model'
 import { currencyExchangeRates } from '../data/currencyExchangeRates';
@@ -8,7 +8,7 @@ import { currencyExchangeRates } from '../data/currencyExchangeRates';
 	selector: 'currency-tooltip-cell',
 	templateUrl: './currencyToolTipCell.html',
 })
-export class CurrencyToolTipCell implements OnInit{
+export class CurrencyToolTipCell implements OnInit , OnChanges{
     currencyExchangeRates = currencyExchangeRates;
 
    
@@ -17,7 +17,7 @@ export class CurrencyToolTipCell implements OnInit{
     @Input() currency!: Coin | null | undefined;
     @Input() currencyEUR! : boolean
     @ViewChild('t') tooltip!: NgbTooltip;
-    messageVal : string = "";
+    messageVal = "";
 
     ngOnChanges(changes: SimpleChanges): void {
         if ('currencyEUR' in changes) {
@@ -27,7 +27,7 @@ export class CurrencyToolTipCell implements OnInit{
 
     updateMessage() : void{
         if (this.currency !== "EUR" && this.currencyEUR && this.currency !== null && this.currency !== undefined){
-            this.messageVal = "The value displayed was converted to EUR, with a " + this.currencyExchangeRates.get(this.currency) + " exchange rate from it's value in " + this.currency
+            this.messageVal = "The value displayed was converted to EUR, with a " + this.currencyExchangeRates.get(this.currency)?.toString + " exchange rate from it's value in " + this.currency
         }
         else {
             this.messageVal = "The value displayed is in " + this.currency

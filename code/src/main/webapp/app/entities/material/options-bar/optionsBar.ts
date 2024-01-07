@@ -122,6 +122,7 @@ export class OptionsBar implements OnInit {
     sendFileMessage(event : any,opType : boolean) : void {
         // true -> replace
         // false -> add
+        console.log("FILE OPERATION IS: ", opType)
         const file:File = event.target.files[0];
         this.fileEmitter.emit({opType,file})
     }
@@ -135,7 +136,7 @@ export class OptionsBar implements OnInit {
 
     checkStatus(): boolean {
         let res = false
-        this.filterStatus.forEach((value, _) => {
+        this.filterStatus.forEach((value) => {
           if (value) {res = true}
         })
         return res
@@ -201,7 +202,7 @@ export class OptionsBar implements OnInit {
     }
 
     sendNumber(menuName : string ,dropdownChoice : number) : void{
-        this.dropdownNumberEmitter.emit({ menuName : menuName ,menuValue : dropdownChoice})
+        this.dropdownNumberEmitter.emit({ menuName ,menuValue : dropdownChoice})
         if(menuName === "undo"){
             this.undoSize =  dropdownChoice;
         }

@@ -36,7 +36,7 @@ export class EditCellService {
     }
 
     getUncheckAll(event : any) : void{
-        this.materials.forEach(function(value,_) {
+        this.materials.forEach(function(value) {
             value.selected = event.target.checked
         })
     }
@@ -50,7 +50,7 @@ export class EditCellService {
 
         const list : IEditCell[] = [];
 
-        this.materials.forEach((value,_) => {
+        this.materials.forEach((value) => {
         if (value.selected){
             list.push(value);
         }
@@ -79,7 +79,7 @@ export class EditCellService {
 
     getUnselectedLines() : number{
         let count = 0;
-        this.materials.forEach((value: IEditCell, _) => {
+        this.materials.forEach((value: IEditCell) => {
             if(!value.selected){
                 count++;
             }

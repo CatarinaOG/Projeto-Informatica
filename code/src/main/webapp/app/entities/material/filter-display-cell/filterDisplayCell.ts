@@ -16,7 +16,6 @@ export class FilterDisplayCell implements OnInit {
 
   filterName = "";
   flagSpecialFilter = false;
-  constructor() { }
   
 
   convertName(filterNameOriginal : string) : string {
