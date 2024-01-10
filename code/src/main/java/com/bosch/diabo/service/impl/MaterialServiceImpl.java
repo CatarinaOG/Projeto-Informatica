@@ -800,7 +800,7 @@ public class MaterialServiceImpl implements MaterialService {
         materialRepository
             .findByMaterial(material)
             .ifPresent(existingMaterial -> {
-            /existingMaterial.setFlagExpirationDate(flagDate);
+                existingMaterial.setFlagExpirationDate(flagDate);
                 materialRepository.save(existingMaterial);
             });
     }
