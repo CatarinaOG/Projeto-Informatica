@@ -250,10 +250,13 @@ public class FlaggedMaterialServiceImpl implements FlaggedMaterialService {
     @Override
     public void updateFlag(List<Object> data){
 
+        
+        
         for (Object item : data) {
             if (item instanceof Map) {
                 Map<String, Object> dataMap = (Map<String, Object>) item;
-
+                
+                System.out.println("-----HELOOOOO-------"+dataMap+"--------------------");
                 String material = (String) dataMap.get("material");
                 LocalDate flagDate = LocalDate.parse((String) dataMap.get("dateFlag"));
                 Boolean flagged = (Boolean) dataMap.get("flag");
