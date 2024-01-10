@@ -721,19 +721,15 @@ public class MaterialServiceImpl implements MaterialService {
             existingMaterial.setDeltaST(existingMaterial.getProposedST() - newST);
             existingMaterial.setComment(newComment);
             existingMaterial.setFlagMaterial(flag);
+
             if(flag) existingMaterial.setFlagExpirationDate(flagDate);
 
-            updateFlaggedMaterials(flag, existingMaterial);
+            flaggedMaterialServiceImpl.updateFlaggedMaterials(flag,existingMaterial);
             
             materialRepository.save(existingMaterial);
         });
 
     }
-
-    public void updateFlaggedMaterials(Boolean flag, Material existingMaterial){
-        flaggedMaterialServiceImpl.updateFlaggedMaterials(flag,existingMaterial);
-    }
-
 
     private Long extractLong(Object value) {
 
