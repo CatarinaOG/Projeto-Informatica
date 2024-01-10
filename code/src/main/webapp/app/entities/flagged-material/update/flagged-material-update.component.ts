@@ -92,25 +92,26 @@ export class FlaggedMaterialUpdateComponent implements OnInit {
     const flaggedMaterial = this.flaggedMaterialFormService.getFlaggedMaterial(this.editForm);
     if (flaggedMaterial.id !== null) {
       if(flaggedMaterial.flagMaterial === false){
-        this.open(content)
+        this.open(content, flaggedMaterial)
         
       }
-      else {this.subscribeToSaveResponse(this.flaggedMaterialService.update(flaggedMaterial))};
+      else {this.subscribeToSaveResponse(this.flaggedMaterialService.updateFlagged(flaggedMaterial))};
     } else {
       this.subscribeToSaveResponse(this.flaggedMaterialService.create(flaggedMaterial));
     }
   }
 
-  open(content: TemplateRef<any>): void {
+  open(content: TemplateRef<any>, flaggedMaterial: IFlaggedMaterial): void {
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then(
       (result) => {
         this.closeResult = `Closed with: ${result}`;
         if (result === "Proceed"){
           if(this.flaggedMaterial){
-            this.flaggedMaterialService.delete(this.flaggedMaterial.id).subscribe({
-              next: () => this.onSaveSuccess(),
-              error: () => this.onSaveError(),
-            });
+            // this.flaggedMaterialService.delete(this.flaggedMaterial.id).subscribe({
+            //   next: () => this.onSaveSuccess(),
+            //   error: () => this.onSaveError(),
+            // });
+            this.subscribeToSaveResponse(this.flaggedMaterialService.updateFlagged(flaggedMaterial))
           }
         }  
       }, 
