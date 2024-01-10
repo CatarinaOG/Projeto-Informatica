@@ -51,6 +51,7 @@ export class EditCellService {
         const list : IEditCell[] = [];
 
         this.materials.forEach((value) => {
+            console.log("Value is:" , value)
         if (value.selected){
             list.push(value);
         }

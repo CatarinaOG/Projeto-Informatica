@@ -424,7 +424,7 @@
               Changed on: {{material.dateOfUpdatedST}}  
               <p>Previous Safety Time: {{material.valueOfUpdatedST}}</p>
             </ng-template>
-            <span placement="top" tooltipClass="custom-tooltip-smaller" [ngbTooltip]="safetyStockContent">{{ material.currentSAPSafeTime }}</span>
+            <span placement="top" tooltipClass="custom-tooltip-smaller" [ngbTooltip]="safetyTimeContent">{{ material.currentSAPSafeTime }}</span>
           </td>
           <td class ="safetyTime headerRowEnd" [ngClass] ="editCellClasses('safetyTime')">{{ material.proposedST }}</td>
           <td *ngIf = "!visibility.get('safetyTime')" class="headerRowEnd">

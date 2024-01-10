@@ -20,7 +20,9 @@ export class ChangesComponent implements OnInit, OnDestroy {
       const list : IEditCell[] = [];
 
       this.materials.forEach((value) => {
-          list.push(value);
+          if(value.selected){
+            list.push(value);
+          }
       }
       )
       return list;
