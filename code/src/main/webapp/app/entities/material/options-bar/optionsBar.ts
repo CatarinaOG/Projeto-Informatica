@@ -50,63 +50,62 @@ export class OptionsBar implements OnInit {
     ["Current Inventory", false],
     ["Avg. Inv. Effect After Change", false]
   ]);
-  index: number = 0;
+  index = 0;
 
-  undoSize : number= 10;
-  private subscription: Subscription = new Subscription();
+  undoSize = 10;
 
   constructor( private accountService: AccountService , public tourService: TourService ) {}
   ngOnInit(): void {
-    this.subscription = this.tourService.index$.subscribe(value =>  {
+    this.tourService.index$.subscribe(value =>  {
         this.index = value;
         this.defineStepTour(value);
       })
    }
 
 
-   defineStepTour(value: number) {
-    if(this.filtersTooltip) this.filtersTooltip.close()
-    if(this.fileTooltip) this.fileTooltip.close()
-    if(this.tableSizeTooltip) this.tableSizeTooltip.close()
-    if(this.undoTooltip) this.undoTooltip.close()
-    if(this.undoToolTip2) this.undoToolTip2.close()
-    if(this.switchTooltip) this.switchTooltip.close()
-    if(this.submitTooltip) this.submitTooltip.close()
+   defineStepTour(value: number) : void {
+    if (this.filtersTooltip !== undefined) this.filtersTooltip.close()
+    if (this.fileTooltip !== undefined) this.fileTooltip.close()
+    if (this.tableSizeTooltip !== undefined) this.tableSizeTooltip.close()
+    if (this.undoTooltip !== undefined) this.undoTooltip.close()
+    if (this.undoToolTip2 !== undefined) this.undoToolTip2.close()
+    if (this.switchTooltip !== undefined) this.switchTooltip.close()
+    if (this.submitTooltip !== undefined) this.submitTooltip.close()
 
     switch(value) {
       case 8: // filters dropdown menu
         document.getElementById("dropdownMenuButtonFilterOptions")?.focus()
-        if (this.filtersTooltip ) this.filtersTooltip.open()
+        this.filtersTooltip.open()
         break;
 
       case 9:  // file options dropdown menu
         document.getElementById("dropdownMenuButtonFileOptions")?.focus()
-        if (this.fileTooltip ) this.fileTooltip.open()
+        this.fileTooltip.open()
         break;
 
       case 10:  // table size dropdown menu
         document.getElementById("dropdownMenuButtonTableSize")?.focus()
-        if (this.tableSizeTooltip ) this.tableSizeTooltip.open()
+        this.tableSizeTooltip.open()
         break;
 
       case 11:  // undo btn
         document.getElementById("undoTooltipId")?.focus()
-        if (this.undoTooltip ) this.undoTooltip.open()
+        this.undoTooltip.open()
         break;
 
       case 12: // undo dropdown menu
         document.getElementById("undoTooltipId")?.focus()
-        if(this.undoToolTip2) this.undoToolTip2.open()
+        this.undoToolTip2.open()
         break;
     
       case 13: // switch currency
         document.getElementById("switchCurrencyId")?.focus()
-        if (this.switchTooltip ) this.switchTooltip.open()
+        this.switchTooltip.open()
         break;
 
       case 14: // submit
         document.getElementById("submitTooltipId")?.focus()
-        if (this.submitTooltip ) this.submitTooltip.open()
+        this.submitTooltip.open()
         break;
 
       default:
@@ -121,17 +120,15 @@ export class OptionsBar implements OnInit {
     }
 
     sendFileMessage(event : any,opType : boolean) : void {
-        //true -> replace
-        //false -> add
-        console.log("Entrou na função")
+        // true -> replace
+        // false -> add
+        console.log("FILE OPERATION IS: ", opType)
         const file:File = event.target.files[0];
-        if (file){
-            this.fileEmitter.emit({opType,file})
-        }
+        this.fileEmitter.emit({opType,file})
     }
 
     changeStatus(name : string) : void {
-        for(let pair of this.filterStatus){
+        for(const pair of this.filterStatus){
           this.filterStatus.set(pair[0], false);
         }
         this.filterStatus.set(name, true);
@@ -139,14 +136,13 @@ export class OptionsBar implements OnInit {
 
     checkStatus(): boolean {
         let res = false
-        this.filterStatus.forEach((value, key) => {
-          if (value) res = true
+        this.filterStatus.forEach((value) => {
+          if (value) {res = true}
         })
         return res
     }
 
     sendFilterText(event : any) : void {
-        console.log(event.target.value)
         if (this.filterStatus.get("Material Name")){
             this.textFilterEmitter.emit({filterName : "Material Name", filterText : event.target.value})
         }
@@ -180,7 +176,7 @@ export class OptionsBar implements OnInit {
     }
 
     receiveFilterNumberMessage(event : any) : void{
-        for(let pair of this.filterStatus){
+        for(const pair of this.filterStatus){
             this.filterStatus.set(pair[0], false)
         }
 
@@ -196,28 +192,28 @@ export class OptionsBar implements OnInit {
         this.abcFilterEmitter.emit({opType: event.target.checked, filterValue : value})
     }
 
-    submitToSAP(event : any){
-        if (event.confirm) this.stringEmitter.emit("Submit")
-        else this.stringEmitter.emit("Check unselected")
+    submitToSAP(event : any): void{
+        if (event.confirm) {this.stringEmitter.emit("Submit")}
+        else {this.stringEmitter.emit("Check unselected")}
     }
 
-    sendUndo(){
+    sendUndo() : void{
         this.stringEmitter.emit("Undo")
     }
 
-    sendNumber(menuName : string ,dropdownChoice : number){
-        this.dropdownNumberEmitter.emit({ menuName : menuName ,menuValue : dropdownChoice})
+    sendNumber(menuName : string ,dropdownChoice : number) : void{
+        this.dropdownNumberEmitter.emit({ menuName ,menuValue : dropdownChoice})
         if(menuName === "undo"){
             this.undoSize =  dropdownChoice;
         }
     }
 
     optionStatus(dropdownValue : number) : boolean{
-        if (dropdownValue === this.undoSize) return true
-        else return false
+        if (dropdownValue === this.undoSize) {return true}
+        else {return false}
     }
 
-    toggleCheckbox(){
+    toggleCheckbox() : void{
         if(this.currencyEUR){
             this.currencyValEmitter.emit(false)
         }

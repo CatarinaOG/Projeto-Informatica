@@ -1,14 +1,11 @@
-import { Component, inject, TemplateRef, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, inject, TemplateRef, Input, Output, EventEmitter } from '@angular/core';
 import { NgbDateStruct, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-
-import { IMaterial } from '../material.model';
-import { IEditCell } from '../editCell.model';
 
 @Component({
 	selector: 'submit-modal',
 	templateUrl: './submitModal.html',
 })
-export class SubmitModal  implements OnInit{
+export class SubmitModal{
 	
     closeResult = '';
 
@@ -19,9 +16,6 @@ export class SubmitModal  implements OnInit{
 	model: NgbDateStruct | undefined ;
 	private modalService = inject(NgbModal);
 
-	ngOnInit(): void {
-
-	}
 	
 	open(content: TemplateRef<any>): void {
 		if (this.unselectedLines === 0){
@@ -34,19 +28,14 @@ export class SubmitModal  implements OnInit{
 					if (result === "Submit Anyways"){
 						this.confirmEmmiter.emit({confirm : true})
 					}  
-					else this.confirmEmmiter.emit({confirm : false})
+					else {this.confirmEmmiter.emit({confirm : false})}
 				}, 
-				(reason) => {
-					// this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-				},
+				// (reason) => {
+				// 	// this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+				// },
 			);
 		}
 	}
 
-	submitStatus () : boolean {
-		let returnVal = false;
-		return returnVal;
-	}
- 
 
 }

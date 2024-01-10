@@ -4,7 +4,7 @@ import { IEditCell } from 'app/entities/material/editCell.model';
 import { EditCellService } from 'app/entities/material/service/editCell.service';
 
 @Component({
-  selector: 'changes-page',
+  selector: 'jhi-changes-page',
   templateUrl: './changes.component.html',
 })
 
@@ -19,7 +19,7 @@ export class ChangesComponent implements OnInit, OnDestroy {
 
       const list : IEditCell[] = [];
 
-      this.materials.forEach((value,key) => {
+      this.materials.forEach((value) => {
           list.push(value);
       }
       )
@@ -30,35 +30,39 @@ export class ChangesComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.materials = this.editCellService.getMaterials()
 
-        if (this.materials.size === 0) this.routeToMaterialsPage()
+        if (this.materials.size === 0) {
+          this.routeToMaterialsPage()
+        }
     }
 
     ngOnDestroy(): void {
         this.editCellService.cleanMaterials();
     }
 
-    valueVariation(oldVal: number, newVal: number) {
+    valueVariation(oldVal: number, newVal: number) :number{
         return Math.round(((newVal - oldVal)/oldVal)*100)
     }
 
-    abs(value: number) {
+    abs(value: number) :number {
         return Math.abs(value)
     }
 
     calculateColor(oldVal : number , newVal : number): string{
-      let delta = this.valueVariation ( oldVal, newVal)
+      const delta = this.valueVariation ( oldVal, newVal)
       if (delta > 0){
         return "textGreen"
       }
       if (delta < 0){
         return "textRed"
       }
-      else return ""
+      else {
+        return ""
+      }
     }
 
 
     
-  routeToMaterialsPage() {
+  routeToMaterialsPage() : void {
     this.router.navigate(['/material']);
   }
 }

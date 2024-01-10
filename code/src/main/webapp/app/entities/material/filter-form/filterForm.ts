@@ -6,7 +6,7 @@ import { FormBuilder } from '@angular/forms';
   templateUrl: './filterForm.html',
 })
 
-export class FilterForm implements OnInit {
+export class FilterForm {
 
   @Input() filterName!: string; 
   @Output() numberFilterEmitter = new EventEmitter<{filterName : string, operator : string, value : number}>();
@@ -18,9 +18,7 @@ export class FilterForm implements OnInit {
 
   constructor(private formBuilder: FormBuilder) { }
    
-  ngOnInit(): void { }
   onSubmit(): void {
-        console.log("Formulario: " , this.numberFilterForm.value);
         if (this.filterName){
             this.numberFilterEmitter.emit({filterName : this.filterName,
                                             operator : this.numberFilterForm.value.selectOption ?? "", 

@@ -1,6 +1,5 @@
-import { Component, inject, TemplateRef, Input, Output, EventEmitter, OnInit, ViewChild, AfterViewInit } from '@angular/core';
-import { NgbDateStruct, NgbModal, NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
-import {formatDate} from '@angular/common';
+import { Component,Input, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
 
 
 @Component({
@@ -14,8 +13,8 @@ export class ValueCell implements AfterViewInit, OnInit{
     @Input() oldValue! : number | null | undefined;
     @Input() generatedValue!: number;
     @ViewChild('t') tooltip!: NgbTooltip;
-    messageVal : string = "";
-    percentageVal : string = "";
+    messageVal = "";
+    percentageVal = "";
 
     ngOnInit(): void {
         if(this.oldValue !== null && this.oldValue !== undefined){
@@ -27,7 +26,7 @@ export class ValueCell implements AfterViewInit, OnInit{
     ngAfterViewInit(): void {
         this.openToolTip();
     }
-    openToolTip(){
+    openToolTip() : void{
         if(this.oldValue !== null && this.oldValue !== undefined){
             if( this.generatedValue > (this.oldValue * 2) || this.generatedValue < (this.oldValue/2)){
                 this.tooltip.open();

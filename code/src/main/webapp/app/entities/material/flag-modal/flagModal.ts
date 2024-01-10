@@ -21,14 +21,14 @@ export class FlagModal  implements OnInit{
     @Input() material!: IMaterial;
 	@Input() checkFlag! : boolean;
 	@Output() flagDateEmmiter = new EventEmitter<{flag : boolean , date : string , id : number}>();
-
-	model: NgbDateStruct | undefined ;
-	private modalService = inject(NgbModal);
 	date : string = "" ; 
-	//checkFlag : boolean = false;
+	// checkFlag : boolean = false;
 	disabled = true;
 	editedMaterial: IEditCell | undefined;
 	placeholderText = ""
+	model: NgbDateStruct | undefined ;
+	private modalService = inject(NgbModal);
+	
 
 	constructor( protected editCellService: EditCellService ) {}
 
@@ -37,7 +37,7 @@ export class FlagModal  implements OnInit{
 		this.placeholderText = this.definePlaceholder();
 	}
 
-	toggleCheckbox() {
+	toggleCheckbox() : void {
 	  this.checkFlag = !this.checkFlag;
 	}
   
@@ -50,7 +50,7 @@ export class FlagModal  implements OnInit{
 		return returnValue;
 	}
 
-	defineModel(date: string) {
+	defineModel(date: string) : void{
 		const newDate = new Date(date)
 		this.model = {
 			day: newDate.getDay(),
@@ -60,8 +60,12 @@ export class FlagModal  implements OnInit{
 	}
 
 	inputHideShow() : string {
-		if (!this.checkFlag) return "tableHide"
-		else return ""
+		if (!this.checkFlag) {
+			return "tableHide"
+		}
+		else {
+		 return ""
+		}
 	}
 	
 	open(content: TemplateRef<any>): void {
@@ -70,15 +74,11 @@ export class FlagModal  implements OnInit{
 			(result) => {
 				this.closeResult = `Closed with: ${result}`;
                 this.flagDateEmmiter.emit({flag : this.checkFlag, date : this.date , id : this.material.id})
-			}, 
-			(reason) => {
-				// this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-                
 			},
 		);
 	}
 
-	select(model : any) {
+	select(model : any) : void {
 		const d = new Date(model);
 		this.date = d.toISOString().split("T")[0];
 	}
@@ -100,7 +100,9 @@ export class FlagModal  implements OnInit{
 			if(this.date === ""){
 				returnVal = true;
 			}
-			else returnVal = false;
+			else {
+				returnVal = false;
+			}
 		}
 		return returnVal;
 	}

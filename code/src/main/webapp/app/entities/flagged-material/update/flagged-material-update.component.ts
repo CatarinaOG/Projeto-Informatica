@@ -21,21 +21,22 @@ export class FlaggedMaterialUpdateComponent implements OnInit {
   aBCClassificationValues = Object.keys(ABCClassification);
   coinValues = Object.keys(Coin);
 	
-  flagError: boolean = false;
+  flagError = false;
 
   current = new Date();
-
-  private modalService = inject(NgbModal);
   closeResult = '';
-
   minDate = {
 	  year: this.current.getFullYear(),
 	  month: this.current.getMonth() + 1,
 	  day: this.current.getDate()
 	};
+  buttonStatus = false;
 
   editForm: FlaggedMaterialFormGroup = this.flaggedMaterialFormService.createFlaggedMaterialFormGroup();
 
+  private modalService = inject(NgbModal);
+
+ 
   constructor(
     protected flaggedMaterialService: FlaggedMaterialService,
     protected flaggedMaterialFormService: FlaggedMaterialFormService,
@@ -66,20 +67,23 @@ export class FlaggedMaterialUpdateComponent implements OnInit {
   }
 
   inputHideShow() : string {
-		if (!this.editForm.get('flagMaterial')?.value) return "tableHide"
-		else return ""
+		if (!this.editForm.get('flagMaterial')?.value){
+      return "tableHide"
+    } 
+		else{
+      return ""
+    } 
 	}
 
 
-  buttonStatus = false;
 
-  saveButtonStatus(flag: boolean | null | undefined, date: Dayjs | null | undefined) { 
+  saveButtonStatus(flag: boolean | null | undefined, date: Dayjs | null | undefined) : void { 
     this.flagError = false;
     if(flag === true && (date === null || date === undefined)) {
       this.flagError = true;
       this.buttonStatus= true;
     }
-    else this.buttonStatus = false;
+    else {this.buttonStatus = false};
   }
 
 
@@ -91,7 +95,7 @@ export class FlaggedMaterialUpdateComponent implements OnInit {
         this.open(content)
         
       }
-      else this.subscribeToSaveResponse(this.flaggedMaterialService.update(flaggedMaterial));
+      else {this.subscribeToSaveResponse(this.flaggedMaterialService.update(flaggedMaterial))};
     } else {
       this.subscribeToSaveResponse(this.flaggedMaterialService.create(flaggedMaterial));
     }
@@ -103,17 +107,16 @@ export class FlaggedMaterialUpdateComponent implements OnInit {
         this.closeResult = `Closed with: ${result}`;
         if (result === "Proceed"){
           if(this.flaggedMaterial){
-            this.flaggedMaterialService.delete(this.flaggedMaterial?.id).subscribe({
+            this.flaggedMaterialService.delete(this.flaggedMaterial.id).subscribe({
               next: () => this.onSaveSuccess(),
               error: () => this.onSaveError(),
             });
           }
         }  
-        else {}
       }, 
-      (reason) => {
-        // this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-      },
+      // (reason) => {
+      //   // this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+      // },
     );
 
 	}

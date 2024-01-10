@@ -30,13 +30,13 @@ export class CommentModal  implements OnInit{
 		this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then(
 			(result) => {
 				this.closeResult = `Closed with: ${result}`;
-                if (this.comment) this.commentEmitter.emit({newComment: this.comment, id: this.id})
-                else  this.commentEmitter.emit({newComment:"", id: this.id})
+                if (this.comment) {this.commentEmitter.emit({newComment: this.comment, id: this.id})}
+                else  {this.commentEmitter.emit({newComment:"", id: this.id})}
 			}, 
-			(reason) => {
-				// this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+			// (reason) => {
+			// 	// this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
                 
-			},
+			// },
 		);
 	}
 
