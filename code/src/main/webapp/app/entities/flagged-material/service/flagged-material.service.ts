@@ -51,7 +51,7 @@ export class FlaggedMaterialService {
     //const copy = this.convertDateFromClient(flaggedMaterial);
     const data = [{
       material: flaggedMaterial.material,
-      dateFlag: flaggedMaterial.flagExpirationDate,
+      dateFlag: flaggedMaterial.flagExpirationDate?.toString().split('T')[0],
       flag: flaggedMaterial.flagMaterial
     }]
 
