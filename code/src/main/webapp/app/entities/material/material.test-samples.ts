@@ -26,7 +26,7 @@ export const sampleWithPartialData: IMaterial = {
   newSAPSafetyTime: 23192,
   previousSS: 85762,
   datePreviousST: dayjs('2023-11-14'),
-  currency: Coin['XPF'],
+  currency: Coin['KRW'],
 };
 
 export const sampleWithFullData: IMaterial = {
@@ -62,7 +62,7 @@ export const sampleWithFullData: IMaterial = {
   datePreviousSS: dayjs('2023-11-14'),
   datePreviousST: dayjs('2023-11-13'),
   toSaveUpdates: false,
-  currency: Coin['MRU'],
+  currency: Coin['CLP'],
 };
 
 export const sampleWithNewData: NewMaterial = {
