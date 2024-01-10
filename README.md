@@ -8,5 +8,4 @@ Projeto desenvolvido no âmbito da cadeira de Projeto Informática do 5º ano.
 - [João Delgado](https://github.com/delgas12)<br>
 - [Pedro Fernandes](https://github.com/PedroFernandesMIEI)<br>
 - [Vicente Moreira](https://github.com/VicShadow)<br>
-- [Lourenço Antunes](https://github.com/FST-Tunes)<br>
 - [Catarina Gonçalves](https://github.com/CatarinaOG)<br>
