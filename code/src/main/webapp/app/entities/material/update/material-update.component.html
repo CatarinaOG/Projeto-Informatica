@@ -43,6 +43,23 @@
         </div>
 
         <div class="row mb-3">
+          <label class="form-label" for="field_plant">Plant</label>
+          <input type="number" class="form-control" name="plant" id="field_plant" data-cy="plant" formControlName="plant" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_mrpController">Mrp Controller</label>
+          <input
+            type="text"
+            class="form-control"
+            name="mrpController"
+            id="field_mrpController"
+            data-cy="mrpController"
+            formControlName="mrpController"
+          />
+        </div>
+
+        <div class="row mb-3">
           <label class="form-label" for="field_avgSupplierDelay">Avg Supplier Delay</label>
           <input
             type="number"
@@ -75,23 +92,6 @@
             id="field_serviceLevel"
             data-cy="serviceLevel"
             formControlName="serviceLevel"
-          />
-        </div>
-
-        <div class="row mb-3">
-          <label class="form-label" for="field_plant">Plant</label>
-          <input type="text" class="form-control" name="plant" id="field_plant" data-cy="plant" formControlName="plant" />
-        </div>
-
-        <div class="row mb-3">
-          <label class="form-label" for="field_mrpController">Mrp Controller</label>
-          <input
-            type="text"
-            class="form-control"
-            name="mrpController"
-            id="field_mrpController"
-            data-cy="mrpController"
-            formControlName="mrpController"
           />
         </div>
 
@@ -260,62 +260,96 @@
         </div>
 
         <div class="row mb-3">
-          <label class="form-label" for="field_valueOfUpdatedSS">Value Of Updated SS</label>
-          <input
-            type="number"
-            class="form-control"
-            name="valueOfUpdatedSS"
-            id="field_valueOfUpdatedSS"
-            data-cy="valueOfUpdatedSS"
-            formControlName="valueOfUpdatedSS"
-          />
-        </div>
-
-        <div class="row mb-3">
-          <label class="form-label" for="field_valueOfUpdatedST">Value Of Updated ST</label>
-          <input
-            type="number"
-            class="form-control"
-            name="valueOfUpdatedST"
-            id="field_valueOfUpdatedST"
-            data-cy="valueOfUpdatedST"
-            formControlName="valueOfUpdatedST"
-          />
-        </div>
-
-        <div class="row mb-3">
-          <label class="form-label" for="field_dateOfUpdatedSS">Date Of Updated SS</label>
+          <label class="form-label" for="field_dateNewSS">Date New SS</label>
           <div class="input-group">
             <input
-              id="field_dateOfUpdatedSS"
-              data-cy="dateOfUpdatedSS"
+              id="field_dateNewSS"
+              data-cy="dateNewSS"
               type="text"
               class="form-control"
-              name="dateOfUpdatedSS"
+              name="dateNewSS"
               ngbDatepicker
-              #dateOfUpdatedSSDp="ngbDatepicker"
-              formControlName="dateOfUpdatedSS"
+              #dateNewSSDp="ngbDatepicker"
+              formControlName="dateNewSS"
             />
-            <button type="button" class="btn btn-secondary" (click)="dateOfUpdatedSSDp.toggle()">
+            <button type="button" class="btn btn-secondary" (click)="dateNewSSDp.toggle()"><fa-icon icon="calendar-alt"></fa-icon></button>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_datNewST">Dat New ST</label>
+          <div class="input-group">
+            <input
+              id="field_datNewST"
+              data-cy="datNewST"
+              type="text"
+              class="form-control"
+              name="datNewST"
+              ngbDatepicker
+              #datNewSTDp="ngbDatepicker"
+              formControlName="datNewST"
+            />
+            <button type="button" class="btn btn-secondary" (click)="datNewSTDp.toggle()"><fa-icon icon="calendar-alt"></fa-icon></button>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_previousSS">Previous SS</label>
+          <input
+            type="number"
+            class="form-control"
+            name="previousSS"
+            id="field_previousSS"
+            data-cy="previousSS"
+            formControlName="previousSS"
+          />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_previousST">Previous ST</label>
+          <input
+            type="number"
+            class="form-control"
+            name="previousST"
+            id="field_previousST"
+            data-cy="previousST"
+            formControlName="previousST"
+          />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_datePreviousSS">Date Previous SS</label>
+          <div class="input-group">
+            <input
+              id="field_datePreviousSS"
+              data-cy="datePreviousSS"
+              type="text"
+              class="form-control"
+              name="datePreviousSS"
+              ngbDatepicker
+              #datePreviousSSDp="ngbDatepicker"
+              formControlName="datePreviousSS"
+            />
+            <button type="button" class="btn btn-secondary" (click)="datePreviousSSDp.toggle()">
               <fa-icon icon="calendar-alt"></fa-icon>
             </button>
           </div>
         </div>
 
         <div class="row mb-3">
-          <label class="form-label" for="field_dateOfUpdatedST">Date Of Updated ST</label>
+          <label class="form-label" for="field_datePreviousST">Date Previous ST</label>
           <div class="input-group">
             <input
-              id="field_dateOfUpdatedST"
-              data-cy="dateOfUpdatedST"
+              id="field_datePreviousST"
+              data-cy="datePreviousST"
               type="text"
               class="form-control"
-              name="dateOfUpdatedST"
+              name="datePreviousST"
               ngbDatepicker
-              #dateOfUpdatedSTDp="ngbDatepicker"
-              formControlName="dateOfUpdatedST"
+              #datePreviousSTDp="ngbDatepicker"
+              formControlName="datePreviousST"
             />
-            <button type="button" class="btn btn-secondary" (click)="dateOfUpdatedSTDp.toggle()">
+            <button type="button" class="btn btn-secondary" (click)="datePreviousSTDp.toggle()">
               <fa-icon icon="calendar-alt"></fa-icon>
             </button>
           </div>

@@ -23,6 +23,12 @@
             <column name="abc_classification" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
+            <column name="plant" type="integer">
+                <constraints nullable="true" />
+            </column>
+            <column name="mrp_controller" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
             <column name="avg_supplier_delay" type="${floatType}">
                 <constraints nullable="true" />
             </column>
@@ -30,12 +36,6 @@
                 <constraints nullable="true" />
             </column>
             <column name="service_level" type="${floatType}">
-                <constraints nullable="true" />
-            </column>
-            <column name="plant" type="varchar(255)">
-                <constraints nullable="true" />
-            </column>
-            <column name="mrp_controller" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
             <column name="curr_sap_safety_stock" type="integer">
@@ -86,16 +86,22 @@
             <column name="new_sap_safety_time" type="integer">
                 <constraints nullable="true" />
             </column>
-            <column name="value_of_updated_ss" type="integer">
+            <column name="date_new_ss" type="date">
                 <constraints nullable="true" />
             </column>
-            <column name="value_of_updated_st" type="integer">
+            <column name="dat_new_st" type="date">
                 <constraints nullable="true" />
             </column>
-            <column name="date_of_updated_ss" type="date">
+            <column name="previous_ss" type="integer">
                 <constraints nullable="true" />
             </column>
-            <column name="date_of_updated_st" type="date">
+            <column name="previous_st" type="integer">
+                <constraints nullable="true" />
+            </column>
+            <column name="date_previous_ss" type="date">
+                <constraints nullable="true" />
+            </column>
+            <column name="date_previous_st" type="date">
                 <constraints nullable="true" />
             </column>
             <column name="to_save_updates" type="boolean">
@@ -128,11 +134,11 @@
             <column name="material" type="string"/>
             <column name="description" type="string"/>
             <column name="abc_classification" type="string"/>
+            <column name="plant" type="numeric"/>
+            <column name="mrp_controller" type="string"/>
             <column name="avg_supplier_delay" type="numeric"/>
             <column name="max_supplier_delay" type="numeric"/>
             <column name="service_level" type="numeric"/>
-            <column name="plant" type="string"/>
-            <column name="mrp_controller" type="string"/>
             <column name="curr_sap_safety_stock" type="numeric"/>
             <column name="proposed_sst" type="numeric"/>
             <column name="delta_sst" type="numeric"/>
@@ -149,10 +155,12 @@
             <column name="jhi_comment" type="string"/>
             <column name="new_sap_safety_stock" type="numeric"/>
             <column name="new_sap_safety_time" type="numeric"/>
-            <column name="value_of_updated_ss" type="numeric"/>
-            <column name="value_of_updated_st" type="numeric"/>
-            <column name="date_of_updated_ss" type="date"/>
-            <column name="date_of_updated_st" type="date"/>
+            <column name="date_new_ss" type="date"/>
+            <column name="dat_new_st" type="date"/>
+            <column name="previous_ss" type="numeric"/>
+            <column name="previous_st" type="numeric"/>
+            <column name="date_previous_ss" type="date"/>
+            <column name="date_previous_st" type="date"/>
             <column name="to_save_updates" type="boolean"/>
             <column name="currency" type="string"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->

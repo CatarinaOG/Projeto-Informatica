@@ -14,17 +14,15 @@ type PartialWithRequiredKeyOf<T extends { id: unknown }> = Partial<Omit<T, 'id'>
  */
 type FlaggedMaterialFormGroupInput = IFlaggedMaterial | PartialWithRequiredKeyOf<NewFlaggedMaterial>;
 
-type FlaggedMaterialFormDefaults = Pick<NewFlaggedMaterial, 'id' | 'flagMaterial' | 'toSaveUpdates'>;
+type FlaggedMaterialFormDefaults = Pick<NewFlaggedMaterial, 'id' | 'flagMaterial'>;
 
 type FlaggedMaterialFormGroupContent = {
   id: FormControl<IFlaggedMaterial['id'] | NewFlaggedMaterial['id']>;
   material: FormControl<IFlaggedMaterial['material']>;
   description: FormControl<IFlaggedMaterial['description']>;
   abcClassification: FormControl<IFlaggedMaterial['abcClassification']>;
-
   plant: FormControl<IFlaggedMaterial['plant']>;
   mrpController: FormControl<IFlaggedMaterial['mrpController']>;
-  
   flagMaterial: FormControl<IFlaggedMaterial['flagMaterial']>;
   flagExpirationDate: FormControl<IFlaggedMaterial['flagExpirationDate']>;
 };
@@ -51,7 +49,6 @@ export class FlaggedMaterialFormService {
       abcClassification: new FormControl(flaggedMaterialRawValue.abcClassification),
       plant: new FormControl(flaggedMaterialRawValue.plant),
       mrpController: new FormControl(flaggedMaterialRawValue.mrpController),
-      
       flagMaterial: new FormControl(flaggedMaterialRawValue.flagMaterial),
       flagExpirationDate: new FormControl(flaggedMaterialRawValue.flagExpirationDate),
     });
@@ -75,7 +72,6 @@ export class FlaggedMaterialFormService {
     return {
       id: null,
       flagMaterial: false,
-      toSaveUpdates: false,
     };
   }
 }

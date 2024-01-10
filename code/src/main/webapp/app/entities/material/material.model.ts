@@ -7,11 +7,11 @@ export interface IMaterial {
   material?: string | null;
   description?: string | null;
   abcClassification?: ABCClassification | null;
+  plant?: number | null;
+  mrpController?: string | null;
   avgSupplierDelay?: number | null;
   maxSupplierDelay?: number | null;
   serviceLevel?: number | null;
-  plant?: string | null;
-  mrpController?: string | null;
   currSAPSafetyStock?: number | null;
   proposedSST?: number | null;
   deltaSST?: number | null;
@@ -28,10 +28,12 @@ export interface IMaterial {
   comment?: string | null;
   newSAPSafetyStock?: number | null;
   newSAPSafetyTime?: number | null;
-  valueOfUpdatedSS?: number | null;
-  valueOfUpdatedST?: number | null;
-  dateOfUpdatedSS?: dayjs.Dayjs | null;
-  dateOfUpdatedST?: dayjs.Dayjs | null;
+  dateNewSS?: dayjs.Dayjs | null;
+  datNewST?: dayjs.Dayjs | null;
+  previousSS?: number | null;
+  previousST?: number | null;
+  datePreviousSS?: dayjs.Dayjs | null;
+  datePreviousST?: dayjs.Dayjs | null;
   toSaveUpdates?: boolean | null;
   currency?: Coin | null;
 }

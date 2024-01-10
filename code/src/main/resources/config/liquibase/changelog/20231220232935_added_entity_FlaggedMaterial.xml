@@ -23,76 +23,16 @@
             <column name="abc_classification" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-            <column name="avg_supplier_delay" type="${floatType}">
-                <constraints nullable="true" />
-            </column>
-            <column name="max_supplier_delay" type="${floatType}">
-                <constraints nullable="true" />
-            </column>
-            <column name="service_level" type="${floatType}">
-                <constraints nullable="true" />
-            </column>
-            <column name="plant" type="varchar(255)">
+            <column name="plant" type="integer">
                 <constraints nullable="true" />
             </column>
             <column name="mrp_controller" type="varchar(255)">
-                <constraints nullable="true" />
-            </column>
-            <column name="curr_sap_safety_stock" type="integer">
-                <constraints nullable="true" />
-            </column>
-            <column name="proposed_sst" type="integer">
-                <constraints nullable="true" />
-            </column>
-            <column name="delta_sst" type="integer">
-                <constraints nullable="true" />
-            </column>
-            <column name="current_sap_safe_time" type="integer">
-                <constraints nullable="true" />
-            </column>
-            <column name="proposed_st" type="integer">
-                <constraints nullable="true" />
-            </column>
-            <column name="delta_st" type="integer">
-                <constraints nullable="true" />
-            </column>
-            <column name="open_sa_pmd_04" type="varchar(255)">
-                <constraints nullable="true" />
-            </column>
-            <column name="current_inventory_value" type="${floatType}">
-                <constraints nullable="true" />
-            </column>
-            <column name="unit_cost" type="${floatType}">
-                <constraints nullable="true" />
-            </column>
-            <column name="avg_demand" type="integer">
-                <constraints nullable="true" />
-            </column>
-            <column name="avg_inventory_effect_after_change" type="${floatType}">
                 <constraints nullable="true" />
             </column>
             <column name="flag_material" type="boolean">
                 <constraints nullable="true" />
             </column>
             <column name="flag_expiration_date" type="date">
-                <constraints nullable="true" />
-            </column>
-            <column name="value_of_updated_ss" type="integer">
-                <constraints nullable="true" />
-            </column>
-            <column name="value_of_updated_st" type="integer">
-                <constraints nullable="true" />
-            </column>
-            <column name="date_of_updated_ss" type="date">
-                <constraints nullable="true" />
-            </column>
-            <column name="date_of_updated_st" type="date">
-                <constraints nullable="true" />
-            </column>
-            <column name="to_save_updates" type="boolean">
-                <constraints nullable="true" />
-            </column>
-            <column name="currency" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
@@ -119,30 +59,10 @@
             <column name="material" type="string"/>
             <column name="description" type="string"/>
             <column name="abc_classification" type="string"/>
-            <column name="avg_supplier_delay" type="numeric"/>
-            <column name="max_supplier_delay" type="numeric"/>
-            <column name="service_level" type="numeric"/>
-            <column name="plant" type="string"/>
+            <column name="plant" type="numeric"/>
             <column name="mrp_controller" type="string"/>
-            <column name="curr_sap_safety_stock" type="numeric"/>
-            <column name="proposed_sst" type="numeric"/>
-            <column name="delta_sst" type="numeric"/>
-            <column name="current_sap_safe_time" type="numeric"/>
-            <column name="proposed_st" type="numeric"/>
-            <column name="delta_st" type="numeric"/>
-            <column name="open_sa_pmd_04" type="string"/>
-            <column name="current_inventory_value" type="numeric"/>
-            <column name="unit_cost" type="numeric"/>
-            <column name="avg_demand" type="numeric"/>
-            <column name="avg_inventory_effect_after_change" type="numeric"/>
             <column name="flag_material" type="boolean"/>
             <column name="flag_expiration_date" type="date"/>
-            <column name="value_of_updated_ss" type="numeric"/>
-            <column name="value_of_updated_st" type="numeric"/>
-            <column name="date_of_updated_ss" type="date"/>
-            <column name="date_of_updated_st" type="date"/>
-            <column name="to_save_updates" type="boolean"/>
-            <column name="currency" type="string"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>

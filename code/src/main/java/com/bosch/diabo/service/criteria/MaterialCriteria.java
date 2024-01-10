@@ -2,7 +2,6 @@ package com.bosch.diabo.service.criteria;
 
 import com.bosch.diabo.domain.enumeration.ABCClassification;
 import com.bosch.diabo.domain.enumeration.Coin;
-
 import java.io.Serializable;
 import java.util.Objects;
 import org.springdoc.api.annotations.ParameterObject;
@@ -66,6 +65,10 @@ public class MaterialCriteria implements Serializable, Criteria {
 
     private ABCClassificationFilter abcClassification;
 
+    private IntegerFilter plant;
+
+    private StringFilter mrpController;
+
     private FloatFilter avgSupplierDelay;
 
     private FloatFilter maxSupplierDelay;
@@ -94,17 +97,29 @@ public class MaterialCriteria implements Serializable, Criteria {
 
     private FloatFilter avgInventoryEffectAfterChange;
 
+    private BooleanFilter flagMaterial;
+
+    private LocalDateFilter flagExpirationDate;
+
+    private StringFilter comment;
+
     private IntegerFilter newSAPSafetyStock;
 
     private IntegerFilter newSAPSafetyTime;
 
-    private BooleanFilter flagMaterial;
+    private LocalDateFilter dateNewSS;
 
-    private StringFilter comment;
+    private LocalDateFilter datNewST;
 
-    private StringFilter plant;
+    private IntegerFilter previousSS;
 
-    private StringFilter mrpController;
+    private IntegerFilter previousST;
+
+    private LocalDateFilter datePreviousSS;
+
+    private LocalDateFilter datePreviousST;
+
+    private BooleanFilter toSaveUpdates;
 
     private CoinFilter currency;
 
@@ -117,6 +132,8 @@ public class MaterialCriteria implements Serializable, Criteria {
         this.material = other.material == null ? null : other.material.copy();
         this.description = other.description == null ? null : other.description.copy();
         this.abcClassification = other.abcClassification == null ? null : other.abcClassification.copy();
+        this.plant = other.plant == null ? null : other.plant.copy();
+        this.mrpController = other.mrpController == null ? null : other.mrpController.copy();
         this.avgSupplierDelay = other.avgSupplierDelay == null ? null : other.avgSupplierDelay.copy();
         this.maxSupplierDelay = other.maxSupplierDelay == null ? null : other.maxSupplierDelay.copy();
         this.serviceLevel = other.serviceLevel == null ? null : other.serviceLevel.copy();
@@ -132,12 +149,18 @@ public class MaterialCriteria implements Serializable, Criteria {
         this.avgDemand = other.avgDemand == null ? null : other.avgDemand.copy();
         this.avgInventoryEffectAfterChange =
             other.avgInventoryEffectAfterChange == null ? null : other.avgInventoryEffectAfterChange.copy();
+        this.flagMaterial = other.flagMaterial == null ? null : other.flagMaterial.copy();
+        this.flagExpirationDate = other.flagExpirationDate == null ? null : other.flagExpirationDate.copy();
+        this.comment = other.comment == null ? null : other.comment.copy();
         this.newSAPSafetyStock = other.newSAPSafetyStock == null ? null : other.newSAPSafetyStock.copy();
         this.newSAPSafetyTime = other.newSAPSafetyTime == null ? null : other.newSAPSafetyTime.copy();
-        this.flagMaterial = other.flagMaterial == null ? null : other.flagMaterial.copy();
-        this.comment = other.comment == null ? null : other.comment.copy();
-        this.plant = other.plant == null ? null : other.plant.copy();
-        this.mrpController = other.mrpController == null ? null : other.mrpController.copy();
+        this.dateNewSS = other.dateNewSS == null ? null : other.dateNewSS.copy();
+        this.datNewST = other.datNewST == null ? null : other.datNewST.copy();
+        this.previousSS = other.previousSS == null ? null : other.previousSS.copy();
+        this.previousST = other.previousST == null ? null : other.previousST.copy();
+        this.datePreviousSS = other.datePreviousSS == null ? null : other.datePreviousSS.copy();
+        this.datePreviousST = other.datePreviousST == null ? null : other.datePreviousST.copy();
+        this.toSaveUpdates = other.toSaveUpdates == null ? null : other.toSaveUpdates.copy();
         this.currency = other.currency == null ? null : other.currency.copy();
         this.distinct = other.distinct;
     }
@@ -205,6 +228,36 @@ public class MaterialCriteria implements Serializable, Criteria {
 
     public void setAbcClassification(ABCClassificationFilter abcClassification) {
         this.abcClassification = abcClassification;
+    }
+
+    public IntegerFilter getPlant() {
+        return plant;
+    }
+
+    public IntegerFilter plant() {
+        if (plant == null) {
+            plant = new IntegerFilter();
+        }
+        return plant;
+    }
+
+    public void setPlant(IntegerFilter plant) {
+        this.plant = plant;
+    }
+
+    public StringFilter getMrpController() {
+        return mrpController;
+    }
+
+    public StringFilter mrpController() {
+        if (mrpController == null) {
+            mrpController = new StringFilter();
+        }
+        return mrpController;
+    }
+
+    public void setMrpController(StringFilter mrpController) {
+        this.mrpController = mrpController;
     }
 
     public FloatFilter getAvgSupplierDelay() {
@@ -417,6 +470,51 @@ public class MaterialCriteria implements Serializable, Criteria {
         this.avgInventoryEffectAfterChange = avgInventoryEffectAfterChange;
     }
 
+    public BooleanFilter getFlagMaterial() {
+        return flagMaterial;
+    }
+
+    public BooleanFilter flagMaterial() {
+        if (flagMaterial == null) {
+            flagMaterial = new BooleanFilter();
+        }
+        return flagMaterial;
+    }
+
+    public void setFlagMaterial(BooleanFilter flagMaterial) {
+        this.flagMaterial = flagMaterial;
+    }
+
+    public LocalDateFilter getFlagExpirationDate() {
+        return flagExpirationDate;
+    }
+
+    public LocalDateFilter flagExpirationDate() {
+        if (flagExpirationDate == null) {
+            flagExpirationDate = new LocalDateFilter();
+        }
+        return flagExpirationDate;
+    }
+
+    public void setFlagExpirationDate(LocalDateFilter flagExpirationDate) {
+        this.flagExpirationDate = flagExpirationDate;
+    }
+
+    public StringFilter getComment() {
+        return comment;
+    }
+
+    public StringFilter comment() {
+        if (comment == null) {
+            comment = new StringFilter();
+        }
+        return comment;
+    }
+
+    public void setComment(StringFilter comment) {
+        this.comment = comment;
+    }
+
     public IntegerFilter getNewSAPSafetyStock() {
         return newSAPSafetyStock;
     }
@@ -447,64 +545,109 @@ public class MaterialCriteria implements Serializable, Criteria {
         this.newSAPSafetyTime = newSAPSafetyTime;
     }
 
-    public BooleanFilter getFlagMaterial() {
-        return flagMaterial;
+    public LocalDateFilter getDateNewSS() {
+        return dateNewSS;
     }
 
-    public BooleanFilter flagMaterial() {
-        if (flagMaterial == null) {
-            flagMaterial = new BooleanFilter();
+    public LocalDateFilter dateNewSS() {
+        if (dateNewSS == null) {
+            dateNewSS = new LocalDateFilter();
         }
-        return flagMaterial;
+        return dateNewSS;
     }
 
-    public void setFlagMaterial(BooleanFilter flagMaterial) {
-        this.flagMaterial = flagMaterial;
+    public void setDateNewSS(LocalDateFilter dateNewSS) {
+        this.dateNewSS = dateNewSS;
     }
 
-    public StringFilter getComment() {
-        return comment;
+    public LocalDateFilter getDatNewST() {
+        return datNewST;
     }
 
-    public StringFilter comment() {
-        if (comment == null) {
-            comment = new StringFilter();
+    public LocalDateFilter datNewST() {
+        if (datNewST == null) {
+            datNewST = new LocalDateFilter();
         }
-        return comment;
+        return datNewST;
     }
 
-    public void setComment(StringFilter comment) {
-        this.comment = comment;
+    public void setDatNewST(LocalDateFilter datNewST) {
+        this.datNewST = datNewST;
     }
 
-    public StringFilter getPlant() {
-        return plant;
+    public IntegerFilter getPreviousSS() {
+        return previousSS;
     }
 
-    public StringFilter plant() {
-        if (plant == null) {
-            plant = new StringFilter();
+    public IntegerFilter previousSS() {
+        if (previousSS == null) {
+            previousSS = new IntegerFilter();
         }
-        return plant;
+        return previousSS;
     }
 
-    public void setPlant(StringFilter plant) {
-        this.plant = plant;
+    public void setPreviousSS(IntegerFilter previousSS) {
+        this.previousSS = previousSS;
     }
 
-    public StringFilter getMRPcontroller() {
-        return mrpController;
+    public IntegerFilter getPreviousST() {
+        return previousST;
     }
 
-    public StringFilter mrpController() {
-        if (mrpController == null) {
-            mrpController = new StringFilter();
+    public IntegerFilter previousST() {
+        if (previousST == null) {
+            previousST = new IntegerFilter();
         }
-        return mrpController;
+        return previousST;
     }
 
-    public void setMrpController(StringFilter mrpController) {
-        this.mrpController = mrpController;
+    public void setPreviousST(IntegerFilter previousST) {
+        this.previousST = previousST;
+    }
+
+    public LocalDateFilter getDatePreviousSS() {
+        return datePreviousSS;
+    }
+
+    public LocalDateFilter datePreviousSS() {
+        if (datePreviousSS == null) {
+            datePreviousSS = new LocalDateFilter();
+        }
+        return datePreviousSS;
+    }
+
+    public void setDatePreviousSS(LocalDateFilter datePreviousSS) {
+        this.datePreviousSS = datePreviousSS;
+    }
+
+    public LocalDateFilter getDatePreviousST() {
+        return datePreviousST;
+    }
+
+    public LocalDateFilter datePreviousST() {
+        if (datePreviousST == null) {
+            datePreviousST = new LocalDateFilter();
+        }
+        return datePreviousST;
+    }
+
+    public void setDatePreviousST(LocalDateFilter datePreviousST) {
+        this.datePreviousST = datePreviousST;
+    }
+
+    public BooleanFilter getToSaveUpdates() {
+        return toSaveUpdates;
+    }
+
+    public BooleanFilter toSaveUpdates() {
+        if (toSaveUpdates == null) {
+            toSaveUpdates = new BooleanFilter();
+        }
+        return toSaveUpdates;
+    }
+
+    public void setToSaveUpdates(BooleanFilter toSaveUpdates) {
+        this.toSaveUpdates = toSaveUpdates;
     }
 
     public CoinFilter getCurrency() {
@@ -544,6 +687,8 @@ public class MaterialCriteria implements Serializable, Criteria {
             Objects.equals(material, that.material) &&
             Objects.equals(description, that.description) &&
             Objects.equals(abcClassification, that.abcClassification) &&
+            Objects.equals(plant, that.plant) &&
+            Objects.equals(mrpController, that.mrpController) &&
             Objects.equals(avgSupplierDelay, that.avgSupplierDelay) &&
             Objects.equals(maxSupplierDelay, that.maxSupplierDelay) &&
             Objects.equals(serviceLevel, that.serviceLevel) &&
@@ -558,12 +703,18 @@ public class MaterialCriteria implements Serializable, Criteria {
             Objects.equals(unitCost, that.unitCost) &&
             Objects.equals(avgDemand, that.avgDemand) &&
             Objects.equals(avgInventoryEffectAfterChange, that.avgInventoryEffectAfterChange) &&
+            Objects.equals(flagMaterial, that.flagMaterial) &&
+            Objects.equals(flagExpirationDate, that.flagExpirationDate) &&
+            Objects.equals(comment, that.comment) &&
             Objects.equals(newSAPSafetyStock, that.newSAPSafetyStock) &&
             Objects.equals(newSAPSafetyTime, that.newSAPSafetyTime) &&
-            Objects.equals(flagMaterial, that.flagMaterial) &&
-            Objects.equals(comment, that.comment) &&
-            Objects.equals(plant, that.plant) &&
-            Objects.equals(mrpController, that.mrpController) &&
+            Objects.equals(dateNewSS, that.dateNewSS) &&
+            Objects.equals(datNewST, that.datNewST) &&
+            Objects.equals(previousSS, that.previousSS) &&
+            Objects.equals(previousST, that.previousST) &&
+            Objects.equals(datePreviousSS, that.datePreviousSS) &&
+            Objects.equals(datePreviousST, that.datePreviousST) &&
+            Objects.equals(toSaveUpdates, that.toSaveUpdates) &&
             Objects.equals(currency, that.currency) &&
             Objects.equals(distinct, that.distinct)
         );
@@ -576,6 +727,8 @@ public class MaterialCriteria implements Serializable, Criteria {
             material,
             description,
             abcClassification,
+            plant,
+            mrpController,
             avgSupplierDelay,
             maxSupplierDelay,
             serviceLevel,
@@ -590,12 +743,18 @@ public class MaterialCriteria implements Serializable, Criteria {
             unitCost,
             avgDemand,
             avgInventoryEffectAfterChange,
+            flagMaterial,
+            flagExpirationDate,
+            comment,
             newSAPSafetyStock,
             newSAPSafetyTime,
-            flagMaterial,
-            comment,
-            plant,
-            mrpController,
+            dateNewSS,
+            datNewST,
+            previousSS,
+            previousST,
+            datePreviousSS,
+            datePreviousST,
+            toSaveUpdates,
             currency,
             distinct
         );
@@ -609,6 +768,8 @@ public class MaterialCriteria implements Serializable, Criteria {
             (material != null ? "material=" + material + ", " : "") +
             (description != null ? "description=" + description + ", " : "") +
             (abcClassification != null ? "abcClassification=" + abcClassification + ", " : "") +
+            (plant != null ? "plant=" + plant + ", " : "") +
+            (mrpController != null ? "mrpController=" + mrpController + ", " : "") +
             (avgSupplierDelay != null ? "avgSupplierDelay=" + avgSupplierDelay + ", " : "") +
             (maxSupplierDelay != null ? "maxSupplierDelay=" + maxSupplierDelay + ", " : "") +
             (serviceLevel != null ? "serviceLevel=" + serviceLevel + ", " : "") +
@@ -623,12 +784,18 @@ public class MaterialCriteria implements Serializable, Criteria {
             (unitCost != null ? "unitCost=" + unitCost + ", " : "") +
             (avgDemand != null ? "avgDemand=" + avgDemand + ", " : "") +
             (avgInventoryEffectAfterChange != null ? "avgInventoryEffectAfterChange=" + avgInventoryEffectAfterChange + ", " : "") +
+            (flagMaterial != null ? "flagMaterial=" + flagMaterial + ", " : "") +
+            (flagExpirationDate != null ? "flagExpirationDate=" + flagExpirationDate + ", " : "") +
+            (comment != null ? "comment=" + comment + ", " : "") +
             (newSAPSafetyStock != null ? "newSAPSafetyStock=" + newSAPSafetyStock + ", " : "") +
             (newSAPSafetyTime != null ? "newSAPSafetyTime=" + newSAPSafetyTime + ", " : "") +
-            (flagMaterial != null ? "flagMaterial=" + flagMaterial + ", " : "") +
-            (comment != null ? "comment=" + comment + ", " : "") +
-            (plant != null ? "plant=" + plant + ", " : "") +
-            (mrpController != null ? "mrpController=" + mrpController + ", " : "") +
+            (dateNewSS != null ? "dateNewSS=" + dateNewSS + ", " : "") +
+            (datNewST != null ? "datNewST=" + datNewST + ", " : "") +
+            (previousSS != null ? "previousSS=" + previousSS + ", " : "") +
+            (previousST != null ? "previousST=" + previousST + ", " : "") +
+            (datePreviousSS != null ? "datePreviousSS=" + datePreviousSS + ", " : "") +
+            (datePreviousST != null ? "datePreviousST=" + datePreviousST + ", " : "") +
+            (toSaveUpdates != null ? "toSaveUpdates=" + toSaveUpdates + ", " : "") +
             (currency != null ? "currency=" + currency + ", " : "") +
             (distinct != null ? "distinct=" + distinct + ", " : "") +
             "}";

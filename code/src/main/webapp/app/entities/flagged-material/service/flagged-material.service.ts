@@ -12,10 +12,8 @@ import { IFlaggedMaterial, NewFlaggedMaterial } from '../flagged-material.model'
 
 export type PartialUpdateFlaggedMaterial = Partial<IFlaggedMaterial> & Pick<IFlaggedMaterial, 'id'>;
 
-type RestOf<T extends IFlaggedMaterial | NewFlaggedMaterial> = Omit<T, 'flagExpirationDate' | 'dateOfUpdatedSS' | 'dateOfUpdatedST'> & {
+type RestOf<T extends IFlaggedMaterial | NewFlaggedMaterial> = Omit<T, 'flagExpirationDate'> & {
   flagExpirationDate?: string | null;
-  dateOfUpdatedSS?: string | null;
-  dateOfUpdatedST?: string | null;
 };
 
 export type RestFlaggedMaterial = RestOf<IFlaggedMaterial>;
@@ -45,18 +43,6 @@ export class FlaggedMaterialService {
     return this.http
       .put<RestFlaggedMaterial>(`${this.resourceUrl}/${this.getFlaggedMaterialIdentifier(flaggedMaterial)}`, copy, { observe: 'response' })
       .pipe(map(res => this.convertResponseFromServer(res)));
-  }
-
-  updateFlagged(flaggedMaterial: IFlaggedMaterial): Observable<EntityResponseType> {
-    const data = [{
-      material: flaggedMaterial.material,
-      dateFlag: flaggedMaterial.flagExpirationDate?.format("YYYY-MM-DD"),
-      flag: flaggedMaterial.flagMaterial
-    }]
-
-    return this.http
-    .post<RestFlaggedMaterial>(`${this.resourceUrl}/update-flag`, data, { observe: 'response' })
-    .pipe(map(res => this.convertResponseFromServer(res)))
   }
 
   partialUpdate(flaggedMaterial: PartialUpdateFlaggedMaterial): Observable<EntityResponseType> {
@@ -121,8 +107,6 @@ export class FlaggedMaterialService {
     return {
       ...flaggedMaterial,
       flagExpirationDate: flaggedMaterial.flagExpirationDate?.format(DATE_FORMAT) ?? null,
-      dateOfUpdatedSS: flaggedMaterial.dateOfUpdatedSS?.format(DATE_FORMAT) ?? null,
-      dateOfUpdatedST: flaggedMaterial.dateOfUpdatedST?.format(DATE_FORMAT) ?? null,
     };
   }
 
@@ -130,8 +114,6 @@ export class FlaggedMaterialService {
     return {
       ...restFlaggedMaterial,
       flagExpirationDate: restFlaggedMaterial.flagExpirationDate ? dayjs(restFlaggedMaterial.flagExpirationDate) : undefined,
-      dateOfUpdatedSS: restFlaggedMaterial.dateOfUpdatedSS ? dayjs(restFlaggedMaterial.dateOfUpdatedSS) : undefined,
-      dateOfUpdatedST: restFlaggedMaterial.dateOfUpdatedST ? dayjs(restFlaggedMaterial.dateOfUpdatedST) : undefined,
     };
   }
 

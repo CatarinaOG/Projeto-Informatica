@@ -1,11 +1,21 @@
 <div>
   <h2 id="page-heading" data-cy="FlaggedMaterialHeading">
-    <span>Special Cases</span>
+    <span>Flagged Materials</span>
 
     <div class="d-flex justify-content-end">
       <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
         <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
         <span>Refresh list</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-flagged-material"
+        [routerLink]="['/flagged-material/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span> Create a new Flagged Material </span>
       </button>
     </div>
   </h2>
@@ -14,87 +24,127 @@
 
   <jhi-alert></jhi-alert>
 
+  <jhi-filter [filters]="filters"></jhi-filter>
+
   <div class="alert alert-warning" id="no-result" *ngIf="flaggedMaterials?.length === 0">
     <span>No Flagged Materials found</span>
   </div>
 
   <div class="table-responsive table-entities" id="entities" *ngIf="flaggedMaterials && flaggedMaterials.length > 0">
     <table class="table table-striped" aria-describedby="page-heading">
-      <thead class="navbar-dark">
-
-        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()" class="headerRow2">
-
-          <th scope="col" jhiSortBy="material" class ="materialInfo headerRowStart">
-            <div class="d-flex" style="place-content: center;">
+      <thead>
+        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
+          <th scope="col" jhiSortBy="id">
+            <div class="d-flex">
+              <span>ID</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="material">
+            <div class="d-flex">
               <span>Material</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          
-          <th scope="col" jhiSortBy="description" class ="materialInfo headerAlign">
-            <div class="d-flex" style="place-content: center;">
-              <span> Material Description</span>
+          <th scope="col" jhiSortBy="description">
+            <div class="d-flex">
+              <span>Description</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-
-          <th scope="col" jhiSortBy="abcClassification" class ="materialInfo headerAlign">
-            <div class="d-flex" style="place-content: center;">
-              <span>ABC Classification</span>
+          <th scope="col" jhiSortBy="abcClassification">
+            <div class="d-flex">
+              <span>Abc Classification</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-
-          <th scope="col" jhiSortBy="plant" class ="materialInfo headerAlign">
-            <div class="d-flex" style="place-content: center;">
+          <th scope="col" jhiSortBy="plant">
+            <div class="d-flex">
               <span>Plant</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-
-          <th scope="col" jhiSortBy="mrpController" class ="materialInfo headerRowEnd headerAlign">
-            <div class="d-flex" style="place-content: center;">
-              <span>MRP Controller</span>
+          <th scope="col" jhiSortBy="mrpController">
+            <div class="d-flex">
+              <span>Mrp Controller</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-
-          
-          <th scope="col" jhiSortBy="flagMaterial" class="edit headerAlign">
-            <div class="d-flex" style="place-content: center;">
-              <span>Flag Status</span>
+          <th scope="col" jhiSortBy="flagMaterial">
+            <div class="d-flex">
+              <span>Flag Material</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-
-          <th scope="col" jhiSortBy="flagMaterial" class="edit headerAlign">
-            <div class="d-flex" style="place-content: center;">
-              <span>Edit</span>
+          <th scope="col" jhiSortBy="flagExpirationDate">
+            <div class="d-flex">
+              <span>Flag Expiration Date</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-         
+          <th scope="col"></th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let flaggedMaterial of flaggedMaterials; trackBy: trackId" data-cy="entityTable">
-          <td class ="materialInfo" >{{ flaggedMaterial.material }}</td>
-          <td class ="materialInfo" >{{ flaggedMaterial.description }}</td>
-          <td class ="materialInfo" >{{ flaggedMaterial.abcClassification }}</td>
-          <td class ="materialInfo" >{{ flaggedMaterial.plant }}</td>
-          <td class ="materialInfo headerRowEnd" >{{ flaggedMaterial.mrpController }}</td>
-          <td class ="edit">
-            <fa-icon class="p-1" icon="flag"  [ngStyle]="{'color': flaggedMaterial.flagMaterial  ? '#ff0000' : '#999999'}"></fa-icon>
-
+          <td>
+            <a [routerLink]="['/flagged-material', flaggedMaterial.id, 'view']">{{ flaggedMaterial.id }}</a>
           </td>
-          <td> <button
-            type="submit"
-            [routerLink]="['/flagged-material', flaggedMaterial.id, 'edit']"
-            class="buttonNoBorder"
-            data-cy="entityEditButton">
-            <fa-icon icon="pencil-alt"></fa-icon>
-          </button>
-        </td>
+          <td>{{ flaggedMaterial.material }}</td>
+          <td>{{ flaggedMaterial.description }}</td>
+          <td>{{ flaggedMaterial.abcClassification }}</td>
+          <td>{{ flaggedMaterial.plant }}</td>
+          <td>{{ flaggedMaterial.mrpController }}</td>
+          <td>{{ flaggedMaterial.flagMaterial }}</td>
+          <td>{{ flaggedMaterial.flagExpirationDate | formatMediumDate }}</td>
+          <td class="text-end">
+            <div class="btn-group">
+              <button
+                type="submit"
+                [routerLink]="['/flagged-material', flaggedMaterial.id, 'view']"
+                class="btn btn-info btn-sm"
+                data-cy="entityDetailsButton"
+              >
+                <fa-icon icon="eye"></fa-icon>
+                <span class="d-none d-md-inline">View</span>
+              </button>
+
+              <button
+                type="submit"
+                [routerLink]="['/flagged-material', flaggedMaterial.id, 'edit']"
+                class="btn btn-primary btn-sm"
+                data-cy="entityEditButton"
+              >
+                <fa-icon icon="pencil-alt"></fa-icon>
+                <span class="d-none d-md-inline">Edit</span>
+              </button>
+
+              <button type="submit" (click)="delete(flaggedMaterial)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                <fa-icon icon="times"></fa-icon>
+                <span class="d-none d-md-inline">Delete</span>
+              </button>
+            </div>
+          </td>
         </tr>
       </tbody>
     </table>
+  </div>
+
+  <div *ngIf="flaggedMaterials && flaggedMaterials.length > 0">
+    <div class="d-flex justify-content-center">
+      <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+    </div>
+
+    <div class="d-flex justify-content-center">
+      <ngb-pagination
+        [collectionSize]="totalItems"
+        [page]="page"
+        [pageSize]="itemsPerPage"
+        [maxSize]="5"
+        [rotate]="true"
+        [boundaryLinks]="true"
+        (pageChange)="navigateToPage($event)"
+      ></ngb-pagination>
+    </div>
   </div>
 </div>

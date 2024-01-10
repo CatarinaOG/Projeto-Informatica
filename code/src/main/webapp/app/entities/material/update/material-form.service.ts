@@ -21,11 +21,11 @@ type MaterialFormGroupContent = {
   material: FormControl<IMaterial['material']>;
   description: FormControl<IMaterial['description']>;
   abcClassification: FormControl<IMaterial['abcClassification']>;
+  plant: FormControl<IMaterial['plant']>;
+  mrpController: FormControl<IMaterial['mrpController']>;
   avgSupplierDelay: FormControl<IMaterial['avgSupplierDelay']>;
   maxSupplierDelay: FormControl<IMaterial['maxSupplierDelay']>;
   serviceLevel: FormControl<IMaterial['serviceLevel']>;
-  plant: FormControl<IMaterial['plant']>;
-  mrpController: FormControl<IMaterial['mrpController']>;
   currSAPSafetyStock: FormControl<IMaterial['currSAPSafetyStock']>;
   proposedSST: FormControl<IMaterial['proposedSST']>;
   deltaSST: FormControl<IMaterial['deltaSST']>;
@@ -42,10 +42,12 @@ type MaterialFormGroupContent = {
   comment: FormControl<IMaterial['comment']>;
   newSAPSafetyStock: FormControl<IMaterial['newSAPSafetyStock']>;
   newSAPSafetyTime: FormControl<IMaterial['newSAPSafetyTime']>;
-  valueOfUpdatedSS: FormControl<IMaterial['valueOfUpdatedSS']>;
-  valueOfUpdatedST: FormControl<IMaterial['valueOfUpdatedST']>;
-  dateOfUpdatedSS: FormControl<IMaterial['dateOfUpdatedSS']>;
-  dateOfUpdatedST: FormControl<IMaterial['dateOfUpdatedST']>;
+  dateNewSS: FormControl<IMaterial['dateNewSS']>;
+  datNewST: FormControl<IMaterial['datNewST']>;
+  previousSS: FormControl<IMaterial['previousSS']>;
+  previousST: FormControl<IMaterial['previousST']>;
+  datePreviousSS: FormControl<IMaterial['datePreviousSS']>;
+  datePreviousST: FormControl<IMaterial['datePreviousST']>;
   toSaveUpdates: FormControl<IMaterial['toSaveUpdates']>;
   currency: FormControl<IMaterial['currency']>;
 };
@@ -70,11 +72,11 @@ export class MaterialFormService {
       material: new FormControl(materialRawValue.material),
       description: new FormControl(materialRawValue.description),
       abcClassification: new FormControl(materialRawValue.abcClassification),
+      plant: new FormControl(materialRawValue.plant),
+      mrpController: new FormControl(materialRawValue.mrpController),
       avgSupplierDelay: new FormControl(materialRawValue.avgSupplierDelay),
       maxSupplierDelay: new FormControl(materialRawValue.maxSupplierDelay),
       serviceLevel: new FormControl(materialRawValue.serviceLevel),
-      plant: new FormControl(materialRawValue.plant),
-      mrpController: new FormControl(materialRawValue.mrpController),
       currSAPSafetyStock: new FormControl(materialRawValue.currSAPSafetyStock),
       proposedSST: new FormControl(materialRawValue.proposedSST),
       deltaSST: new FormControl(materialRawValue.deltaSST),
@@ -91,10 +93,12 @@ export class MaterialFormService {
       comment: new FormControl(materialRawValue.comment),
       newSAPSafetyStock: new FormControl(materialRawValue.newSAPSafetyStock),
       newSAPSafetyTime: new FormControl(materialRawValue.newSAPSafetyTime),
-      valueOfUpdatedSS: new FormControl(materialRawValue.valueOfUpdatedSS),
-      valueOfUpdatedST: new FormControl(materialRawValue.valueOfUpdatedST),
-      dateOfUpdatedSS: new FormControl(materialRawValue.dateOfUpdatedSS),
-      dateOfUpdatedST: new FormControl(materialRawValue.dateOfUpdatedST),
+      dateNewSS: new FormControl(materialRawValue.dateNewSS),
+      datNewST: new FormControl(materialRawValue.datNewST),
+      previousSS: new FormControl(materialRawValue.previousSS),
+      previousST: new FormControl(materialRawValue.previousST),
+      datePreviousSS: new FormControl(materialRawValue.datePreviousSS),
+      datePreviousST: new FormControl(materialRawValue.datePreviousST),
       toSaveUpdates: new FormControl(materialRawValue.toSaveUpdates),
       currency: new FormControl(materialRawValue.currency),
     });

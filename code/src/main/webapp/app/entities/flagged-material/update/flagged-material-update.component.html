@@ -1,11 +1,63 @@
 <div class="d-flex justify-content-center">
   <div class="col-8">
-    <form name="editForm" role="form" novalidate (ngSubmit)="save(content)" [formGroup]="editForm">
-      <h2 id="jhi-flagged-material-heading" data-cy="FlaggedMaterialCreateUpdateHeading">Edit a Flagged Material</h2>
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-flagged-material-heading" data-cy="FlaggedMaterialCreateUpdateHeading">Create or edit a Flagged Material</h2>
 
-      <div style="display: flex; justify-content: center; gap: 50px; margin-top: 50px; margin-bottom: 50px;">
+      <div>
         <jhi-alert-error></jhi-alert-error>
 
+        <div class="row mb-3" *ngIf="editForm.controls.id.value !== null">
+          <label class="form-label" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_material">Material</label>
+          <input type="text" class="form-control" name="material" id="field_material" data-cy="material" formControlName="material" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_description">Description</label>
+          <input
+            type="text"
+            class="form-control"
+            name="description"
+            id="field_description"
+            data-cy="description"
+            formControlName="description"
+          />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_abcClassification">Abc Classification</label>
+          <select
+            class="form-control"
+            name="abcClassification"
+            formControlName="abcClassification"
+            id="field_abcClassification"
+            data-cy="abcClassification"
+          >
+            <option [ngValue]="null"></option>
+            <option *ngFor="let aBCClassification of aBCClassificationValues" [value]="aBCClassification">aBCClassification</option>
+          </select>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_plant">Plant</label>
+          <input type="number" class="form-control" name="plant" id="field_plant" data-cy="plant" formControlName="plant" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_mrpController">Mrp Controller</label>
+          <input
+            type="text"
+            class="form-control"
+            name="mrpController"
+            id="field_mrpController"
+            data-cy="mrpController"
+            formControlName="mrpController"
+          />
+        </div>
 
         <div class="row mb-3">
           <label class="form-label" for="field_flagMaterial">Flag Material</label>
@@ -19,7 +71,7 @@
           />
         </div>
 
-        <div class="row mb-3" [ngClass] = "inputHideShow()">
+        <div class="row mb-3">
           <label class="form-label" for="field_flagExpirationDate">Flag Expiration Date</label>
           <div class="input-group">
             <input
@@ -31,17 +83,12 @@
               ngbDatepicker
               #flagExpirationDateDp="ngbDatepicker"
               formControlName="flagExpirationDate"
-              [minDate]="minDate" 
             />
             <button type="button" class="btn btn-secondary" (click)="flagExpirationDateDp.toggle()">
               <fa-icon icon="calendar-alt"></fa-icon>
             </button>
           </div>
-
-          <span *ngIf="flagError" style="color: red;">Flag expiration date must be chosen</span>
         </div>
-
-
       </div>
 
       <div>
@@ -53,38 +100,12 @@
           type="submit"
           id="save-entity"
           data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
           class="btn btn-primary"
-          [disabled]="buttonStatus"
         >
           <fa-icon icon="save"></fa-icon>&nbsp;<span>Save</span>
         </button>
       </div>
     </form>
   </div>
-
-
-
-
-  <ng-template #content let-modal>
-    <div class="modal-header">
-      <h3 class="modal-title" id="modal-basic-title">Before you save ...</h3>
-      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
-    </div>
-    <div class="modal-body">
-      <h5>
-        If you confirm, the special case will be 
-        <span style="color: red;font-weight: 900;">deleted </span> 
-      </h5>
-      <h6>Are you sure?</h6>
-    </div>
-
-    <div class="modal-footer submitModalBtns">
-      <button type="button" class="btn btn-info" (click)="modal.close('Back')">Back</button>
-      <button type="button" class="btn btn-outline-dark" (click)="modal.close('Proceed')">
-        Proceed
-      </button>
-    </div>
-  </ng-template>
-
-
 </div>

@@ -4,8 +4,6 @@ import com.bosch.diabo.domain.enumeration.ABCClassification;
 import com.bosch.diabo.domain.enumeration.Coin;
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-
 import javax.persistence.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -37,6 +35,12 @@ public class Material implements Serializable {
     @Column(name = "abc_classification")
     private ABCClassification abcClassification;
 
+    @Column(name = "plant")
+    private Integer plant;
+
+    @Column(name = "mrp_controller")
+    private String mrpController;
+
     @Column(name = "avg_supplier_delay")
     private Float avgSupplierDelay;
 
@@ -45,12 +49,6 @@ public class Material implements Serializable {
 
     @Column(name = "service_level")
     private Float serviceLevel;
-
-    @Column(name = "plant")
-    private String plant;
-
-    @Column(name = "mrp_controller")
-    private String mrpController;
 
     @Column(name = "curr_sap_safety_stock")
     private Integer currSAPSafetyStock;
@@ -100,17 +98,23 @@ public class Material implements Serializable {
     @Column(name = "new_sap_safety_time")
     private Integer newSAPSafetyTime;
 
-    @Column(name = "value_of_updated_ss")
-    private Integer valueOfUpdatedSS;
+    @Column(name = "date_new_ss")
+    private LocalDate dateNewSS;
 
-    @Column(name = "value_of_updated_st")
-    private Integer valueOfUpdatedST;
+    @Column(name = "dat_new_st")
+    private LocalDate datNewST;
 
-    @Column(name = "date_of_updated_ss")
-    private LocalDate dateOfUpdatedSS;
+    @Column(name = "previous_ss")
+    private Integer previousSS;
 
-    @Column(name = "date_of_updated_st")
-    private LocalDate dateOfUpdatedST;
+    @Column(name = "previous_st")
+    private Integer previousST;
+
+    @Column(name = "date_previous_ss")
+    private LocalDate datePreviousSS;
+
+    @Column(name = "date_previous_st")
+    private LocalDate datePreviousST;
 
     @Column(name = "to_save_updates")
     private Boolean toSaveUpdates;
@@ -173,6 +177,32 @@ public class Material implements Serializable {
         this.abcClassification = abcClassification;
     }
 
+    public Integer getPlant() {
+        return this.plant;
+    }
+
+    public Material plant(Integer plant) {
+        this.setPlant(plant);
+        return this;
+    }
+
+    public void setPlant(Integer plant) {
+        this.plant = plant;
+    }
+
+    public String getMrpController() {
+        return this.mrpController;
+    }
+
+    public Material mrpController(String mrpController) {
+        this.setMrpController(mrpController);
+        return this;
+    }
+
+    public void setMrpController(String mrpController) {
+        this.mrpController = mrpController;
+    }
+
     public Float getAvgSupplierDelay() {
         return this.avgSupplierDelay;
     }
@@ -210,32 +240,6 @@ public class Material implements Serializable {
 
     public void setServiceLevel(Float serviceLevel) {
         this.serviceLevel = serviceLevel;
-    }
-
-    public String getPlant() {
-        return this.plant;
-    }
-
-    public Material plant(String plant) {
-        this.setPlant(plant);
-        return this;
-    }
-
-    public void setPlant(String plant) {
-        this.plant = plant;
-    }
-
-    public String getMrpController() {
-        return this.mrpController;
-    }
-
-    public Material mrpController(String mrpController) {
-        this.setMrpController(mrpController);
-        return this;
-    }
-
-    public void setMrpController(String mrpController) {
-        this.mrpController = mrpController;
     }
 
     public Integer getCurrSAPSafetyStock() {
@@ -398,13 +402,6 @@ public class Material implements Serializable {
         return this.flagExpirationDate;
     }
 
-    public String getFlagExpirationDateString() {
-        if (this.flagExpirationDate != null)
-            return this.flagExpirationDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-        else
-            return null;
-    }
-
     public Material flagExpirationDate(LocalDate flagExpirationDate) {
         this.setFlagExpirationDate(flagExpirationDate);
         return this;
@@ -453,56 +450,82 @@ public class Material implements Serializable {
         this.newSAPSafetyTime = newSAPSafetyTime;
     }
 
-    public Integer getValueOfUpdatedSS() {
-        return this.valueOfUpdatedSS;
+    public LocalDate getDateNewSS() {
+        return this.dateNewSS;
     }
 
-    public Material valueOfUpdatedSS(Integer valueOfUpdatedSS) {
-        this.setValueOfUpdatedSS(valueOfUpdatedSS);
+    public Material dateNewSS(LocalDate dateNewSS) {
+        this.setDateNewSS(dateNewSS);
         return this;
     }
 
-    public void setValueOfUpdatedSS(Integer valueOfUpdatedSS) {
-        this.valueOfUpdatedSS = valueOfUpdatedSS;
+    public void setDateNewSS(LocalDate dateNewSS) {
+        this.dateNewSS = dateNewSS;
     }
 
-    public Integer getValueOfUpdatedST() {
-        return this.valueOfUpdatedST;
+    public LocalDate getDatNewST() {
+        return this.datNewST;
     }
 
-    public Material valueOfUpdatedST(Integer valueOfUpdatedST) {
-        this.setValueOfUpdatedST(valueOfUpdatedST);
+    public Material datNewST(LocalDate datNewST) {
+        this.setDatNewST(datNewST);
         return this;
     }
 
-    public void setValueOfUpdatedST(Integer valueOfUpdatedST) {
-        this.valueOfUpdatedST = valueOfUpdatedST;
+    public void setDatNewST(LocalDate datNewST) {
+        this.datNewST = datNewST;
     }
 
-    public LocalDate getDateOfUpdatedSS() {
-        return this.dateOfUpdatedSS;
+    public Integer getPreviousSS() {
+        return this.previousSS;
     }
 
-    public Material dateOfUpdatedSS(LocalDate dateOfUpdatedSS) {
-        this.setDateOfUpdatedSS(dateOfUpdatedSS);
+    public Material previousSS(Integer previousSS) {
+        this.setPreviousSS(previousSS);
         return this;
     }
 
-    public void setDateOfUpdatedSS(LocalDate dateOfUpdatedSS) {
-        this.dateOfUpdatedSS = dateOfUpdatedSS;
+    public void setPreviousSS(Integer previousSS) {
+        this.previousSS = previousSS;
     }
 
-    public LocalDate getDateOfUpdatedST() {
-        return this.dateOfUpdatedST;
+    public Integer getPreviousST() {
+        return this.previousST;
     }
 
-    public Material dateOfUpdatedST(LocalDate dateOfUpdatedST) {
-        this.setDateOfUpdatedST(dateOfUpdatedST);
+    public Material previousST(Integer previousST) {
+        this.setPreviousST(previousST);
         return this;
     }
 
-    public void setDateOfUpdatedST(LocalDate dateOfUpdatedST) {
-        this.dateOfUpdatedST = dateOfUpdatedST;
+    public void setPreviousST(Integer previousST) {
+        this.previousST = previousST;
+    }
+
+    public LocalDate getDatePreviousSS() {
+        return this.datePreviousSS;
+    }
+
+    public Material datePreviousSS(LocalDate datePreviousSS) {
+        this.setDatePreviousSS(datePreviousSS);
+        return this;
+    }
+
+    public void setDatePreviousSS(LocalDate datePreviousSS) {
+        this.datePreviousSS = datePreviousSS;
+    }
+
+    public LocalDate getDatePreviousST() {
+        return this.datePreviousST;
+    }
+
+    public Material datePreviousST(LocalDate datePreviousST) {
+        this.setDatePreviousST(datePreviousST);
+        return this;
+    }
+
+    public void setDatePreviousST(LocalDate datePreviousST) {
+        this.datePreviousST = datePreviousST;
     }
 
     public Boolean getToSaveUpdates() {
@@ -558,11 +581,11 @@ public class Material implements Serializable {
             ", material='" + getMaterial() + "'" +
             ", description='" + getDescription() + "'" +
             ", abcClassification='" + getAbcClassification() + "'" +
+            ", plant=" + getPlant() +
+            ", mrpController='" + getMrpController() + "'" +
             ", avgSupplierDelay=" + getAvgSupplierDelay() +
             ", maxSupplierDelay=" + getMaxSupplierDelay() +
             ", serviceLevel=" + getServiceLevel() +
-            ", plant='" + getPlant() + "'" +
-            ", mrpController='" + getMrpController() + "'" +
             ", currSAPSafetyStock=" + getCurrSAPSafetyStock() +
             ", proposedSST=" + getProposedSST() +
             ", deltaSST=" + getDeltaSST() +
@@ -579,10 +602,12 @@ public class Material implements Serializable {
             ", comment='" + getComment() + "'" +
             ", newSAPSafetyStock=" + getNewSAPSafetyStock() +
             ", newSAPSafetyTime=" + getNewSAPSafetyTime() +
-            ", valueOfUpdatedSS=" + getValueOfUpdatedSS() +
-            ", valueOfUpdatedST=" + getValueOfUpdatedST() +
-            ", dateOfUpdatedSS='" + getDateOfUpdatedSS() + "'" +
-            ", dateOfUpdatedST='" + getDateOfUpdatedST() + "'" +
+            ", dateNewSS='" + getDateNewSS() + "'" +
+            ", datNewST='" + getDatNewST() + "'" +
+            ", previousSS=" + getPreviousSS() +
+            ", previousST=" + getPreviousST() +
+            ", datePreviousSS='" + getDatePreviousSS() + "'" +
+            ", datePreviousST='" + getDatePreviousST() + "'" +
             ", toSaveUpdates='" + getToSaveUpdates() + "'" +
             ", currency='" + getCurrency() + "'" +
             "}";

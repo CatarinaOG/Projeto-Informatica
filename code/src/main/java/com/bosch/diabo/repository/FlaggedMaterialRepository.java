@@ -13,6 +13,8 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface FlaggedMaterialRepository extends JpaRepository<FlaggedMaterial, Long>,  JpaSpecificationExecutor<Material> {
+public interface FlaggedMaterialRepository extends JpaRepository<FlaggedMaterial, Long>,  JpaSpecificationExecutor<FlaggedMaterial> {
+        
         Optional<FlaggedMaterial> findByMaterial(String material);
+
 }

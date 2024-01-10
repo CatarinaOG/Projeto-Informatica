@@ -10,8 +10,6 @@ import { FlaggedMaterialService, RestFlaggedMaterial } from './flagged-material.
 const requireRestSample: RestFlaggedMaterial = {
   ...sampleWithRequiredData,
   flagExpirationDate: sampleWithRequiredData.flagExpirationDate?.format(DATE_FORMAT),
-  dateOfUpdatedSS: sampleWithRequiredData.dateOfUpdatedSS?.format(DATE_FORMAT),
-  dateOfUpdatedST: sampleWithRequiredData.dateOfUpdatedST?.format(DATE_FORMAT),
 };
 
 describe('FlaggedMaterial Service', () => {

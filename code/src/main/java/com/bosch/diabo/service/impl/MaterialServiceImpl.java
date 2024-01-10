@@ -419,7 +419,7 @@ public class MaterialServiceImpl implements MaterialService {
         }
 
         if (headerMap.containsKey(file_plant)) {
-            material.setPlant(getStringCellValue(row, headerMap, file_plant));
+            material.setPlant(getIntCellValue(row, headerMap, file_plant));
         }
 
         if (headerMap.containsKey(file_comment)) {
@@ -543,7 +543,7 @@ public class MaterialServiceImpl implements MaterialService {
         }
 
         if(getIndex(header, file_plant) >= 0){
-            material.setPlant(nextRecord[getIndex(header, file_plant)]);
+            material.setPlant(Integer.parseInt(nextRecord[getIndex(header, file_plant)]));
         }
 
         if(getIndex(header, file_comment) >= 0){
@@ -626,7 +626,7 @@ public class MaterialServiceImpl implements MaterialService {
         }
 
         if(getIndexOBJ(header, file_plant) >= 0){
-            material.setPlant(row[getIndexOBJ(header, file_plant)].toString());
+            material.setPlant((int) Float.parseFloat(row[getIndexOBJ(header, file_plant)].toString()));
         }
 
         if(getIndexOBJ(header, file_comment) >= 0){
@@ -706,13 +706,13 @@ public class MaterialServiceImpl implements MaterialService {
             LocalDate currentDate = LocalDate.now();
 
             if(existingMaterial.getNewSAPSafetyStock() != newSST){
-                existingMaterial.setDateOfUpdatedSS(currentDate);
-                existingMaterial.setValueOfUpdatedSS(existingMaterial.getNewSAPSafetyStock());
+                existingMaterial.setDatePreviousSS(currentDate);
+                existingMaterial.setPreviousSS(existingMaterial.getNewSAPSafetyStock());
             }
 
             if(existingMaterial.getNewSAPSafetyTime() != newST){
-                existingMaterial.setDateOfUpdatedST(currentDate);
-                existingMaterial.setValueOfUpdatedST(existingMaterial.getNewSAPSafetyTime());
+                existingMaterial.setDatePreviousST(currentDate);
+                existingMaterial.setPreviousST(existingMaterial.getNewSAPSafetyTime());
             }
             
             existingMaterial.setNewSAPSafetyStock(newSST);

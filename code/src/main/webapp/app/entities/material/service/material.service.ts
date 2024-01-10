@@ -12,10 +12,15 @@ import { IMaterial, NewMaterial } from '../material.model';
 
 export type PartialUpdateMaterial = Partial<IMaterial> & Pick<IMaterial, 'id'>;
 
-type RestOf<T extends IMaterial | NewMaterial> = Omit<T, 'flagExpirationDate' | 'dateOfUpdatedSS' | 'dateOfUpdatedST'> & {
+type RestOf<T extends IMaterial | NewMaterial> = Omit<
+  T,
+  'flagExpirationDate' | 'dateNewSS' | 'datNewST' | 'datePreviousSS' | 'datePreviousST'
+> & {
   flagExpirationDate?: string | null;
-  dateOfUpdatedSS?: string | null;
-  dateOfUpdatedST?: string | null;
+  dateNewSS?: string | null;
+  datNewST?: string | null;
+  datePreviousSS?: string | null;
+  datePreviousST?: string | null;
 };
 
 export type RestMaterial = RestOf<IMaterial>;
@@ -99,43 +104,14 @@ export class MaterialService {
     return materialCollection;
   }
 
-  submitChanges(data : any[]): Observable<Blob>{
-    return this.http.post<Blob>(`${this.resourceUrl}/submitChanges/`,data, {
-      responseType: 'blob' as 'json',
-      headers: {
-        Accept: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-      },
-    });
-  }
-
-  uploadFileReplace(file: File): Observable<HttpResponse<{}>> {
-    const formData = new FormData();
-    formData.append('file', file);
-    return this.http.post(`${this.resourceUrl}/uploadFileReplace`, formData, { observe: 'response' });
-  }
-  
-  uploadFileAddOrUpdate(file: File): Observable<HttpResponse<{}>> {
-    const formData = new FormData();
-    formData.append('file', file);
-    return this.http.post(`${this.resourceUrl}/uploadFileAddOrUpdate`, formData, { observe: 'response' });
-  }
-
-  exportFileAsExcel(): Observable<Blob> {
-    return this.http.get<Blob>(`${this.resourceUrl}/download/`, {
-      responseType: 'blob' as 'json',
-      headers: {
-        Accept: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-      },
-    });
-  }
-
-
   protected convertDateFromClient<T extends IMaterial | NewMaterial | PartialUpdateMaterial>(material: T): RestOf<T> {
     return {
       ...material,
       flagExpirationDate: material.flagExpirationDate?.format(DATE_FORMAT) ?? null,
-      dateOfUpdatedSS: material.dateOfUpdatedSS?.format(DATE_FORMAT) ?? null,
-      dateOfUpdatedST: material.dateOfUpdatedST?.format(DATE_FORMAT) ?? null,
+      dateNewSS: material.dateNewSS?.format(DATE_FORMAT) ?? null,
+      datNewST: material.datNewST?.format(DATE_FORMAT) ?? null,
+      datePreviousSS: material.datePreviousSS?.format(DATE_FORMAT) ?? null,
+      datePreviousST: material.datePreviousST?.format(DATE_FORMAT) ?? null,
     };
   }
 
@@ -143,8 +119,10 @@ export class MaterialService {
     return {
       ...restMaterial,
       flagExpirationDate: restMaterial.flagExpirationDate ? dayjs(restMaterial.flagExpirationDate) : undefined,
-      dateOfUpdatedSS: restMaterial.dateOfUpdatedSS ? dayjs(restMaterial.dateOfUpdatedSS) : undefined,
-      dateOfUpdatedST: restMaterial.dateOfUpdatedST ? dayjs(restMaterial.dateOfUpdatedST) : undefined,
+      dateNewSS: restMaterial.dateNewSS ? dayjs(restMaterial.dateNewSS) : undefined,
+      datNewST: restMaterial.datNewST ? dayjs(restMaterial.datNewST) : undefined,
+      datePreviousSS: restMaterial.datePreviousSS ? dayjs(restMaterial.datePreviousSS) : undefined,
+      datePreviousST: restMaterial.datePreviousST ? dayjs(restMaterial.datePreviousST) : undefined,
     };
   }
 
@@ -159,6 +137,4 @@ export class MaterialService {
       body: res.body ? res.body.map(item => this.convertDateFromServer(item)) : null,
     });
   }
-
-  
 }

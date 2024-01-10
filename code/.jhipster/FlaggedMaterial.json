@@ -19,68 +19,12 @@
       "fieldValues": "A,B,C"
     },
     {
-      "fieldName": "avgSupplierDelay",
-      "fieldType": "Float"
-    },
-    {
-      "fieldName": "maxSupplierDelay",
-      "fieldType": "Float"
-    },
-    {
-      "fieldName": "serviceLevel",
-      "fieldType": "Float"
-    },
-    {
       "fieldName": "plant",
-      "fieldType": "String"
+      "fieldType": "Integer"
     },
     {
       "fieldName": "mrpController",
       "fieldType": "String"
-    },
-    {
-      "fieldName": "currSAPSafetyStock",
-      "fieldType": "Integer"
-    },
-    {
-      "fieldName": "proposedSST",
-      "fieldType": "Integer"
-    },
-    {
-      "fieldName": "deltaSST",
-      "fieldType": "Integer"
-    },
-    {
-      "fieldName": "currentSAPSafeTime",
-      "fieldType": "Integer"
-    },
-    {
-      "fieldName": "proposedST",
-      "fieldType": "Integer"
-    },
-    {
-      "fieldName": "deltaST",
-      "fieldType": "Integer"
-    },
-    {
-      "fieldName": "openSAPmd04",
-      "fieldType": "String"
-    },
-    {
-      "fieldName": "currentInventoryValue",
-      "fieldType": "Float"
-    },
-    {
-      "fieldName": "unitCost",
-      "fieldType": "Float"
-    },
-    {
-      "fieldName": "avgDemand",
-      "fieldType": "Integer"
-    },
-    {
-      "fieldName": "avgInventoryEffectAfterChange",
-      "fieldType": "Float"
     },
     {
       "fieldName": "flagMaterial",
@@ -89,37 +33,12 @@
     {
       "fieldName": "flagExpirationDate",
       "fieldType": "LocalDate"
-    },
-    {
-      "fieldName": "valueOfUpdatedSS",
-      "fieldType": "Integer"
-    },
-    {
-      "fieldName": "valueOfUpdatedST",
-      "fieldType": "Integer"
-    },
-    {
-      "fieldName": "dateOfUpdatedSS",
-      "fieldType": "LocalDate"
-    },
-    {
-      "fieldName": "dateOfUpdatedST",
-      "fieldType": "LocalDate"
-    },
-    {
-      "fieldName": "toSaveUpdates",
-      "fieldType": "Boolean"
-    },
-    {
-      "fieldName": "currency",
-      "fieldType": "Coin",
-      "fieldValues": "EUR,USD,JPY,GBP,CNY,AUD,CAD,CHF,HKD,SGD,SEK,KRW,NOK,NZD,INR,MXN,TWD,ZAR,BRL,DKK,PLN,THB,ILS,IDR,CZK,AED,TRY,HUF,CLP,SAR,PHP,MYR,COP,RUB,RON,PEN,BHD,BGN"
     }
   ],
   "fluentMethods": true,
-  "jpaMetamodelFiltering": false,
+  "jpaMetamodelFiltering": true,
   "name": "FlaggedMaterial",
-  "pagination": "no",
+  "pagination": "pagination",
   "readOnly": false,
   "relationships": [],
   "service": "serviceImpl"

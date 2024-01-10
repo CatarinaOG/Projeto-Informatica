@@ -2,11 +2,11 @@ entity Material {
 	material String
     description String
     abcClassification ABCClassification
+    plant Integer
+    mrpController String
     avgSupplierDelay Float
     maxSupplierDelay Float
     serviceLevel Float
-    plant String
-    mrpController String
     currSAPSafetyStock Integer
 	proposedSST Integer
     deltaSST Integer
@@ -23,10 +23,12 @@ entity Material {
     comment String
     newSAPSafetyStock Integer
     newSAPSafetyTime Integer
-    valueOfUpdatedSS Integer
-    valueOfUpdatedST Integer
-    dateOfUpdatedSS LocalDate
-    dateOfUpdatedST LocalDate
+    dateNewSS LocalDate
+    datNewST LocalDate
+    previousSS Integer
+    previousST Integer
+    datePreviousSS LocalDate
+    datPereviousST LocalDate
     toSaveUpdates Boolean
     currency Coin
 }
@@ -35,30 +37,10 @@ entity FlaggedMaterial{
 	material String
     description String
     abcClassification ABCClassification
-    avgSupplierDelay Float
-    maxSupplierDelay Float
-    serviceLevel Float
-    plant String
+    plant Integer
     mrpController String
-    currSAPSafetyStock Integer
-	proposedSST Integer
-    deltaSST Integer
-    currentSAPSafeTime Integer
-    proposedST Integer
-    deltaST Integer
-    openSAPmd04 String
-    currentInventoryValue Float
-    unitCost Float
-    avgDemand Integer
-    avgInventoryEffectAfterChange Float
     flagMaterial Boolean
     flagExpirationDate LocalDate
-    valueOfUpdatedSS Integer
-    valueOfUpdatedST Integer
-    dateOfUpdatedSS LocalDate
-    dateOfUpdatedST LocalDate
-    toSaveUpdates Boolean
-    currency Coin
 }
 
 enum ABCClassification {
@@ -68,47 +50,39 @@ enum ABCClassification {
 enum Coin {
     EUR,
     USD,
-    JPY,
-    GBP,
-    CNY,
     AUD,
-    CAD,
-    CHF,
+    GBP,
+    XCD,
+    XOF,
+    NZD,
+    XAF,
+    ZAR,
+    XPF,
+    DKK,
+    RUB,
+    INR,
+    JOD,
+    MAD,
+    BND,
     HKD,
     SGD,
-    SEK,
-    KRW,
-    NOK,
-    NZD,
-    INR,
-    MXN,
-    TWD,
-    ZAR,
-    BRL,
-    DKK,
-    PLN,
-    THB,
-    ILS,
-    IDR,
-    CZK,
-    AED,
+    AMD,
+    CHF,
+    ANG,
     TRY,
-    HUF,
+    MRU,
+    SHP,
+    FKP,
+    ILS,
+    CAD,
+    NOK,
     CLP,
-    SAR,
-    PHP,
-    MYR,
-    COP,
-    RUB,
-    RON,
-    PEN,
-    BHD,
-    BGN
+    CNY
 }
 
 // Set pagination options
 paginate Material with pagination
-
+paginate FlaggedMaterial with pagination
 // Use Data Transfer Objects (DTO)
 // dto * with mapstruct
 

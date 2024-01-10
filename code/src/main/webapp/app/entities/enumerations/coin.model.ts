@@ -3,75 +3,59 @@ export enum Coin {
 
   USD = 'USD',
 
-  JPY = 'JPY',
+  AUD = 'AUD',
 
   GBP = 'GBP',
 
-  CNY = 'CNY',
+  XCD = 'XCD',
 
-  AUD = 'AUD',
+  XOF = 'XOF',
 
-  CAD = 'CAD',
+  NZD = 'NZD',
 
-  CHF = 'CHF',
+  XAF = 'XAF',
+
+  ZAR = 'ZAR',
+
+  XPF = 'XPF',
+
+  DKK = 'DKK',
+
+  RUB = 'RUB',
+
+  INR = 'INR',
+
+  JOD = 'JOD',
+
+  MAD = 'MAD',
+
+  BND = 'BND',
 
   HKD = 'HKD',
 
   SGD = 'SGD',
 
-  SEK = 'SEK',
+  AMD = 'AMD',
 
-  KRW = 'KRW',
+  CHF = 'CHF',
 
-  NOK = 'NOK',
-
-  NZD = 'NZD',
-
-  INR = 'INR',
-
-  MXN = 'MXN',
-
-  TWD = 'TWD',
-
-  ZAR = 'ZAR',
-
-  BRL = 'BRL',
-
-  DKK = 'DKK',
-
-  PLN = 'PLN',
-
-  THB = 'THB',
-
-  ILS = 'ILS',
-
-  IDR = 'IDR',
-
-  CZK = 'CZK',
-
-  AED = 'AED',
+  ANG = 'ANG',
 
   TRY = 'TRY',
 
-  HUF = 'HUF',
+  MRU = 'MRU',
+
+  SHP = 'SHP',
+
+  FKP = 'FKP',
+
+  ILS = 'ILS',
+
+  CAD = 'CAD',
+
+  NOK = 'NOK',
 
   CLP = 'CLP',
 
-  SAR = 'SAR',
-
-  PHP = 'PHP',
-
-  MYR = 'MYR',
-
-  COP = 'COP',
-
-  RUB = 'RUB',
-
-  RON = 'RON',
-
-  PEN = 'PEN',
-
-  BHD = 'BHD',
-
-  BGN = 'BGN',
+  CNY = 'CNY',
 }

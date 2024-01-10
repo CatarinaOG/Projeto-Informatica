@@ -26,6 +26,14 @@
         <dd>
           <span>{{ material.abcClassification }}</span>
         </dd>
+        <dt><span>Plant</span></dt>
+        <dd>
+          <span>{{ material.plant }}</span>
+        </dd>
+        <dt><span>Mrp Controller</span></dt>
+        <dd>
+          <span>{{ material.mrpController }}</span>
+        </dd>
         <dt><span>Avg Supplier Delay</span></dt>
         <dd>
           <span>{{ material.avgSupplierDelay }}</span>
@@ -37,14 +45,6 @@
         <dt><span>Service Level</span></dt>
         <dd>
           <span>{{ material.serviceLevel }}</span>
-        </dd>
-        <dt><span>Plant</span></dt>
-        <dd>
-          <span>{{ material.plant }}</span>
-        </dd>
-        <dt><span>Mrp Controller</span></dt>
-        <dd>
-          <span>{{ material.mrpController }}</span>
         </dd>
         <dt><span>Curr SAP Safety Stock</span></dt>
         <dd>
@@ -110,21 +110,29 @@
         <dd>
           <span>{{ material.newSAPSafetyTime }}</span>
         </dd>
-        <dt><span>Value Of Updated SS</span></dt>
+        <dt><span>Date New SS</span></dt>
         <dd>
-          <span>{{ material.valueOfUpdatedSS }}</span>
+          <span>{{ material.dateNewSS | formatMediumDate }}</span>
         </dd>
-        <dt><span>Value Of Updated ST</span></dt>
+        <dt><span>Dat New ST</span></dt>
         <dd>
-          <span>{{ material.valueOfUpdatedST }}</span>
+          <span>{{ material.datNewST | formatMediumDate }}</span>
         </dd>
-        <dt><span>Date Of Updated SS</span></dt>
+        <dt><span>Previous SS</span></dt>
         <dd>
-          <span>{{ material.dateOfUpdatedSS | formatMediumDate }}</span>
+          <span>{{ material.previousSS }}</span>
         </dd>
-        <dt><span>Date Of Updated ST</span></dt>
+        <dt><span>Previous ST</span></dt>
         <dd>
-          <span>{{ material.dateOfUpdatedST | formatMediumDate }}</span>
+          <span>{{ material.previousST }}</span>
+        </dd>
+        <dt><span>Date Previous SS</span></dt>
+        <dd>
+          <span>{{ material.datePreviousSS | formatMediumDate }}</span>
+        </dd>
+        <dt><span>Date Previous ST</span></dt>
+        <dd>
+          <span>{{ material.datePreviousST | formatMediumDate }}</span>
         </dd>
         <dt><span>To Save Updates</span></dt>
         <dd>

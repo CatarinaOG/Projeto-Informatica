@@ -19,6 +19,14 @@
       "fieldValues": "A,B,C"
     },
     {
+      "fieldName": "plant",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "mrpController",
+      "fieldType": "String"
+    },
+    {
       "fieldName": "avgSupplierDelay",
       "fieldType": "Float"
     },
@@ -29,14 +37,6 @@
     {
       "fieldName": "serviceLevel",
       "fieldType": "Float"
-    },
-    {
-      "fieldName": "plant",
-      "fieldType": "String"
-    },
-    {
-      "fieldName": "mrpController",
-      "fieldType": "String"
     },
     {
       "fieldName": "currSAPSafetyStock",
@@ -103,19 +103,27 @@
       "fieldType": "Integer"
     },
     {
-      "fieldName": "valueOfUpdatedSS",
-      "fieldType": "Integer"
-    },
-    {
-      "fieldName": "valueOfUpdatedST",
-      "fieldType": "Integer"
-    },
-    {
-      "fieldName": "dateOfUpdatedSS",
+      "fieldName": "dateNewSS",
       "fieldType": "LocalDate"
     },
     {
-      "fieldName": "dateOfUpdatedST",
+      "fieldName": "datNewST",
+      "fieldType": "LocalDate"
+    },
+    {
+      "fieldName": "previousSS",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "previousST",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "datePreviousSS",
+      "fieldType": "LocalDate"
+    },
+    {
+      "fieldName": "datePreviousST",
       "fieldType": "LocalDate"
     },
     {
@@ -125,11 +133,11 @@
     {
       "fieldName": "currency",
       "fieldType": "Coin",
-      "fieldValues": "EUR,USD,JPY,GBP,CNY,AUD,CAD,CHF,HKD,SGD,SEK,KRW,NOK,NZD,INR,MXN,TWD,ZAR,BRL,DKK,PLN,THB,ILS,IDR,CZK,AED,TRY,HUF,CLP,SAR,PHP,MYR,COP,RUB,RON,PEN,BHD,BGN"
+      "fieldValues": "EUR,USD,AUD,GBP,XCD,XOF,NZD,XAF,ZAR,XPF,DKK,RUB,INR,JOD,MAD,BND,HKD,SGD,AMD,CHF,ANG,TRY,MRU,SHP,FKP,ILS,CAD,NOK,CLP,CNY"
     }
   ],
   "fluentMethods": true,
-  "jpaMetamodelFiltering": false,
+  "jpaMetamodelFiltering": true,
   "name": "Material",
   "pagination": "pagination",
   "readOnly": false,

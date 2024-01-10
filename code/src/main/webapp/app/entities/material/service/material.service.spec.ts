@@ -10,8 +10,10 @@ import { MaterialService, RestMaterial } from './material.service';
 const requireRestSample: RestMaterial = {
   ...sampleWithRequiredData,
   flagExpirationDate: sampleWithRequiredData.flagExpirationDate?.format(DATE_FORMAT),
-  dateOfUpdatedSS: sampleWithRequiredData.dateOfUpdatedSS?.format(DATE_FORMAT),
-  dateOfUpdatedST: sampleWithRequiredData.dateOfUpdatedST?.format(DATE_FORMAT),
+  dateNewSS: sampleWithRequiredData.dateNewSS?.format(DATE_FORMAT),
+  datNewST: sampleWithRequiredData.datNewST?.format(DATE_FORMAT),
+  datePreviousSS: sampleWithRequiredData.datePreviousSS?.format(DATE_FORMAT),
+  datePreviousST: sampleWithRequiredData.datePreviousST?.format(DATE_FORMAT),
 };
 
 describe('Material Service', () => {

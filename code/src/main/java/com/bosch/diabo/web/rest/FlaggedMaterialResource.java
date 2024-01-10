@@ -2,8 +2,10 @@ package com.bosch.diabo.web.rest;
 
 import com.bosch.diabo.domain.FlaggedMaterial;
 import com.bosch.diabo.repository.FlaggedMaterialRepository;
+import com.bosch.diabo.service.FlaggedMaterialQueryService;
 import com.bosch.diabo.service.FlaggedMaterialService;
 import com.bosch.diabo.service.MaterialService;
+import com.bosch.diabo.service.criteria.FlaggedMaterialCriteria;
 import com.bosch.diabo.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -13,9 +15,14 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
+import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
 
 /**
@@ -34,13 +41,21 @@ public class FlaggedMaterialResource {
 
     private final FlaggedMaterialService flaggedMaterialService;
 
-    private final MaterialService materialService;
-
     private final FlaggedMaterialRepository flaggedMaterialRepository;
 
-    public FlaggedMaterialResource(FlaggedMaterialService flaggedMaterialService, FlaggedMaterialRepository flaggedMaterialRepository, MaterialService materialService) {
+    private final FlaggedMaterialQueryService flaggedMaterialQueryService;
+
+    private final MaterialService materialService;
+
+    public FlaggedMaterialResource(
+        FlaggedMaterialService flaggedMaterialService,
+        FlaggedMaterialRepository flaggedMaterialRepository,
+        FlaggedMaterialQueryService flaggedMaterialQueryService,
+        MaterialService materialService
+    ) {
         this.flaggedMaterialService = flaggedMaterialService;
         this.flaggedMaterialRepository = flaggedMaterialRepository;
+        this.flaggedMaterialQueryService = flaggedMaterialQueryService;
         this.materialService = materialService;
     }
 
@@ -137,12 +152,31 @@ public class FlaggedMaterialResource {
     /**
      * {@code GET  /flagged-materials} : get all the flaggedMaterials.
      *
+     * @param pageable the pagination information.
+     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of flaggedMaterials in body.
      */
     @GetMapping("/flagged-materials")
-    public List<FlaggedMaterial> getAllFlaggedMaterials() {
-        log.debug("REST request to get all FlaggedMaterials");
-        return flaggedMaterialService.findAll();
+    public ResponseEntity<List<FlaggedMaterial>> getAllFlaggedMaterials(
+        FlaggedMaterialCriteria criteria,
+        @org.springdoc.api.annotations.ParameterObject Pageable pageable
+    ) {
+        log.debug("REST request to get FlaggedMaterials by criteria: {}", criteria);
+        Page<FlaggedMaterial> page = flaggedMaterialQueryService.findByCriteria(criteria, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /flagged-materials/count} : count all the flaggedMaterials.
+     *
+     * @param criteria the criteria which the requested entities should match.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
+     */
+    @GetMapping("/flagged-materials/count")
+    public ResponseEntity<Long> countFlaggedMaterials(FlaggedMaterialCriteria criteria) {
+        log.debug("REST request to count FlaggedMaterials by criteria: {}", criteria);
+        return ResponseEntity.ok().body(flaggedMaterialQueryService.countByCriteria(criteria));
     }
 
     /**

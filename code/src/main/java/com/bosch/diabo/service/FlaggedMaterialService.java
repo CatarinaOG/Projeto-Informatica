@@ -1,9 +1,11 @@
 package com.bosch.diabo.service;
 
 import com.bosch.diabo.domain.FlaggedMaterial;
+import com.bosch.diabo.domain.Material;
 import java.util.List;
 import java.util.Optional;
-import com.bosch.diabo.domain.Material;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 /**
  * Service Interface for managing {@link FlaggedMaterial}.
@@ -36,9 +38,10 @@ public interface FlaggedMaterialService {
     /**
      * Get all the flaggedMaterials.
      *
+     * @param pageable the pagination information.
      * @return the list of entities.
      */
-    List<FlaggedMaterial> findAll();
+    Page<FlaggedMaterial> findAll(Pageable pageable);
 
     /**
      * Get the "id" flaggedMaterial.

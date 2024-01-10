@@ -94,6 +94,12 @@ public class MaterialQueryService extends QueryService<Material> {
             if (criteria.getAbcClassification() != null) {
                 specification = specification.and(buildSpecification(criteria.getAbcClassification(), Material_.abcClassification));
             }
+            if (criteria.getPlant() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getPlant(), Material_.plant));
+            }
+            if (criteria.getMrpController() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getMrpController(), Material_.mrpController));
+            }
             if (criteria.getAvgSupplierDelay() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getAvgSupplierDelay(), Material_.avgSupplierDelay));
             }
@@ -140,23 +146,44 @@ public class MaterialQueryService extends QueryService<Material> {
                         buildRangeSpecification(criteria.getAvgInventoryEffectAfterChange(), Material_.avgInventoryEffectAfterChange)
                     );
             }
+            if (criteria.getFlagMaterial() != null) {
+                specification = specification.and(buildSpecification(criteria.getFlagMaterial(), Material_.flagMaterial));
+            }
+            if (criteria.getFlagExpirationDate() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getFlagExpirationDate(), Material_.flagExpirationDate));
+            }
+            if (criteria.getComment() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getComment(), Material_.comment));
+            }
             if (criteria.getNewSAPSafetyStock() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getNewSAPSafetyStock(), Material_.newSAPSafetyStock));
             }
             if (criteria.getNewSAPSafetyTime() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getNewSAPSafetyTime(), Material_.newSAPSafetyTime));
             }
-            if (criteria.getFlagMaterial() != null) {
-                specification = specification.and(buildSpecification(criteria.getFlagMaterial(), Material_.flagMaterial));
+            if (criteria.getDateNewSS() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getDateNewSS(), Material_.dateNewSS));
             }
-            if (criteria.getComment() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getComment(), Material_.comment));
+            if (criteria.getDatNewST() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getDatNewST(), Material_.datNewST));
             }
-            if (criteria.getPlant() != null) {
-                specification = specification.and(buildSpecification(criteria.getPlant(), Material_.plant));
+            if (criteria.getPreviousSS() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getPreviousSS(), Material_.previousSS));
             }
-            if (criteria.getMRPcontroller() != null) {
-                specification = specification.and(buildSpecification(criteria.getMRPcontroller(), Material_.mrpController));
+            if (criteria.getPreviousST() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getPreviousST(), Material_.previousST));
+            }
+            if (criteria.getDatePreviousSS() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getDatePreviousSS(), Material_.datePreviousSS));
+            }
+            if (criteria.getDatePreviousST() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getDatePreviousST(), Material_.datePreviousST));
+            }
+            if (criteria.getToSaveUpdates() != null) {
+                specification = specification.and(buildSpecification(criteria.getToSaveUpdates(), Material_.toSaveUpdates));
+            }
+            if (criteria.getCurrency() != null) {
+                specification = specification.and(buildSpecification(criteria.getCurrency(), Material_.currency));
             }
         }
         return specification;
