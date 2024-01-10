@@ -630,7 +630,7 @@ public class MaterialServiceImpl implements MaterialService {
         }
 
         if(getIndexOBJ(header, file_comment) >= 0){
-            material.setComment(row[getIndexOBJ(header, file_comment)].toString());
+           material.setComment(row[getIndexOBJ(header, file_comment)].toString());
         }
 
 
@@ -784,6 +784,7 @@ public class MaterialServiceImpl implements MaterialService {
             if (item instanceof Map) {
                 Map<String, Object> dataMap = (Map<String, Object>) item;
 
+
                 String material = (String) dataMap.get("material");
                 LocalDate flagDate = LocalDate.parse((String) dataMap.get("dateFlag"));
                 Boolean flagged = (Boolean) dataMap.get("flag");
@@ -795,11 +796,11 @@ public class MaterialServiceImpl implements MaterialService {
         }
     }
 
-    private void updateFlaggedDate(String material, LocalDate date){
+    private void updateFlaggedDate(String material, LocalDate flagDate){
         materialRepository
             .findByMaterial(material)
             .ifPresent(existingMaterial -> {
-                existingMaterial.setFlagExpirationDate(date);
+                existingMaterial.setFlagExpirationDate(flagDate);
                 materialRepository.save(existingMaterial);
             });
     }
