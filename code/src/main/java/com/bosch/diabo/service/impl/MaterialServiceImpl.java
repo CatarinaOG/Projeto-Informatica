@@ -119,8 +119,6 @@ public class MaterialServiceImpl implements MaterialService {
                 existingMaterial.setFlagMaterial(material.getFlagMaterial());
                 existingMaterial.setFlagExpirationDate(material.getFlagExpirationDate());
                 existingMaterial.setComment(material.getComment());
-                existingMaterial.setNewSAPSafetyStock(material.getNewSAPSafetyStock());
-                existingMaterial.setNewSAPSafetyTime(material.getNewSAPSafetyTime());
                 existingMaterial.setMrpController(material.getMrpController());
                 existingMaterial.setPlant(material.getPlant());
                 existingMaterial.setToSaveUpdates(true);
@@ -668,7 +666,7 @@ public class MaterialServiceImpl implements MaterialService {
                         extractInt(dataMap.get("newSST")),
                         extractInt(dataMap.get("newST")),
                         (String) dataMap.get("newComment"),
-                        (Boolean) dataMap.get("flag"),
+                        (Boolean) dataMap.get("newFlag"),
                         LocalDate.parse(stringFlagDate)
                     );
                 } else {
@@ -678,7 +676,7 @@ public class MaterialServiceImpl implements MaterialService {
                         extractInt(dataMap.get("newSST")),
                         extractInt(dataMap.get("newST")),
                         (String) dataMap.get("newComment"),
-                        (Boolean) dataMap.get("flag"),
+                        (Boolean) dataMap.get("newFlag"),
                         LocalDate.now()
                     );
                 }
@@ -700,6 +698,7 @@ public class MaterialServiceImpl implements MaterialService {
 
     public void updateObject(Long materialId, int newSST, int newST, String newComment, Boolean flag, LocalDate flagDate){
 
+
         materialRepository
         .findById(materialId)
         .ifPresent(existingMaterial -> {
@@ -708,12 +707,12 @@ public class MaterialServiceImpl implements MaterialService {
 
             if(existingMaterial.getNewSAPSafetyStock() != newSST){
                 existingMaterial.setDateOfUpdatedSS(currentDate);
-                existingMaterial.setValueOfUpdatedSS(newSST);
+                existingMaterial.setValueOfUpdatedSS(existingMaterial.getNewSAPSafetyStock());
             }
 
             if(existingMaterial.getNewSAPSafetyTime() != newST){
                 existingMaterial.setDateOfUpdatedST(currentDate);
-                existingMaterial.setValueOfUpdatedST(newST);
+                existingMaterial.setValueOfUpdatedST(existingMaterial.getNewSAPSafetyTime());
             }
             
             existingMaterial.setNewSAPSafetyStock(newSST);
