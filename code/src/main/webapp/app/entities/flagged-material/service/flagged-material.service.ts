@@ -48,10 +48,9 @@ export class FlaggedMaterialService {
   }
 
   updateFlagged(flaggedMaterial: IFlaggedMaterial): Observable<EntityResponseType> {
-    //const copy = this.convertDateFromClient(flaggedMaterial);
     const data = [{
       material: flaggedMaterial.material,
-      dateFlag: flaggedMaterial.flagExpirationDate?.toString().split('T')[0],
+      dateFlag: flaggedMaterial.flagExpirationDate?.format("YYYY-MM-DD"),
       flag: flaggedMaterial.flagMaterial
     }]
 
