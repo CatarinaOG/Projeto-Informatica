@@ -409,7 +409,7 @@ public class MaterialServiceImpl implements MaterialService {
         material.setUnitCost(getFloatCellValue(row, headerMap, file_unit_cost));
         material.setAvgDemand(getIntCellValue(row, headerMap, file_avg_demand));
         material.setAvgInventoryEffectAfterChange(getFloatCellValue(row, headerMap, file_average_inventory_effect_after_change));
-        material.setFlagMaterial(getFlagFromFlaggedMaterials(material.getMaterial()));
+        setFlagInfo(material);
         material.setNewSAPSafetyStock(material.getProposedSST());
         material.setNewSAPSafetyTime(material.getProposedST());
 
@@ -431,12 +431,20 @@ public class MaterialServiceImpl implements MaterialService {
 
     }
 
-    private Boolean getFlagFromFlaggedMaterials(String materialName){
+    private void setFlagInfo(Material material){
 
-        Optional<FlaggedMaterial> flaggedMaterial = flaggedMaterialServiceImpl.findByMaterial(materialName);
-        if(flaggedMaterial.isPresent()) return true;
+        Optional<FlaggedMaterial> flaggedMaterial = flaggedMaterialServiceImpl.findByMaterial(material.getMaterial());
+        
+        
+        if(flaggedMaterial.isPresent()){
+            material.setFlagMaterial(true);
+            material.setFlagExpirationDate(flaggedMaterial.get().getFlagExpirationDate());
+        }
+        else{
+            material.setFlagMaterial(false);
+            material.setFlagExpirationDate(null);
+        }
 
-        return false;
     }
     
     private String getStringCellValue(Row row, Map<String, Integer> headerMap, String headerName) {
@@ -534,7 +542,7 @@ public class MaterialServiceImpl implements MaterialService {
         material.setUnitCost(parseNumericValue(nextRecord[getIndex(header, file_unit_cost)]));
         material.setAvgDemand(Integer.parseInt(nextRecord[getIndex(header, file_avg_demand)]));
         material.setAvgInventoryEffectAfterChange(parseNumericValue(nextRecord[getIndex(header, file_average_inventory_effect_after_change)]));
-        material.setFlagMaterial(getFlagFromFlaggedMaterials(material.getMaterial()));
+        setFlagInfo(material);
         material.setNewSAPSafetyStock(material.getProposedSST());
         material.setNewSAPSafetyTime(material.getProposedST());
         
@@ -616,7 +624,7 @@ public class MaterialServiceImpl implements MaterialService {
         material.setUnitCost(parseNumericValue(row[getIndexOBJ(header, file_unit_cost)].toString()));
         material.setAvgDemand((int) Float.parseFloat(row[getIndexOBJ(header, file_avg_demand)].toString()));
         material.setAvgInventoryEffectAfterChange(parseNumericValue(row[getIndexOBJ(header, file_average_inventory_effect_after_change)].toString()));
-        material.setFlagMaterial(getFlagFromFlaggedMaterials(material.getMaterial()));
+        setFlagInfo(material);
         material.setNewSAPSafetyStock(material.getProposedSST());
         material.setNewSAPSafetyTime(material.getProposedST());
 
@@ -706,13 +714,15 @@ public class MaterialServiceImpl implements MaterialService {
             LocalDate currentDate = LocalDate.now();
 
             if(existingMaterial.getNewSAPSafetyStock() != newSST){
-                existingMaterial.setDatePreviousSS(currentDate);
+                existingMaterial.setDatePreviousSS(existingMaterial.getDatePreviousSS());
                 existingMaterial.setPreviousSS(existingMaterial.getNewSAPSafetyStock());
+                existingMaterial.setDateNewSS(currentDate);
             }
 
             if(existingMaterial.getNewSAPSafetyTime() != newST){
-                existingMaterial.setDatePreviousST(currentDate);
+                existingMaterial.setDatePreviousST(existingMaterial.getDatePreviousST());
                 existingMaterial.setPreviousST(existingMaterial.getNewSAPSafetyTime());
+                existingMaterial.setDatNewST(currentDate);
             }
             
             existingMaterial.setNewSAPSafetyStock(newSST);
@@ -723,6 +733,7 @@ public class MaterialServiceImpl implements MaterialService {
             existingMaterial.setFlagMaterial(flag);
 
             if(flag) existingMaterial.setFlagExpirationDate(flagDate);
+            else existingMaterial.setFlagExpirationDate(null);
 
             flaggedMaterialServiceImpl.updateFlaggedMaterials(flag,existingMaterial);
             

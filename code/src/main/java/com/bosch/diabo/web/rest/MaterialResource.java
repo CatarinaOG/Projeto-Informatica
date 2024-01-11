@@ -235,7 +235,7 @@ public class MaterialResource {
             multipartFile.transferTo(convertedFile);
             materialService.uploadFileReplace(convertedFile);
             convertedFile.delete();
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(500).body("Error uploading file: " + e.getMessage());
         }
@@ -259,7 +259,7 @@ public class MaterialResource {
             multipartFile.transferTo(convertedFile);
             materialService.uploadFileAddOrUpdate(convertedFile);
             convertedFile.delete();
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(500).body("Error uploading file: " + e.getMessage());
         }
