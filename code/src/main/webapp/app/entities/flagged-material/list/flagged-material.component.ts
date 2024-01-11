@@ -9,7 +9,6 @@ import { IFlaggedMaterial } from '../flagged-material.model';
 import { ITEMS_PER_PAGE, PAGE_HEADER, TOTAL_COUNT_RESPONSE_HEADER } from 'app/config/pagination.constants';
 import { ASC, DESC, SORT, ITEM_DELETED_EVENT, DEFAULT_SORT_DATA } from 'app/config/navigation.constants';
 import { EntityArrayResponseType, FlaggedMaterialService } from '../service/flagged-material.service';
-import { FlaggedMaterialDeleteDialogComponent } from '../delete/flagged-material-delete-dialog.component';
 import { FilterOptions, IFilterOptions, IFilterOption } from 'app/shared/filter/filter.model';
 
 @Component({
@@ -42,23 +41,6 @@ export class FlaggedMaterialComponent implements OnInit {
 
     this.filters.filterChanges.subscribe(filterOptions => this.handleNavigation(1, this.predicate, this.ascending, filterOptions));
   }
-
-  delete(flaggedMaterial: IFlaggedMaterial): void {
-    const modalRef = this.modalService.open(FlaggedMaterialDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
-    modalRef.componentInstance.flaggedMaterial = flaggedMaterial;
-    // unsubscribe not needed because closed completes on modal close
-    modalRef.closed
-      .pipe(
-        filter(reason => reason === ITEM_DELETED_EVENT),
-        switchMap(() => this.loadFromBackendWithRouteInformations())
-      )
-      .subscribe({
-        next: (res: EntityArrayResponseType) => {
-          this.onResponseSuccess(res);
-        },
-      });
-  }
-
   
 
   load(): void {
