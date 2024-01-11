@@ -17,30 +17,30 @@ const materialRoute: Routes = [
     },
     canActivate: [UserRouteAccessService],
   },
-  {
-    path: ':id/view',
-    component: MaterialDetailComponent,
-    resolve: {
-      material: MaterialRoutingResolveService,
-    },
-    canActivate: [UserRouteAccessService],
-  },
-  {
-    path: 'new',
-    component: MaterialUpdateComponent,
-    resolve: {
-      material: MaterialRoutingResolveService,
-    },
-    canActivate: [UserRouteAccessService],
-  },
-  {
-    path: ':id/edit',
-    component: MaterialUpdateComponent,
-    resolve: {
-      material: MaterialRoutingResolveService,
-    },
-    canActivate: [UserRouteAccessService],
-  },
+  // {
+  //   path: ':id/view',
+  //   component: MaterialDetailComponent,
+  //   resolve: {
+  //     material: MaterialRoutingResolveService,
+  //   },
+  //   canActivate: [UserRouteAccessService],
+  // },
+  // {
+  //   path: 'new',
+  //   component: MaterialUpdateComponent,
+  //   resolve: {
+  //     material: MaterialRoutingResolveService,
+  //   },
+  //   canActivate: [UserRouteAccessService],
+  // },
+  // {
+  //   path: ':id/edit',
+  //   component: MaterialUpdateComponent,
+  //   resolve: {
+  //     material: MaterialRoutingResolveService,
+  //   },
+  //   canActivate: [UserRouteAccessService],
+  // },
 ];
 
 @NgModule({

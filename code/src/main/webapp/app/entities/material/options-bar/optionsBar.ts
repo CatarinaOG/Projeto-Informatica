@@ -38,6 +38,8 @@ export class OptionsBar implements OnInit {
     ["Material Name", false],
     ["Material Description",false],
     ["ABC Classification", false],
+    ["Plant",false],
+    ["MRP Controller",false],
     ["Avg Supplier Delay",false],
     ["Max Supplier Delay", false],
     ["Current SAP Safety Stock", false],
@@ -62,6 +64,9 @@ export class OptionsBar implements OnInit {
       })
    }
 
+   startTour(): void {
+    this.tourService.start()
+   }
 
    defineStepTour(value: number) : void {
     if (this.filtersTooltip !== undefined) this.filtersTooltip.close()
@@ -113,7 +118,13 @@ export class OptionsBar implements OnInit {
     }
   }
 
-
+  checkDropDown(open:boolean) {
+    if(!open){
+      for(const pair of this.filterStatus){
+        this.filterStatus.set(pair[0], false);
+      }
+    }
+  }
 
     sendLoad(): void{
         this.stringEmitter.emit("load");
@@ -148,6 +159,12 @@ export class OptionsBar implements OnInit {
         }
         else if (this.filterStatus.get("Material Description")){
             this.textFilterEmitter.emit({filterName : "Material Description", filterText : event.target.value})      
+        }
+        else if (this.filterStatus.get("MRP Controller")) {
+          this.textFilterEmitter.emit({filterName : "MRP Controller", filterText : event.target.value})    
+        }
+        else if (this.filterStatus.get("Plant")) {
+          this.textFilterEmitter.emit({filterName : "Plant", filterText : event.target.value.toString()})
         }
     }
 

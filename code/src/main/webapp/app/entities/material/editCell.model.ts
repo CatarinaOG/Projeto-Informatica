@@ -5,7 +5,7 @@ export interface IEditCell {
     materialName: string,
     materialDesc: string,
     abcClassification: ABCClassification,
-    plant: string,
+    plant: number,
     mrpcontroller: string,
     newSST: number,
     oldSST: number,

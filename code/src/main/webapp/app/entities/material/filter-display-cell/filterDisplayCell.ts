@@ -27,6 +27,12 @@ export class FilterDisplayCell implements OnInit {
       case 'description':
         returnValue = "Material Description"
         break;
+      case 'plant':
+        returnValue = 'Plant'
+        break;
+      case 'mrpController':
+        returnValue = 'MRP Controller'
+        break;
       case 'abcClassification':
         returnValue = "ABC Classification"
         break;

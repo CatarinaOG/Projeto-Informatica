@@ -1,4 +1,4 @@
-<div class="optionsBarResponsive" style=" margin-bottom: 20px;">
+<div class="optionsBarResponsive" style=" margin-top: 30px; margin-bottom: 30px;">
     
     <div placement="right" [ngbTooltip]="filterOptionsToolTip" [autoClose]="false" #t8="ngbTooltip" triggers="manual" tooltipClass="custom-tooltip" >
       <div ngbDropdown class="dropdown d-flex justify-content-end" autoClose="outside">
@@ -25,7 +25,7 @@
 
         <ul ngbDropdownMenu aria-labelledby="dropdownMenuButton">
           <li>
-            <div ngbDropdown class="d-flex dropleft" placement="right-top" autoClose = "outside">
+            <div ngbDropdown class="d-flex dropleft" placement="right-top" autoClose = "outside" (openChange)="checkDropDown($event)">
               <button ngbDropdownToggle style="display: flex;" class="btn btn-primary buttonNoBorder inputWidth text-left" type="button" id="nestedDropdownButton" aria-expanded="false">
                 <span style="flex-grow: 1; text-align: left;">Material Info</span>
                 <fa-icon icon="caret-right"></fa-icon>
@@ -46,13 +46,27 @@
                     <span>ABC Classification</span>
                   </button>
                 </li>
+                <li>
+                  <button ngbDropdownItem color="primary" class="btn btn-primary" [ngStyle]="{'background-color': this.filterStatus.get('Plant') ? '#3e8acc' : ''}" (click)="changeStatus('Plant')">
+                    <span>Plant</span>
+                  </button>
+                </li>
+                <li>
+                  <button ngbDropdownItem color="primary" class="btn btn-primary" [ngStyle]="{'background-color': this.filterStatus.get('MRP Controller') ? '#3e8acc' : ''}" (click)="changeStatus('MRP Controller')">
+                    <span>MRP Controller</span>
+                  </button>
+                </li>
 
 
                 <div class="dropdown-divider"  [ngClass] = "checkStatus() ? 'searchInputShow' : 'searchInputHide'"></div>
-                <h6 class="dropdown-header" [ngClass] = "this.filterStatus.get('Material Name') || this.filterStatus.get('Material Description') ? 'searchInputShow' : 'searchInputHide'"> Search in Column</h6>
-                <li class="paddingLeftRight" [ngClass] = "this.filterStatus.get('Material Name') || this.filterStatus.get('Material Description') ? 'searchInputShow' : 'searchInputHide'"> 
-                  <input type="text" class="inputWidth paddingFive" (change)="sendFilterText($event)">
-                </li>
+                <div [ngClass] = "this.filterStatus.get('Material Name') || this.filterStatus.get('Material Description') || this.filterStatus.get('MRP Controller') || this.filterStatus.get('Plant')? 'searchInputShow' : 'searchInputHide'" >
+                  <h6 class="dropdown-header"> Search in Column</h6>
+                  <li class="paddingLeftRight"> 
+                    <input [ngClass] = "this.filterStatus.get('Material Name') || this.filterStatus.get('Material Description') || this.filterStatus.get('MRP Controller')? 'searchInputShow' : 'searchInputHide'" type="text" class="inputWidth paddingFive" (change)="sendFilterText($event)">
+                    <input [ngClass] = "this.filterStatus.get('Plant')? 'searchInputShow' : 'searchInputHide'"type="number" class="inputWidth paddingFive" (change)="sendFilterText($event)">
+                  </li>
+                </div>
+               
 
                 <h6 class="dropdown-header" [ngClass] = "this.filterStatus.get('ABC Classification') ? 'searchInputShow' : 'searchInputHide'"> Select categories</h6>
                 <li class="paddingLeftRight" [ngClass] = "this.filterStatus.get('ABC Classification') ? 'searchInputShow' : 'searchInputHide'"> 
@@ -67,7 +81,7 @@
               </ul>
             </div>
             
-            <div ngbDropdown class="dropdown d-flex" placement="right-top" autoClose = "outside">
+            <div ngbDropdown class="dropdown d-flex" placement="right-top" autoClose = "outside" (openChange)="checkDropDown($event)">
               <button ngbDropdownToggle style="display: flex;" class="btn btn-primary buttonNoBorder inputWidth text-left dropdown-toggle" type="button" id="nestedDropdownButton" aria-expanded="false">
                 <span style="flex-grow: 1; text-align: left;">Supplier Delay Info</span>
                 <fa-icon icon="caret-right"></fa-icon>
@@ -92,7 +106,7 @@
             </div>
             
 
-            <div ngbDropdown class="dropdown d-flex" placement="right-top" autoClose = "outside">
+            <div ngbDropdown class="dropdown d-flex" placement="right-top" autoClose = "outside" (openChange)="checkDropDown($event)">
               <button ngbDropdownToggle style="display: flex;" class="btn btn-primary buttonNoBorder inputWidth text-left" type="button" id="nestedDropdownButton" aria-expanded="false"> 
                 <span style="flex-grow: 1; text-align: left;">Safety Stock Info</span>
                 <fa-icon icon="caret-right"></fa-icon>
@@ -120,7 +134,7 @@
 
 
 
-            <div ngbDropdown class="dropdown d-flex" placement="right-top" autoClose = "outside">
+            <div ngbDropdown class="dropdown d-flex" placement="right-top" autoClose = "outside" (openChange)="checkDropDown($event)">
               <button ngbDropdownToggle style="display: flex;" class="btn btn-primary buttonNoBorder inputWidth text-left" type="button" id="nestedDropdownButton" aria-expanded="false"> 
                 <span style="flex-grow: 1; text-align: left;">Safety Time Info</span>
                 <fa-icon icon="caret-right"></fa-icon>
@@ -145,7 +159,7 @@
 
             
 
-            <div ngbDropdown class="dropdown d-flex" placement="right-top" autoClose = "outside">
+            <div ngbDropdown class="dropdown d-flex" placement="right-top" autoClose = "outside" (openChange)="checkDropDown($event)">
               <button ngbDropdownToggle style="display: flex;" class="btn btn-primary buttonNoBorder inputWidth text-left" type="button" id="nestedDropdownButton" aria-expanded="false"> 
                 <span style="flex-grow: 1; text-align: left;">Inv. Info & Service Lvl</span>
                 <fa-icon icon="caret-right" style="margin-left: 10px;"></fa-icon>
@@ -188,7 +202,7 @@
             
             <div class="dropdown-divider"></div>
             
-            <div ngbDropdown class="dropdown d-flex" placement="right-top" autoClose = "outside">
+            <div ngbDropdown class="dropdown d-flex" placement="right-top" autoClose = "outside" (openChange)="checkDropDown($event)">
               <button ngbDropdownToggle style="display: flex;" class="btn btn-primary buttonNoBorder inputWidth text-left" type="button" id="nestedDropdownButton" aria-expanded="false"> 
                 <span style="flex-grow: 1; text-align: left;">Selected Materials</span>
                 <fa-icon icon="caret-right" style="margin-left: 10px;"></fa-icon>
@@ -212,7 +226,7 @@
               </ul>
             </div>
 
-            <div ngbDropdown class="dropdown d-flex" placement="right-top" autoClose = "outside">
+            <div ngbDropdown class="dropdown d-flex" placement="right-top" autoClose = "outside" (openChange)="checkDropDown($event)">
               <button ngbDropdownToggle style="display: flex;" class="btn btn-primary buttonNoBorder inputWidth text-left" type="button" id="nestedDropdownButton" aria-expanded="false"> 
                 <span style="flex-grow: 1; text-align: left;">Flagged Materials</span>
                 <fa-icon icon="caret-right" style="margin-left: 10px;"></fa-icon>
@@ -443,6 +457,11 @@
 
 
     <div style="flex-grow: 1;"></div> 
+
+    <button id="start-tour" class="btn btn-danger " (click)="startTour()">
+      <fa-icon icon="circle-question"></fa-icon>
+    </button>
+
     
     <ng-template #submitTooltip>   
       <div class="tooltipTutorial">

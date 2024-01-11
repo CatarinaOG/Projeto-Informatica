@@ -24,7 +24,7 @@ export class FlaggedMaterialComponent implements OnInit {
   ascending = true;
   filters: IFilterOptions = new FilterOptions();
 
-  itemsPerPage = ITEMS_PER_PAGE;
+  itemsPerPage = 10;
   totalItems = 0;
   page = 1;
 
@@ -59,6 +59,8 @@ export class FlaggedMaterialComponent implements OnInit {
       });
   }
 
+  
+
   load(): void {
     this.loadFromBackendWithRouteInformations().subscribe({
       next: (res: EntityArrayResponseType) => {
@@ -67,12 +69,64 @@ export class FlaggedMaterialComponent implements OnInit {
     });
   }
 
+  receiveTableSize(event : any) : void{
+      this.itemsPerPage = event;
+      this.load()
+  }
+
   navigateToWithComponentValues(): void {
     this.handleNavigation(this.page, this.predicate, this.ascending, this.filters.filterOptions);
   }
 
   navigateToPage(page = this.page): void {
     this.handleNavigation(page, this.predicate, this.ascending, this.filters.filterOptions);
+  }
+
+  receiveStringEvent(event: any): void {
+    const filterName: string = event.filterName;
+    const filterValue: string = event.filterText;
+
+    if(filterValue === ''){
+      this.filters.removeAllFiltersName("material.contains");
+      this.filters.removeAllFiltersName("description.contains");
+    }
+
+    else{
+      switch (filterName){
+        case "Material Name":
+          this.filters.removeAllFiltersName("material.contains")
+          this.filters.addFilter("material.contains", filterValue);
+          break;
+        case "Material Description":
+          this.filters.removeAllFiltersName("description.contains")
+          this.filters.addFilter("description.contains",filterValue);
+          break;
+        case "Plant":
+          this.filters.removeAllFiltersName("plant.equals")
+          this.filters.addFilter("plant.equals",filterValue);
+          break;
+        case "MRP Controller":
+          this.filters.removeAllFiltersName("mrpController.contains")
+          this.filters.addFilter("mrpController.contains",filterValue);
+          break;
+      }
+    }
+    this.load();
+  }
+
+  filterABCClassification(event: any): void {
+    if(event.opType){
+      this.filters.addFilter("abcClassification.in", event.filterValue);
+    }
+    else{
+      this.filters.removeFilter("abcClassification.in", event.filterValue);
+    }
+  }
+
+  receiveFilterRemoveMessage (filter : IFilterOption) : void{
+    for(const value of filter.values){
+      this.filters.removeFilter(filter.name, value);
+    }
   }
 
   protected loadFromBackendWithRouteInformations(): Observable<EntityArrayResponseType> {

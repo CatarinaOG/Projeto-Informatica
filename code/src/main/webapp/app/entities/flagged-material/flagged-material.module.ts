@@ -5,14 +5,17 @@ import { FlaggedMaterialDetailComponent } from './detail/flagged-material-detail
 import { FlaggedMaterialUpdateComponent } from './update/flagged-material-update.component';
 import { FlaggedMaterialDeleteDialogComponent } from './delete/flagged-material-delete-dialog.component';
 import { FlaggedMaterialRoutingModule } from './route/flagged-material-routing.module';
+import { MaterialModule } from '../material/material.module';
+import { FlaggedOptionsBar } from './options-bar/flagged-optionsBar';
 
 @NgModule({
-  imports: [SharedModule, FlaggedMaterialRoutingModule],
+  imports: [SharedModule, FlaggedMaterialRoutingModule, MaterialModule],
   declarations: [
     FlaggedMaterialComponent,
     FlaggedMaterialDetailComponent,
     FlaggedMaterialUpdateComponent,
     FlaggedMaterialDeleteDialogComponent,
+    FlaggedOptionsBar,
   ],
 })
 export class FlaggedMaterialModule {}
