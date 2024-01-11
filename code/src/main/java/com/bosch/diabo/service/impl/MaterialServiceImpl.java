@@ -391,6 +391,8 @@ public class MaterialServiceImpl implements MaterialService {
 
     private Material parseMaterialXLSX(Row row, Map<String, Integer> headerMap){
         Material material = new Material();
+        LocalDate current = LocalDate.now();
+
         material.setMaterial(getStringCellValue(row, headerMap, file_material));
         material.setDescription(getStringCellValue(row, headerMap, file_material_description));
         material.setAbcClassification(ABCClassification.fromString(getStringCellValue(row, headerMap, file_abc_classification)));
@@ -412,7 +414,10 @@ public class MaterialServiceImpl implements MaterialService {
         setFlagInfo(material);
         material.setNewSAPSafetyStock(material.getProposedSST());
         material.setNewSAPSafetyTime(material.getProposedST());
-
+        material.setDatePreviousSS(current);
+        material.setDatePreviousST(current);
+        material.setPreviousSS(material.getProposedSST());
+        material.setPreviousST(material.getProposedST());
 
         if (headerMap.containsKey(file_mrp_controller)) {
             material.setMrpController(getStringCellValue(row, headerMap, file_mrp_controller));
@@ -523,6 +528,7 @@ public class MaterialServiceImpl implements MaterialService {
 
     public Material parseMaterialCSV(String[] header, String[] nextRecord) {
         Material material = new Material();
+        LocalDate current = LocalDate.now();
 
         material.setMaterial(nextRecord[getIndex(header, file_material)]);
         material.setDescription(nextRecord[getIndex(header, file_material_description)]);
@@ -545,7 +551,11 @@ public class MaterialServiceImpl implements MaterialService {
         setFlagInfo(material);
         material.setNewSAPSafetyStock(material.getProposedSST());
         material.setNewSAPSafetyTime(material.getProposedST());
-        
+        material.setDatePreviousSS(current);
+        material.setDatePreviousST(current);
+        material.setPreviousSS(material.getProposedSST());
+        material.setPreviousST(material.getProposedST());
+
         if(getIndex(header, file_mrp_controller) >= 0){
             material.setMrpController(nextRecord[getIndex(header, file_mrp_controller)]);
         }
@@ -606,6 +616,8 @@ public class MaterialServiceImpl implements MaterialService {
     public Material parseMaterialODS(Object[] row, Object[] header) {
         Material material = new Material();
 
+        LocalDate current = LocalDate.now();
+
         material.setMaterial(row[getIndexOBJ(header, file_material)].toString());
         material.setDescription(row[getIndexOBJ(header, file_material_description)].toString());
         material.setAbcClassification(ABCClassification.fromString(row[getIndexOBJ(header, file_abc_classification)].toString()));
@@ -627,7 +639,10 @@ public class MaterialServiceImpl implements MaterialService {
         setFlagInfo(material);
         material.setNewSAPSafetyStock(material.getProposedSST());
         material.setNewSAPSafetyTime(material.getProposedST());
-
+        material.setDatePreviousSS(current);
+        material.setDatePreviousST(current);
+        material.setPreviousSS(material.getProposedSST());
+        material.setPreviousST(material.getProposedST());
 
         if(getIndexOBJ(header, file_mrp_controller) >= 0){
             material.setMrpController(row[getIndexOBJ(header, file_mrp_controller)].toString());
