@@ -82,14 +82,14 @@ public interface MaterialService {
      *
      * @param file new file source
      */
-    void uploadFileReplace(File file);
+    void uploadFileReplace(File file) throws Exception;
     
     /**
      * Add new data or update current one from the source file
      *
      * @param file new file source
      */
-    void uploadFileAddOrUpdate(File file);
+    void uploadFileAddOrUpdate(File file) throws Exception;
     
     /**
      * Change materials given a list of the updated values

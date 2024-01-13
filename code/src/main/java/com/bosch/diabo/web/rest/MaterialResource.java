@@ -229,15 +229,13 @@ public class MaterialResource {
     public ResponseEntity<String> uploadFileReplace(@RequestParam("file") MultipartFile multipartFile) {
         log.debug("REST request to upload file");
         
-        File convertedFile = new File(uploadDirectory+multipartFile.getOriginalFilename());
-        
         try {
+            File convertedFile = new File(uploadDirectory+multipartFile.getOriginalFilename());
             multipartFile.transferTo(convertedFile);
             materialService.uploadFileReplace(convertedFile);
             convertedFile.delete();
         } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.status(500).body("Error uploading file: " + e.getMessage());
+            return ResponseEntity.status(400).body("Error uploading file: " + e.getMessage());
         }
         // Return a response indicating success or failure
         return ResponseEntity.ok("");
@@ -253,15 +251,14 @@ public class MaterialResource {
     public ResponseEntity<String> uploadFileAddOrUpdate(@RequestParam("file") MultipartFile multipartFile) {
         log.debug("REST request to upload file");
         
-        File convertedFile = new File(uploadDirectory+multipartFile.getOriginalFilename());
         
         try {
+            File convertedFile = new File(uploadDirectory+multipartFile.getOriginalFilename());
             multipartFile.transferTo(convertedFile);
             materialService.uploadFileAddOrUpdate(convertedFile);
             convertedFile.delete();
         } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.status(500).body("Error uploading file: " + e.getMessage());
+            return ResponseEntity.status(400).body("Error uploading file: " + e.getMessage());
         }
         // Return a response indicating success or failure
         return ResponseEntity.ok("");

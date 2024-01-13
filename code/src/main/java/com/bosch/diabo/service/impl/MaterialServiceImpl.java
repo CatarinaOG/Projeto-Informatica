@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.ArrayList;
 
+import org.apache.commons.math3.analysis.function.Exp;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
@@ -245,10 +246,6 @@ public class MaterialServiceImpl implements MaterialService {
         return materialRepository.findByMaterial(material);
     }
 
-    public void deleteAll() {
-        materialRepository.deleteAll();
-    }
-
     public void deleteEveryMaterialNotSaved(){
         materialRepository
             .findAll()
@@ -271,107 +268,95 @@ public class MaterialServiceImpl implements MaterialService {
 
 
     @Override
-    public void uploadFileReplace(File file){
+    public void uploadFileReplace(File file) throws Exception {
         log.debug("Request to new source file : {}", file.getName());   
+
+        String fileName = file.getName();
+        int lastDotIndex = fileName.lastIndexOf('.');
+        String fileExtension = lastDotIndex == -1 ? "" : fileName.substring(lastDotIndex + 1);
         
-        try{ 
-            
-            String fileName = file.getName();
-            int lastDotIndex = fileName.lastIndexOf('.');
-            String fileExtension = lastDotIndex == -1 ? "" : fileName.substring(lastDotIndex + 1);
-            
-            switch (fileExtension.toLowerCase()) {
-                case "xlsx":
-                    uploadFileXLSX(file);
-                    break;
-                case "csv":
-                    uploadFileCSV(file);
-                    break;
-                case "xls":
-                    uploadFileXLS(file);
-                    break;
-                case "ods":
-                    uploadFileODS(file);
-                    break;
-                default:
-                    break;
-            }
-
-            deleteEveryMaterialNotSaved();
-            setEveryMaterialToNotSave();
-
+        switch (fileExtension.toLowerCase()) {
+            case "xlsx":
+                uploadFileXLSX(file);
+                break;
+            case "csv":
+                uploadFileCSV(file);
+                break;
+            case "xls":
+                uploadFileXLS(file);
+                break;
+            case "ods":
+                uploadFileODS(file);
+                break;
+            default:
+                break;
         }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
+
+        deleteEveryMaterialNotSaved();
+        setEveryMaterialToNotSave();
 
     }
 
 
     @Override
-    public void uploadFileAddOrUpdate(File file){
-        try{ 
-            log.debug("Request to new source file : {}", file.getName());   
-            
-            String fileName = file.getName();
-            int lastDotIndex = fileName.lastIndexOf('.');
-            String fileExtension = lastDotIndex == -1 ? "" : fileName.substring(lastDotIndex + 1);
-            
-            switch (fileExtension.toLowerCase()) {
-                case "xlsx":
-                    uploadFileXLSX(file);
-                    break;
-                case "csv":
-                    uploadFileCSV(file);
-                    break;
-                case "xls":
-                    uploadFileXLS(file);
-                    break;
-                case "ods":
-                    uploadFileODS(file);
-                default:
-                    break;
-            }
+    public void uploadFileAddOrUpdate(File file) throws Exception{
 
-            setEveryMaterialToNotSave();
+        log.debug("Request to new source file : {}", file.getName());   
+        
+        String fileName = file.getName();
+        int lastDotIndex = fileName.lastIndexOf('.');
+        String fileExtension = lastDotIndex == -1 ? "" : fileName.substring(lastDotIndex + 1);
+        
+        switch (fileExtension.toLowerCase()) {
+            case "xlsx":
+                uploadFileXLSX(file);
+                break;
+            case "csv":
+                uploadFileCSV(file);
+                break;
+            case "xls":
+                uploadFileXLS(file);
+                break;
+            case "ods":
+                uploadFileODS(file);
+            default:
+                break;
         }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
+
+        setEveryMaterialToNotSave();
+
         
     }
 
 
     // ---------- > XLSX < ----------
 
-    public void uploadFileXLSX(File file){
+    public void uploadFileXLSX(File file) throws Exception{
 
-        try (FileInputStream fis = new FileInputStream(file);
-            Workbook workbook = new XSSFWorkbook(fis)) {
-            org.apache.poi.ss.usermodel.Sheet sheet = workbook.getSheetAt(0);
-            Iterator<Row> rowIterator = sheet.iterator();
-            Row headerRow = rowIterator.next();
+        FileInputStream fis = new FileInputStream(file);
+        Workbook workbook = new XSSFWorkbook(fis);
+        org.apache.poi.ss.usermodel.Sheet sheet = workbook.getSheetAt(0);
+        Iterator<Row> rowIterator = sheet.iterator();
+        Row headerRow = rowIterator.next();
 
-            // Get header names and their column indices
-            Map<String, Integer> headerMap = getHeaderMap(headerRow);
+        // Get header names and their column indices
+        Map<String, Integer> headerMap = getHeaderMap(headerRow);
 
-            while (rowIterator.hasNext() ) {
-                Row row = rowIterator.next();
-                Material material = parseMaterialXLSX(row, headerMap);
-                Optional<Material> opcMaterial = materialRepository.findByMaterial(material.getMaterial());
+        while (rowIterator.hasNext() ) {
+            Row row = rowIterator.next();
+            Material material = parseMaterialXLSX(row, headerMap);
+            Optional<Material> opcMaterial = materialRepository.findByMaterial(material.getMaterial());
 
-                if (opcMaterial.isPresent())
-                    updateByMaterialName(material);
-                else{
-                    material.setToSaveUpdates(true);                    
-                    save(material);
-                }
-
+            if (opcMaterial.isPresent())
+                updateByMaterialName(material);
+            else{
+                material.setToSaveUpdates(true);                    
+                save(material);
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+
         }
 
+        workbook.close();
     }
 
     private Map<String, Integer> getHeaderMap(Row headerRow) {
@@ -389,7 +374,7 @@ public class MaterialServiceImpl implements MaterialService {
     }
 
 
-    private Material parseMaterialXLSX(Row row, Map<String, Integer> headerMap){
+    private Material parseMaterialXLSX(Row row, Map<String, Integer> headerMap) throws Exception{
         Material material = new Material();
         LocalDate current = LocalDate.now();
 
@@ -440,7 +425,6 @@ public class MaterialServiceImpl implements MaterialService {
 
         Optional<FlaggedMaterial> flaggedMaterial = flaggedMaterialServiceImpl.findByMaterial(material.getMaterial());
         
-        
         if(flaggedMaterial.isPresent()){
             material.setFlagMaterial(true);
             material.setFlagExpirationDate(flaggedMaterial.get().getFlagExpirationDate());
@@ -452,20 +436,20 @@ public class MaterialServiceImpl implements MaterialService {
 
     }
     
-    private String getStringCellValue(Row row, Map<String, Integer> headerMap, String headerName) {
+    private String getStringCellValue(Row row, Map<String, Integer> headerMap, String headerName) throws Exception {
         int columnIndex = headerMap.get(headerName);
         Cell cell = row.getCell(columnIndex);
         return cell != null ? cell.getStringCellValue() : null;
     }
     
-    private float getFloatCellValue(Row row, Map<String, Integer> headerMap, String headerName) {
+    private float getFloatCellValue(Row row, Map<String, Integer> headerMap, String headerName) throws Exception {
         int columnIndex = headerMap.get(headerName);
         Cell cell = row.getCell(columnIndex);
 
         return cell != null ? (float) cell.getNumericCellValue() : 0.0f; // Set a default value if the cell is null
     }
     
-    private int getIntCellValue(Row row, Map<String, Integer> headerMap, String headerName) {
+    private int getIntCellValue(Row row, Map<String, Integer> headerMap, String headerName) throws Exception {
         int columnIndex = headerMap.get(headerName);
         Cell cell = row.getCell(columnIndex);
         return cell != null ? (int) cell.getNumericCellValue() : 0; // Set a default value if the cell is null
@@ -474,59 +458,56 @@ public class MaterialServiceImpl implements MaterialService {
 
     // ---------- > XLS < ----------
 
-    public void uploadFileXLS(File file) {
-        try (FileInputStream fis = new FileInputStream(file);
-            Workbook workbook = new HSSFWorkbook(fis)) {
-            org.apache.poi.ss.usermodel.Sheet sheet = workbook.getSheetAt(0);
-            Iterator<Row> rowIterator = sheet.iterator();
-            Row headerRow = rowIterator.next();
+    public void uploadFileXLS(File file) throws Exception {
+        
+        FileInputStream fis = new FileInputStream(file);
+        Workbook workbook = new HSSFWorkbook(fis);
+        org.apache.poi.ss.usermodel.Sheet sheet = workbook.getSheetAt(0);
+        Iterator<Row> rowIterator = sheet.iterator();
+        Row headerRow = rowIterator.next();
 
-            // Get header names and their column indices
-            Map<String, Integer> headerMap = getHeaderMap(headerRow);
+        // Get header names and their column indices
+        Map<String, Integer> headerMap = getHeaderMap(headerRow);
 
 
-            while (rowIterator.hasNext()) {
-                Row row = rowIterator.next();
-                Material material = parseMaterialXLSX(row, headerMap);
-                Optional<Material> opcMaterial = materialRepository.findByMaterial(material.getMaterial());
+        while (rowIterator.hasNext()) {
+            Row row = rowIterator.next();
+            Material material = parseMaterialXLSX(row, headerMap);
+            Optional<Material> opcMaterial = materialRepository.findByMaterial(material.getMaterial());
 
-                if (opcMaterial.isPresent())
-                    updateByMaterialName(material);
-                else{
-                    material.setToSaveUpdates(true);  
-                    save(material);
-                }
-
+            if (opcMaterial.isPresent())
+                updateByMaterialName(material);
+            else{
+                material.setToSaveUpdates(true);  
+                save(material);
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+
         }
+
+        workbook.close();
     }
 
 
     // ---------- > CSV < ----------
 
-    public void uploadFileCSV(File file) {
-        try (CSVReader csvReader = new CSVReader(new FileReader(file))) {
-            String[] header = csvReader.readNext(); // Assuming the first row is the header
+    public void uploadFileCSV(File file) throws Exception {
+        CSVReader csvReader = new CSVReader(new FileReader(file));
+        String[] header = csvReader.readNext(); // Assuming the first row is the header
 
-            String[] nextRecord;
+        String[] nextRecord;
 
-            while ((nextRecord = csvReader.readNext()) != null) {
-                Material material = parseMaterialCSV(header, nextRecord);
-                Optional<Material> opcMaterial = materialRepository.findByMaterial(material.getMaterial());
+        while ((nextRecord = csvReader.readNext()) != null) {
+            Material material = parseMaterialCSV(header, nextRecord);
+            Optional<Material> opcMaterial = materialRepository.findByMaterial(material.getMaterial());
 
-                if (opcMaterial.isPresent())
-                    updateByMaterialName(material);
-                else
-                    save(material);
-            }
-        } catch (IOException | CsvValidationException e) {
-            e.printStackTrace();
+            if (opcMaterial.isPresent())
+                updateByMaterialName(material);
+            else
+                save(material);
         }
     }
 
-    public Material parseMaterialCSV(String[] header, String[] nextRecord) {
+    public Material parseMaterialCSV(String[] header, String[] nextRecord) throws Exception {
         Material material = new Material();
         LocalDate current = LocalDate.now();
 
@@ -582,38 +563,35 @@ public class MaterialServiceImpl implements MaterialService {
         return -1; // Column not found
     }
 
-    private float parseNumericValue(String cellValue) {
+    private float parseNumericValue(String cellValue) throws Exception {
         String numericValue = cellValue.replaceAll("[^\\d.]", "");
         return Float.parseFloat(numericValue);
     }
 
     // -------------> ODS <-------------
 
-    public void uploadFileODS(File file) {
-        try {
-            com.github.miachm.sods.Sheet sheet = new SpreadSheet(file).getSheet(0);
-            Range data = sheet.getDataRange();
-            Object[][] materials = data.getValues();
-            // Assuming that the 1st row is the header
-            Object[] header = materials[0];
-            for (int i = 1; i < data.getNumRows(); i++) {
-                Material material = parseMaterialODS(materials[i], header);
-                Optional<Material> opcMaterial = materialRepository.findByMaterial(material.getMaterial());
+    public void uploadFileODS(File file) throws Exception {
 
-                if (opcMaterial.isPresent())
-                    updateByMaterialName(material);
-                else{
-                    material.setToSaveUpdates(true);  
-                    save(material);
-                }
+        com.github.miachm.sods.Sheet sheet = new SpreadSheet(file).getSheet(0);
+        Range data = sheet.getDataRange();
+        Object[][] materials = data.getValues();
+        // Assuming that the 1st row is the header
+        Object[] header = materials[0];
+        for (int i = 1; i < data.getNumRows(); i++) {
+            Material material = parseMaterialODS(materials[i], header);
+            Optional<Material> opcMaterial = materialRepository.findByMaterial(material.getMaterial());
+
+            if (opcMaterial.isPresent())
+                updateByMaterialName(material);
+            else{
+                material.setToSaveUpdates(true);  
+                save(material);
             }
-
-        } catch (IOException | IllegalArgumentException e) {
-            e.printStackTrace();
         }
+
     }
 
-    public Material parseMaterialODS(Object[] row, Object[] header) {
+    public Material parseMaterialODS(Object[] row, Object[] header) throws Exception {
         Material material = new Material();
 
         LocalDate current = LocalDate.now();
