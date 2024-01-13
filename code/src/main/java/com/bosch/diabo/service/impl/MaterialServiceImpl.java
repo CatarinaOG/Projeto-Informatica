@@ -633,6 +633,9 @@ public class MaterialServiceImpl implements MaterialService {
         if(getIndexOBJ(header, file_comment) >= 0){
            material.setComment(row[getIndexOBJ(header, file_comment)].toString());
         }
+        else{
+            material.setComment("");
+        }
 
 
         return material;

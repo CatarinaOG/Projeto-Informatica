@@ -57,7 +57,31 @@ public class MaterialResource {
 
     private final MaterialRepository materialRepository;
 
-     private final MaterialQueryService materialQueryService;
+    private final MaterialQueryService materialQueryService;
+
+    private final String file_material = "Material";
+    private final String file_material_description = "Material Description";
+    private final String file_abc_classification = "ABC Classification";
+    private final String file_avg_supplier_delay = "Avg. Supplier Delay";
+    private final String file_max_supplier_delay = "Max Supplier delay";
+    private final String file_service_level = "Service Level";
+    private final String file_current_sap_safety_stock = "Current SAP Safety Stock";
+    private final String file_proposed_sst = "Proposed SST";
+    private final String file_delta_sst = "Delta SST";
+    private final String file_current_sap_safety_time = "Current SAP Safety Time";
+    private final String file_proposed_st = "Proposed ST";
+    private final String file_delta_st = "delta ST";
+    private final String file_open_sap_md04 = "Open SAP md04";
+    private final String file_current_inventory_value = "Current Inventory Value";
+    private final String file_currency = "Currency";
+    private final String file_unit_cost = "Unit Cost";
+    private final String file_avg_demand = "Avg Demand";
+    private final String file_average_inventory_effect_after_change = "Average inventory effect after change";
+    private final String file_mrp_controller = "MRP Controller";
+    private final String file_plant = "Plant";
+    private final String file_comment = "Comment";
+    private final String file_new_sap_ss = "New SAP SS";
+    private final String file_new_sap_safety_time = "New SAP Safety Time";
 
     public MaterialResource(
         MaterialService materialService,
@@ -311,89 +335,76 @@ public class MaterialResource {
     }
 
     public byte[] generateExcelFile(List<Material> materials) throws IOException{
-        System.out.println("Creating Workbook");
         XSSFWorkbook workbook = new XSSFWorkbook();
         XSSFSheet sheet = workbook.createSheet("Data");
         // Add headers
         XSSFRow headerRow = sheet.createRow(0);
-        System.out.println("Adding Headers");
-        headerRow.createCell(0).setCellValue("ID");
-        headerRow.createCell(1).setCellValue("Material");
-        headerRow.createCell(2).setCellValue("Description");
-        headerRow.createCell(3).setCellValue("ABC Classification");
-        headerRow.createCell(4).setCellValue("Plant");
-        headerRow.createCell(5).setCellValue("MRP Controller");
-        headerRow.createCell(6).setCellValue("Average Supplier Delay");
-        headerRow.createCell(7).setCellValue("Maximum Supplier Delay");
-        headerRow.createCell(8).setCellValue("Service Level");
-        headerRow.createCell(9).setCellValue("Current SAP Safety Stock");
-        headerRow.createCell(10).setCellValue("Proposed SST");
-        headerRow.createCell(11).setCellValue("Delta SST");
-        headerRow.createCell(12).setCellValue("Current SAP Safety Time");
-        headerRow.createCell(13).setCellValue("Proposed ST");
-        headerRow.createCell(14).setCellValue("Delta ST");
-        headerRow.createCell(15).setCellValue("Open SAP md04");
-        headerRow.createCell(16).setCellValue("Current Inventory Value");
-        headerRow.createCell(17).setCellValue("Coin");
-        headerRow.createCell(18).setCellValue("Unit Cost");
-        headerRow.createCell(19).setCellValue("Coin");
-        headerRow.createCell(20).setCellValue("Average Demand");
-        headerRow.createCell(21).setCellValue("Average Inventory Effect After Change");
-        headerRow.createCell(22).setCellValue("New SAP Safety Stock");
-        headerRow.createCell(23).setCellValue("New SAP Safety Time");
-        headerRow.createCell(24).setCellValue("Flag");
-        headerRow.createCell(25).setCellValue("Comments");
+        headerRow.createCell(0).setCellValue(file_material);
+        headerRow.createCell(1).setCellValue(file_material_description);
+        headerRow.createCell(2).setCellValue(file_abc_classification);
+        headerRow.createCell(3).setCellValue(file_plant);
+        headerRow.createCell(4).setCellValue(file_mrp_controller);
+        headerRow.createCell(5).setCellValue(file_avg_supplier_delay);
+        headerRow.createCell(6).setCellValue(file_max_supplier_delay);
+        headerRow.createCell(7).setCellValue(file_service_level);
+        headerRow.createCell(8).setCellValue(file_current_sap_safety_stock);
+        headerRow.createCell(9).setCellValue(file_proposed_sst);
+        headerRow.createCell(10).setCellValue(file_delta_sst);
+        headerRow.createCell(11).setCellValue(file_current_sap_safety_time);
+        headerRow.createCell(12).setCellValue(file_proposed_st);
+        headerRow.createCell(13).setCellValue(file_delta_st);
+        headerRow.createCell(14).setCellValue(file_open_sap_md04);
+        headerRow.createCell(15).setCellValue(file_current_inventory_value);
+        headerRow.createCell(16).setCellValue(file_currency);
+        headerRow.createCell(17).setCellValue(file_unit_cost);
+        headerRow.createCell(18).setCellValue(file_avg_demand);
+        headerRow.createCell(19).setCellValue(file_average_inventory_effect_after_change);
+        headerRow.createCell(20).setCellValue(file_new_sap_ss);
+        headerRow.createCell(21).setCellValue(file_new_sap_safety_time);
+        headerRow.createCell(22).setCellValue("Flag");
+        headerRow.createCell(23).setCellValue(file_comment);
         // Add data 
-        System.out.println("Adding Data");
         int rowNum = 1;
         for (Material mat : materials) {
-            System.out.println("Added Material: " + rowNum);
             try{
                 XSSFRow row = sheet.createRow(rowNum++);
-                row.createCell(0).setCellValue(mat.getId());
-                row.createCell(1).setCellValue(mat.getMaterial());
-                row.createCell(2).setCellValue(mat.getDescription());
-                row.createCell(3).setCellValue(mat.getAbcClassification().toString());
-                row.createCell(4).setCellValue(mat.getPlant());
-                row.createCell(5).setCellValue(mat.getMrpController());
-                row.createCell(6).setCellValue(mat.getAvgSupplierDelay());
-                row.createCell(7).setCellValue(mat.getMaxSupplierDelay());
-                row.createCell(8).setCellValue(mat.getServiceLevel());
-                row.createCell(9).setCellValue(mat.getCurrSAPSafetyStock());
-                row.createCell(10).setCellValue(mat.getProposedSST());
-                row.createCell(11).setCellValue(mat.getDeltaSST());
-                row.createCell(12).setCellValue(mat.getCurrentSAPSafeTime());
-                row.createCell(13).setCellValue(mat.getProposedST());
-                row.createCell(14).setCellValue(mat.getDeltaST());
-                row.createCell(15).setCellValue(mat.getOpenSAPmd04());
-                row.createCell(16).setCellValue(mat.getCurrentInventoryValue());
-                row.createCell(17).setCellValue(mat.getCurrency().toString());
-                row.createCell(18).setCellValue(mat.getUnitCost());
-                row.createCell(19).setCellValue(mat.getCurrency().toString());
-                row.createCell(20).setCellValue(mat.getAvgDemand());
-                row.createCell(21).setCellValue(mat.getAvgInventoryEffectAfterChange());
-                row.createCell(22).setCellValue(mat.getNewSAPSafetyStock());
-                row.createCell(23).setCellValue(mat.getNewSAPSafetyTime());
+                row.createCell(0).setCellValue(mat.getMaterial());
+                row.createCell(1).setCellValue(mat.getDescription());
+                row.createCell(2).setCellValue(mat.getAbcClassification().toString());
+                row.createCell(3).setCellValue(mat.getPlant());
+                row.createCell(4).setCellValue(mat.getMrpController());
+                row.createCell(5).setCellValue(mat.getAvgSupplierDelay());
+                row.createCell(6).setCellValue(mat.getMaxSupplierDelay());
+                row.createCell(7).setCellValue(mat.getServiceLevel());
+                row.createCell(8).setCellValue(mat.getCurrSAPSafetyStock());
+                row.createCell(9).setCellValue(mat.getProposedSST());
+                row.createCell(10).setCellValue(mat.getDeltaSST());
+                row.createCell(11).setCellValue(mat.getCurrentSAPSafeTime());
+                row.createCell(12).setCellValue(mat.getProposedST());
+                row.createCell(13).setCellValue(mat.getDeltaST());
+                row.createCell(14).setCellValue(mat.getOpenSAPmd04());
+                row.createCell(15).setCellValue(mat.getCurrentInventoryValue());
+                row.createCell(16).setCellValue(mat.getCurrency().toString());
+                row.createCell(17).setCellValue(mat.getUnitCost());
+                row.createCell(18).setCellValue(mat.getAvgDemand());
+                row.createCell(19).setCellValue(mat.getAvgInventoryEffectAfterChange());
+                row.createCell(20).setCellValue(mat.getNewSAPSafetyStock());
+                row.createCell(21).setCellValue(mat.getNewSAPSafetyTime());
                 //if (mat.getFlagMaterial())
                 //    row.createCell(22).setCellValue((mat.getFlagExpirationDateString()));
                 //else
-                    row.createCell(24).setCellValue(false);
-                row.createCell(25).setCellValue(mat.getComment());
+                row.createCell(22).setCellValue(false);
+                row.createCell(23).setCellValue(mat.getComment());
             }
             catch (Exception e){
                 System.out.println("No Material for row " + rowNum);
             }
         }
-        System.out.println("Ended Adding DATA");
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         workbook.write(outputStream);
-        System.out.println("Workbook write outputstream");
         byte[] r = outputStream.toByteArray();
-        System.out.println("outputstream to byte []");
         outputStream.close();
-        System.out.println("OutputStream closed");
         workbook.close();
-        System.out.println("Workbook closed");
 
         return r;
     }
