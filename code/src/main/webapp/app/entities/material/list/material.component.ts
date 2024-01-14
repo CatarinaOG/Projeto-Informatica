@@ -1,5 +1,5 @@
-import { Component, OnDestroy, OnInit, ViewChild,ViewChildren,HostListener, QueryList, AfterViewInit } from '@angular/core';
-import { HttpHeaders } from '@angular/common/http';
+import { Component, OnDestroy, OnInit, ViewChild,ViewChildren,HostListener, QueryList, AfterViewInit, inject, TemplateRef } from '@angular/core';
+import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { ActivatedRoute, Data, ParamMap, Router } from '@angular/router';
 import { combineLatest, filter, Observable, Subscription, switchMap, tap } from 'rxjs';
 import { NgbModal, NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
@@ -21,12 +21,15 @@ import { currencyExchangeRates } from '../data/currencyExchangeRates';
 import { TourService } from '../service/tour.service';
 import { tourMessages } from '../data/tourMessage';
 
+
+
 @Component({
   selector: 'jhi-material',
   templateUrl: './material.component.html',
 })
 export class MaterialComponent implements OnInit {
 
+  @ViewChild('standardTpl') standardTpl: TemplateRef<any> | undefined;
   @ViewChild(NgbAlert, { static: false }) alert!: NgbAlert | undefined;
   @ViewChildren(NgbTooltip) tooltips!: QueryList<NgbTooltip>;
   @ViewChild('t2') linkTourTooltip!: NgbTooltip; 
@@ -593,13 +596,21 @@ export class MaterialComponent implements OnInit {
     if (typeReplace) {
       this.alertMessage="DATA BEING REPLACED, PLEASE AWAIT TABLE REFRESH"
       this.materialService.uploadFileReplace(file).subscribe({
-        next: () => {
-          this.alertMessage="n/a"
-          this.load()
-          this.alertMessage="DATA REPLACED SUCCESSFULLY"
-          this.autoDismissAlert();
-        },error(){
-          alert("Error Uploading File")
+        next: (response: HttpResponse<{}>) => {
+          // Check the response status or other properties as needed
+          console.log("response is ", response)
+          if (response.status === 200) {
+            this.alertMessage = "n/a";
+            this.load();
+            this.alertMessage = "DATA REPLACED SUCCESSFULLY";
+            this.autoDismissAlert();
+          } else {
+            // Handle other response statuses if needed
+            alert("Unexpected response status: " + response.status);
+          }
+        },
+        error: () => {
+          alert("Error Uploading File");
         }
       });
     }
