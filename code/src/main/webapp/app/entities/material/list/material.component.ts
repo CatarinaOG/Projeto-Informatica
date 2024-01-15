@@ -604,25 +604,28 @@ export class MaterialComponent implements OnInit {
             this.load();
             this.alertMessage = "DATA REPLACED SUCCESSFULLY";
             this.autoDismissAlert();
-          } else {
-            // Handle other response statuses if needed
-            alert("Unexpected response status: " + response.status);
           }
         },
         error: () => {
-          alert("Error Uploading File");
+          //alert("Error Uploading File");
+          this.alertMessage = "ERROR UPLOADING FILE";
+          this.autoDismissAlert();
         }
       });
     }
     else{
       this.alertMessage="DATA BEING ADDED, PLEASE AWAIT TABLE REFRESH"
       this.materialService.uploadFileAddOrUpdate(file).subscribe({
-        next: () => {
-          this.load()
-          this.alertMessage="DATA ADDED SUCCESSFULLY"
+        next: (response: HttpResponse<{}>) => {
+          if (response.status === 200) {
+            this.alertMessage = "n/a";
+            this.load();
+            this.alertMessage = "DATA REPLACED SUCCESSFULLY";
+            this.autoDismissAlert();
+          }
+        },error: () => {
+          this.alertMessage = "ERROR UPLOADING FILE";
           this.autoDismissAlert();
-        },error(){
-          alert("Error Uploading File")
         }
       });
     }
