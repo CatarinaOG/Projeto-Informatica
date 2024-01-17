@@ -14,7 +14,7 @@
     <div class="d-flex">
       <ng-container *ngFor="let filter of this.filters.filterOptions">
         <div  *ngIf = "filter.name.split('.')[0] !== 'id' && filter.name.split('.')[0] !== 'flagMaterial'" class="activeFilterCell">
-          <filter-display-cell [filter]=filter (filterRemoveMessage)="receiveFilterRemoveMessage($event)" ></filter-display-cell>
+          <jhi-filter-display-cell [filter]=filter (filterRemoveMessage)="receiveFilterRemoveMessage($event)" ></jhi-filter-display-cell>
         </div>
       </ng-container>
     </div>

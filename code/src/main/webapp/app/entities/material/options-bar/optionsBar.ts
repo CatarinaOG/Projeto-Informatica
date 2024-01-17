@@ -1,16 +1,15 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { AccountService } from 'app/core/auth/account.service';
 import { Authority } from 'app/config/authority.constants';
-import { Subscription } from 'rxjs';
 import { TourService } from '../service/tour.service';
 import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
 import { tourMessages } from '../data/tourMessage';
 
 @Component({
-  selector: 'options-bar',
+  selector: 'jhi-options-bar',
   templateUrl: './optionsBar.html',
 })
-export class OptionsBar implements OnInit {
+export class OptionsBarComponent implements OnInit {
 
   @Input() tableSize! : number;
   @Input() historyLength! : number; 
@@ -69,13 +68,13 @@ export class OptionsBar implements OnInit {
    }
 
    defineStepTour(value: number) : void {
-    if (this.filtersTooltip !== undefined) this.filtersTooltip.close()
-    if (this.fileTooltip !== undefined) this.fileTooltip.close()
-    if (this.tableSizeTooltip !== undefined) this.tableSizeTooltip.close()
-    if (this.undoTooltip !== undefined) this.undoTooltip.close()
-    if (this.undoToolTip2 !== undefined) this.undoToolTip2.close()
-    if (this.switchTooltip !== undefined) this.switchTooltip.close()
-    if (this.submitTooltip !== undefined) this.submitTooltip.close()
+    this.filtersTooltip.close()
+    this.fileTooltip.close()
+    this.tableSizeTooltip.close()
+    this.undoTooltip.close()
+    this.undoToolTip2.close()
+    this.switchTooltip.close()
+    this.submitTooltip.close()
 
     switch(value) {
       case 8: // filters dropdown menu
@@ -118,7 +117,7 @@ export class OptionsBar implements OnInit {
     }
   }
 
-  checkDropDown(open:boolean) {
+  checkDropDown(open:boolean): void {
     if(!open){
       for(const pair of this.filterStatus){
         this.filterStatus.set(pair[0], false);
@@ -133,7 +132,6 @@ export class OptionsBar implements OnInit {
     sendFileMessage(event : any,opType : boolean) : void {
         // true -> replace
         // false -> add
-        console.log("FILE OPERATION IS: ", opType)
         const file:File = event.target.files[0];
         this.fileEmitter.emit({opType,file})
     }

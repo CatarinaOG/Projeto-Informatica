@@ -3,10 +3,10 @@ import { NgbDateStruct, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 
 @Component({
-	selector: 'comment-modal',
+	selector: 'jhi-comment-modal',
 	templateUrl: './commentModal.html',
 })
-export class CommentModal  implements OnInit{
+export class CommentModalComponent  implements OnInit{
 	
     closeResult = '';
     comment : string | null | undefined = '';

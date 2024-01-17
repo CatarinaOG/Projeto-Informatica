@@ -3,13 +3,11 @@ import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
 
 
 @Component({
-	selector: 'tooltip-cell',
+	selector: 'jhi-tooltip-cell',
 	templateUrl: './tooltipCell.html',
 })
-export class ValueCell implements AfterViewInit, OnInit{
+export class ValueCellComponent implements AfterViewInit, OnInit{
     
-    
-	
     @Input() oldValue! : number | null | undefined;
     @Input() generatedValue!: number;
     @ViewChild('t') tooltip!: NgbTooltip;

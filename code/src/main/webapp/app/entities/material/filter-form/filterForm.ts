@@ -1,12 +1,12 @@
-import { Component, EventEmitter, OnInit, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 
 @Component({
-  selector: 'filter-form',
+  selector: 'jhi-filter-form',
   templateUrl: './filterForm.html',
 })
 
-export class FilterForm {
+export class FilterFormComponent {
 
   @Input() filterName!: string; 
   @Output() numberFilterEmitter = new EventEmitter<{filterName : string, operator : string, value : number}>();

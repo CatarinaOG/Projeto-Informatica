@@ -3,7 +3,7 @@
     <span style="font-weight: bold;">Materials</span>
   </h2>
 
-    <options-bar (stringEmitter) = "receiveStringEvent($event)" (fileEmitter) = "onFileSelected($event)" (textFilterEmitter) = "receiveTextFilter($event)" (abcFilterEmitter) = "filterABCClassif($event)" (numberFilterEmitter) ="receiveNumberFilter($event)" [historyLength] = "history.length" [changesListLength]="this.editCellService.getSize()" [unselectedLines] = "getUnselectedLines()" [currencyEUR] = "currencyEUR" [tableSize]="itemsPerPage" (currencyValEmitter) = "receiveCurrencyVal($event)" (dropdownNumberEmitter) = "receiveDropdownNumber($event)"></options-bar>
+    <jhi-options-bar (stringEmitter) = "receiveStringEvent($event)" (fileEmitter) = "onFileSelected($event)" (textFilterEmitter) = "receiveTextFilter($event)" (abcFilterEmitter) = "filterABCClassif($event)" (numberFilterEmitter) ="receiveNumberFilter($event)" [historyLength] = "history.length" [changesListLength]="this.editCellService.getSize()" [unselectedLines] = "getUnselectedLines()" [currencyEUR] = "currencyEUR" [tableSize]="itemsPerPage" (currencyValEmitter) = "receiveCurrencyVal($event)" (dropdownNumberEmitter) = "receiveDropdownNumber($event)"></jhi-options-bar>
     
     
     <div *ngIf="this.filters.filterOptions.length > 0" >
@@ -12,13 +12,13 @@
 
         <ng-container *ngFor="let filter of this.filters.filterOptions">
           <div  *ngIf = "filter.name.split('.')[0] !== 'id' && filter.name.split('.')[0] !== 'flagMaterial'" class="activeFilterCell">
-            <filter-display-cell [filter]=filter (filterRemoveMessage)="receiveFilterRemoveMessage($event)" ></filter-display-cell>
+            <jhi-filter-display-cell [filter]=filter (filterRemoveMessage)="receiveFilterRemoveMessage($event)" ></jhi-filter-display-cell>
           </div>
         </ng-container>
 
         <ng-container *ngFor="let specialFilter of this.specialFiltersList">
           <div  *ngIf = "specialFilter.isActive" class="activeFilterCell">
-            <filter-display-cell [specialFilter]="specialFilter" (spFilterRemoveMessage)="receiveSpFilterRemoveMessage($event)" ></filter-display-cell>
+            <jhi-filter-display-cell [specialFilter]="specialFilter" (spFilterRemoveMessage)="receiveSpFilterRemoveMessage($event)" ></jhi-filter-display-cell>
           </div>
         </ng-container>
 
@@ -56,23 +56,23 @@
         <tr class = "headerRow1">
 
           <th id="materialInfoHeaderId" [attr.colspan]="visibility.get('materialInfo') ? 5 : 1" class="tableHeader">
-            <header-group [headerName] = "'Material Info'" [visibilityValue] = "visibility.get('materialInfo')" groupName = 'materialInfo' (visibilityEmitter)="switchVisibility($event)"></header-group>
+            <jhi-header-group [headerName] = "'Material Info'" [visibilityValue] = "visibility.get('materialInfo')" groupName = 'materialInfo' (visibilityEmitter)="switchVisibility($event)"></jhi-header-group>
           </th>
 
           <th [attr.colspan]="visibility.get('supplierDelay') ? 2 : 1" class="tableHeader">
-            <header-group [headerName] = "'Supplier Delay Info'" [visibilityValue] = "visibility.get('supplierDelay')" groupName = 'supplierDelay' (visibilityEmitter)="switchVisibility($event)"></header-group>
+            <jhi-header-group [headerName] = "'Supplier Delay Info'" [visibilityValue] = "visibility.get('supplierDelay')" groupName = 'supplierDelay' (visibilityEmitter)="switchVisibility($event)"></jhi-header-group>
           </th>
 
           <th [attr.colspan]="visibility.get('safetyStock') ? 2 : 1" class="tableHeader">
-            <header-group [headerName] = "'Safety Stock Info'" [visibilityValue] = "visibility.get('safetyStock')" groupName = 'safetyStock' (visibilityEmitter)="switchVisibility($event)"></header-group>
+            <jhi-header-group [headerName] = "'Safety Stock Info'" [visibilityValue] = "visibility.get('safetyStock')" groupName = 'safetyStock' (visibilityEmitter)="switchVisibility($event)"></jhi-header-group>
           </th>
 
           <th [attr.colspan]="visibility.get('safetyTime') ? 2 : 1" class="tableHeader">
-            <header-group [headerName] = "'Safety Time Info'" [visibilityValue] = "visibility.get('materialInfo')" groupName = 'safetyTime' (visibilityEmitter)="switchVisibility($event)"></header-group>
+            <jhi-header-group [headerName] = "'Safety Time Info'" [visibilityValue] = "visibility.get('materialInfo')" groupName = 'safetyTime' (visibilityEmitter)="switchVisibility($event)"></jhi-header-group>
           </th>
 
           <th [attr.colspan]="visibility.get('inventory') ? 6 : 1" class="tableHeader">
-            <header-group [headerName] = "'Inventory'" [visibilityValue] = "visibility.get('inventory')" groupName = 'inventory' (visibilityEmitter)="switchVisibility($event)"></header-group>
+            <jhi-header-group [headerName] = "'Inventory'" [visibilityValue] = "visibility.get('inventory')" groupName = 'inventory' (visibilityEmitter)="switchVisibility($event)"></jhi-header-group>
           </th>
 
           <ng-template #editMenuTooltip>   
@@ -89,8 +89,8 @@
               </div>
           </ng-template>
           <th [attr.colspan]="visibility.get('edit') ? 5 : 1" class="tableHeader" >
-            <header-group [headerName] = "'Edit'" [visibilityValue] = "visibility.get('edit')" groupName = 'edit' (visibilityEmitter)="switchVisibility($event)"
-            id="editMenuTooltip" placement="left" [ngbTooltip]="editMenuTooltip"  #t3="ngbTooltip" triggers="manual" [autoClose]="false" tooltipClass="custom-tooltip" ></header-group>
+            <jhi-header-group [headerName] = "'Edit'" [visibilityValue] = "visibility.get('edit')" groupName = 'edit' (visibilityEmitter)="switchVisibility($event)"
+            id="editMenuTooltip" placement="left" [ngbTooltip]="editMenuTooltip"  #t3="ngbTooltip" triggers="manual" [autoClose]="false" tooltipClass="custom-tooltip" ></jhi-header-group>
           </th>
         </tr>
 
@@ -415,13 +415,13 @@
             </button> 
           </td>
 
-          <td  class ="inventory" [ngClass] ="editCellClasses('inventory')"><currency-tooltip-cell [value] = "currencyConverter(material.currentInventoryValue,material.currency)" [currency]="material.currency" [currencyEUR] = "currencyEUR" ></currency-tooltip-cell></td>
+          <td  class ="inventory" [ngClass] ="editCellClasses('inventory')"><jhi-currency-tooltip-cell [value] = "currencyConverter(material.currentInventoryValue,material.currency)" [currency]="material.currency" [currencyEUR] = "currencyEUR" ></jhi-currency-tooltip-cell></td>
           
 
           <td class ="inventory" [ngClass] ="editCellClasses('inventory')">{{ material.deltaSST }}</td>
           <td class ="inventory" [ngClass] ="editCellClasses('inventory')">{{ material.deltaST }}</td>
 
-          <td  class ="inventory headerRowEnd" [ngClass]="editCellClasses('inventory')"><currency-tooltip-cell [value]="currencyConverter(calcNewValueAvg(material),material.currency)" [currency]="material.currency" [currencyEUR]="currencyEUR" ></currency-tooltip-cell></td>
+          <td  class ="inventory headerRowEnd" [ngClass]="editCellClasses('inventory')"><jhi-currency-tooltip-cell [value]="currencyConverter(calcNewValueAvg(material),material.currency)" [currency]="material.currency" [currencyEUR]="currencyEUR" ></jhi-currency-tooltip-cell></td>
           <td *ngIf = "!visibility.get('inventory')" class="headerRowEnd">
             ...
           </td>
@@ -430,13 +430,13 @@
           
           <td class ="edit" [ngClass] ="editCellClasses('edit',material,'SST')" *ngIf="isEditable[0] === material.id && isEditable[1] === 0 " ><input class="inputWidth" type="number" min=0 [placeholder]="placeholderGeneratorNum('SST',material)" (change)="input($event,'newSST',material.id)"></td>
 
-          <td class ="edit" *ngIf="!(isEditable[0] === material.id && isEditable[1] === 0) " (click)="makeEditable(material.id,0)"  [ngClass] ="editCellClasses('edit',material,'SST')"><tooltip-cell [oldValue] = "material.newSAPSafetyStock" [generatedValue] = "cellValueGenerator('SST',material)"></tooltip-cell></td>
+          <td class ="edit" *ngIf="!(isEditable[0] === material.id && isEditable[1] === 0) " (click)="makeEditable(material.id,0)"  [ngClass] ="editCellClasses('edit',material,'SST')"><jhi-tooltip-cell [oldValue] = "material.newSAPSafetyStock" [generatedValue] = "cellValueGenerator('SST',material)"></jhi-tooltip-cell></td>
 
           
 
           <td class ="edit " [ngClass] ="editCellClasses('edit',material,'ST')" *ngIf="isEditable[0] === material.id && isEditable[1] === 1"><input class = "inputWidth" type="number" min=0 [placeholder]="placeholderGeneratorNum('ST',material)" (change)="input($event,'newST',material.id)"></td>
           
-          <td class ="edit" *ngIf="!(isEditable[0] === material.id && isEditable[1] === 1)" (click)="makeEditable(material.id,1)"  [ngClass] ="editCellClasses('edit',material,'ST')" ><tooltip-cell [oldValue] = "material.newSAPSafetyTime" [generatedValue] = "cellValueGenerator('ST',material)"></tooltip-cell></td>
+          <td class ="edit" *ngIf="!(isEditable[0] === material.id && isEditable[1] === 1)" (click)="makeEditable(material.id,1)"  [ngClass] ="editCellClasses('edit',material,'ST')" ><jhi-tooltip-cell [oldValue] = "material.newSAPSafetyTime" [generatedValue] = "cellValueGenerator('ST',material)"></jhi-tooltip-cell></td>
 
 
 
@@ -444,7 +444,7 @@
           <td class ="edit" [ngClass] ="editCellClasses('edit')"><input type="checkbox" [checked]="editCellService.getMaterial(material.id)?.selected" [disabled]="!editCellService.hasMaterial(material.id)" (click)="input($event,'selected',material.id)"></td>
 
           <td class ="edit" [ngClass] ="editCellClasses('edit')">
-            <flag-modal [material]="material" [checkFlag] = getFlagVal(material.id) (flagDateEmmiter) = "input($event, 'flag', material.id)"></flag-modal>
+            <jhi-flag-modal [material]="material" [checkFlag] = getFlagVal(material.id) (flagDateEmmiter) = "input($event, 'flag', material.id)"></jhi-flag-modal>
           </td>
 
 
@@ -454,7 +454,7 @@
               <span class="d-inline-block text-truncate" style="max-width: 200px;" placement="top" ngbTooltip="{{pickComment(material)}}" tooltipClass="setWidth">
                 {{((editCellService.hasMaterial(material.id) && (editCellService.getMaterial(material.id)?.newComment !== material.comment))) ? editCellService.getMaterial(material.id)?.newComment : material.comment }}
               </span>
-              <comment-modal [oldComment]="pickComment(material)" [id]="material.id" (commentEmitter)="receiveComment($event)"></comment-modal>
+              <jhi-comment-modal [oldComment]="pickComment(material)" [id]="material.id" (commentEmitter)="receiveComment($event)"></jhi-comment-modal>
             </div>
           </td>
 

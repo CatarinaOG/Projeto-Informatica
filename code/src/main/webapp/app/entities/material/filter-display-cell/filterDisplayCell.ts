@@ -3,11 +3,11 @@ import { IFilterOption } from 'app/shared/filter/filter.model';
 import { specialFilter } from '../specialFilters.model'
 
 @Component({
-  selector: 'filter-display-cell',
+  selector: 'jhi-filter-display-cell',
   templateUrl: './filterDisplayCell.html',
 })
 
-export class FilterDisplayCell implements OnInit {
+export class FilterDisplayCellComponent implements OnInit {
 
   @Input() filter!: IFilterOption; 
   @Input() specialFilter!: specialFilter; 

@@ -2,10 +2,10 @@ import { Component, inject, TemplateRef, Input, Output, EventEmitter } from '@an
 import { NgbDateStruct, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-	selector: 'submit-modal',
+	selector: 'jhi-submit-modal',
 	templateUrl: './submitModal.html',
 })
-export class SubmitModal{
+export class SubmitModalComponent {
 	
     closeResult = '';
 

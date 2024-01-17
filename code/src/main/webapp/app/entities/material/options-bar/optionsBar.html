@@ -99,8 +99,8 @@
                 </li> 
 
                 <li>
-                  <filter-form *ngIf="this.filterStatus.get('Avg Supplier Delay')" [filterName] = "'avgSupplierDelay'" (numberFilterEmitter)="receiveFilterNumberMessage($event)"></filter-form>
-                  <filter-form *ngIf="this.filterStatus.get('Max Supplier Delay')" [filterName] = "'maxSupplierDelay'" (numberFilterEmitter)="receiveFilterNumberMessage($event)"></filter-form>  
+                  <jhi-filter-form *ngIf="this.filterStatus.get('Avg Supplier Delay')" [filterName] = "'avgSupplierDelay'" (numberFilterEmitter)="receiveFilterNumberMessage($event)"></jhi-filter-form>
+                  <jhi-filter-form *ngIf="this.filterStatus.get('Max Supplier Delay')" [filterName] = "'maxSupplierDelay'" (numberFilterEmitter)="receiveFilterNumberMessage($event)"></jhi-filter-form>  
                 </li>
               </ul>
             </div>
@@ -123,8 +123,8 @@
                   </button>
                 </li>
                 <li>
-                  <filter-form *ngIf="this.filterStatus.get('Current SAP Safety Stock')" [filterName] = "'currSAPSafetyStock'" (numberFilterEmitter)="receiveFilterNumberMessage($event)"></filter-form>
-                  <filter-form *ngIf="this.filterStatus.get('Proposed Safety Stock')" [filterName] = "'proposedSST'" (numberFilterEmitter)="receiveFilterNumberMessage($event)"></filter-form>  
+                  <jhi-filter-form *ngIf="this.filterStatus.get('Current SAP Safety Stock')" [filterName] = "'currSAPSafetyStock'" (numberFilterEmitter)="receiveFilterNumberMessage($event)"></jhi-filter-form>
+                  <jhi-filter-form *ngIf="this.filterStatus.get('Proposed Safety Stock')" [filterName] = "'proposedSST'" (numberFilterEmitter)="receiveFilterNumberMessage($event)"></jhi-filter-form>  
                 </li>
               </ul>
             </div>
@@ -151,8 +151,8 @@
                   </button>
                 </li>
                 <li>
-                  <filter-form *ngIf="this.filterStatus.get('Current SAP Safety Time')" [filterName] = "'currentSAPSafeTime'" (numberFilterEmitter)="receiveFilterNumberMessage($event)"></filter-form>
-                  <filter-form *ngIf="this.filterStatus.get('Proposed Safety Time')" [filterName] = "'proposedST'" (numberFilterEmitter)="receiveFilterNumberMessage($event)"></filter-form>
+                  <jhi-filter-form *ngIf="this.filterStatus.get('Current SAP Safety Time')" [filterName] = "'currentSAPSafeTime'" (numberFilterEmitter)="receiveFilterNumberMessage($event)"></jhi-filter-form>
+                  <jhi-filter-form *ngIf="this.filterStatus.get('Proposed Safety Time')" [filterName] = "'proposedST'" (numberFilterEmitter)="receiveFilterNumberMessage($event)"></jhi-filter-form>
                 </li>
               </ul>
             </div>
@@ -191,11 +191,11 @@
                   </button>
                 </li>
                 <li>
-                  <filter-form *ngIf="this.filterStatus.get('Service Level')" [filterName] = "'serviceLevel'" (numberFilterEmitter)="receiveFilterNumberMessage($event)"></filter-form>
-                  <filter-form *ngIf="this.filterStatus.get('Current Inventory Value')" [filterName] = "'currentInventoryValue'" (numberFilterEmitter)="receiveFilterNumberMessage($event)"></filter-form> 
-                  <filter-form *ngIf="this.filterStatus.get('Avg Inv. Effect After Change')" [filterName] = "'avgInventoryEffectAfterChange'" (numberFilterEmitter)="receiveFilterNumberMessage($event)"></filter-form>   
-                  <filter-form *ngIf="this.filterStatus.get('Delta Safety Stock')" [filterName] = "'deltaSST'" (numberFilterEmitter)="receiveFilterNumberMessage($event)"></filter-form>  
-                  <filter-form *ngIf="this.filterStatus.get('Delta Safety Time')" [filterName] = "'deltaST'" (numberFilterEmitter)="receiveFilterNumberMessage($event)"></filter-form>
+                  <jhi-filter-form *ngIf="this.filterStatus.get('Service Level')" [filterName] = "'serviceLevel'" (numberFilterEmitter)="receiveFilterNumberMessage($event)"></jhi-filter-form>
+                  <jhi-filter-form *ngIf="this.filterStatus.get('Current Inventory Value')" [filterName] = "'currentInventoryValue'" (numberFilterEmitter)="receiveFilterNumberMessage($event)"></jhi-filter-form> 
+                  <jhi-filter-form *ngIf="this.filterStatus.get('Avg Inv. Effect After Change')" [filterName] = "'avgInventoryEffectAfterChange'" (numberFilterEmitter)="receiveFilterNumberMessage($event)"></jhi-filter-form>   
+                  <jhi-filter-form *ngIf="this.filterStatus.get('Delta Safety Stock')" [filterName] = "'deltaSST'" (numberFilterEmitter)="receiveFilterNumberMessage($event)"></jhi-filter-form>  
+                  <jhi-filter-form *ngIf="this.filterStatus.get('Delta Safety Time')" [filterName] = "'deltaST'" (numberFilterEmitter)="receiveFilterNumberMessage($event)"></jhi-filter-form>
                 </li>
               </ul>
             </div>
@@ -473,7 +473,7 @@
         </div>
     </div>
     </ng-template>
-    <submit-modal id="submitTooltipId" placement="left" [ngbTooltip]="submitTooltip" [autoClose]="false" #t14="ngbTooltip" triggers="manual" tooltipClass="custom-tooltip" (confirmEmmiter) = "submitToSAP($event)" [totalLines] = "changesListLength" [unselectedLines] = "this.unselectedLines"></submit-modal>
+    <jhi-submit-modal id="submitTooltipId" placement="left" [ngbTooltip]="submitTooltip" [autoClose]="false" #t14="ngbTooltip" triggers="manual" tooltipClass="custom-tooltip" (confirmEmmiter) = "submitToSAP($event)" [totalLines] = "changesListLength" [unselectedLines] = "this.unselectedLines"></jhi-submit-modal>
 
     
 

@@ -1,14 +1,14 @@
-import { Component, OnDestroy, OnInit, ViewChild,ViewChildren,HostListener, QueryList, AfterViewInit, inject, TemplateRef } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild,ViewChildren,HostListener, QueryList, AfterViewInit, TemplateRef } from '@angular/core';
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { ActivatedRoute, Data, ParamMap, Router } from '@angular/router';
-import { combineLatest, filter, Observable, Subscription, switchMap, tap } from 'rxjs';
+import { combineLatest, Observable, Subscription, switchMap, tap } from 'rxjs';
 import { NgbModal, NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
 import { IEditCell } from '../editCell.model'
 import { specialFilter } from '../specialFilters.model'
 import { IMaterial } from '../material.model';
 
 import { PAGE_HEADER, TOTAL_COUNT_RESPONSE_HEADER } from 'app/config/pagination.constants';
-import { ASC, DESC, SORT, ITEM_DELETED_EVENT, DEFAULT_SORT_DATA } from 'app/config/navigation.constants';
+import { ASC, DESC, SORT, DEFAULT_SORT_DATA } from 'app/config/navigation.constants';
 import { EntityArrayResponseType, MaterialService } from '../service/material.service';
 import { EditCellService } from '../service/editCell.service';
 import { FilterOptions, IFilterOptions, IFilterOption } from 'app/shared/filter/filter.model';
@@ -27,7 +27,7 @@ import { tourMessages } from '../data/tourMessage';
   selector: 'jhi-material',
   templateUrl: './material.component.html',
 })
-export class MaterialComponent implements OnInit {
+export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
 
   @ViewChild('standardTpl') standardTpl: TemplateRef<any> | undefined;
   @ViewChild(NgbAlert, { static: false }) alert!: NgbAlert | undefined;
@@ -577,9 +577,9 @@ export class MaterialComponent implements OnInit {
   }
 
   receiveNumberFilter(event : any) : void{
-    const filterName :string = event.filterName;
+    const filterName: string = event.filterName;
 
-    const submitName : string = filterName + "." + event.operator
+    const submitName: string = filterName + "." + event.operator
     this.filters.removeAllFiltersName(submitName)
     this.filters.addFilter(submitName, event.value);
 
@@ -598,7 +598,6 @@ export class MaterialComponent implements OnInit {
       this.materialService.uploadFileReplace(file).subscribe({
         next: (response: HttpResponse<{}>) => {
           // Check the response status or other properties as needed
-          console.log("response is ", response)
           if (response.status === 200) {
             this.alertMessage = "n/a";
             this.load();
@@ -607,7 +606,7 @@ export class MaterialComponent implements OnInit {
           }
         },
         error: () => {
-          //alert("Error Uploading File");
+          // alert("Error Uploading File");
           this.alertMessage = "ERROR UPLOADING FILE";
           this.autoDismissAlert();
         }

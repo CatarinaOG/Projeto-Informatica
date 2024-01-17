@@ -5,10 +5,10 @@ import { tourMessages } from '../data/tourMessage';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'header-group',
+  selector: 'jhi-header-group',
   templateUrl: './header-group.component.html',
 })
-export class HeaderGroup implements OnInit ,OnDestroy {
+export class HeaderGroupComponent implements OnInit ,OnDestroy {
 
   @Input() headerName!: string; 
   @Input() visibilityValue!: boolean | undefined;

@@ -1,11 +1,10 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { NgbDropdown } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'jhi-flagged-options-bar',
   templateUrl: './flagged-optionsBar.html',
 })
-export class FlaggedOptionsBar  {
+export class FlaggedOptionsBarComponent  {
 
   @Input() tableSize! : number;
   @Output() textFilterEmitter = new EventEmitter<{filterName : string, filterText : string}>();
@@ -22,8 +21,6 @@ export class FlaggedOptionsBar  {
   ]);
   
   index = 0;
-  
-  constructor() {}
 
   changeStatus(name : string) : void {
     for(const pair of this.filterStatus){
@@ -40,7 +37,7 @@ export class FlaggedOptionsBar  {
     return res
   }
 
-  checkDropDown(open:boolean) {
+  checkDropDown(open:boolean): void {
     if(!open){
       for(const pair of this.filterStatus){
         this.filterStatus.set(pair[0], false);

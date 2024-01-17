@@ -5,10 +5,10 @@ import { EditCellService } from '../service/editCell.service'
 import { IEditCell } from '../editCell.model';
 
 @Component({
-	selector: 'flag-modal',
+	selector: 'jhi-flag-modal',
 	templateUrl: './flagModal.html',
 })
-export class FlagModal  implements OnInit{
+export class FlagModalComponent implements OnInit{
 	
     closeResult = '';
 	current = new Date();
@@ -21,7 +21,7 @@ export class FlagModal  implements OnInit{
     @Input() material!: IMaterial;
 	@Input() checkFlag! : boolean;
 	@Output() flagDateEmmiter = new EventEmitter<{flag : boolean , date : string , id : number}>();
-	date : string = "" ; 
+	date = "" ; 
 	// checkFlag : boolean = false;
 	disabled = true;
 	editedMaterial: IEditCell | undefined;
@@ -43,7 +43,7 @@ export class FlagModal  implements OnInit{
   
 	definePlaceholder() : string {
 		let returnValue = this.material.flagExpirationDate?.toString() ?? "";
-		if(this.editedMaterial !== null && this.editedMaterial !== undefined){
+		if(this.editedMaterial !== undefined){
 			returnValue = this.editedMaterial.dateFlag
 		}
 		this.defineModel(returnValue)
@@ -69,7 +69,6 @@ export class FlagModal  implements OnInit{
 	}
 	
 	open(content: TemplateRef<any>): void {
-		
 		this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then(
 			(result) => {
 				this.closeResult = `Closed with: ${result}`;

@@ -47,14 +47,11 @@ export class EditCellService {
 
     
     mapToSubmit(): IEditCell[] {
-
         const list : IEditCell[] = [];
-
         this.materials.forEach((value) => {
-            console.log("Value is:" , value)
-        if (value.selected){
-            list.push(value);
-        }
+            if (value.selected) {
+                list.push(value);
+            }
         })
         return list
     }
