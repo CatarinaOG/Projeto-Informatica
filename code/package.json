@@ -5,7 +5,7 @@
   "description": "Description for diabo",
   "license": "UNLICENSED",
   "scripts": {
-    "app:start": "./mvnw",  
+    "app:start": "./mvnw",
     "compodoc": "npx compodoc -p tsconfig.doc.json",
     "backend:build-cache": "./mvnw dependency:go-offline",
     "backend:debug": "./mvnw -Dspring-boot.run.jvmArguments=\"-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8000\"",
@@ -79,6 +79,7 @@
     "@angular/platform-browser": "14.2.0",
     "@angular/platform-browser-dynamic": "14.2.0",
     "@angular/router": "14.2.0",
+    "@compodoc/compodoc": "^1.1.23",
     "@fortawesome/angular-fontawesome": "0.11.1",
     "@fortawesome/fontawesome-svg-core": "6.2.0",
     "@fortawesome/free-solid-svg-icons": "6.2.0",
