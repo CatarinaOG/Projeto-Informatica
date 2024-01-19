@@ -16,17 +16,34 @@ import { FilterOptions, IFilterOptions, IFilterOption } from 'app/shared/filter/
   templateUrl: './flagged-material.component.html',
 })
 export class FlaggedMaterialComponent implements OnInit {
+
+  /**
+   * Group of Flagged Materials present in the system
+   * @type {IFlaggedMaterial[]}
+   */
   flaggedMaterials?: IFlaggedMaterial[];
   isLoading = false;
 
   predicate = 'id';
   ascending = true;
+
+  /**
+   * Table filters active in the moment
+   * @type {IFilterOptions}
+   */
   filters: IFilterOptions = new FilterOptions();
 
+  /**
+   * Flagged Materials per page in Table
+   * @type {number}
+   */
   itemsPerPage = 10;
   totalItems = 0;
   page = 1;
 
+  /**
+   * @constructor
+   */
   constructor(
     protected flaggedMaterialService: FlaggedMaterialService,
     protected activatedRoute: ActivatedRoute,
@@ -51,6 +68,10 @@ export class FlaggedMaterialComponent implements OnInit {
     });
   }
 
+  /**
+   * Receives the event of Table Size chosen by the user in a child component
+   * @param {any} event - Event from the Child Component, containing the user option
+   */
   receiveTableSize(event : any) : void{
       this.itemsPerPage = event;
       this.load()

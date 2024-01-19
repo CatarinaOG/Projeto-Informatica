@@ -5,7 +5,8 @@
   "description": "Description for diabo",
   "license": "UNLICENSED",
   "scripts": {
-    "app:start": "./mvnw",
+    "app:start": "./mvnw",  
+    "compodoc": "npx compodoc -p tsconfig.doc.json",
     "backend:build-cache": "./mvnw dependency:go-offline",
     "backend:debug": "./mvnw -Dspring-boot.run.jvmArguments=\"-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8000\"",
     "backend:doc:test": "./mvnw -ntp javadoc:javadoc --batch-mode",
@@ -86,6 +87,7 @@
     "bootstrap": "5.2.0",
     "dayjs": "1.11.5",
     "ngx-infinite-scroll": "14.0.0",
+    "ngx-tour": "^0.0.1",
     "ngx-webstorage": "10.0.1",
     "rxjs": "7.5.6",
     "tslib": "2.4.0",

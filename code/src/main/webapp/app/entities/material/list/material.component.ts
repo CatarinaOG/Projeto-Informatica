@@ -29,27 +29,86 @@ import { tourMessages } from '../data/tourMessage';
 })
 export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
 
-  @ViewChild('standardTpl') standardTpl: TemplateRef<any> | undefined;
-  @ViewChild(NgbAlert, { static: false }) alert!: NgbAlert | undefined;
-  @ViewChildren(NgbTooltip) tooltips!: QueryList<NgbTooltip>;
+
+  //@ViewChild(NgbAlert, { static: false }) alert!: NgbAlert | undefined;
+  
+  //@ViewChildren(NgbTooltip) tooltips!: QueryList<NgbTooltip>;
+
+  /**
+   * Reference to the Tooltip used to showcase the Link step of the guided tour
+   * @type {NgbTooltip}
+   */
   @ViewChild('t2') linkTourTooltip!: NgbTooltip; 
+
+  /**
+   * Reference to the Tooltip used to showcase the Edit Menu step of the guided tour
+   * @type {NgbTooltip}
+   */
   @ViewChild('t3') editMenuTooltip!: NgbTooltip; 
-  @ViewChild('t4') sapSafetyStockToolTip!: NgbTooltip; 
-  @ViewChild('t5') selectEntryTooltip!: NgbTooltip; 
+
+  /**
+   * Reference to the Tooltip used to showcase the SAP Safety Stock cell step of the guided tour
+   * @type {NgbTooltip}
+   */
+  @ViewChild('t4') sapSafetyStockToolTip!: NgbTooltip;
+  
+  /**
+   * Reference to the Tooltip used to showcase the step regarding the line selection of the guided tour
+   * @type {NgbTooltip}
+   */
+  @ViewChild('t5') selectEntryTooltip!: NgbTooltip;
+  
+  /**
+   * Reference to the Tooltip used to showcase the flagging step of the guided tour
+   * @type {NgbTooltip}
+   */
   @ViewChild('t6') flagTooltip!: NgbTooltip; 
+
+  /**
+   * Reference to the Tooltip used to showcase the step regarding the commenting of a Material of the guided tour
+   * @type {NgbTooltip}
+   */
   @ViewChild('t7') commentTooltip!: NgbTooltip; 
 
+  /**
+   * Property where the current Alert Message is stored. Starts as "n/a", which means it's not active and will change whenever it is necessary to alert the user.
+   * @type {string}
+   */
   alertMessage = "n/a";
 
+  /**
+   * Property that stores the current Materials being shown to the user in the table page.
+   * @type {IMaterial[]}
+   */
   materials?: IMaterial[];
-  isLoading = false;
+
+  /**
+   * Property the current number of allowed reversable steps in the Undo.
+   * Default value is 10
+   * @type {number}
+   */
   undoSize = 10;
-  predicate = 'id';
-  ascending = true;
+
+  /**
+   * Property that stores the current filter options applied.
+   * @type {IFilterOptions}
+   */
   filters: IFilterOptions = new FilterOptions();
+
+  /**
+   * Property that stores the current state of the "Currency" switch. Default value is true
+   * @type {boolean}
+   */
   currencyEUR  = true;
 
+  
   history: IHistoryEntity[] = [];
+
+
+  predicate = 'id';
+  ascending = true;
+  isLoading = false;
+
   subscription: Subscription = new Subscription();
 
   itemsPerPage = 10;
@@ -140,6 +199,12 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
+
+  /**
+ * This function decides what tooltip of the page to activate/show
+ * @param {number} value  the number of the step of the tour currently activated
+ * 
+ */
   defineStepTour(value: number) : void {
     this.linkTourTooltip.close()
     this.editMenuTooltip.close()

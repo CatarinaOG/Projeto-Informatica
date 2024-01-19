@@ -1,0 +1,15 @@
+{
+    "include": ["src/main/webapp/**/*.ts"],
+    "exclude": [
+        "src/test.ts",
+        "src/main/webapp/app/account/**/*.ts",
+        "src/main/webapp/app/admin/**/*.ts", 
+        "src/main/webapp/app/config/**/*.ts", 
+        "src/main/webapp/app/core/**/*.ts", 
+        "src/main/webapp/app/home/**/*.ts",  
+        "src/main/webapp/app/layout/**/*.ts",  
+        "src/main/webapp/app/login/**/*.ts",  
+        "src/main/webapp/app/shared/**/*.ts",  
+        "src/**/*.spec.ts", 
+        "src/app/file-to-exclude.ts"]
+}

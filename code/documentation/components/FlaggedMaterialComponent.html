@@ -1,0 +1,2195 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>diabo documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avaoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+
+               if ($darkModeToggles.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
+            <a href="../" class="navbar-brand">diabo documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  FlaggedMaterialComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#templateData" class="nav-link"
+                role="tab" id="templateData-tab" data-bs-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/main/webapp/app/entities/flagged-material/list/flagged-material.component.ts</code>
+</p>
+
+
+
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                <code>OnInit</code>
+    </p>
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>jhi-flagged-material</code></td>
+            </tr>
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./flagged-material.component.html</code></td>
+            </tr>
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#ascending" >ascending</a>
+                            </li>
+                            <li>
+                                <a href="#filters" >filters</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Optional</span>
+                                <a href="#flaggedMaterials" >flaggedMaterials</a>
+                            </li>
+                            <li>
+                                <a href="#isLoading" >isLoading</a>
+                            </li>
+                            <li>
+                                <a href="#itemsPerPage" >itemsPerPage</a>
+                            </li>
+                            <li>
+                                <a href="#page" >page</a>
+                            </li>
+                            <li>
+                                <a href="#predicate" >predicate</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#router" >router</a>
+                            </li>
+                            <li>
+                                <a href="#totalItems" >totalItems</a>
+                            </li>
+                            <li>
+                                <a href="#trackId" >trackId</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Protected</span>
+                                <a href="#fillComponentAttributeFromRoute" >fillComponentAttributeFromRoute</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Protected</span>
+                                <a href="#fillComponentAttributesFromResponseBody" >fillComponentAttributesFromResponseBody</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Protected</span>
+                                <a href="#fillComponentAttributesFromResponseHeader" >fillComponentAttributesFromResponseHeader</a>
+                            </li>
+                            <li>
+                                <a href="#filterABCClassification" >filterABCClassification</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Protected</span>
+                                <a href="#getSortQueryParam" >getSortQueryParam</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Protected</span>
+                                <a href="#handleNavigation" >handleNavigation</a>
+                            </li>
+                            <li>
+                                <a href="#load" >load</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Protected</span>
+                                <a href="#loadFromBackendWithRouteInformations" >loadFromBackendWithRouteInformations</a>
+                            </li>
+                            <li>
+                                <a href="#navigateToPage" >navigateToPage</a>
+                            </li>
+                            <li>
+                                <a href="#navigateToWithComponentValues" >navigateToWithComponentValues</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit" >ngOnInit</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Protected</span>
+                                <a href="#onResponseSuccess" >onResponseSuccess</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Protected</span>
+                                <a href="#queryBackend" >queryBackend</a>
+                            </li>
+                            <li>
+                                <a href="#receiveFilterRemoveMessage" >receiveFilterRemoveMessage</a>
+                            </li>
+                            <li>
+                                <a href="#receiveStringEvent" >receiveStringEvent</a>
+                            </li>
+                            <li>
+                                <a href="#receiveTableSize" >receiveTableSize</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(flaggedMaterialService: <a href="../injectables/FlaggedMaterialService.html" target="_self">FlaggedMaterialService</a>, activatedRoute: ActivatedRoute, router: Router, modalService: NgbModal)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="28" class="link-to-prism">src/main/webapp/app/entities/flagged-material/list/flagged-material.component.ts:28</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>flaggedMaterialService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/FlaggedMaterialService.html" target="_self" >FlaggedMaterialService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>activatedRoute</td>
+                                                  
+                                                        <td>
+                                                                    <code>ActivatedRoute</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>router</td>
+                                                  
+                                                        <td>
+                                                                    <code>Router</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>modalService</td>
+                                                  
+                                                        <td>
+                                                                    <code>NgbModal</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+
+
+
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="fillComponentAttributeFromRoute"></a>
+                    <span class="name">
+                            <span class="modifier">Protected</span>
+                        <span ><b>fillComponentAttributeFromRoute</b></span>
+                        <a href="#fillComponentAttributeFromRoute"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>fillComponentAttributeFromRoute(params: ParamMap, data: Data)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="121"
+                                    class="link-to-prism">src/main/webapp/app/entities/flagged-material/list/flagged-material.component.ts:121</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>params</td>
+                                            <td>
+                                                        <code>ParamMap</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>data</td>
+                                            <td>
+                                                        <code>Data</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="fillComponentAttributesFromResponseBody"></a>
+                    <span class="name">
+                            <span class="modifier">Protected</span>
+                        <span ><b>fillComponentAttributesFromResponseBody</b></span>
+                        <a href="#fillComponentAttributesFromResponseBody"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>fillComponentAttributesFromResponseBody(data: <a href="../interfaces/IFlaggedMaterial.html" target="_self">IFlaggedMaterial[] | null</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="136"
+                                    class="link-to-prism">src/main/webapp/app/entities/flagged-material/list/flagged-material.component.ts:136</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>data</td>
+                                            <td>
+                                                            <code><a href="../interfaces/IFlaggedMaterial.html" target="_self" >IFlaggedMaterial[] | null</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/IFlaggedMaterial.html" target="_self" >IFlaggedMaterial[]</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="fillComponentAttributesFromResponseHeader"></a>
+                    <span class="name">
+                            <span class="modifier">Protected</span>
+                        <span ><b>fillComponentAttributesFromResponseHeader</b></span>
+                        <a href="#fillComponentAttributesFromResponseHeader"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>fillComponentAttributesFromResponseHeader(headers: HttpHeaders)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="140"
+                                    class="link-to-prism">src/main/webapp/app/entities/flagged-material/list/flagged-material.component.ts:140</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>headers</td>
+                                            <td>
+                                                        <code>HttpHeaders</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="filterABCClassification"></a>
+                    <span class="name">
+                        <span ><b>filterABCClassification</b></span>
+                        <a href="#filterABCClassification"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>filterABCClassification(event: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="99"
+                                    class="link-to-prism">src/main/webapp/app/entities/flagged-material/list/flagged-material.component.ts:99</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>event</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getSortQueryParam"></a>
+                    <span class="name">
+                            <span class="modifier">Protected</span>
+                        <span ><b>getSortQueryParam</b></span>
+                        <a href="#getSortQueryParam"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getSortQueryParam(predicate, ascending)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="180"
+                                    class="link-to-prism">src/main/webapp/app/entities/flagged-material/list/flagged-material.component.ts:180</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                            <td>Optional</td>
+                                                <td>Default value</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>predicate</td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+                                            <td>
+                                                    <code>this.predicate</code>
+                                            </td>
+
+                                        </tr>
+                                        <tr>
+                                                <td>ascending</td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+                                            <td>
+                                                    <code>this.ascending</code>
+                                            </td>
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>string[]</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="handleNavigation"></a>
+                    <span class="name">
+                            <span class="modifier">Protected</span>
+                        <span ><b>handleNavigation</b></span>
+                        <a href="#handleNavigation"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>handleNavigation(page, predicate?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, ascending?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>, filterOptions?: IFilterOption[])</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="163"
+                                    class="link-to-prism">src/main/webapp/app/entities/flagged-material/list/flagged-material.component.ts:163</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Default value</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>page</td>
+                                            <td>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+                                            <td>
+                                                    <code>this.page</code>
+                                            </td>
+
+                                        </tr>
+                                        <tr>
+                                                <td>predicate</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    Yes
+                                            </td>
+
+                                            <td>
+                                            </td>
+
+                                        </tr>
+                                        <tr>
+                                                <td>ascending</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                            </td>
+
+                                            <td>
+                                                    Yes
+                                            </td>
+
+                                            <td>
+                                            </td>
+
+                                        </tr>
+                                        <tr>
+                                                <td>filterOptions</td>
+                                            <td>
+                                                        <code>IFilterOption[]</code>
+                                            </td>
+
+                                            <td>
+                                                    Yes
+                                            </td>
+
+                                            <td>
+                                            </td>
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="load"></a>
+                    <span class="name">
+                        <span ><b>load</b></span>
+                        <a href="#load"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>load()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="46"
+                                    class="link-to-prism">src/main/webapp/app/entities/flagged-material/list/flagged-material.component.ts:46</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="loadFromBackendWithRouteInformations"></a>
+                    <span class="name">
+                            <span class="modifier">Protected</span>
+                        <span ><b>loadFromBackendWithRouteInformations</b></span>
+                        <a href="#loadFromBackendWithRouteInformations"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>loadFromBackendWithRouteInformations()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="114"
+                                    class="link-to-prism">src/main/webapp/app/entities/flagged-material/list/flagged-material.component.ts:114</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Observable&lt;EntityArrayResponseType&gt;</code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="navigateToPage"></a>
+                    <span class="name">
+                        <span ><b>navigateToPage</b></span>
+                        <a href="#navigateToPage"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>navigateToPage(page)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="63"
+                                    class="link-to-prism">src/main/webapp/app/entities/flagged-material/list/flagged-material.component.ts:63</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                            <td>Optional</td>
+                                                <td>Default value</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>page</td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+                                            <td>
+                                                    <code>this.page</code>
+                                            </td>
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="navigateToWithComponentValues"></a>
+                    <span class="name">
+                        <span ><b>navigateToWithComponentValues</b></span>
+                        <a href="#navigateToWithComponentValues"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>navigateToWithComponentValues()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="59"
+                                    class="link-to-prism">src/main/webapp/app/entities/flagged-material/list/flagged-material.component.ts:59</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <span ><b>ngOnInit</b></span>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="39"
+                                    class="link-to-prism">src/main/webapp/app/entities/flagged-material/list/flagged-material.component.ts:39</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onResponseSuccess"></a>
+                    <span class="name">
+                            <span class="modifier">Protected</span>
+                        <span ><b>onResponseSuccess</b></span>
+                        <a href="#onResponseSuccess"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>onResponseSuccess(response: <a href="../undefineds/EntityArrayResponseType.html" target="_self">EntityArrayResponseType</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="130"
+                                    class="link-to-prism">src/main/webapp/app/entities/flagged-material/list/flagged-material.component.ts:130</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>response</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/typealiases.html#EntityArrayResponseType" target="_self" >EntityArrayResponseType</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="queryBackend"></a>
+                    <span class="name">
+                            <span class="modifier">Protected</span>
+                        <span ><b>queryBackend</b></span>
+                        <a href="#queryBackend"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>queryBackend(page?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, predicate?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, ascending?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>, filterOptions?: IFilterOption[])</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="144"
+                                    class="link-to-prism">src/main/webapp/app/entities/flagged-material/list/flagged-material.component.ts:144</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>page</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    Yes
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>predicate</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    Yes
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>ascending</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                            </td>
+
+                                            <td>
+                                                    Yes
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>filterOptions</td>
+                                            <td>
+                                                        <code>IFilterOption[]</code>
+                                            </td>
+
+                                            <td>
+                                                    Yes
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Observable&lt;EntityArrayResponseType&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="receiveFilterRemoveMessage"></a>
+                    <span class="name">
+                        <span ><b>receiveFilterRemoveMessage</b></span>
+                        <a href="#receiveFilterRemoveMessage"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>receiveFilterRemoveMessage(filter: IFilterOption)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="108"
+                                    class="link-to-prism">src/main/webapp/app/entities/flagged-material/list/flagged-material.component.ts:108</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>filter</td>
+                                            <td>
+                                                        <code>IFilterOption</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="receiveStringEvent"></a>
+                    <span class="name">
+                        <span ><b>receiveStringEvent</b></span>
+                        <a href="#receiveStringEvent"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>receiveStringEvent(event: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="67"
+                                    class="link-to-prism">src/main/webapp/app/entities/flagged-material/list/flagged-material.component.ts:67</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>event</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="receiveTableSize"></a>
+                    <span class="name">
+                        <span ><b>receiveTableSize</b></span>
+                        <a href="#receiveTableSize"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>receiveTableSize(event: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="54"
+                                    class="link-to-prism">src/main/webapp/app/entities/flagged-material/list/flagged-material.component.ts:54</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>event</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ascending"></a>
+                    <span class="name">
+                        <span ><b>ascending</b></span>
+                        <a href="#ascending"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>true</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="23" class="link-to-prism">src/main/webapp/app/entities/flagged-material/list/flagged-material.component.ts:23</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="filters"></a>
+                    <span class="name">
+                        <span ><b>filters</b></span>
+                        <a href="#filters"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>IFilterOptions</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new FilterOptions()</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="24" class="link-to-prism">src/main/webapp/app/entities/flagged-material/list/flagged-material.component.ts:24</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="flaggedMaterials"></a>
+                    <span class="name">
+                            <span class="modifier">Optional</span>
+                        <span ><b>flaggedMaterials</b></span>
+                        <a href="#flaggedMaterials"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/IFlaggedMaterial.html" target="_self" >IFlaggedMaterial[]</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="19" class="link-to-prism">src/main/webapp/app/entities/flagged-material/list/flagged-material.component.ts:19</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isLoading"></a>
+                    <span class="name">
+                        <span ><b>isLoading</b></span>
+                        <a href="#isLoading"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="20" class="link-to-prism">src/main/webapp/app/entities/flagged-material/list/flagged-material.component.ts:20</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="itemsPerPage"></a>
+                    <span class="name">
+                        <span ><b>itemsPerPage</b></span>
+                        <a href="#itemsPerPage"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>10</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="26" class="link-to-prism">src/main/webapp/app/entities/flagged-material/list/flagged-material.component.ts:26</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="page"></a>
+                    <span class="name">
+                        <span ><b>page</b></span>
+                        <a href="#page"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>1</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="28" class="link-to-prism">src/main/webapp/app/entities/flagged-material/list/flagged-material.component.ts:28</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="predicate"></a>
+                    <span class="name">
+                        <span ><b>predicate</b></span>
+                        <a href="#predicate"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;id&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="22" class="link-to-prism">src/main/webapp/app/entities/flagged-material/list/flagged-material.component.ts:22</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="router"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>router</b></span>
+                        <a href="#router"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>Router</code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="33" class="link-to-prism">src/main/webapp/app/entities/flagged-material/list/flagged-material.component.ts:33</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="totalItems"></a>
+                    <span class="name">
+                        <span ><b>totalItems</b></span>
+                        <a href="#totalItems"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>0</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="27" class="link-to-prism">src/main/webapp/app/entities/flagged-material/list/flagged-material.component.ts:27</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="trackId"></a>
+                    <span class="name">
+                        <span ><b>trackId</b></span>
+                        <a href="#trackId"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>() &#x3D;&gt; {...}</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="37" class="link-to-prism">src/main/webapp/app/entities/flagged-material/list/flagged-material.component.ts:37</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, OnInit } from &#x27;@angular/core&#x27;;
+import { HttpHeaders } from &#x27;@angular/common/http&#x27;;
+import { ActivatedRoute, Data, ParamMap, Router } from &#x27;@angular/router&#x27;;
+import { combineLatest, Observable, switchMap, tap } from &#x27;rxjs&#x27;;
+import { NgbModal } from &#x27;@ng-bootstrap/ng-bootstrap&#x27;;
+
+import { IFlaggedMaterial } from &#x27;../flagged-material.model&#x27;;
+
+import { PAGE_HEADER, TOTAL_COUNT_RESPONSE_HEADER } from &#x27;app/config/pagination.constants&#x27;;
+import { ASC, DESC, SORT, DEFAULT_SORT_DATA } from &#x27;app/config/navigation.constants&#x27;;
+import { EntityArrayResponseType, FlaggedMaterialService } from &#x27;../service/flagged-material.service&#x27;;
+import { FilterOptions, IFilterOptions, IFilterOption } from &#x27;app/shared/filter/filter.model&#x27;;
+
+@Component({
+  selector: &#x27;jhi-flagged-material&#x27;,
+  templateUrl: &#x27;./flagged-material.component.html&#x27;,
+})
+export class FlaggedMaterialComponent implements OnInit {
+  flaggedMaterials?: IFlaggedMaterial[];
+  isLoading &#x3D; false;
+
+  predicate &#x3D; &#x27;id&#x27;;
+  ascending &#x3D; true;
+  filters: IFilterOptions &#x3D; new FilterOptions();
+
+  itemsPerPage &#x3D; 10;
+  totalItems &#x3D; 0;
+  page &#x3D; 1;
+
+  constructor(
+    protected flaggedMaterialService: FlaggedMaterialService,
+    protected activatedRoute: ActivatedRoute,
+    public router: Router,
+    protected modalService: NgbModal
+  ) {}
+
+  trackId &#x3D; (_index: number, item: IFlaggedMaterial): number &#x3D;&gt; this.flaggedMaterialService.getFlaggedMaterialIdentifier(item);
+
+  ngOnInit(): void {
+    this.load();
+
+    this.filters.filterChanges.subscribe(filterOptions &#x3D;&gt; this.handleNavigation(1, this.predicate, this.ascending, filterOptions));
+  }
+  
+
+  load(): void {
+    this.loadFromBackendWithRouteInformations().subscribe({
+      next: (res: EntityArrayResponseType) &#x3D;&gt; {
+        this.onResponseSuccess(res);
+      },
+    });
+  }
+
+  receiveTableSize(event : any) : void{
+      this.itemsPerPage &#x3D; event;
+      this.load()
+  }
+
+  navigateToWithComponentValues(): void {
+    this.handleNavigation(this.page, this.predicate, this.ascending, this.filters.filterOptions);
+  }
+
+  navigateToPage(page &#x3D; this.page): void {
+    this.handleNavigation(page, this.predicate, this.ascending, this.filters.filterOptions);
+  }
+
+  receiveStringEvent(event: any): void {
+    const filterName: string &#x3D; event.filterName;
+    const filterValue: string &#x3D; event.filterText;
+
+    if(filterValue &#x3D;&#x3D;&#x3D; &#x27;&#x27;){
+      this.filters.removeAllFiltersName(&quot;material.contains&quot;);
+      this.filters.removeAllFiltersName(&quot;description.contains&quot;);
+    }
+
+    else{
+      switch (filterName){
+        case &quot;Material Name&quot;:
+          this.filters.removeAllFiltersName(&quot;material.contains&quot;)
+          this.filters.addFilter(&quot;material.contains&quot;, filterValue);
+          break;
+        case &quot;Material Description&quot;:
+          this.filters.removeAllFiltersName(&quot;description.contains&quot;)
+          this.filters.addFilter(&quot;description.contains&quot;,filterValue);
+          break;
+        case &quot;Plant&quot;:
+          this.filters.removeAllFiltersName(&quot;plant.equals&quot;)
+          this.filters.addFilter(&quot;plant.equals&quot;,filterValue);
+          break;
+        case &quot;MRP Controller&quot;:
+          this.filters.removeAllFiltersName(&quot;mrpController.contains&quot;)
+          this.filters.addFilter(&quot;mrpController.contains&quot;,filterValue);
+          break;
+      }
+    }
+    this.load();
+  }
+
+  filterABCClassification(event: any): void {
+    if(event.opType){
+      this.filters.addFilter(&quot;abcClassification.in&quot;, event.filterValue);
+    }
+    else{
+      this.filters.removeFilter(&quot;abcClassification.in&quot;, event.filterValue);
+    }
+  }
+
+  receiveFilterRemoveMessage (filter : IFilterOption) : void{
+    for(const value of filter.values){
+      this.filters.removeFilter(filter.name, value);
+    }
+  }
+
+  protected loadFromBackendWithRouteInformations(): Observable&lt;EntityArrayResponseType&gt; {
+    return combineLatest([this.activatedRoute.queryParamMap, this.activatedRoute.data]).pipe(
+      tap(([params, data]) &#x3D;&gt; this.fillComponentAttributeFromRoute(params, data)),
+      switchMap(() &#x3D;&gt; this.queryBackend(this.page, this.predicate, this.ascending, this.filters.filterOptions))
+    );
+  }
+
+  protected fillComponentAttributeFromRoute(params: ParamMap, data: Data): void {
+    const page &#x3D; params.get(PAGE_HEADER);
+    this.page &#x3D; +(page ?? 1);
+    const sort &#x3D; (params.get(SORT) ?? data[DEFAULT_SORT_DATA]).split(&#x27;,&#x27;);
+    this.predicate &#x3D; sort[0];
+    this.ascending &#x3D; sort[1] &#x3D;&#x3D;&#x3D; ASC;
+    this.filters.initializeFromParams(params);
+  }
+
+  protected onResponseSuccess(response: EntityArrayResponseType): void {
+    this.fillComponentAttributesFromResponseHeader(response.headers);
+    const dataFromBody &#x3D; this.fillComponentAttributesFromResponseBody(response.body);
+    this.flaggedMaterials &#x3D; dataFromBody;
+  }
+
+  protected fillComponentAttributesFromResponseBody(data: IFlaggedMaterial[] | null): IFlaggedMaterial[] {
+    return data ?? [];
+  }
+
+  protected fillComponentAttributesFromResponseHeader(headers: HttpHeaders): void {
+    this.totalItems &#x3D; Number(headers.get(TOTAL_COUNT_RESPONSE_HEADER));
+  }
+
+  protected queryBackend(
+    page?: number,
+    predicate?: string,
+    ascending?: boolean,
+    filterOptions?: IFilterOption[]
+  ): Observable&lt;EntityArrayResponseType&gt; {
+    this.isLoading &#x3D; true;
+    const pageToLoad: number &#x3D; page ?? 1;
+    const queryObject: any &#x3D; {
+      page: pageToLoad - 1,
+      size: this.itemsPerPage,
+      sort: this.getSortQueryParam(predicate, ascending),
+    };
+    filterOptions?.forEach(filterOption &#x3D;&gt; {
+      queryObject[filterOption.name] &#x3D; filterOption.values;
+    });
+    return this.flaggedMaterialService.query(queryObject).pipe(tap(() &#x3D;&gt; (this.isLoading &#x3D; false)));
+  }
+
+  protected handleNavigation(page &#x3D; this.page, predicate?: string, ascending?: boolean, filterOptions?: IFilterOption[]): void {
+    const queryParamsObj: any &#x3D; {
+      page,
+      size: this.itemsPerPage,
+      sort: this.getSortQueryParam(predicate, ascending),
+    };
+
+    filterOptions?.forEach(filterOption &#x3D;&gt; {
+      queryParamsObj[filterOption.nameAsQueryParam()] &#x3D; filterOption.values;
+    });
+
+    this.router.navigate([&#x27;./&#x27;], {
+      relativeTo: this.activatedRoute,
+      queryParams: queryParamsObj,
+    });
+  }
+
+  protected getSortQueryParam(predicate &#x3D; this.predicate, ascending &#x3D; this.ascending): string[] {
+    const ascendingQueryParam &#x3D; ascending ? ASC : DESC;
+    if (predicate &#x3D;&#x3D;&#x3D; &#x27;&#x27;) {
+      return [];
+    } else {
+      return [predicate + &#x27;,&#x27; + ascendingQueryParam];
+    }
+  }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;div&gt;
+  &lt;h2 id&#x3D;&quot;page-heading&quot; data-cy&#x3D;&quot;FlaggedMaterialHeading&quot;&gt;
+    &lt;span style&#x3D;&quot;font-weight: bold;&quot;&gt;Special Cases&lt;/span&gt;
+  &lt;/h2&gt;
+
+  &lt;jhi-flagged-options-bar (textFilterEmitter)&#x3D;&quot;receiveStringEvent($event)&quot; (abcFilterEmitter)&#x3D;&quot;filterABCClassification($event)&quot; [tableSize]&#x3D;&quot;itemsPerPage&quot; (tableSizeEmitter)&#x3D;&quot;receiveTableSize($event)&quot;&gt;&lt;/jhi-flagged-options-bar&gt;
+
+  &lt;jhi-alert-error&gt;&lt;/jhi-alert-error&gt;
+
+  &lt;jhi-alert&gt;&lt;/jhi-alert&gt;
+
+  &lt;div *ngIf&#x3D;&quot;this.filters.filterOptions.length &gt; 0&quot; &gt;
+    &lt;div style&#x3D;&quot;font-weight: bold; text-align: start;&quot;&gt;Active Filters:&lt;/div&gt;
+    &lt;div class&#x3D;&quot;d-flex&quot;&gt;
+      &lt;ng-container *ngFor&#x3D;&quot;let filter of this.filters.filterOptions&quot;&gt;
+        &lt;div  *ngIf &#x3D; &quot;filter.name.split(&#x27;.&#x27;)[0] !&#x3D;&#x3D; &#x27;id&#x27; &amp;&amp; filter.name.split(&#x27;.&#x27;)[0] !&#x3D;&#x3D; &#x27;flagMaterial&#x27;&quot; class&#x3D;&quot;activeFilterCell&quot;&gt;
+          &lt;jhi-filter-display-cell [filter]&#x3D;filter (filterRemoveMessage)&#x3D;&quot;receiveFilterRemoveMessage($event)&quot; &gt;&lt;/jhi-filter-display-cell&gt;
+        &lt;/div&gt;
+      &lt;/ng-container&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;div class&#x3D;&quot;alert alert-warning&quot; id&#x3D;&quot;no-result&quot; *ngIf&#x3D;&quot;flaggedMaterials?.length &#x3D;&#x3D;&#x3D; 0&quot;&gt;
+    &lt;span&gt;No Flagged Materials found&lt;/span&gt;
+  &lt;/div&gt;
+
+  &lt;div class&#x3D;&quot;table-responsive table-entities&quot; id&#x3D;&quot;entities&quot; *ngIf&#x3D;&quot;flaggedMaterials &amp;&amp; flaggedMaterials.length &gt; 0&quot;&gt;
+    &lt;table class&#x3D;&quot;table table-striped&quot; aria-describedby&#x3D;&quot;page-heading&quot;&gt;
+      &lt;thead class&#x3D;&quot;navbar-dark&quot;&gt;
+
+        &lt;tr jhiSort [(predicate)]&#x3D;&quot;predicate&quot; [(ascending)]&#x3D;&quot;ascending&quot; (sortChange)&#x3D;&quot;navigateToWithComponentValues()&quot; class&#x3D;&quot;headerRow2&quot;&gt;
+
+          &lt;th scope&#x3D;&quot;col&quot; jhiSortBy&#x3D;&quot;material&quot; class &#x3D;&quot;materialInfo headerRowStart&quot;&gt;
+            &lt;div class&#x3D;&quot;d-flex&quot; style&#x3D;&quot;place-content: center;&quot;&gt;
+              &lt;span&gt;Material&lt;/span&gt;
+              &lt;fa-icon class&#x3D;&quot;p-1&quot; icon&#x3D;&quot;sort&quot;&gt;&lt;/fa-icon&gt;
+            &lt;/div&gt;
+          &lt;/th&gt;
+          
+          &lt;th scope&#x3D;&quot;col&quot; jhiSortBy&#x3D;&quot;description&quot; class &#x3D;&quot;materialInfo headerAlign&quot;&gt;
+            &lt;div class&#x3D;&quot;d-flex&quot; style&#x3D;&quot;place-content: center;&quot;&gt;
+              &lt;span&gt; Material Description&lt;/span&gt;
+              &lt;fa-icon class&#x3D;&quot;p-1&quot; icon&#x3D;&quot;sort&quot;&gt;&lt;/fa-icon&gt;
+            &lt;/div&gt;
+          &lt;/th&gt;
+
+          &lt;th scope&#x3D;&quot;col&quot; jhiSortBy&#x3D;&quot;abcClassification&quot; class &#x3D;&quot;materialInfo headerAlign&quot;&gt;
+            &lt;div class&#x3D;&quot;d-flex&quot; style&#x3D;&quot;place-content: center;&quot;&gt;
+              &lt;span&gt;ABC Classification&lt;/span&gt;
+              &lt;fa-icon class&#x3D;&quot;p-1&quot; icon&#x3D;&quot;sort&quot;&gt;&lt;/fa-icon&gt;
+            &lt;/div&gt;
+          &lt;/th&gt;
+
+          &lt;th scope&#x3D;&quot;col&quot; jhiSortBy&#x3D;&quot;plant&quot; class &#x3D;&quot;materialInfo headerAlign&quot;&gt;
+            &lt;div class&#x3D;&quot;d-flex&quot; style&#x3D;&quot;place-content: center;&quot;&gt;
+              &lt;span&gt;Plant&lt;/span&gt;
+              &lt;fa-icon class&#x3D;&quot;p-1&quot; icon&#x3D;&quot;sort&quot;&gt;&lt;/fa-icon&gt;
+            &lt;/div&gt;
+          &lt;/th&gt;
+
+          &lt;th scope&#x3D;&quot;col&quot; jhiSortBy&#x3D;&quot;mrpController&quot; class &#x3D;&quot;materialInfo headerRowEnd headerAlign&quot;&gt;
+            &lt;div class&#x3D;&quot;d-flex&quot; style&#x3D;&quot;place-content: center;&quot;&gt;
+              &lt;span&gt;MRP Controller&lt;/span&gt;
+              &lt;fa-icon class&#x3D;&quot;p-1&quot; icon&#x3D;&quot;sort&quot;&gt;&lt;/fa-icon&gt;
+            &lt;/div&gt;
+          &lt;/th&gt;
+
+          
+          &lt;th scope&#x3D;&quot;col&quot; jhiSortBy&#x3D;&quot;flagMaterial&quot; class&#x3D;&quot;edit headerAlign&quot;&gt;
+            &lt;div class&#x3D;&quot;d-flex&quot; style&#x3D;&quot;place-content: center;&quot;&gt;
+              &lt;span&gt;Flag Status&lt;/span&gt;
+            &lt;/div&gt;
+          &lt;/th&gt;
+
+          &lt;th scope&#x3D;&quot;col&quot; jhiSortBy&#x3D;&quot;flagMaterial&quot; class&#x3D;&quot;edit headerAlign&quot;&gt;
+            &lt;div class&#x3D;&quot;d-flex&quot; style&#x3D;&quot;place-content: center;&quot;&gt;
+              &lt;span&gt;Edit&lt;/span&gt;
+            &lt;/div&gt;
+          &lt;/th&gt;
+         
+        &lt;/tr&gt;
+      &lt;/thead&gt;
+      &lt;tbody&gt;
+        &lt;tr *ngFor&#x3D;&quot;let flaggedMaterial of flaggedMaterials; trackBy: trackId&quot; data-cy&#x3D;&quot;entityTable&quot;&gt;
+          &lt;td class &#x3D;&quot;materialInfo&quot; &gt;{{ flaggedMaterial.material }}&lt;/td&gt;
+          &lt;td class &#x3D;&quot;materialInfo&quot; &gt;{{ flaggedMaterial.description }}&lt;/td&gt;
+          &lt;td class &#x3D;&quot;materialInfo&quot; &gt;{{ flaggedMaterial.abcClassification }}&lt;/td&gt;
+          &lt;td class &#x3D;&quot;materialInfo&quot; &gt;{{ flaggedMaterial.plant }}&lt;/td&gt;
+          &lt;td class &#x3D;&quot;materialInfo headerRowEnd&quot; &gt;{{ flaggedMaterial.mrpController }}&lt;/td&gt;
+          &lt;td class &#x3D;&quot;edit&quot;&gt;
+            &lt;fa-icon class&#x3D;&quot;p-1&quot; icon&#x3D;&quot;flag&quot;  [ngStyle]&#x3D;&quot;{&#x27;color&#x27;: flaggedMaterial.flagMaterial  ? &#x27;#ff0000&#x27; : &#x27;#999999&#x27;}&quot;&gt;&lt;/fa-icon&gt;
+
+          &lt;/td&gt;
+          &lt;td&gt; &lt;button
+            type&#x3D;&quot;submit&quot;
+            [routerLink]&#x3D;&quot;[&#x27;/flagged-material&#x27;, flaggedMaterial.id, &#x27;edit&#x27;]&quot;
+            class&#x3D;&quot;buttonNoBorder&quot;
+            data-cy&#x3D;&quot;entityEditButton&quot;&gt;
+            &lt;fa-icon icon&#x3D;&quot;pencil-alt&quot;&gt;&lt;/fa-icon&gt;
+          &lt;/button&gt;
+        &lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/tbody&gt;
+    &lt;/table&gt;
+  &lt;/div&gt;
+
+  &lt;div *ngIf&#x3D;&quot;flaggedMaterials &amp;&amp; flaggedMaterials.length &gt; 0&quot;&gt;
+    &lt;div class&#x3D;&quot;d-flex justify-content-center&quot;&gt;
+      &lt;jhi-item-count [params]&#x3D;&quot;{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }&quot;&gt;&lt;/jhi-item-count&gt;
+    &lt;/div&gt;
+
+    &lt;div class&#x3D;&quot;d-flex justify-content-center&quot;&gt;
+      &lt;ngb-pagination
+        [collectionSize]&#x3D;&quot;totalItems&quot;
+        [page]&#x3D;&quot;page&quot;
+        [pageSize]&#x3D;&quot;itemsPerPage&quot;
+        [maxSize]&#x3D;&quot;5&quot;
+        [rotate]&#x3D;&quot;true&quot;
+        [boundaryLinks]&#x3D;&quot;true&quot;
+        (pageChange)&#x3D;&quot;navigateToPage($event)&quot;
+      &gt;&lt;/ngb-pagination&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+    </div>
+
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><div>  <h2 id="page-heading" data-cy="FlaggedMaterialHeading">    <span style="font-weight: bold;">Special Cases</span>  </h2>  <jhi-flagged-options-bar (textFilterEmitter)="receiveStringEvent($event)" (abcFilterEmitter)="filterABCClassification($event)" [tableSize]="itemsPerPage" (tableSizeEmitter)="receiveTableSize($event)"></jhi-flagged-options-bar>  <jhi-alert-error></jhi-alert-error>  <jhi-alert></jhi-alert>  <div *ngIf="this.filters.filterOptions.length > 0" >    <div style="font-weight: bold; text-align: start;">Active Filters:</div>    <div class="d-flex">      <ng-container *ngFor="let filter of this.filters.filterOptions">        <div  *ngIf = "filter.name.split(\'.\')[0] !== \'id\' && filter.name.split(\'.\')[0] !== \'flagMaterial\'" class="activeFilterCell">          <jhi-filter-display-cell [filter]=filter (filterRemoveMessage)="receiveFilterRemoveMessage($event)" ></jhi-filter-display-cell>        </div>      </ng-container>    </div>  </div>  <div class="alert alert-warning" id="no-result" *ngIf="flaggedMaterials?.length === 0">    <span>No Flagged Materials found</span>  </div>  <div class="table-responsive table-entities" id="entities" *ngIf="flaggedMaterials && flaggedMaterials.length > 0">    <table class="table table-striped" aria-describedby="page-heading">      <thead class="navbar-dark">        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()" class="headerRow2">          <th scope="col" jhiSortBy="material" class ="materialInfo headerRowStart">            <div class="d-flex" style="place-content: center;">              <span>Material</span>              <fa-icon class="p-1" icon="sort"></fa-icon>            </div>          </th>                    <th scope="col" jhiSortBy="description" class ="materialInfo headerAlign">            <div class="d-flex" style="place-content: center;">              <span> Material Description</span>              <fa-icon class="p-1" icon="sort"></fa-icon>            </div>          </th>          <th scope="col" jhiSortBy="abcClassification" class ="materialInfo headerAlign">            <div class="d-flex" style="place-content: center;">              <span>ABC Classification</span>              <fa-icon class="p-1" icon="sort"></fa-icon>            </div>          </th>          <th scope="col" jhiSortBy="plant" class ="materialInfo headerAlign">            <div class="d-flex" style="place-content: center;">              <span>Plant</span>              <fa-icon class="p-1" icon="sort"></fa-icon>            </div>          </th>          <th scope="col" jhiSortBy="mrpController" class ="materialInfo headerRowEnd headerAlign">            <div class="d-flex" style="place-content: center;">              <span>MRP Controller</span>              <fa-icon class="p-1" icon="sort"></fa-icon>            </div>          </th>                    <th scope="col" jhiSortBy="flagMaterial" class="edit headerAlign">            <div class="d-flex" style="place-content: center;">              <span>Flag Status</span>            </div>          </th>          <th scope="col" jhiSortBy="flagMaterial" class="edit headerAlign">            <div class="d-flex" style="place-content: center;">              <span>Edit</span>            </div>          </th>                 </tr>      </thead>      <tbody>        <tr *ngFor="let flaggedMaterial of flaggedMaterials; trackBy: trackId" data-cy="entityTable">          <td class ="materialInfo" >{{ flaggedMaterial.material }}</td>          <td class ="materialInfo" >{{ flaggedMaterial.description }}</td>          <td class ="materialInfo" >{{ flaggedMaterial.abcClassification }}</td>          <td class ="materialInfo" >{{ flaggedMaterial.plant }}</td>          <td class ="materialInfo headerRowEnd" >{{ flaggedMaterial.mrpController }}</td>          <td class ="edit">            <fa-icon class="p-1" icon="flag"  [ngStyle]="{\'color\': flaggedMaterial.flagMaterial  ? \'#ff0000\' : \'#999999\'}"></fa-icon>          </td>          <td> <button            type="submit"            [routerLink]="[\'/flagged-material\', flaggedMaterial.id, \'edit\']"            class="buttonNoBorder"            data-cy="entityEditButton">            <fa-icon icon="pencil-alt"></fa-icon>          </button>        </td>        </tr>      </tbody>    </table>  </div>  <div *ngIf="flaggedMaterials && flaggedMaterials.length > 0">    <div class="d-flex justify-content-center">      <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>    </div>    <div class="d-flex justify-content-center">      <ngb-pagination        [collectionSize]="totalItems"        [page]="page"        [pageSize]="itemsPerPage"        [maxSize]="5"        [rotate]="true"        [boundaryLinks]="true"        (pageChange)="navigateToPage($event)"      ></ngb-pagination>    </div>  </div></div></div>'
+    var COMPONENTS = [{'name': 'ChangesComponent', 'selector': 'jhi-changes-page'},{'name': 'CommentModalComponent', 'selector': 'jhi-comment-modal'},{'name': 'CurrencyToolTipCellComponent', 'selector': 'jhi-currency-tooltip-cell'},{'name': 'ErrorComponent', 'selector': 'jhi-error'},{'name': 'FilterDisplayCellComponent', 'selector': 'jhi-filter-display-cell'},{'name': 'FilterFormComponent', 'selector': 'jhi-filter-form'},{'name': 'FlaggedMaterialComponent', 'selector': 'jhi-flagged-material'},{'name': 'FlaggedMaterialUpdateComponent', 'selector': 'jhi-flagged-material-update'},{'name': 'FlaggedOptionsBarComponent', 'selector': 'jhi-flagged-options-bar'},{'name': 'FlagModalComponent', 'selector': 'jhi-flag-modal'},{'name': 'FooterComponent', 'selector': 'jhi-footer'},{'name': 'HeaderGroupComponent', 'selector': 'jhi-header-group'},{'name': 'MainComponent', 'selector': 'jhi-main'},{'name': 'MaterialComponent', 'selector': 'jhi-material'},{'name': 'NavbarComponent', 'selector': 'jhi-navbar'},{'name': 'OptionsBarComponent', 'selector': 'jhi-options-bar'},{'name': 'PageRibbonComponent', 'selector': 'jhi-page-ribbon'},{'name': 'SubmitModalComponent', 'selector': 'jhi-submit-modal'},{'name': 'ValueCellComponent', 'selector': 'jhi-tooltip-cell'}];
+    var DIRECTIVES = [];
+    var ACTUAL_COMPONENT = {'name': 'FlaggedMaterialComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'FlaggedMaterialComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

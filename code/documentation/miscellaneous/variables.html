@@ -1,0 +1,845 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>diabo documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avaoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+
+               if ($darkModeToggles.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
+            <a href="../" class="navbar-brand">diabo documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content miscellaneous-variables">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Miscellaneous</li>
+  <li class="breadcrumb-item">Variables</li>
+</ol>
+
+<section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <ul class="index-list">
+                        <li>
+                            <a href="#__DEBUG_INFO_ENABLED__" title="src/main/webapp/app/app.constants.ts" ><b>__DEBUG_INFO_ENABLED__</b>&nbsp;&nbsp;&nbsp;(src/.../app.constants.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#__VERSION__" title="src/main/webapp/app/app.constants.ts" ><b>__VERSION__</b>&nbsp;&nbsp;&nbsp;(src/.../app.constants.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#currencyExchangeRates" title="src/main/webapp/app/entities/material/data/currencyExchangeRates.ts" ><b>currencyExchangeRates</b>&nbsp;&nbsp;&nbsp;(src/.../currencyExchangeRates.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#DEBUG_INFO_ENABLED" title="src/main/webapp/app/app.constants.ts" ><b>DEBUG_INFO_ENABLED</b>&nbsp;&nbsp;&nbsp;(src/.../app.constants.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#EntityNavbarItems" title="src/main/webapp/app/entities/entity-navbar-items.ts" ><b>EntityNavbarItems</b>&nbsp;&nbsp;&nbsp;(src/.../entity-navbar-items.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#MSG" title="src/main/webapp/app/entities/material/data/tooltipMsg.ts" ><b>MSG</b>&nbsp;&nbsp;&nbsp;(src/.../tooltipMsg.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#navbarRoute" title="src/main/webapp/app/layouts/navbar/navbar.route.ts" ><b>navbarRoute</b>&nbsp;&nbsp;&nbsp;(src/.../navbar.route.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#sampleWithFullData" title="src/main/webapp/app/entities/flagged-material/flagged-material.test-samples.ts" ><b>sampleWithFullData</b>&nbsp;&nbsp;&nbsp;(src/.../flagged-material.test-samples.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#sampleWithFullData" title="src/main/webapp/app/entities/material/material.test-samples.ts" ><b>sampleWithFullData</b>&nbsp;&nbsp;&nbsp;(src/.../material.test-samples.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#sampleWithNewData" title="src/main/webapp/app/entities/flagged-material/flagged-material.test-samples.ts" ><b>sampleWithNewData</b>&nbsp;&nbsp;&nbsp;(src/.../flagged-material.test-samples.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#sampleWithNewData" title="src/main/webapp/app/entities/material/material.test-samples.ts" ><b>sampleWithNewData</b>&nbsp;&nbsp;&nbsp;(src/.../material.test-samples.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#sampleWithPartialData" title="src/main/webapp/app/entities/flagged-material/flagged-material.test-samples.ts" ><b>sampleWithPartialData</b>&nbsp;&nbsp;&nbsp;(src/.../flagged-material.test-samples.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#sampleWithPartialData" title="src/main/webapp/app/entities/material/material.test-samples.ts" ><b>sampleWithPartialData</b>&nbsp;&nbsp;&nbsp;(src/.../material.test-samples.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#sampleWithRequiredData" title="src/main/webapp/app/entities/flagged-material/flagged-material.test-samples.ts" ><b>sampleWithRequiredData</b>&nbsp;&nbsp;&nbsp;(src/.../flagged-material.test-samples.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#sampleWithRequiredData" title="src/main/webapp/app/entities/material/material.test-samples.ts" ><b>sampleWithRequiredData</b>&nbsp;&nbsp;&nbsp;(src/.../material.test-samples.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#tourMessages" title="src/main/webapp/app/entities/material/data/tourMessage.ts" ><b>tourMessages</b>&nbsp;&nbsp;&nbsp;(src/.../tourMessage.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#VERSION" title="src/main/webapp/app/app.constants.ts" ><b>VERSION</b>&nbsp;&nbsp;&nbsp;(src/.../app.constants.ts)</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+    <h3>src/main/webapp/app/app.constants.ts</h3>
+    <section data-compodoc="block-properties">
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="__DEBUG_INFO_ENABLED__"></a>
+                    <span class="name">
+                        <span ><b>__DEBUG_INFO_ENABLED__</b></span>
+                        <a href="#__DEBUG_INFO_ENABLED__"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="__VERSION__"></a>
+                    <span class="name">
+                        <span ><b>__VERSION__</b></span>
+                        <a href="#__VERSION__"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="DEBUG_INFO_ENABLED"></a>
+                    <span class="name">
+                        <span ><b>DEBUG_INFO_ENABLED</b></span>
+                        <a href="#DEBUG_INFO_ENABLED"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>__DEBUG_INFO_ENABLED__</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="VERSION"></a>
+                    <span class="name">
+                        <span ><b>VERSION</b></span>
+                        <a href="#VERSION"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>__VERSION__</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>src/main/webapp/app/entities/material/data/currencyExchangeRates.ts</h3>
+    <section data-compodoc="block-properties">
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="currencyExchangeRates"></a>
+                    <span class="name">
+                        <span ><b>currencyExchangeRates</b></span>
+                        <a href="#currencyExchangeRates"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>Map&lt;string, number&gt;</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Map &lt;string, number&gt;([
+    [&quot;EUR&quot;, 1],
+        [&quot;USD&quot;, 0.915],
+        [&quot;GBP&quot;, 1.157],
+        [&quot;AUD&quot;, 0.613],
+        [&quot;JPY&quot;, 0.006],
+        [&quot;CNY&quot;, 0.128],
+        [&quot;CAD&quot;, 0.683],
+        [&quot;CHF&quot;, 1.054],
+        [&quot;HKD&quot;, 0.117],
+        [&quot;SGD&quot;, 0.687],
+        [&quot;SEK&quot;, 0.089],
+        [&quot;KRW&quot;, 0.0007],
+        [&quot;NOK&quot;, 0.088],
+        [&quot;NZD&quot;, 0.568],
+        [&quot;INR&quot;, 0.011],
+        [&quot;MXN&quot;, 0.053],
+        [&quot;TWD&quot;, 0.029],
+        [&quot;ZAR&quot;, 0.049],
+        [&quot;BRL&quot;, 0.186],
+        [&quot;DKK&quot;, 0.134],
+        [&quot;PLN&quot;, 0.231],
+        [&quot;THB&quot;, 0.026],
+        [&quot;ILS&quot;, 0.249],
+        [&quot;IDR&quot;, 0.00006],
+        [&quot;CZK&quot;, 0.040],
+        [&quot;AED&quot;, 0.249],
+        [&quot;TRY&quot;, 0.031],
+        [&quot;HUF&quot;, 0.002],
+        [&quot;CLP&quot;, 0.001],
+        [&quot;SAR&quot;, 0.244],
+        [&quot;PHP&quot;, 0.016],
+        [&quot;MYR&quot;, 0.195],
+        [&quot;COP&quot;, 0.0002],
+        [&quot;RUB&quot;, 0.010],
+        [&quot;RON&quot;, 0.201],
+        [&quot;PEN&quot;, 0.244],
+        [&quot;BHD&quot;, 2.435],
+        [&quot;BGN&quot;, 0.511]
+  ])</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>src/main/webapp/app/entities/entity-navbar-items.ts</h3>
+    <section data-compodoc="block-properties">
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="EntityNavbarItems"></a>
+                    <span class="name">
+                        <span ><b>EntityNavbarItems</b></span>
+                        <a href="#EntityNavbarItems"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>[]</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[]</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>src/main/webapp/app/entities/material/data/tooltipMsg.ts</h3>
+    <section data-compodoc="block-properties">
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="MSG"></a>
+                    <span class="name">
+                        <span ><b>MSG</b></span>
+                        <a href="#MSG"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>Map&lt;string, string&gt;</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Map&lt;string, string&gt;([
+    [&quot;Material&quot;, &quot;The material number uniquely identifies a material in the SAP System&quot;],
+    [&quot;Material Description&quot;, &quot;A short text describing a material&quot;],
+    [&quot;ABC Classification&quot;, &quot;The ABC Classification is a frequently used analytical method to classify objects (Customers, Products or Employees) based on a particular measure (Revenue or Profit)&quot;],
+    [&quot;Plant&quot;, &quot;A plant is an operational facility within a company code&quot;],
+    [&quot;MRP Controller&quot;, &quot;The MRP controller is responsible for material requirements planning and material availability&quot;],
+    [&quot;Avg Supplier Delay&quot;, &quot;Average variation of the difference between the planned delivery date and the actual delivery date of the supplier for a specific material within the previous year&quot;],
+    [&quot;Max Supplier Delay&quot;, &quot;Maximum variation of the difference between the planned delivery date and the actual delivery date of the supplier for a specific material within the previous year&quot;],
+    [&quot;Current Sap Safety Stock&quot;, &quot;Current Safety Stock specified for a particular material&quot;],
+    [&quot;Proposed Safety Stock&quot;, &quot;Proposed Safety Stock specified for a particular material&quot;],
+    [&quot;Current Sap Safety Time&quot;, &quot;Current Safety Time specified for a particular material&quot;],
+    [&quot;Proposed Safety Time&quot;, &quot;Proposed  Safety Time specified for a particular material&quot;],
+    [&quot;Service Level&quot;, &quot;Service levels determines the percentage of delivered goods from an order compared to the total order, aiming to meet demand and fulfill customer requirements&quot;],
+    [&quot;Current Inventory Value&quot;, &quot;The monetary value of the current stock&quot;],
+    [&quot;Delta Safety Stock&quot;, &quot;This value is calculated by: (Proposed SAP Safety Stock - Current SAP Safety Stock)&quot;],
+    [&quot;Delta Safety Time&quot;, &quot;This value is calculated by: (Proposed SAP Safety Time - Current SAP Safety Time)&quot;],
+    // [&quot;Delta Safety Stock Altered&quot;, &quot;This value is calculated by: (New SAP Safety Stock - Current SAP Safety Stock)&quot;],
+    // [&quot;Delta Safety Time Altered&quot;, &quot;This value is calculated by: (New SAP Safety Time - Current SAP Safety Time)&quot;],
+
+    [&quot;Average Inventory Effect After Change&quot;, &quot;This value is calculated by: (NewDeltaSST * UnitCost) + (NewDeltaST * UnitCost * AvgDemand)&quot;],
+
+    [&quot;New SAP Safety Stock&quot;, &quot;New SAP Safety Stock value&quot;],
+    [&quot;New SAP Safety Time&quot;, &quot;New SAP Safety Time value&quot;],
+    [&quot;Select Entries For Change&quot;, &quot;Select Entries To Submit Changes&quot;],
+    [&quot;Flag Material as Special Case&quot;, &quot;Flag Material as Special Case&quot;],
+    [&quot;Comment&quot;, &quot;Comment&quot;],
+  ])</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>src/main/webapp/app/layouts/navbar/navbar.route.ts</h3>
+    <section data-compodoc="block-properties">
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="navbarRoute"></a>
+                    <span class="name">
+                        <span ><b>navbarRoute</b></span>
+                        <a href="#navbarRoute"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>Route</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>{
+  path: &#x27;&#x27;,
+  component: NavbarComponent,
+  outlet: &#x27;navbar&#x27;,
+}</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>src/main/webapp/app/entities/flagged-material/flagged-material.test-samples.ts</h3>
+    <section data-compodoc="block-properties">
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="sampleWithFullData"></a>
+                    <span class="name">
+                        <span ><b>sampleWithFullData</b></span>
+                        <a href="#sampleWithFullData"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/IFlaggedMaterial.html" target="_self" >IFlaggedMaterial</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>{
+  id: 15561,
+  material: &#x27;Forward Identity&#x27;,
+  description: &#x27;Pants&#x27;,
+  abcClassification: ABCClassification[&#x27;B&#x27;],
+  plant: 75870,
+  mrpController: &#x27;Fresh&#x27;,
+  flagMaterial: true,
+  flagExpirationDate: dayjs(&#x27;2023-12-20&#x27;),
+}</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="sampleWithNewData"></a>
+                    <span class="name">
+                        <span ><b>sampleWithNewData</b></span>
+                        <a href="#sampleWithNewData"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../miscellaneous/typealiases.html#NewFlaggedMaterial" target="_self" >NewFlaggedMaterial</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>{
+  id: null,
+}</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="sampleWithPartialData"></a>
+                    <span class="name">
+                        <span ><b>sampleWithPartialData</b></span>
+                        <a href="#sampleWithPartialData"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/IFlaggedMaterial.html" target="_self" >IFlaggedMaterial</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>{
+  id: 10990,
+  material: &#x27;THX Chips&#x27;,
+  description: &#x27;HDD&#x27;,
+  abcClassification: ABCClassification[&#x27;C&#x27;],
+  plant: 46379,
+  flagMaterial: false,
+}</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="sampleWithRequiredData"></a>
+                    <span class="name">
+                        <span ><b>sampleWithRequiredData</b></span>
+                        <a href="#sampleWithRequiredData"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/IFlaggedMaterial.html" target="_self" >IFlaggedMaterial</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>{
+  id: 71808,
+}</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>src/main/webapp/app/entities/material/material.test-samples.ts</h3>
+    <section data-compodoc="block-properties">
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="sampleWithFullData"></a>
+                    <span class="name">
+                        <span ><b>sampleWithFullData</b></span>
+                        <a href="#sampleWithFullData"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/IMaterial.html" target="_self" >IMaterial</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>{
+  id: 92917,
+  material: &#x27;payment&#x27;,
+  description: &#x27;Chicken&#x27;,
+  abcClassification: ABCClassification[&#x27;A&#x27;],
+  plant: 30369,
+  mrpController: &#x27;Legacy&#x27;,
+  avgSupplierDelay: 29936,
+  maxSupplierDelay: 36553,
+  serviceLevel: 31047,
+  currSAPSafetyStock: 48215,
+  proposedSST: 26930,
+  deltaSST: 24243,
+  currentSAPSafeTime: 97621,
+  proposedST: 11539,
+  deltaST: 22118,
+  openSAPmd04: &#x27;Product&#x27;,
+  currentInventoryValue: 91342,
+  unitCost: 98257,
+  avgDemand: 49824,
+  avgInventoryEffectAfterChange: 36060,
+  flagMaterial: true,
+  flagExpirationDate: dayjs(&#x27;2023-11-14&#x27;),
+  comment: &#x27;Engineer Granite Avon&#x27;,
+  newSAPSafetyStock: 89650,
+  newSAPSafetyTime: 12181,
+  dateNewSS: dayjs(&#x27;2023-11-13&#x27;),
+  datNewST: dayjs(&#x27;2023-11-14&#x27;),
+  previousSS: 56744,
+  previousST: 43315,
+  datePreviousSS: dayjs(&#x27;2023-11-14&#x27;),
+  datePreviousST: dayjs(&#x27;2023-11-13&#x27;),
+  toSaveUpdates: false,
+  currency: Coin[&#x27;CLP&#x27;],
+}</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="sampleWithNewData"></a>
+                    <span class="name">
+                        <span ><b>sampleWithNewData</b></span>
+                        <a href="#sampleWithNewData"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../miscellaneous/typealiases.html#NewMaterial" target="_self" >NewMaterial</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>{
+  id: null,
+}</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="sampleWithPartialData"></a>
+                    <span class="name">
+                        <span ><b>sampleWithPartialData</b></span>
+                        <a href="#sampleWithPartialData"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/IMaterial.html" target="_self" >IMaterial</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>{
+  id: 7104,
+  material: &#x27;Administrator human-resource&#x27;,
+  avgSupplierDelay: 47908,
+  serviceLevel: 21460,
+  proposedSST: 86597,
+  deltaSST: 64471,
+  currentSAPSafeTime: 62991,
+  deltaST: 68680,
+  openSAPmd04: &#x27;synthesize mint Berkshire&#x27;,
+  currentInventoryValue: 64805,
+  unitCost: 36044,
+  avgInventoryEffectAfterChange: 14209,
+  comment: &#x27;Gloves magnetic payment&#x27;,
+  newSAPSafetyTime: 23192,
+  previousSS: 85762,
+  datePreviousST: dayjs(&#x27;2023-11-14&#x27;),
+  currency: Coin[&#x27;KRW&#x27;],
+}</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="sampleWithRequiredData"></a>
+                    <span class="name">
+                        <span ><b>sampleWithRequiredData</b></span>
+                        <a href="#sampleWithRequiredData"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/IMaterial.html" target="_self" >IMaterial</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>{
+  id: 89389,
+}</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>src/main/webapp/app/entities/material/data/tourMessage.ts</h3>
+    <section data-compodoc="block-properties">
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="tourMessages"></a>
+                    <span class="name">
+                        <span ><b>tourMessages</b></span>
+                        <a href="#tourMessages"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>Map&lt;number, string&gt;</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Map&lt;number, string&gt;([
+    [0, &quot;The columns are organized in groups. In this one, you can see basic information about the Material&quot;],
+    [1, &quot;Here you can colapse and expand each of the column groups&quot;],
+    [2, &quot;Here you can be redirected to the SAP page of the Material&quot;],
+    [3, &quot;Here you can edit values and information about a Material&quot;],
+    [4, &quot;Here you can edit the values of the columns (New SAP Safety Time/Stock) by clicking on each one. When a value is edited the number will turn blue&quot;],
+    [5, &quot;When a value of a material has been edited, you can select that row for submission&quot;],
+    [6, &quot;If you choose, you can also flag the material as a special case, and put a expiration date for that flag in the Pop Up&quot;],
+    [7, &quot;Here you can add or edit a comment on the Material by pressing the pencil button. If a comment is truncated, you can hover over it to check the full comment&quot;],
+    [8, &quot;Here you may active several filters on the shown Materials. You can select a column group name and then a specific column and activate a filter for it&quot;],
+    [9, &quot;According with your authorization level, you may upload new data to the data base , or simply download the existing data&quot;],
+    [10, &quot;You can also define the number of table rows shown in each page&quot;],
+    [11, &quot;You can press this button to Undo a change you made that has not been submitted&quot;],
+    [12,&quot;You can also select the Undo memory size (number of reversable steps) in the dropdown menu. If you select a memory size shorter than the number of changes made, older changes will be unreversable&quot;],
+    [13, &quot;Here you can switch between having all the monetary values converted to Euros or maintain the original currency&quot;],
+    [14, &quot;Here you can submit all the selected rows. A file will be downloaded will all the rows changed and you will be redirected to a temporary page will a review of all the changes&quot;],
+  ])</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'miscellaneous-variables';
+            var COMPODOC_CURRENT_PAGE_URL = 'variables.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

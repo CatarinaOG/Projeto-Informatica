@@ -1,0 +1,1106 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>diabo documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avaoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+
+               if ($darkModeToggles.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
+            <a href="../" class="navbar-brand">diabo documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  FlaggedOptionsBarComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#templateData" class="nav-link"
+                role="tab" id="templateData-tab" data-bs-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/main/webapp/app/entities/flagged-material/options-bar/flagged-optionsBar.ts</code>
+</p>
+
+
+
+
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>jhi-flagged-options-bar</code></td>
+            </tr>
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./flagged-optionsBar.html</code></td>
+            </tr>
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#filterStatus" >filterStatus</a>
+                            </li>
+                            <li>
+                                <a href="#index" >index</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#changeStatus" >changeStatus</a>
+                            </li>
+                            <li>
+                                <a href="#checkDropDown" >checkDropDown</a>
+                            </li>
+                            <li>
+                                <a href="#checkStatus" >checkStatus</a>
+                            </li>
+                            <li>
+                                <a href="#sendABCFilter" >sendABCFilter</a>
+                            </li>
+                            <li>
+                                <a href="#sendFilterText" >sendFilterText</a>
+                            </li>
+                            <li>
+                                <a href="#sendNumber" >sendNumber</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Inputs</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#tableSize" >tableSize</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Outputs</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#abcFilterEmitter" >abcFilterEmitter</a>
+                            </li>
+                            <li>
+                                <a href="#tableSizeEmitter" >tableSizeEmitter</a>
+                            </li>
+                            <li>
+                                <a href="#textFilterEmitter" >textFilterEmitter</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+        </tbody>
+    </table>
+</section>
+
+
+    <section data-compodoc="block-inputs">
+    <h3 id="inputs">Inputs</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="tableSize"></a>
+                        <b>tableSize</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="9" class="link-to-prism">src/main/webapp/app/entities/flagged-material/options-bar/flagged-optionsBar.ts:9</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+</section>
+    <section data-compodoc="block-outputs">
+    <h3 id="outputs">Outputs</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="abcFilterEmitter"></a>
+                        <b>abcFilterEmitter</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>EventEmitter</code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="11" class="link-to-prism">src/main/webapp/app/entities/flagged-material/options-bar/flagged-optionsBar.ts:11</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="tableSizeEmitter"></a>
+                        <b>tableSizeEmitter</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>EventEmitter</code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="12" class="link-to-prism">src/main/webapp/app/entities/flagged-material/options-bar/flagged-optionsBar.ts:12</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="textFilterEmitter"></a>
+                        <b>textFilterEmitter</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>EventEmitter</code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="10" class="link-to-prism">src/main/webapp/app/entities/flagged-material/options-bar/flagged-optionsBar.ts:10</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+</section>
+
+
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="changeStatus"></a>
+                    <span class="name">
+                        <span ><b>changeStatus</b></span>
+                        <a href="#changeStatus"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>changeStatus(name: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="25"
+                                    class="link-to-prism">src/main/webapp/app/entities/flagged-material/options-bar/flagged-optionsBar.ts:25</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>name</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="checkDropDown"></a>
+                    <span class="name">
+                        <span ><b>checkDropDown</b></span>
+                        <a href="#checkDropDown"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>checkDropDown(open: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="40"
+                                    class="link-to-prism">src/main/webapp/app/entities/flagged-material/options-bar/flagged-optionsBar.ts:40</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>open</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="checkStatus"></a>
+                    <span class="name">
+                        <span ><b>checkStatus</b></span>
+                        <a href="#checkStatus"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>checkStatus()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="32"
+                                    class="link-to-prism">src/main/webapp/app/entities/flagged-material/options-bar/flagged-optionsBar.ts:32</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="sendABCFilter"></a>
+                    <span class="name">
+                        <span ><b>sendABCFilter</b></span>
+                        <a href="#sendABCFilter"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>sendABCFilter(event: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, value: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="63"
+                                    class="link-to-prism">src/main/webapp/app/entities/flagged-material/options-bar/flagged-optionsBar.ts:63</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>event</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>value</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="sendFilterText"></a>
+                    <span class="name">
+                        <span ><b>sendFilterText</b></span>
+                        <a href="#sendFilterText"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>sendFilterText(event: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="48"
+                                    class="link-to-prism">src/main/webapp/app/entities/flagged-material/options-bar/flagged-optionsBar.ts:48</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>event</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="sendNumber"></a>
+                    <span class="name">
+                        <span ><b>sendNumber</b></span>
+                        <a href="#sendNumber"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>sendNumber(size: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="67"
+                                    class="link-to-prism">src/main/webapp/app/entities/flagged-material/options-bar/flagged-optionsBar.ts:67</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>size</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="filterStatus"></a>
+                    <span class="name">
+                        <span ><b>filterStatus</b></span>
+                        <a href="#filterStatus"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Map&lt;string,boolean&gt;([
+    [&quot;Material Name&quot;, false],
+    [&quot;Material Description&quot;,false],
+    [&quot;ABC Classification&quot;, false],
+    [&quot;Plant&quot;,false],
+    [&quot;MRP Controller&quot;,false],
+  ])</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="15" class="link-to-prism">src/main/webapp/app/entities/flagged-material/options-bar/flagged-optionsBar.ts:15</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="index"></a>
+                    <span class="name">
+                        <span ><b>index</b></span>
+                        <a href="#index"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>0</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="23" class="link-to-prism">src/main/webapp/app/entities/flagged-material/options-bar/flagged-optionsBar.ts:23</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, EventEmitter, Input, Output } from &#x27;@angular/core&#x27;;
+
+@Component({
+  selector: &#x27;jhi-flagged-options-bar&#x27;,
+  templateUrl: &#x27;./flagged-optionsBar.html&#x27;,
+})
+export class FlaggedOptionsBarComponent  {
+
+  @Input() tableSize! : number;
+  @Output() textFilterEmitter &#x3D; new EventEmitter&lt;{filterName : string, filterText : string}&gt;();
+  @Output() abcFilterEmitter &#x3D; new EventEmitter&lt;{opType : boolean, filterValue : string}&gt;();
+  @Output() tableSizeEmitter &#x3D; new EventEmitter&lt;number&gt;();
+  
+
+  filterStatus &#x3D; new Map&lt;string,boolean&gt;([
+    [&quot;Material Name&quot;, false],
+    [&quot;Material Description&quot;,false],
+    [&quot;ABC Classification&quot;, false],
+    [&quot;Plant&quot;,false],
+    [&quot;MRP Controller&quot;,false],
+  ]);
+  
+  index &#x3D; 0;
+
+  changeStatus(name : string) : void {
+    for(const pair of this.filterStatus){
+      this.filterStatus.set(pair[0], false);
+    }
+    this.filterStatus.set(name, true);
+  }
+
+  checkStatus(): boolean {
+    let res &#x3D; false
+    this.filterStatus.forEach((value) &#x3D;&gt; {
+      if (value) {res &#x3D; true}
+    })
+    return res
+  }
+
+  checkDropDown(open:boolean): void {
+    if(!open){
+      for(const pair of this.filterStatus){
+        this.filterStatus.set(pair[0], false);
+      }
+    }
+  }
+
+  sendFilterText(event : any) : void {
+    if (this.filterStatus.get(&quot;Material Name&quot;)){
+        this.textFilterEmitter.emit({filterName : &quot;Material Name&quot;, filterText : event.target.value})
+    }
+    else if (this.filterStatus.get(&quot;Material Description&quot;)){
+        this.textFilterEmitter.emit({filterName : &quot;Material Description&quot;, filterText : event.target.value})      
+    }
+    else if (this.filterStatus.get(&quot;MRP Controller&quot;)) {
+      this.textFilterEmitter.emit({filterName : &quot;MRP Controller&quot;, filterText : event.target.value})    
+    }
+    else if (this.filterStatus.get(&quot;Plant&quot;)) {
+      this.textFilterEmitter.emit({filterName : &quot;Plant&quot;, filterText : event.target.value.toString()})
+    }
+  }
+
+  sendABCFilter(event : any,  value: string) : void {
+    this.abcFilterEmitter.emit({opType: event.target.checked, filterValue : value})
+  }
+
+  sendNumber(size : number) : void {
+    this.tableSize &#x3D; size;
+    this.tableSizeEmitter.emit(size)
+  }
+
+};
+
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;optionsBarResponsive&quot; style&#x3D;&quot; margin-bottom: 20px;&quot;&gt;
+    &lt;div&gt;
+      &lt;div ngbDropdown class&#x3D;&quot;dropdown d-flex justify-content-end&quot; autoClose&#x3D;&quot;outside&quot; (openChange)&#x3D;&quot;checkDropDown($event)&quot;&gt;
+      
+        &lt;button ngbDropdownToggle class&#x3D;&quot;btn btn-white&quot; type&#x3D;&quot;button&quot; id&#x3D;&quot;dropdownMenuButtonFilterOptions&quot; aria-expanded&#x3D;&quot;false&quot; &gt;
+          &lt;fa-icon icon&#x3D;&quot;filter&quot;&gt;&lt;/fa-icon&gt;
+          &lt;span&gt;Filter Options&lt;/span&gt;
+          &lt;fa-icon icon&#x3D;&quot;caret-down&quot;&gt;&lt;/fa-icon&gt;
+        &lt;/button&gt;
+  
+          &lt;ul ngbDropdownMenu aria-labelledby&#x3D;&quot;nestedDropdownButton&quot;&gt;
+            &lt;li&gt;
+              &lt;button ngbDropdownItem color&#x3D;&quot;primary&quot; class&#x3D;&quot;btn btn-primary&quot; [ngStyle]&#x3D;&quot;{&#x27;background-color&#x27;: this.filterStatus.get(&#x27;Material Name&#x27;) ? &#x27;#3e8acc&#x27; : &#x27;&#x27;}&quot; (click)&#x3D;&quot;changeStatus(&#x27;Material Name&#x27;)&quot;&gt;
+                &lt;span&gt;Material Name&lt;/span&gt;
+              &lt;/button&gt;
+            &lt;/li&gt;
+            &lt;li&gt;
+              &lt;button ngbDropdownItem color&#x3D;&quot;primary&quot; class&#x3D;&quot;btn btn-primary&quot; [ngStyle]&#x3D;&quot;{&#x27;background-color&#x27;: this.filterStatus.get(&#x27;Material Description&#x27;) ? &#x27;#3e8acc&#x27; : &#x27;&#x27;}&quot; (click)&#x3D;&quot;changeStatus(&#x27;Material Description&#x27;)&quot;&gt;
+                &lt;span&gt;Material Description&lt;/span&gt;
+              &lt;/button&gt;
+            &lt;/li&gt;
+            &lt;li&gt;
+              &lt;button ngbDropdownItem color&#x3D;&quot;primary&quot; class&#x3D;&quot;btn btn-primary&quot; [ngStyle]&#x3D;&quot;{&#x27;background-color&#x27;: this.filterStatus.get(&#x27;ABC Classification&#x27;) ? &#x27;#3e8acc&#x27; : &#x27;&#x27;}&quot; (click)&#x3D;&quot;changeStatus(&#x27;ABC Classification&#x27;)&quot;&gt;
+                &lt;span&gt;ABC Classification&lt;/span&gt;
+              &lt;/button&gt;
+            &lt;/li&gt;
+            &lt;li&gt;
+              &lt;button ngbDropdownItem color&#x3D;&quot;primary&quot; class&#x3D;&quot;btn btn-primary&quot; [ngStyle]&#x3D;&quot;{&#x27;background-color&#x27;: this.filterStatus.get(&#x27;Plant&#x27;) ? &#x27;#3e8acc&#x27; : &#x27;&#x27;}&quot; (click)&#x3D;&quot;changeStatus(&#x27;Plant&#x27;)&quot;&gt;
+                &lt;span&gt;Plant&lt;/span&gt;
+              &lt;/button&gt;
+            &lt;/li&gt;
+            &lt;li&gt;
+              &lt;button ngbDropdownItem color&#x3D;&quot;primary&quot; class&#x3D;&quot;btn btn-primary&quot; [ngStyle]&#x3D;&quot;{&#x27;background-color&#x27;: this.filterStatus.get(&#x27;MRP Controller&#x27;) ? &#x27;#3e8acc&#x27; : &#x27;&#x27;}&quot; (click)&#x3D;&quot;changeStatus(&#x27;MRP Controller&#x27;)&quot;&gt;
+                &lt;span&gt;MRP Controller&lt;/span&gt;
+              &lt;/button&gt;
+            &lt;/li&gt;
+
+
+            &lt;div class&#x3D;&quot;dropdown-divider&quot;  [ngClass] &#x3D; &quot;checkStatus() ? &#x27;searchInputShow&#x27; : &#x27;searchInputHide&#x27;&quot;&gt;&lt;/div&gt;
+            &lt;div [ngClass] &#x3D; &quot;this.filterStatus.get(&#x27;Material Name&#x27;) || this.filterStatus.get(&#x27;Material Description&#x27;) || this.filterStatus.get(&#x27;MRP Controller&#x27;) || this.filterStatus.get(&#x27;Plant&#x27;)? &#x27;searchInputShow&#x27; : &#x27;searchInputHide&#x27;&quot; &gt;
+              &lt;h6 class&#x3D;&quot;dropdown-header&quot;&gt; Search in Column&lt;/h6&gt;
+              &lt;li class&#x3D;&quot;paddingLeftRight&quot;&gt; 
+                &lt;input [ngClass] &#x3D; &quot;this.filterStatus.get(&#x27;Material Name&#x27;) || this.filterStatus.get(&#x27;Material Description&#x27;) || this.filterStatus.get(&#x27;MRP Controller&#x27;)? &#x27;searchInputShow&#x27; : &#x27;searchInputHide&#x27;&quot; type&#x3D;&quot;text&quot; class&#x3D;&quot;inputWidth paddingFive&quot; (keyup.enter)&#x3D;&quot;sendFilterText($event)&quot;&gt;
+                &lt;input [ngClass] &#x3D; &quot;this.filterStatus.get(&#x27;Plant&#x27;)? &#x27;searchInputShow&#x27; : &#x27;searchInputHide&#x27;&quot;type&#x3D;&quot;number&quot; class&#x3D;&quot;inputWidth paddingFive&quot; (keyup.enter)&#x3D;&quot;sendFilterText($event)&quot;&gt;
+              &lt;/li&gt;
+            &lt;/div&gt;
+            
+
+            &lt;h6 class&#x3D;&quot;dropdown-header&quot; [ngClass] &#x3D; &quot;this.filterStatus.get(&#x27;ABC Classification&#x27;) ? &#x27;searchInputShow&#x27; : &#x27;searchInputHide&#x27;&quot;&gt; Select categories&lt;/h6&gt;
+            &lt;li class&#x3D;&quot;paddingLeftRight&quot; [ngClass] &#x3D; &quot;this.filterStatus.get(&#x27;ABC Classification&#x27;) ? &#x27;searchInputShow&#x27; : &#x27;searchInputHide&#x27;&quot;&gt; 
+              &lt;input type&#x3D;&quot;checkbox&quot;  (click)&#x3D;&quot;sendABCFilter($event,&#x27;A&#x27;)&quot;&gt;&lt;span&gt; Category A&lt;/span&gt;
+            &lt;/li&gt;
+            &lt;li class&#x3D;&quot;paddingLeftRight&quot; [ngClass] &#x3D; &quot;this.filterStatus.get(&#x27;ABC Classification&#x27;) ? &#x27;searchInputShow&#x27; : &#x27;searchInputHide&#x27;&quot;&gt;          
+              &lt;input type&#x3D;&quot;checkbox&quot;  (click)&#x3D;&quot;sendABCFilter($event,&#x27;B&#x27;)&quot;&gt;&lt;span&gt; Category B&lt;/span&gt;
+            &lt;/li&gt;
+            &lt;li class&#x3D;&quot;paddingLeftRight&quot; [ngClass] &#x3D; &quot;this.filterStatus.get(&#x27;ABC Classification&#x27;) ? &#x27;searchInputShow&#x27; : &#x27;searchInputHide&#x27;&quot;&gt;
+              &lt;input type&#x3D;&quot;checkbox&quot;  (click)&#x3D;&quot;sendABCFilter($event,&#x27;C&#x27;)&quot;&gt;&lt;span&gt; Category C&lt;/span&gt;              
+            &lt;/li&gt;
+          &lt;/ul&gt;
+       &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;div placement&#x3D;&quot;right&quot; &gt;
+      &lt;div ngbDropdown class&#x3D;&quot;dropdown d-flex justify-content-end&quot; autoClose&#x3D;&quot;outside&quot;&gt;
+          
+          &lt;button ngbDropdownToggle class&#x3D;&quot;btn btn-white&quot; type&#x3D;&quot;button&quot;  id&#x3D;&quot;dropdownMenuButtonTableSize&quot; aria-expanded&#x3D;&quot;false&quot; &gt;  
+            &lt;fa-icon icon&#x3D;&quot;cogs&quot;&gt;&lt;/fa-icon&gt;
+            &lt;span &gt;Table Size&lt;/span&gt;
+            &lt;fa-icon icon&#x3D;&quot;caret-down&quot; style&#x3D;&quot;margin-left: 10px;&quot;&gt;&lt;/fa-icon&gt;
+          &lt;/button&gt;
+          &lt;ul ngbDropdownMenu aria-labelledby&#x3D;&quot;nestedDropdownButton&quot;&gt;
+            &lt;li&gt;
+              &lt;button ngbDropdownItem  class&#x3D;&quot;btn btn-primary checkIcon&quot; (click)&#x3D;&quot;sendNumber(10)&quot;&gt;
+                &lt;span&gt;10 rows&lt;/span&gt;
+                &lt;fa-icon icon&#x3D;&quot;check&quot; *ngIf&#x3D;&quot;tableSize &#x3D;&#x3D;&#x3D; 10&quot;&gt;&lt;/fa-icon&gt;
+              &lt;/button&gt;
+            &lt;/li&gt;
+            &lt;li&gt;
+              &lt;button ngbDropdownItem class&#x3D;&quot;btn btn-primary checkIcon&quot; (click)&#x3D;&quot;sendNumber(20)&quot;&gt;
+                &lt;span&gt;20 rows&lt;/span&gt;
+                &lt;fa-icon icon&#x3D;&quot;check&quot; *ngIf&#x3D;&quot;tableSize &#x3D;&#x3D;&#x3D; 20&quot;&gt;&lt;/fa-icon&gt;
+              &lt;/button&gt;
+            &lt;/li&gt;
+            &lt;li&gt;
+              &lt;button ngbDropdownItem class&#x3D;&quot;btn btn-primary checkIcon&quot; (click)&#x3D;&quot;sendNumber(30)&quot;&gt;
+                &lt;span&gt;30 rows&lt;/span&gt;
+                &lt;fa-icon icon&#x3D;&quot;check&quot; *ngIf&#x3D;&quot;tableSize &#x3D;&#x3D;&#x3D; 30&quot;&gt;&lt;/fa-icon&gt;
+              &lt;/button&gt;
+            &lt;/li&gt;
+          &lt;/ul&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    
+&lt;/div&gt;</code></pre>
+    </div>
+
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><div class="optionsBarResponsive" style=" margin-bottom: 20px;">    <div>      <div ngbDropdown class="dropdown d-flex justify-content-end" autoClose="outside" (openChange)="checkDropDown($event)">              <button ngbDropdownToggle class="btn btn-white" type="button" id="dropdownMenuButtonFilterOptions" aria-expanded="false" >          <fa-icon icon="filter"></fa-icon>          <span>Filter Options</span>          <fa-icon icon="caret-down"></fa-icon>        </button>            <ul ngbDropdownMenu aria-labelledby="nestedDropdownButton">            <li>              <button ngbDropdownItem color="primary" class="btn btn-primary" [ngStyle]="{\'background-color\': this.filterStatus.get(\'Material Name\') ? \'#3e8acc\' : \'\'}" (click)="changeStatus(\'Material Name\')">                <span>Material Name</span>              </button>            </li>            <li>              <button ngbDropdownItem color="primary" class="btn btn-primary" [ngStyle]="{\'background-color\': this.filterStatus.get(\'Material Description\') ? \'#3e8acc\' : \'\'}" (click)="changeStatus(\'Material Description\')">                <span>Material Description</span>              </button>            </li>            <li>              <button ngbDropdownItem color="primary" class="btn btn-primary" [ngStyle]="{\'background-color\': this.filterStatus.get(\'ABC Classification\') ? \'#3e8acc\' : \'\'}" (click)="changeStatus(\'ABC Classification\')">                <span>ABC Classification</span>              </button>            </li>            <li>              <button ngbDropdownItem color="primary" class="btn btn-primary" [ngStyle]="{\'background-color\': this.filterStatus.get(\'Plant\') ? \'#3e8acc\' : \'\'}" (click)="changeStatus(\'Plant\')">                <span>Plant</span>              </button>            </li>            <li>              <button ngbDropdownItem color="primary" class="btn btn-primary" [ngStyle]="{\'background-color\': this.filterStatus.get(\'MRP Controller\') ? \'#3e8acc\' : \'\'}" (click)="changeStatus(\'MRP Controller\')">                <span>MRP Controller</span>              </button>            </li>            <div class="dropdown-divider"  [ngClass] = "checkStatus() ? \'searchInputShow\' : \'searchInputHide\'"></div>            <div [ngClass] = "this.filterStatus.get(\'Material Name\') || this.filterStatus.get(\'Material Description\') || this.filterStatus.get(\'MRP Controller\') || this.filterStatus.get(\'Plant\')? \'searchInputShow\' : \'searchInputHide\'" >              <h6 class="dropdown-header"> Search in Column</h6>              <li class="paddingLeftRight">                 <input [ngClass] = "this.filterStatus.get(\'Material Name\') || this.filterStatus.get(\'Material Description\') || this.filterStatus.get(\'MRP Controller\')? \'searchInputShow\' : \'searchInputHide\'" type="text" class="inputWidth paddingFive" (keyup.enter)="sendFilterText($event)">                <input [ngClass] = "this.filterStatus.get(\'Plant\')? \'searchInputShow\' : \'searchInputHide\'"type="number" class="inputWidth paddingFive" (keyup.enter)="sendFilterText($event)">              </li>            </div>                        <h6 class="dropdown-header" [ngClass] = "this.filterStatus.get(\'ABC Classification\') ? \'searchInputShow\' : \'searchInputHide\'"> Select categories</h6>            <li class="paddingLeftRight" [ngClass] = "this.filterStatus.get(\'ABC Classification\') ? \'searchInputShow\' : \'searchInputHide\'">               <input type="checkbox"  (click)="sendABCFilter($event,\'A\')"><span> Category A</span>            </li>            <li class="paddingLeftRight" [ngClass] = "this.filterStatus.get(\'ABC Classification\') ? \'searchInputShow\' : \'searchInputHide\'">                        <input type="checkbox"  (click)="sendABCFilter($event,\'B\')"><span> Category B</span>            </li>            <li class="paddingLeftRight" [ngClass] = "this.filterStatus.get(\'ABC Classification\') ? \'searchInputShow\' : \'searchInputHide\'">              <input type="checkbox"  (click)="sendABCFilter($event,\'C\')"><span> Category C</span>                          </li>          </ul>       </div>    </div>    <div placement="right" >      <div ngbDropdown class="dropdown d-flex justify-content-end" autoClose="outside">                    <button ngbDropdownToggle class="btn btn-white" type="button"  id="dropdownMenuButtonTableSize" aria-expanded="false" >              <fa-icon icon="cogs"></fa-icon>            <span >Table Size</span>            <fa-icon icon="caret-down" style="margin-left: 10px;"></fa-icon>          </button>          <ul ngbDropdownMenu aria-labelledby="nestedDropdownButton">            <li>              <button ngbDropdownItem  class="btn btn-primary checkIcon" (click)="sendNumber(10)">                <span>10 rows</span>                <fa-icon icon="check" *ngIf="tableSize === 10"></fa-icon>              </button>            </li>            <li>              <button ngbDropdownItem class="btn btn-primary checkIcon" (click)="sendNumber(20)">                <span>20 rows</span>                <fa-icon icon="check" *ngIf="tableSize === 20"></fa-icon>              </button>            </li>            <li>              <button ngbDropdownItem class="btn btn-primary checkIcon" (click)="sendNumber(30)">                <span>30 rows</span>                <fa-icon icon="check" *ngIf="tableSize === 30"></fa-icon>              </button>            </li>          </ul>        </div>      </div>    </div></div>'
+    var COMPONENTS = [{'name': 'ChangesComponent', 'selector': 'jhi-changes-page'},{'name': 'CommentModalComponent', 'selector': 'jhi-comment-modal'},{'name': 'CurrencyToolTipCellComponent', 'selector': 'jhi-currency-tooltip-cell'},{'name': 'ErrorComponent', 'selector': 'jhi-error'},{'name': 'FilterDisplayCellComponent', 'selector': 'jhi-filter-display-cell'},{'name': 'FilterFormComponent', 'selector': 'jhi-filter-form'},{'name': 'FlaggedMaterialComponent', 'selector': 'jhi-flagged-material'},{'name': 'FlaggedMaterialUpdateComponent', 'selector': 'jhi-flagged-material-update'},{'name': 'FlaggedOptionsBarComponent', 'selector': 'jhi-flagged-options-bar'},{'name': 'FlagModalComponent', 'selector': 'jhi-flag-modal'},{'name': 'FooterComponent', 'selector': 'jhi-footer'},{'name': 'HeaderGroupComponent', 'selector': 'jhi-header-group'},{'name': 'MainComponent', 'selector': 'jhi-main'},{'name': 'MaterialComponent', 'selector': 'jhi-material'},{'name': 'NavbarComponent', 'selector': 'jhi-navbar'},{'name': 'OptionsBarComponent', 'selector': 'jhi-options-bar'},{'name': 'PageRibbonComponent', 'selector': 'jhi-page-ribbon'},{'name': 'SubmitModalComponent', 'selector': 'jhi-submit-modal'},{'name': 'ValueCellComponent', 'selector': 'jhi-tooltip-cell'}];
+    var DIRECTIVES = [];
+    var ACTUAL_COMPONENT = {'name': 'FlaggedOptionsBarComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'FlaggedOptionsBarComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

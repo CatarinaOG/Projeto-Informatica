@@ -1,0 +1,1061 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>diabo documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avaoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+
+               if ($darkModeToggles.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
+            <a href="../" class="navbar-brand">diabo documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  ChangesComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#templateData" class="nav-link"
+                role="tab" id="templateData-tab" data-bs-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/main/webapp/app/changes/changes.component.ts</code>
+</p>
+
+
+
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                <code>OnInit</code>
+                <code>OnDestroy</code>
+    </p>
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>jhi-changes-page</code></td>
+            </tr>
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./changes.component.html</code></td>
+            </tr>
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#materials" >materials</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#router" >router</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#abs" >abs</a>
+                            </li>
+                            <li>
+                                <a href="#calculateColor" >calculateColor</a>
+                            </li>
+                            <li>
+                                <a href="#mapToList" >mapToList</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnDestroy" >ngOnDestroy</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit" >ngOnInit</a>
+                            </li>
+                            <li>
+                                <a href="#routeToMaterialsPage" >routeToMaterialsPage</a>
+                            </li>
+                            <li>
+                                <a href="#valueVariation" >valueVariation</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(router: Router, editCellService: <a href="../injectables/EditCellService.html" target="_self">EditCellService</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="13" class="link-to-prism">src/main/webapp/app/changes/changes.component.ts:13</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>router</td>
+                                                  
+                                                        <td>
+                                                                    <code>Router</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>editCellService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/EditCellService.html" target="_self" >EditCellService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+
+
+
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="abs"></a>
+                    <span class="name">
+                        <span ><b>abs</b></span>
+                        <a href="#abs"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>abs(value: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="48"
+                                    class="link-to-prism">src/main/webapp/app/changes/changes.component.ts:48</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>value</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="calculateColor"></a>
+                    <span class="name">
+                        <span ><b>calculateColor</b></span>
+                        <a href="#calculateColor"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>calculateColor(oldVal: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, newVal: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="52"
+                                    class="link-to-prism">src/main/webapp/app/changes/changes.component.ts:52</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>oldVal</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>newVal</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="mapToList"></a>
+                    <span class="name">
+                        <span ><b>mapToList</b></span>
+                        <a href="#mapToList"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>mapToList()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="18"
+                                    class="link-to-prism">src/main/webapp/app/changes/changes.component.ts:18</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/IEditCell.html" target="_self" >IEditCell[]</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnDestroy"></a>
+                    <span class="name">
+                        <span ><b>ngOnDestroy</b></span>
+                        <a href="#ngOnDestroy"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnDestroy()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="40"
+                                    class="link-to-prism">src/main/webapp/app/changes/changes.component.ts:40</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <span ><b>ngOnInit</b></span>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="32"
+                                    class="link-to-prism">src/main/webapp/app/changes/changes.component.ts:32</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="routeToMaterialsPage"></a>
+                    <span class="name">
+                        <span ><b>routeToMaterialsPage</b></span>
+                        <a href="#routeToMaterialsPage"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>routeToMaterialsPage()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="67"
+                                    class="link-to-prism">src/main/webapp/app/changes/changes.component.ts:67</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="valueVariation"></a>
+                    <span class="name">
+                        <span ><b>valueVariation</b></span>
+                        <a href="#valueVariation"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>valueVariation(oldVal: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, newVal: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="44"
+                                    class="link-to-prism">src/main/webapp/app/changes/changes.component.ts:44</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>oldVal</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>newVal</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="materials"></a>
+                    <span class="name">
+                        <span ><b>materials</b></span>
+                        <a href="#materials"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/IEditCell.html" target="_self" >Map&lt;number | IEditCell&gt;</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Map&lt;number, IEditCell&gt;()</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="13" class="link-to-prism">src/main/webapp/app/changes/changes.component.ts:13</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="router"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>router</b></span>
+                        <a href="#router"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>Router</code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="16" class="link-to-prism">src/main/webapp/app/changes/changes.component.ts:16</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, OnInit, OnDestroy } from &#x27;@angular/core&#x27;;
+import { Router } from &#x27;@angular/router&#x27;;
+import { IEditCell } from &#x27;app/entities/material/editCell.model&#x27;;
+import { EditCellService } from &#x27;app/entities/material/service/editCell.service&#x27;;
+
+@Component({
+  selector: &#x27;jhi-changes-page&#x27;,
+  templateUrl: &#x27;./changes.component.html&#x27;,
+})
+
+export class ChangesComponent implements OnInit, OnDestroy {
+
+    materials: Map&lt;number, IEditCell&gt; &#x3D; new Map&lt;number, IEditCell&gt;();
+    
+
+    constructor(public router: Router, private editCellService: EditCellService) { }
+
+    mapToList(): IEditCell[] {
+
+      const list : IEditCell[] &#x3D; [];
+
+      this.materials.forEach((value) &#x3D;&gt; {
+          if(value.selected){
+            list.push(value);
+          }
+      }
+      )
+      return list;
+  }
+
+
+    ngOnInit(): void {
+        this.materials &#x3D; this.editCellService.getMaterials()
+
+        if (this.materials.size &#x3D;&#x3D;&#x3D; 0) {
+          this.routeToMaterialsPage()
+        }
+    }
+
+    ngOnDestroy(): void {
+        this.editCellService.cleanMaterials();
+    }
+
+    valueVariation(oldVal: number, newVal: number) :number{
+        return Math.round(((newVal - oldVal)/oldVal)*100)
+    }
+
+    abs(value: number) :number {
+        return Math.abs(value)
+    }
+
+    calculateColor(oldVal : number , newVal : number): string{
+      const delta &#x3D; this.valueVariation ( oldVal, newVal)
+      if (delta &gt; 0){
+        return &quot;textGreen&quot;
+      }
+      if (delta &lt; 0){
+        return &quot;textRed&quot;
+      }
+      else {
+        return &quot;&quot;
+      }
+    }
+
+
+    
+  routeToMaterialsPage() : void {
+    this.router.navigate([&#x27;/material&#x27;]);
+  }
+}</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;h2&gt;Submitted Changes Review&lt;/h2&gt;
+
+&lt;button class&#x3D;&quot;btn btn-info me-2&quot; style&#x3D;&quot; margin-top: 10px; margin-bottom: 10px; &quot; (click)&#x3D;&quot;routeToMaterialsPage()&quot; placement&#x3D;&quot;top&quot;&gt;
+  &lt;span&gt;Back&lt;/span&gt;
+&lt;/button&gt;
+
+&lt;div class&#x3D;&quot;table-responsive table-entities &quot; id&#x3D;&quot;entities&quot; &gt;
+    &lt;table class&#x3D;&quot;table table-striped &quot; aria-describedby&#x3D;&quot;page-heading&quot;&gt;
+      &lt;thead class &#x3D; &quot;navbar-dark&quot;&gt;
+        &lt;tr class&#x3D;&quot;headerRow2&quot;&gt;
+          
+          &lt;th scope&#x3D;&quot;col&quot;  class&#x3D;&quot;headerRowStart&quot; &gt;
+            &lt;div class&#x3D;&quot;d-flex&quot; style&#x3D;&quot;place-content: center;&quot; placement&#x3D;&quot;top&quot;&gt;
+              &lt;span&gt;Material&lt;/span&gt;
+            &lt;/div&gt;
+          &lt;/th&gt;
+
+          &lt;th scope&#x3D;&quot;col&quot;&gt;
+            &lt;div class&#x3D;&quot;d-flex&quot; style&#x3D;&quot;place-content: center;&quot; placement&#x3D;&quot;top&quot;&gt;
+              &lt;span&gt;Material Description&lt;/span&gt;
+            &lt;/div&gt;
+          &lt;/th&gt;
+
+          &lt;th scope&#x3D;&quot;col&quot;&gt;
+            &lt;div class&#x3D;&quot;d-flex&quot; style&#x3D;&quot;place-content: center;&quot; placement&#x3D;&quot;top&quot;&gt;
+              &lt;span&gt;ABC Classification&lt;/span&gt;
+            &lt;/div&gt;
+          &lt;/th&gt;
+
+          &lt;th scope&#x3D;&quot;col&quot;&gt;
+            &lt;div class&#x3D;&quot;d-flex&quot; style&#x3D;&quot;place-content: center;&quot; placement&#x3D;&quot;top&quot;&gt;
+              &lt;span&gt;Plant&lt;/span&gt;
+            &lt;/div&gt;
+          &lt;/th&gt;
+
+          &lt;th scope&#x3D;&quot;col&quot; class&#x3D;&quot;headerRowEnd&quot;&gt;
+            &lt;div class&#x3D;&quot;d-flex&quot; style&#x3D;&quot;place-content: center;&quot; placement&#x3D;&quot;top&quot;&gt;
+              &lt;span&gt;MRP Controller&lt;/span&gt;
+            &lt;/div&gt;
+          &lt;/th&gt;
+
+          &lt;th scope&#x3D;&quot;col&quot; [attr.colspan]&#x3D;3 class&#x3D;&quot;headerRowEnd&quot;&gt;
+            &lt;div class&#x3D;&quot;d-flex&quot; style&#x3D;&quot;place-content: center;&quot; placement&#x3D;&quot;top&quot;&gt;
+              &lt;span&gt;New SAP Safety Stock&lt;/span&gt;
+            &lt;/div&gt;
+          &lt;/th&gt;
+
+          &lt;th scope&#x3D;&quot;col&quot; [attr.colspan]&#x3D;3 class&#x3D;&quot;headerRowEnd&quot;&gt;
+            &lt;div class&#x3D;&quot;d-flex&quot; style&#x3D;&quot;place-content: center;&quot; placement&#x3D;&quot;top&quot;&gt;
+              &lt;span&gt;New SAP Safety Time&lt;/span&gt;
+            &lt;/div&gt;
+          &lt;/th&gt;
+
+          &lt;th scope&#x3D;&quot;col&quot; [attr.colspan]&#x3D;3 class&#x3D;&quot;setWidth edit headerRowEnd&quot;&gt;
+            &lt;div class&#x3D;&quot;d-flex&quot; style&#x3D;&quot;place-content: center;&quot; placement&#x3D;&quot;top&quot;&gt;
+              &lt;span&gt;Flag&lt;/span&gt;
+            &lt;/div&gt;
+          &lt;/th&gt;
+
+          &lt;th scope&#x3D;&quot;col&quot; [attr.colspan]&#x3D;2 class&#x3D;&quot;setWidth edit headerRowEnd&quot;&gt;
+            &lt;div class&#x3D;&quot;d-flex&quot; style&#x3D;&quot;place-content: center;&quot; placement&#x3D;&quot;top&quot;&gt;
+              &lt;span&gt;Comment&lt;/span&gt;
+            &lt;/div&gt;
+          &lt;/th&gt;
+        &lt;/tr&gt;
+      &lt;/thead&gt;
+      &lt;tbody&gt;
+        &lt;tr *ngFor&#x3D;&quot;let material of mapToList()&quot; data-cy&#x3D;&quot;entityTable&quot;&gt;
+          &lt;td&gt;{{ material.materialName }}&lt;/td&gt;
+          &lt;td&gt;{{ material.materialDesc }}&lt;/td&gt;
+          &lt;td&gt;{{ material.abcClassification }}&lt;/td&gt;
+          &lt;td&gt;{{ material.plant }}&lt;/td&gt;
+          &lt;td class&#x3D;&quot;headerRowEnd&quot;&gt;{{ material.mrpcontroller }}&lt;/td&gt;
+          
+
+          &lt;td&gt;{{ material.oldSST}}&lt;/td&gt;
+          &lt;td [ngClass]&#x3D;&quot;material.oldSST !&#x3D;&#x3D; material.newSST ? &#x27;textBlue&#x27; : &#x27;&#x27;&quot;&gt;{{ material.newSST}}&lt;/td&gt;
+
+          &lt;td *ngIf&#x3D;&quot;material.oldSST &#x3D;&#x3D;&#x3D; material.newSST&quot; class&#x3D;&quot;headerRowEnd&quot; &gt;
+            &lt;span&gt;-&lt;/span&gt;
+          &lt;/td&gt;
+          &lt;td  *ngIf&#x3D;&quot;material.oldSST !&#x3D;&#x3D; material.newSST&quot; class&#x3D;&quot;headerRowEnd&quot; [ngClass] &#x3D; &quot;calculateColor(material.oldSST,material.newSST)&quot;&gt;
+            &lt;fa-icon [icon]&#x3D;&quot;valueVariation(material.oldSST, material.newSST) &gt; 0 ? &#x27;arrow-up&#x27; : &#x27;arrow-down&#x27;&quot; style&#x3D;&quot;margin-right: 2px;&quot;&gt;&lt;/fa-icon&gt;
+            &lt;span&gt;{{ abs(valueVariation(material.oldSST, material.newSST)) }}%&lt;/span&gt;
+          &lt;/td&gt;
+
+
+          &lt;td&gt;{{ material.oldST}}&lt;/td&gt;
+          &lt;td [ngClass]&#x3D;&quot;material.oldST !&#x3D;&#x3D; material.newST ? &#x27;textBlue&#x27; : &#x27;&#x27;&quot;&gt;{{ material.newST}}&lt;/td&gt;
+
+          &lt;td *ngIf&#x3D;&quot;material.oldST &#x3D;&#x3D;&#x3D; material.newST&quot; class&#x3D;&quot;headerRowEnd&quot; &gt;
+            &lt;span&gt;-&lt;/span&gt;
+          &lt;/td&gt;
+          &lt;td *ngIf&#x3D;&quot;material.oldST !&#x3D;&#x3D; material.newST&quot; class&#x3D;&quot;headerRowEnd&quot; [ngClass] &#x3D; &quot;calculateColor(material.oldST,material.newST)&quot;&gt;
+            &lt;fa-icon [icon]&#x3D;&quot;valueVariation(material.oldST, material.newST) &gt; 0 ? &#x27;arrow-up&#x27; : &#x27;arrow-down&#x27;&quot; style&#x3D;&quot;margin-right: 2px;&quot;&gt;&lt;/fa-icon&gt;
+            &lt;span&gt;{{ abs(valueVariation(material.oldST, material.newST)) }}%&lt;/span&gt;
+          &lt;/td&gt;
+          
+          &lt;td&gt;
+            &lt;fa-icon class&#x3D;&quot;p-1&quot; icon&#x3D;&quot;flag&quot;  [ngStyle]&#x3D;&quot;{&#x27;color&#x27;: material.flag  ? &#x27;#ff0000&#x27; : &#x27;#999999&#x27;}&quot;&gt;&lt;/fa-icon&gt;    
+          &lt;/td&gt;
+          &lt;td&gt; 
+            &lt;fa-icon icon&#x3D;&quot;arrow-right&quot;&gt;&lt;/fa-icon&gt;
+          &lt;/td&gt;
+          &lt;td&gt;
+            &lt;fa-icon class&#x3D;&quot;p-1&quot; icon&#x3D;&quot;flag&quot;  [ngStyle]&#x3D;&quot;{&#x27;color&#x27;: material.newFlag  ? &#x27;#ff0000&#x27; : &#x27;#999999&#x27;}&quot;&gt;&lt;/fa-icon&gt;
+          &lt;/td&gt;
+
+
+          &lt;td class&#x3D;&quot;text-truncate&quot; style&#x3D;&quot;max-width: 150px;&quot;&gt;
+            &lt;span ngbTooltip&#x3D;&quot;{{material.oldComment}}&quot; tooltipClass&#x3D;&quot;setWidth&quot;&gt;{{ material.oldComment}}&lt;/span&gt;
+          &lt;/td&gt;
+          &lt;td class&#x3D;&quot;text-truncate&quot; style&#x3D;&quot;max-width: 150px;&quot; [ngClass]&#x3D;&quot;material.oldComment !&#x3D;&#x3D; material.newComment? &#x27;textBlue&#x27; : &#x27;&#x27;&quot;&gt;
+            &lt;span ngbTooltip&#x3D;&quot;{{material.newComment}}&quot; tooltipClass&#x3D;&quot;setWidth&quot;&gt;{{ material.newComment}}&lt;/span&gt;
+          &lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/tbody&gt;
+    &lt;/table&gt;
+  &lt;/div&gt;</code></pre>
+    </div>
+
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><h2>Submitted Changes Review</h2><button class="btn btn-info me-2" style=" margin-top: 10px; margin-bottom: 10px; " (click)="routeToMaterialsPage()" placement="top">  <span>Back</span></button><div class="table-responsive table-entities " id="entities" >    <table class="table table-striped " aria-describedby="page-heading">      <thead class = "navbar-dark">        <tr class="headerRow2">                    <th scope="col"  class="headerRowStart" >            <div class="d-flex" style="place-content: center;" placement="top">              <span>Material</span>            </div>          </th>          <th scope="col">            <div class="d-flex" style="place-content: center;" placement="top">              <span>Material Description</span>            </div>          </th>          <th scope="col">            <div class="d-flex" style="place-content: center;" placement="top">              <span>ABC Classification</span>            </div>          </th>          <th scope="col">            <div class="d-flex" style="place-content: center;" placement="top">              <span>Plant</span>            </div>          </th>          <th scope="col" class="headerRowEnd">            <div class="d-flex" style="place-content: center;" placement="top">              <span>MRP Controller</span>            </div>          </th>          <th scope="col" [attr.colspan]=3 class="headerRowEnd">            <div class="d-flex" style="place-content: center;" placement="top">              <span>New SAP Safety Stock</span>            </div>          </th>          <th scope="col" [attr.colspan]=3 class="headerRowEnd">            <div class="d-flex" style="place-content: center;" placement="top">              <span>New SAP Safety Time</span>            </div>          </th>          <th scope="col" [attr.colspan]=3 class="setWidth edit headerRowEnd">            <div class="d-flex" style="place-content: center;" placement="top">              <span>Flag</span>            </div>          </th>          <th scope="col" [attr.colspan]=2 class="setWidth edit headerRowEnd">            <div class="d-flex" style="place-content: center;" placement="top">              <span>Comment</span>            </div>          </th>        </tr>      </thead>      <tbody>        <tr *ngFor="let material of mapToList()" data-cy="entityTable">          <td>{{ material.materialName }}</td>          <td>{{ material.materialDesc }}</td>          <td>{{ material.abcClassification }}</td>          <td>{{ material.plant }}</td>          <td class="headerRowEnd">{{ material.mrpcontroller }}</td>                    <td>{{ material.oldSST}}</td>          <td [ngClass]="material.oldSST !== material.newSST ? \'textBlue\' : \'\'">{{ material.newSST}}</td>          <td *ngIf="material.oldSST === material.newSST" class="headerRowEnd" >            <span>-</span>          </td>          <td  *ngIf="material.oldSST !== material.newSST" class="headerRowEnd" [ngClass] = "calculateColor(material.oldSST,material.newSST)">            <fa-icon [icon]="valueVariation(material.oldSST, material.newSST) > 0 ? \'arrow-up\' : \'arrow-down\'" style="margin-right: 2px;"></fa-icon>            <span>{{ abs(valueVariation(material.oldSST, material.newSST)) }}%</span>          </td>          <td>{{ material.oldST}}</td>          <td [ngClass]="material.oldST !== material.newST ? \'textBlue\' : \'\'">{{ material.newST}}</td>          <td *ngIf="material.oldST === material.newST" class="headerRowEnd" >            <span>-</span>          </td>          <td *ngIf="material.oldST !== material.newST" class="headerRowEnd" [ngClass] = "calculateColor(material.oldST,material.newST)">            <fa-icon [icon]="valueVariation(material.oldST, material.newST) > 0 ? \'arrow-up\' : \'arrow-down\'" style="margin-right: 2px;"></fa-icon>            <span>{{ abs(valueVariation(material.oldST, material.newST)) }}%</span>          </td>                    <td>            <fa-icon class="p-1" icon="flag"  [ngStyle]="{\'color\': material.flag  ? \'#ff0000\' : \'#999999\'}"></fa-icon>              </td>          <td>             <fa-icon icon="arrow-right"></fa-icon>          </td>          <td>            <fa-icon class="p-1" icon="flag"  [ngStyle]="{\'color\': material.newFlag  ? \'#ff0000\' : \'#999999\'}"></fa-icon>          </td>          <td class="text-truncate" style="max-width: 150px;">            <span ngbTooltip="{{material.oldComment}}" tooltipClass="setWidth">{{ material.oldComment}}</span>          </td>          <td class="text-truncate" style="max-width: 150px;" [ngClass]="material.oldComment !== material.newComment? \'textBlue\' : \'\'">            <span ngbTooltip="{{material.newComment}}" tooltipClass="setWidth">{{ material.newComment}}</span>          </td>        </tr>      </tbody>    </table>  </div></div>'
+    var COMPONENTS = [{'name': 'ChangesComponent', 'selector': 'jhi-changes-page'},{'name': 'CommentModalComponent', 'selector': 'jhi-comment-modal'},{'name': 'CurrencyToolTipCellComponent', 'selector': 'jhi-currency-tooltip-cell'},{'name': 'ErrorComponent', 'selector': 'jhi-error'},{'name': 'FilterDisplayCellComponent', 'selector': 'jhi-filter-display-cell'},{'name': 'FilterFormComponent', 'selector': 'jhi-filter-form'},{'name': 'FlaggedMaterialComponent', 'selector': 'jhi-flagged-material'},{'name': 'FlaggedMaterialUpdateComponent', 'selector': 'jhi-flagged-material-update'},{'name': 'FlaggedOptionsBarComponent', 'selector': 'jhi-flagged-options-bar'},{'name': 'FlagModalComponent', 'selector': 'jhi-flag-modal'},{'name': 'FooterComponent', 'selector': 'jhi-footer'},{'name': 'HeaderGroupComponent', 'selector': 'jhi-header-group'},{'name': 'MainComponent', 'selector': 'jhi-main'},{'name': 'MaterialComponent', 'selector': 'jhi-material'},{'name': 'NavbarComponent', 'selector': 'jhi-navbar'},{'name': 'OptionsBarComponent', 'selector': 'jhi-options-bar'},{'name': 'PageRibbonComponent', 'selector': 'jhi-page-ribbon'},{'name': 'SubmitModalComponent', 'selector': 'jhi-submit-modal'},{'name': 'ValueCellComponent', 'selector': 'jhi-tooltip-cell'}];
+    var DIRECTIVES = [];
+    var ACTUAL_COMPONENT = {'name': 'ChangesComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'ChangesComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>
