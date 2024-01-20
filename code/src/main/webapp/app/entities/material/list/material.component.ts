@@ -371,7 +371,7 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
    * @param {any} event 
    */
   checkUncheckAll(event:any): void {
-    this.editCellService.getUncheckAll(event);
+    this.editCellService.checkUncheckAll(event);
     event.stopPropagation();
   }
 
@@ -731,7 +731,7 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
       if (actSpFilter.name === filterOp){
         actSpFilter.isActive = true
         if(filterOp !== "Flagged" && filterOp !== "Unflagged"){
-          actSpFilter.idList = this.getSelectedList(filterOp)
+          actSpFilter.idList = this.getFilteredList(filterOp)
         }
       }
       // By activating Unedited, Selected and Unselected are deactivated
@@ -798,12 +798,12 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   /**
-   * Function that executes the getSelectedList function in the editCellService service
+   * Function that executes the getFilteredList function in the editCellService service
    * @param {string} filterOp 
    * @returns list of selected material's ids
    */
-  getSelectedList(filterOp : string): number[] {
-    return this.editCellService.getSelectedList(filterOp)
+  getFilteredList(filterOp : string): number[] {
+    return this.editCellService.getFilteredList(filterOp)
   }
 
   /**

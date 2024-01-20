@@ -10,6 +10,7 @@ import { ApplicationConfigService } from 'app/core/config/application-config.ser
 import { createRequestOption } from 'app/core/request/request-util';
 import { IMaterial, NewMaterial } from '../material.model';
 
+
 export type PartialUpdateMaterial = Partial<IMaterial> & Pick<IMaterial, 'id'>;
 
 type RestOf<T extends IMaterial | NewMaterial> = Omit<
@@ -32,8 +33,12 @@ export type PartialUpdateRestMaterial = RestOf<PartialUpdateMaterial>;
 export type EntityResponseType = HttpResponse<IMaterial>;
 export type EntityArrayResponseType = HttpResponse<IMaterial[]>;
 
+/**
+ * Service responsible for operations regarding Materials
+ */
 @Injectable({ providedIn: 'root' })
 export class MaterialService {
+
   protected resourceUrl = this.applicationConfigService.getEndpointFor('api/materials');
 
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
@@ -104,6 +109,11 @@ export class MaterialService {
     return materialCollection;
   }
 
+  /**
+   * Function responsible for sending submitted data to the back-end
+   * @param {any[]} data - data being submitted
+   * @returns response to the post request
+   */
   submitChanges(data : any[]): Observable<Blob>{
     return this.http.post<Blob>(`${this.resourceUrl}/submitChanges/`,data, {
       responseType: 'blob' as 'json',
@@ -113,18 +123,32 @@ export class MaterialService {
     });
   }
 
+  /**
+   * Function that uploads a file to the back end with the purpose of replacing the data already stored.
+   * @param {File} file 
+   * @returns response to the post request
+   */
   uploadFileReplace(file: File): Observable<HttpResponse<{}>> {
     const formData = new FormData();
     formData.append('file', file);
     return this.http.post(`${this.resourceUrl}/uploadFileReplace`, formData, { observe: 'response' });
   }
-  
+
+  /**
+   * Function that uploads a file to the back end with the purpose of adding to the data already stored.
+   * @param {File} file 
+   * @returns response to the post request
+   */
   uploadFileAddOrUpdate(file: File): Observable<HttpResponse<{}>> {
     const formData = new FormData();
     formData.append('file', file);
     return this.http.post(`${this.resourceUrl}/uploadFileAddOrUpdate`, formData, { observe: 'response' });
   }
 
+  /**
+   * Function that serves as a getter for the file that the user asked to dowload
+   * @returns exported file
+   */
   exportFileAsExcel(): Observable<Blob> {
     return this.http.get<Blob>(`${this.resourceUrl}/download/`, {
       responseType: 'blob' as 'json',

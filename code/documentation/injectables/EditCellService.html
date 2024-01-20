@@ -126,6 +126,13 @@
         </p>
 
 
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>Service responsible for keeping track of which materials have been edited and all the operations required to manipulate said edited materials</p>
+
+            </p>
 
 
 
@@ -161,7 +168,13 @@
                                 <a href="#addMaterial" >addMaterial</a>
                             </li>
                             <li>
+                                <a href="#checkUncheckAll" >checkUncheckAll</a>
+                            </li>
+                            <li>
                                 <a href="#cleanMaterials" >cleanMaterials</a>
+                            </li>
+                            <li>
+                                <a href="#getFilteredList" >getFilteredList</a>
                             </li>
                             <li>
                                 <a href="#getMaterial" >getMaterial</a>
@@ -170,13 +183,7 @@
                                 <a href="#getMaterials" >getMaterials</a>
                             </li>
                             <li>
-                                <a href="#getSelectedList" >getSelectedList</a>
-                            </li>
-                            <li>
                                 <a href="#getSize" >getSize</a>
-                            </li>
-                            <li>
-                                <a href="#getUncheckAll" >getUncheckAll</a>
                             </li>
                             <li>
                                 <a href="#getUnselectedLines" >getUnselectedLines</a>
@@ -216,10 +223,14 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="8" class="link-to-prism">src/main/webapp/app/entities/material/service/editCell.service.ts:8</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="14" class="link-to-prism">src/main/webapp/app/entities/material/service/editCell.service.ts:14</a></div>
                             </td>
                         </tr>
 
+                <tr>
+                    <td class="col-md-4">
+                    </td>
+                </tr>
             </tbody>
         </table>
 </section>
@@ -242,21 +253,23 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>addMaterial(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, cell: <a href="../interfaces/IEditCell.html" target="_self">IEditCell</a>)</code>
+<code>addMaterial(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, editedMaterial: <a href="../interfaces/IEditCell.html" target="_self">IEditCell</a>)</code>
                 </td>
             </tr>
 
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="18"
-                                    class="link-to-prism">src/main/webapp/app/entities/material/service/editCell.service.ts:18</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="37"
+                                    class="link-to-prism">src/main/webapp/app/entities/material/service/editCell.service.ts:37</a></div>
                         </td>
                     </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                        <div class="io-description"><p>Function that adds a material thats been edited to the materials map</p>
+</div>
 
                             <div class="io-description">
                                 <b>Parameters :</b>
@@ -267,6 +280,7 @@
                                             <td>Name</td>
                                                 <td>Type</td>
                                             <td>Optional</td>
+                                                <td>Description</td>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -281,9 +295,15 @@
                                             </td>
 
 
+                                            <td>
+                                                    <ul>
+<li>id of the material, will serve as key in the materials map</li>
+</ul>
+
+                                            </td>
                                         </tr>
                                         <tr>
-                                                <td>cell</td>
+                                                <td>editedMaterial</td>
                                             <td>
                                                             <code><a href="../interfaces/IEditCell.html" target="_self" >IEditCell</a></code>
                                             </td>
@@ -293,6 +313,12 @@
                                             </td>
 
 
+                                            <td>
+                                                    <ul>
+<li>will serve as value in the materials map</li>
+</ul>
+
+                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -312,275 +338,32 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="cleanMaterials"></a>
+                    <a name="checkUncheckAll"></a>
                     <span class="name">
-                        <span ><b>cleanMaterials</b></span>
-                        <a href="#cleanMaterials"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>checkUncheckAll</b></span>
+                        <a href="#checkUncheckAll"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>cleanMaterials()</code>
+<code>checkUncheckAll(event: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
                 </td>
             </tr>
 
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="89"
-                                    class="link-to-prism">src/main/webapp/app/entities/material/service/editCell.service.ts:89</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="78"
+                                    class="link-to-prism">src/main/webapp/app/entities/material/service/editCell.service.ts:78</a></div>
                         </td>
                     </tr>
 
 
             <tr>
                 <td class="col-md-4">
-
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
-
-                        </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="getMaterial"></a>
-                    <span class="name">
-                        <span ><b>getMaterial</b></span>
-                        <a href="#getMaterial"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-<code>getMaterial(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
-                </td>
-            </tr>
-
-
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="34"
-                                    class="link-to-prism">src/main/webapp/app/entities/material/service/editCell.service.ts:34</a></div>
-                        </td>
-                    </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>id</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="../interfaces/IEditCell.html" target="_self" >IEditCell | undefined</a></code>
-
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="getMaterials"></a>
-                    <span class="name">
-                        <span ><b>getMaterials</b></span>
-                        <a href="#getMaterials"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-<code>getMaterials()</code>
-                </td>
-            </tr>
-
-
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="14"
-                                    class="link-to-prism">src/main/webapp/app/entities/material/service/editCell.service.ts:14</a></div>
-                        </td>
-                    </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="../interfaces/IEditCell.html" target="_self" >Map&lt;number, IEditCell&gt;</a></code>
-
-                        </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="getSelectedList"></a>
-                    <span class="name">
-                        <span ><b>getSelectedList</b></span>
-                        <a href="#getSelectedList"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-<code>getSelectedList(filterOp: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
-                </td>
-            </tr>
-
-
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="59"
-                                    class="link-to-prism">src/main/webapp/app/entities/material/service/editCell.service.ts:59</a></div>
-                        </td>
-                    </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>filterOp</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>    <code>number[]</code>
-
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="getSize"></a>
-                    <span class="name">
-                        <span ><b>getSize</b></span>
-                        <a href="#getSize"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-<code>getSize()</code>
-                </td>
-            </tr>
-
-
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="30"
-                                    class="link-to-prism">src/main/webapp/app/entities/material/service/editCell.service.ts:30</a></div>
-                        </td>
-                    </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
-
-                        </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="getUncheckAll"></a>
-                    <span class="name">
-                        <span ><b>getUncheckAll</b></span>
-                        <a href="#getUncheckAll"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-<code>getUncheckAll(event: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
-                </td>
-            </tr>
-
-
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="38"
-                                    class="link-to-prism">src/main/webapp/app/entities/material/service/editCell.service.ts:38</a></div>
-                        </td>
-                    </tr>
-
-
-            <tr>
-                <td class="col-md-4">
+                        <div class="io-description"><p>Function that either selects or un-selects all the edited materials</p>
+</div>
 
                             <div class="io-description">
                                 <b>Parameters :</b>
@@ -624,6 +407,277 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="cleanMaterials"></a>
+                    <span class="name">
+                        <span ><b>cleanMaterials</b></span>
+                        <a href="#cleanMaterials"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>cleanMaterials()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="144"
+                                    class="link-to-prism">src/main/webapp/app/entities/material/service/editCell.service.ts:144</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Function that clears the materials map, to be executed after the user submits changes</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getFilteredList"></a>
+                    <span class="name">
+                        <span ><b>getFilteredList</b></span>
+                        <a href="#getFilteredList"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getFilteredList(filterOp: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="112"
+                                    class="link-to-prism">src/main/webapp/app/entities/material/service/editCell.service.ts:112</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Function that serves as a getter for filtered lists of the edited materials, either the id&#39;s of all the selected materials</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>filterOp</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>number[]</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getMaterial"></a>
+                    <span class="name">
+                        <span ><b>getMaterial</b></span>
+                        <a href="#getMaterial"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getMaterial(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="70"
+                                    class="link-to-prism">src/main/webapp/app/entities/material/service/editCell.service.ts:70</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Function that serves as a getter for a material that has been edited</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>id</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>id of the material</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/IEditCell.html" target="_self" >IEditCell | undefined</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>either the edited material or undefined</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getMaterials"></a>
+                    <span class="name">
+                        <span ><b>getMaterials</b></span>
+                        <a href="#getMaterials"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getMaterials()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="28"
+                                    class="link-to-prism">src/main/webapp/app/entities/material/service/editCell.service.ts:28</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Function that serves as a getter for the materials map</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/IEditCell.html" target="_self" >Map&lt;number, IEditCell&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>The map of currently edited materials</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getSize"></a>
+                    <span class="name">
+                        <span ><b>getSize</b></span>
+                        <a href="#getSize"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getSize()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="61"
+                                    class="link-to-prism">src/main/webapp/app/entities/material/service/editCell.service.ts:61</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Function that seves as a getter for the size of the materials map</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>map size</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="getUnselectedLines"></a>
                     <span class="name">
                         <span ><b>getUnselectedLines</b></span>
@@ -640,19 +694,24 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="78"
-                                    class="link-to-prism">src/main/webapp/app/entities/material/service/editCell.service.ts:78</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="131"
+                                    class="link-to-prism">src/main/webapp/app/entities/material/service/editCell.service.ts:131</a></div>
                         </td>
                     </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                        <div class="io-description"><p>Function that serves as a getter for the number of lines that have been edited but not selected</p>
+</div>
 
                         <div class="io-description">
                             <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
 
                         </div>
+                            <div class="io-description">
+                                
+                            </div>
                 </td>
             </tr>
         </tbody>
@@ -677,14 +736,16 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="44"
-                                    class="link-to-prism">src/main/webapp/app/entities/material/service/editCell.service.ts:44</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="89"
+                                    class="link-to-prism">src/main/webapp/app/entities/material/service/editCell.service.ts:89</a></div>
                         </td>
                     </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                        <div class="io-description"><p>Function that checks if a material has been edited</p>
+</div>
 
                             <div class="io-description">
                                 <b>Parameters :</b>
@@ -744,19 +805,25 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="49"
-                                    class="link-to-prism">src/main/webapp/app/entities/material/service/editCell.service.ts:49</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="97"
+                                    class="link-to-prism">src/main/webapp/app/entities/material/service/editCell.service.ts:97</a></div>
                         </td>
                     </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                        <div class="io-description"><p>Function that transforms the current map of materials into a list for the submit operation</p>
+</div>
 
                         <div class="io-description">
                             <b>Returns : </b>        <code><a href="../interfaces/IEditCell.html" target="_self" >IEditCell[]</a></code>
 
                         </div>
+                            <div class="io-description">
+                                <p>the list of edited materials</p>
+
+                            </div>
                 </td>
             </tr>
         </tbody>
@@ -781,14 +848,16 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="22"
-                                    class="link-to-prism">src/main/webapp/app/entities/material/service/editCell.service.ts:22</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="45"
+                                    class="link-to-prism">src/main/webapp/app/entities/material/service/editCell.service.ts:45</a></div>
                         </td>
                     </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                        <div class="io-description"><p>Function that removes a certain material from the materials map</p>
+</div>
 
                             <div class="io-description">
                                 <b>Parameters :</b>
@@ -799,6 +868,7 @@
                                             <td>Name</td>
                                                 <td>Type</td>
                                             <td>Optional</td>
+                                                <td>Description</td>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -813,6 +883,12 @@
                                             </td>
 
 
+                                            <td>
+                                                    <ul>
+<li>id of the material to be removed</li>
+</ul>
+
+                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -848,14 +924,16 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="26"
-                                    class="link-to-prism">src/main/webapp/app/entities/material/service/editCell.service.ts:26</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="53"
+                                    class="link-to-prism">src/main/webapp/app/entities/material/service/editCell.service.ts:53</a></div>
                         </td>
                     </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                        <div class="io-description"><p>Setter for the materials map</p>
+</div>
 
                             <div class="io-description">
                                 <b>Parameters :</b>
@@ -866,6 +944,7 @@
                                             <td>Name</td>
                                                 <td>Type</td>
                                             <td>Optional</td>
+                                                <td>Description</td>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -880,6 +959,12 @@
                                             </td>
 
 
+                                            <td>
+                                                    <ul>
+<li>cells to be set as the new value of the materials map</li>
+</ul>
+
+                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -921,10 +1006,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="8" class="link-to-prism">src/main/webapp/app/entities/material/service/editCell.service.ts:8</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="14" class="link-to-prism">src/main/webapp/app/entities/material/service/editCell.service.ts:14</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Property that stores the materials the user has edited.</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -937,51 +1028,99 @@
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable } from &#x27;@angular/core&#x27;;
 import { IEditCell } from &#x27;../editCell.model&#x27;;
 
-
+/**
+ * Service responsible for keeping track of which materials have been edited and all the operations required to manipulate said edited materials
+ */
 @Injectable({ providedIn: &#x27;root&#x27; })
 export class EditCellService {
 
+    /**
+     * Property that stores the materials the user has edited.
+     * @type {Map&lt;number,IEditCell&gt;} 
+     */
     private materials: Map&lt;number, IEditCell&gt;;
 
+    /**
+     * 
+     * @constructor
+     */
     constructor() {
         this.materials &#x3D; new Map&lt;number, IEditCell&gt;();
     }
 
+    /**
+     * Function that serves as a getter for the materials map
+     * @returns The map of currently edited materials
+     */
     getMaterials(): Map&lt;number, IEditCell&gt; {
         return this.materials;
     }
 
-    addMaterial(id: number, cell: IEditCell): void {
-        this.materials.set(id, cell)
+    /**
+     * Function that adds a material thats been edited to the materials map
+     * @param {number} id - id of the material, will serve as key in the materials map 
+     * @param {IEditCell} editedMaterial - will serve as value in the materials map
+     */
+    addMaterial(id: number, editedMaterial: IEditCell): void {
+        this.materials.set(id, editedMaterial)
     }
 
+    /**
+     * Function that removes a certain material from the materials map
+     * @param {number} id - id of the material to be removed 
+     */
     removeMaterial(id: number): void {
         this.materials.delete(id)
     }
 
+    /**
+     * Setter for the materials map
+     * @param cells - cells to be set as the new value of the materials map
+     */
     setMaterials(cells: Map&lt;number, IEditCell&gt;): void {
         this.materials &#x3D; cells
     }
 
+    /**
+     * Function that seves as a getter for the size of the materials map
+     * @returns map size
+     */
     getSize() : number{
         return this.materials.size
     }
 
+    /**
+     * Function that serves as a getter for a material that has been edited
+     * @param {number} id - id of the material 
+     * @returns either the edited material or undefined
+     */
     getMaterial(id: number) : IEditCell | undefined{
         return this.materials.get(id)
     }
 
-    getUncheckAll(event : any) : void{
+    /**
+     * Function that either selects or un-selects all the edited materials
+     * @param {any} event 
+     */
+    checkUncheckAll(event : any) : void{
         this.materials.forEach(function(value) {
             value.selected &#x3D; event.target.checked
         })
     }
 
+    /**
+     * Function that checks if a material has been edited
+     * @param {number} id 
+     * @returns 
+     */
     hasMaterial (id: number) : boolean{
         return this.materials.has(id)
     }
 
-    
+    /**
+     * Function that transforms the current map of materials into a list for the submit operation
+     * @returns the list of edited materials
+     */
     mapToSubmit(): IEditCell[] {
         const list : IEditCell[] &#x3D; [];
         this.materials.forEach((value) &#x3D;&gt; {
@@ -991,14 +1130,16 @@ export class EditCellService {
         })
         return list
     }
-        
-    getSelectedList(filterOp : string): number[] {
+    
+    /**
+     * Function that serves as a getter for filtered lists of the edited materials, either the id&#x27;s of all the selected materials
+     * @param {string} filterOp 
+     * @returns 
+     */
+    getFilteredList(filterOp : string): number[] {
         const res : number[] &#x3D; []
         this.materials.forEach((linha) &#x3D;&gt; {
-        if(filterOp &#x3D;&#x3D;&#x3D; &quot;Unedited&quot;){
-            res.push(linha.materialId);
-        }
-        else{
+
             if (linha.selected &amp;&amp; filterOp &#x3D;&#x3D;&#x3D; &quot;Selected&quot;){
 
                 res.push(linha.materialId);
@@ -1006,11 +1147,14 @@ export class EditCellService {
             if (!linha.selected &amp;&amp; filterOp &#x3D;&#x3D;&#x3D; &quot;Unselected&quot;){
                 res.push(linha.materialId);
                 }
-            }
         })
         return res;
     }
 
+    /**
+     * Function that serves as a getter for the number of lines that have been edited but not selected
+     * @returns 
+     */
     getUnselectedLines() : number{
         let count &#x3D; 0;
         this.materials.forEach((value: IEditCell) &#x3D;&gt; {
@@ -1021,7 +1165,9 @@ export class EditCellService {
         return count;
     }
 
-
+    /**
+     * Function that clears the materials map, to be executed after the user submits changes
+     */
     cleanMaterials() : void{
         this.materials.clear();
     }

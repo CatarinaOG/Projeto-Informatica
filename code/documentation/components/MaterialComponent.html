@@ -365,10 +365,10 @@
                                 <a href="#filterABCClassif" >filterABCClassif</a>
                             </li>
                             <li>
-                                <a href="#getFlagVal" >getFlagVal</a>
+                                <a href="#getFilteredList" >getFilteredList</a>
                             </li>
                             <li>
-                                <a href="#getSelectedList" >getSelectedList</a>
+                                <a href="#getFlagVal" >getFlagVal</a>
                             </li>
                             <li>
                                     <span class="modifier">Protected</span>
@@ -1840,6 +1840,76 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="getFilteredList"></a>
+                    <span class="name">
+                        <span ><b>getFilteredList</b></span>
+                        <a href="#getFilteredList"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getFilteredList(filterOp: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="805"
+                                    class="link-to-prism">src/main/webapp/app/entities/material/list/material.component.ts:805</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Function that executes the getFilteredList function in the editCellService service</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>filterOp</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>number[]</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>list of selected material&#39;s ids</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="getFlagVal"></a>
                     <span class="name">
                         <span ><b>getFlagVal</b></span>
@@ -1907,76 +1977,6 @@
                         </div>
                             <div class="io-description">
                                 <p>current flag value (edited or not)</p>
-
-                            </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="getSelectedList"></a>
-                    <span class="name">
-                        <span ><b>getSelectedList</b></span>
-                        <a href="#getSelectedList"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-<code>getSelectedList(filterOp: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
-                </td>
-            </tr>
-
-
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="805"
-                                    class="link-to-prism">src/main/webapp/app/entities/material/list/material.component.ts:805</a></div>
-                        </td>
-                    </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-                        <div class="io-description"><p>Function that executes the getSelectedList function in the editCellService service</p>
-</div>
-
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>filterOp</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>    <code>number[]</code>
-
-                        </div>
-                            <div class="io-description">
-                                <p>list of selected material&#39;s ids</p>
 
                             </div>
                 </td>
@@ -6018,7 +6018,7 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
    * @param {any} event 
    */
   checkUncheckAll(event:any): void {
-    this.editCellService.getUncheckAll(event);
+    this.editCellService.checkUncheckAll(event);
     event.stopPropagation();
   }
 
@@ -6378,7 +6378,7 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
       if (actSpFilter.name &#x3D;&#x3D;&#x3D; filterOp){
         actSpFilter.isActive &#x3D; true
         if(filterOp !&#x3D;&#x3D; &quot;Flagged&quot; &amp;&amp; filterOp !&#x3D;&#x3D; &quot;Unflagged&quot;){
-          actSpFilter.idList &#x3D; this.getSelectedList(filterOp)
+          actSpFilter.idList &#x3D; this.getFilteredList(filterOp)
         }
       }
       // By activating Unedited, Selected and Unselected are deactivated
@@ -6445,12 +6445,12 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   /**
-   * Function that executes the getSelectedList function in the editCellService service
+   * Function that executes the getFilteredList function in the editCellService service
    * @param {string} filterOp 
    * @returns list of selected material&#x27;s ids
    */
-  getSelectedList(filterOp : string): number[] {
-    return this.editCellService.getSelectedList(filterOp)
+  getFilteredList(filterOp : string): number[] {
+    return this.editCellService.getFilteredList(filterOp)
   }
 
   /**
@@ -7472,7 +7472,7 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
         var COMPONENT_TEMPLATE = '<div><div>  <h2 id="page-heading" data-cy="MaterialHeading" data-bs-toggle="tooltip" data-bs-placement="top" title="Step 1">    <span style="font-weight: bold;">Materials</span>  </h2>    <jhi-options-bar (stringEmitter) = "receiveStringEvent($event)" (fileEmitter) = "onFileSelected($event)" (textFilterEmitter) = "receiveTextFilter($event)" (abcFilterEmitter) = "filterABCClassif($event)" (numberFilterEmitter) ="receiveNumberFilter($event)" [historyLength] = "history.length" [changesListLength]="this.editCellService.getSize()" [unselectedLines] = "getUnselectedLines()" [currencyEUR] = "currencyEUR" [tableSize]="itemsPerPage" (currencyValEmitter) = "receiveCurrencyVal($event)" (dropdownNumberEmitter) = "receiveDropdownNumber($event)"></jhi-options-bar>            <div *ngIf="this.filters.filterOptions.length > 0" >      <div style="font-weight: bold; text-align: start;">Active Filters:</div>      <div class="d-flex">        <ng-container *ngFor="let filter of this.filters.filterOptions">          <div  *ngIf = "filter.name.split(\'.\')[0] !== \'id\' && filter.name.split(\'.\')[0] !== \'flagMaterial\'" class="activeFilterCell">            <jhi-filter-display-cell [filter]=filter (filterRemoveMessage)="receiveFilterRemoveMessage($event)" ></jhi-filter-display-cell>          </div>        </ng-container>        <ng-container *ngFor="let specialFilter of this.specialFiltersList">          <div  *ngIf = "specialFilter.isActive" class="activeFilterCell">            <jhi-filter-display-cell [specialFilter]="specialFilter" (spFilterRemoveMessage)="receiveSpFilterRemoveMessage($event)" ></jhi-filter-display-cell>          </div>        </ng-container>        <div style="flex-grow: 1;"></div>                 <div>          <button id="reset-filters" class="btn btn-info me-2 " style="margin-left: 8px;" (click)="resetFilters()" placement="top">            <fa-icon icon="trash-alt"></fa-icon>            <span>Reset Filters</span>          </button>                  </div>      </div>    </div>    <!-- <jhi-alert-error></jhi-alert-error>  <jhi-alert></jhi-alert> -->  <p *ngIf="alertMessage!==\'n/a\'">    <ngb-alert [dismissible]="true" >      {{alertMessage}}    </ngb-alert>  </p>   <div class="alert alert-warning" id="no-result" *ngIf="materials?.length === 0">    <span>No Materials found</span>  </div>  <div class="table-responsive table-entities " id="entities" *ngIf="materials && materials.length > 0" >    <table class="table table-striped " aria-describedby="page-heading">      <thead class = "navbar-dark">        <tr class = "headerRow1">          <th id="materialInfoHeaderId" [attr.colspan]="visibility.get(\'materialInfo\') ? 5 : 1" class="tableHeader">            <jhi-header-group [headerName] = "\'Material Info\'" [visibilityValue] = "visibility.get(\'materialInfo\')" groupName = \'materialInfo\' (visibilityEmitter)="switchVisibility($event)"></jhi-header-group>          </th>          <th [attr.colspan]="visibility.get(\'supplierDelay\') ? 2 : 1" class="tableHeader">            <jhi-header-group [headerName] = "\'Supplier Delay Info\'" [visibilityValue] = "visibility.get(\'supplierDelay\')" groupName = \'supplierDelay\' (visibilityEmitter)="switchVisibility($event)"></jhi-header-group>          </th>          <th [attr.colspan]="visibility.get(\'safetyStock\') ? 2 : 1" class="tableHeader">            <jhi-header-group [headerName] = "\'Safety Stock Info\'" [visibilityValue] = "visibility.get(\'safetyStock\')" groupName = \'safetyStock\' (visibilityEmitter)="switchVisibility($event)"></jhi-header-group>          </th>          <th [attr.colspan]="visibility.get(\'safetyTime\') ? 2 : 1" class="tableHeader">            <jhi-header-group [headerName] = "\'Safety Time Info\'" [visibilityValue] = "visibility.get(\'materialInfo\')" groupName = \'safetyTime\' (visibilityEmitter)="switchVisibility($event)"></jhi-header-group>          </th>          <th [attr.colspan]="visibility.get(\'inventory\') ? 6 : 1" class="tableHeader">            <jhi-header-group [headerName] = "\'Inventory\'" [visibilityValue] = "visibility.get(\'inventory\')" groupName = \'inventory\' (visibilityEmitter)="switchVisibility($event)"></jhi-header-group>          </th>          <ng-template #editMenuTooltip>                 <div class="tooltipTutorial">                  <span>{{ tourMsgs.get(3) }}</span>                  <div class="tooltipBtns">                      <button class="btn btn-danger" (click)="tourService.cancel($event)">Stop</button>                      <span style="font-weight: bold;"> {{tourService.getIndex() + 1}}/15</span>                      <div>                          <button class="btn btn-info" (click)="tourService.previousStep($event)">&lt;</button>                          <button class="btn btn-info" (click) = "tourService.nextStep($event)">></button>                      </div>                  </div>              </div>          </ng-template>          <th [attr.colspan]="visibility.get(\'edit\') ? 5 : 1" class="tableHeader" >            <jhi-header-group [headerName] = "\'Edit\'" [visibilityValue] = "visibility.get(\'edit\')" groupName = \'edit\' (visibilityEmitter)="switchVisibility($event)"            id="editMenuTooltip" placement="left" [ngbTooltip]="editMenuTooltip"  #t3="ngbTooltip" triggers="manual" [autoClose]="false" tooltipClass="custom-tooltip" ></jhi-header-group>          </th>        </tr>        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()" class="headerRow2" >                    <th scope="col" jhiSortBy="material" class ="materialInfo headerRowStart" [ngClass] ="editCellClasses(\'materialInfo\')">            <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{toolTipMsg.get(\'Material\')}}" >              <span>Material</span>              <fa-icon class="p-1" icon="sort"></fa-icon>            </div>          </th>          <th scope="col" jhiSortBy="description" class ="materialInfo" [ngClass] ="editCellClasses(\'materialInfo\')">            <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{toolTipMsg.get(\'Material Description\')}}">              <span>Material Description</span>              <fa-icon class="p-1" icon="sort"></fa-icon>            </div>          </th>          <th scope="col" jhiSortBy="abcClassification" class ="materialInfo" [ngClass] ="editCellClasses(\'materialInfo\')">            <div class="d-flex" style="place-content: center;" placement="top" [ngbTooltip]="toolTipMsg.get(\'ABC Classification\')">              <span>ABC Classification</span>              <fa-icon class="p-1" icon="sort"></fa-icon>            </div>          </th>          <th scope="col" jhiSortBy="plant" class ="materialInfo" [ngClass] ="editCellClasses(\'materialInfo\')">            <div class="d-flex" style="place-content: center;" placement="top" [ngbTooltip]="toolTipMsg.get(\'Plant\')">              <span>Plant</span>              <fa-icon class="p-1" icon="sort"></fa-icon>            </div>          </th>          <th scope="col" jhiSortBy="mrpController" class ="materialInfo headerRowEnd" [ngClass] ="editCellClasses(\'materialInfo\')">            <div class="d-flex" style="place-content: center;" placement="top" [ngbTooltip]="toolTipMsg.get(\'MRP Controller\')">              <span>MRP Controller</span>              <fa-icon class="p-1" icon="sort"></fa-icon>            </div>          </th>          <th *ngIf = "!visibility.get(\'materialInfo\')" class ="materialInfo headerRowEnd">            ...          </th>                              <th scope="col" jhiSortBy="avgSupplierDelay" class ="supplierDelay" [ngClass] ="editCellClasses(\'supplierDelay\')">            <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{toolTipMsg.get(\'Avg Supplier Delay\')}}">              <span>Avg Supplier Delay</span>              <fa-icon class="p-1" icon="sort"></fa-icon>            </div>          </th>                    <th scope="col" jhiSortBy="maxSupplierDelay" class ="supplierDelay headerRowEnd" [ngClass] ="editCellClasses(\'supplierDelay\')">            <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{toolTipMsg.get(\'Max Supplier Delay\')}}">              <span>Max Supplier Delay</span>              <fa-icon class="p-1" icon="sort"></fa-icon>            </div>          </th>          <th *ngIf = "!visibility.get(\'supplierDelay\')" class ="supplierDelay headerRowEnd">            ...          </th>                    <th scope="col" jhiSortBy="currSAPSafetyStock" class ="safetyStock" [ngClass] ="editCellClasses(\'safetyStock\')">            <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{toolTipMsg.get(\'Current Sap Safety Stock\')}}">              <span>Current Sap Safety Stock</span>              <fa-icon class="p-1" icon="sort"></fa-icon>            </div>          </th>                    <th scope="col" jhiSortBy="proposedSST" class = "safetyStock headerRowEnd" [ngClass] ="editCellClasses(\'safetyStock\')">            <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{toolTipMsg.get(\'Proposed Safety Stock\')}}">              <span>Proposed Safety Stock</span>              <fa-icon class="p-1" icon="sort"></fa-icon>            </div>          </th>          <th *ngIf = "!visibility.get(\'safetyStock\')" class ="safetyStock headerRowEnd">            ...          </th>          <th scope="col" jhiSortBy="currentSAPSafeTime" class = "safetyTime" [ngClass] ="editCellClasses(\'safetyTime\')">            <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{toolTipMsg.get(\'Current Sap Safety Time\')}}">              <span>Current SAP Safety Time</span>              <fa-icon class="p-1" icon="sort"></fa-icon>            </div>          </th>          <th scope="col" jhiSortBy="proposedST" class = "safetyTime headerRowEnd" [ngClass] ="editCellClasses(\'safetyTime\')">            <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{toolTipMsg.get(\'Proposed Safety Time\')}}">              <span>Proposed Safety Time</span>              <fa-icon class="p-1" icon="sort"></fa-icon>            </div>          </th>          <th *ngIf = "!visibility.get(\'safetyTime\')" class ="safetyTime headerRowEnd">            ...          </th>                    <th scope="col" jhiSortBy="serviceLevel" class = "inventory" [ngClass] ="editCellClasses(\'inventory\')">            <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{toolTipMsg.get(\'Service Level\')}}">              <span>Service Level</span>              <fa-icon class="p-1" icon="sort"></fa-icon>            </div>          </th>          <ng-template #linkTourTooltip>               <div class="tooltipTutorial">              <span>{{ tourMsgs.get(2) }}</span>              <div class="tooltipBtns">                  <button class="btn btn-danger" (click)="tourService.cancel($event)">Stop</button>                  <span style="font-weight: bold;"> {{tourService.getIndex() + 1}}/15</span>                  <div>                      <button class="btn btn-info" (click)="tourService.previousStep($event)">&lt;</button>                      <button class="btn btn-info" (click) = "tourService.nextStep($event)">></button>                  </div>              </div>            </div>         </ng-template>          <th scope="col" class="inventory" [ngClass] ="editCellClasses(\'inventory\')">            <div id="openSAPHeader" class="d-flex" style="place-content: center;"  placement="top" [ngbTooltip]="linkTourTooltip" [autoClose]="false" #t2="ngbTooltip" triggers="manual" tooltipClass="custom-tooltip">              <span>Open SAP Md 04</span>            </div>          </th>          <th scope="col" jhiSortBy="currentInventoryValue" class="inventory" [ngClass] ="editCellClasses(\'inventory\')">            <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{toolTipMsg.get(\'Current Inventory Value\')}}">              <span>Current Inventory Value</span>              <fa-icon class="p-1" icon="sort"></fa-icon>            </div>          </th>          <th scope="col" jhiSortBy="deltaSST" class = "inventory" [ngClass] ="editCellClasses(\'inventory\')">            <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{toolTipMsg.get(\'Delta Safety Stock\')}}">              <span>Delta Safety Stock</span>              <fa-icon class="p-1" icon="sort"></fa-icon>            </div>          </th>          <th scope="col" jhiSortBy="deltaST" class = "inventory" [ngClass] ="editCellClasses(\'inventory\')">            <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{toolTipMsg.get(\'Delta Safety Time\')}}">              <span>Delta Safety Time</span>              <fa-icon class="p-1" icon="sort"></fa-icon>            </div>          </th>                    <th scope="col" jhiSortBy="avgInventoryEffectAfterChange" class = "headerRowEnd" [ngClass] ="editCellClasses(\'inventory\')">            <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{toolTipMsg.get(\'Average Inventory Effect After Change\')}}">              <span>Average Inventory Effect After Change</span>              <fa-icon class="p-1" icon="sort"></fa-icon>            </div>          </th>                    <th *ngIf = "!visibility.get(\'inventory\')" class ="inventory headerRowEnd">            ...          </th>                    <ng-template #sapSafetyStockToolTip>               <div class="tooltipTutorial">              <span>{{ tourMsgs.get(4) }}</span>              <div class="tooltipBtns">                  <button class="btn btn-danger" (click)="tourService.cancel($event)">Stop</button>                  <span style="font-weight: bold;"> {{tourService.getIndex() + 1}}/15</span>                  <div>                      <button class="btn btn-info" (click)="tourService.previousStep($event)">&lt;</button>                      <button class="btn btn-info" (click) = "tourService.nextStep($event)">></button>                  </div>              </div>            </div>         </ng-template>          <th id="sapsafetytimestock" scope="col" jhiSortBy="newSAPSafetyStock" class="edit" [ngClass] ="editCellClasses(\'edit\')">            <div class="d-flex" style="place-content: center;" placement="left" [ngbTooltip]="sapSafetyStockToolTip" #t4="ngbTooltip" triggers="manual" [autoClose]="false" tooltipClass="custom-tooltip">              <span placement="top" ngbTooltip="{{toolTipMsg.get(\'New SAP Safety Stock\')}}" >New Sap Safety Stock</span>              <fa-icon class="p-1" icon="sort"></fa-icon>            </div>          </th>          <th scope="col" jhiSortBy="newSAPSafetyTime" class="edit" [ngClass] ="editCellClasses(\'edit\')">            <div class="d-flex" style="place-content: center;" placement="top" ngbTooltip="{{toolTipMsg.get(\'New SAP Safety Time\')}}">              <span>New Sap Safety Time</span>              <fa-icon class="p-1" icon="sort"></fa-icon>            </div>          </th>                    <ng-template #selectEntryTooltip>               <div class="tooltipTutorial">              <span>{{ tourMsgs.get(5) }}</span>              <div class="tooltipBtns">                  <button class="btn btn-danger" (click)="tourService.cancel($event)">Stop</button>                  <span style="font-weight: bold;"> {{tourService.getIndex() + 1}}/15</span>                  <div>                      <button class="btn btn-info" (click)="tourService.previousStep($event)">&lt;</button>                      <button class="btn btn-info" (click) = "tourService.nextStep($event)">></button>                  </div>              </div>            </div>          </ng-template>          <th id="selectEntryTooltipId" scope="col"  class="edit" [ngClass] ="editCellClasses(\'edit\')">            <div>              <div class="d-flex" style="place-content: center;" placement="left" [ngbTooltip]="selectEntryTooltip" #t5="ngbTooltip" triggers="manual" tooltipClass="custom-tooltip" [autoClose]="false">                <span placement="top" ngbTooltip="{{toolTipMsg.get(\'Select Entries For Change\')}}">Entries For Change In Sap</span>              </div>              <input type="checkbox" [disabled]="editCellService.getSize() === 0" (click)="checkUncheckAll($event)">              <p>Select All</p>            </div>          </th>                    <ng-template #flagToolTip>               <div class="tooltipTutorial">              <span>{{ tourMsgs.get(6) }}</span>              <div class="tooltipBtns">                  <button class="btn btn-danger" (click)="tourService.cancel($event)">Stop</button>                  <span style="font-weight: bold;"> {{tourService.getIndex() + 1}}/15</span>                  <div>                      <button class="btn btn-info" (click)="tourService.previousStep($event)">&lt;</button>                      <button class="btn btn-info" (click) = "tourService.nextStep($event)">></button>                  </div>              </div>            </div>          </ng-template>          <th id="flagTooltipId" scope="col" class="edit" [ngClass] ="editCellClasses(\'edit\')">            <div class="d-flex" style="place-content: center;" placement="left" [ngbTooltip]="flagToolTip" [autoClose]="false" #t6="ngbTooltip" triggers="manual" tooltipClass="custom-tooltip">              <span placement="top" ngbTooltip="{{toolTipMsg.get(\'Flag Material as Special Case\')}}">Flag Material As Special Case</span>            </div>          </th>                    <ng-template #commentToolTip>               <div class="tooltipTutorial">              <span>{{ tourMsgs.get(7) }}</span>              <div class="tooltipBtns">                  <button class="btn btn-danger" (click)="tourService.cancel($event)">Stop</button>                  <span style="font-weight: bold;"> {{tourService.getIndex() + 1}}/15</span>                  <div>                      <button class="btn btn-info" (click)="tourService.previousStep($event)">&lt;</button>                      <button class="btn btn-info" (click) = "tourService.nextStep($event)">></button>                  </div>              </div>            </div>          </ng-template>          <th id="commentTooltipId" scope="col" jhiSortBy="comment" class="setWidth edit headerRowEnd" [ngClass] ="editCellClasses(\'edit\')">            <div class="d-flex" style="place-content: center;" placement="left" [ngbTooltip]="commentToolTip" #t7="ngbTooltip" triggers="manual" tooltipClass="custom-tooltip" [autoClose]="false">              <span placement="top" ngbTooltip="{{toolTipMsg.get(\'Comment\')}}">Comment</span>              <fa-icon class="p-1" icon="sort"></fa-icon>            </div>          </th>          <th *ngIf = "!visibility.get(\'edit\')" class ="edit headerRowEnd">            ...          </th>        </tr>      </thead>      <tbody>        <tr class ="align-middle" *ngFor="let material of materials; trackBy: trackId; let i = index;" data-cy="entityTable" [ngClass] = "rowState(material.id)">          <td class ="materialInfo" [ngClass] ="editCellClasses(\'materialInfo\')">{{ material.material }}</td>          <td class ="materialInfo" [ngClass] ="editCellClasses(\'materialInfo\')">{{ material.description }}</td>          <td class ="materialInfo" [ngClass] ="editCellClasses(\'materialInfo\')">{{ material.abcClassification }}</td>          <td class ="materialInfo" [ngClass] ="editCellClasses(\'materialInfo\')">{{ material.plant }}</td>          <td class ="materialInfo headerRowEnd" [ngClass] ="editCellClasses(\'materialInfo\')">{{ material.mrpController }}</td>          <td *ngIf = "!visibility.get(\'materialInfo\')" class="headerRowEnd">            ...          </td>          <td class ="supplierDelay" [ngClass] ="editCellClasses(\'supplierDelay\')">{{ material.avgSupplierDelay }}</td>          <td class ="supplierDelay headerRowEnd" [ngClass] ="editCellClasses(\'supplierDelay\')">{{ material.maxSupplierDelay }}</td>          <td *ngIf = "!visibility.get(\'supplierDelay\')" class="headerRowEnd">            ...          </td>          <td class ="safetyStock" [ngClass] ="editCellClasses(\'safetyStock\')">            <ng-template #safetyStockContent>                 Changed on: {{material.datePreviousSS}}                <p>Previous Safety Stock: {{material.previousSS}}</p>            </ng-template>            <span placement="top" tooltipClass="custom-tooltip-smaller" [ngbTooltip]="safetyStockContent">{{ material.currSAPSafetyStock }}</span>          </td>          <td class ="safetyStock headerRowEnd" [ngClass] ="editCellClasses(\'safetyStock\')">{{ material.proposedSST }}</td>          <td *ngIf = "!visibility.get(\'safetyStock\')" class="headerRowEnd">            ...          </td>          <td class ="safetyTime" [ngClass] ="editCellClasses(\'safetyTime\')">            <ng-template #safetyTimeContent>                 Changed on: {{material.datePreviousST}}                <p>Previous Safety Time: {{material.previousST}}</p>            </ng-template>            <span placement="top" tooltipClass="custom-tooltip-smaller" [ngbTooltip]="safetyTimeContent">{{ material.currentSAPSafeTime }}</span>          </td>          <td class ="safetyTime headerRowEnd" [ngClass] ="editCellClasses(\'safetyTime\')">{{ material.proposedST }}</td>          <td *ngIf = "!visibility.get(\'safetyTime\')" class="headerRowEnd">            ...          </td>          <td class ="inventory" [ngClass] ="editCellClasses(\'inventory\')">{{ material.serviceLevel }}</td>          <td class ="inventory" [ngClass] ="editCellClasses(\'inventory\')"><button class="buttonNoBorder">            <a href="{{sapLinkBuilder(material.id)}}"><fa-icon icon="external-link" style="color: #2D8DFF;"></fa-icon></a>            </button>           </td>          <td  class ="inventory" [ngClass] ="editCellClasses(\'inventory\')"><jhi-currency-tooltip-cell [value] = "currencyConverter(material.currentInventoryValue,material.currency)" [currency]="material.currency" [currencyEUR] = "currencyEUR" ></jhi-currency-tooltip-cell></td>                    <td class ="inventory" [ngClass] ="editCellClasses(\'inventory\')">{{ material.deltaSST }}</td>          <td class ="inventory" [ngClass] ="editCellClasses(\'inventory\')">{{ material.deltaST }}</td>          <td  class ="inventory headerRowEnd" [ngClass]="editCellClasses(\'inventory\')"><jhi-currency-tooltip-cell [value]="currencyConverter(calcNewValueAvg(material),material.currency)" [currency]="material.currency" [currencyEUR]="currencyEUR" ></jhi-currency-tooltip-cell></td>          <td *ngIf = "!visibility.get(\'inventory\')" class="headerRowEnd">            ...          </td>                             <td class ="edit" [ngClass] ="editCellClasses(\'edit\',material,\'SST\')" *ngIf="isEditable[0] === material.id && isEditable[1] === 0 " ><input class="inputWidth" type="number" min=0 [placeholder]="placeholderGeneratorNum(\'SST\',material)" (change)="input($event,\'newSST\',material.id)"></td>          <td class ="edit" *ngIf="!(isEditable[0] === material.id && isEditable[1] === 0) " (click)="makeEditable(material.id,0)"  [ngClass] ="editCellClasses(\'edit\',material,\'SST\')"><jhi-tooltip-cell [oldValue] = "material.newSAPSafetyStock" [generatedValue] = "cellValueGenerator(\'SST\',material)"></jhi-tooltip-cell></td>                    <td class ="edit " [ngClass] ="editCellClasses(\'edit\',material,\'ST\')" *ngIf="isEditable[0] === material.id && isEditable[1] === 1"><input class = "inputWidth" type="number" min=0 [placeholder]="placeholderGeneratorNum(\'ST\',material)" (change)="input($event,\'newST\',material.id)"></td>                    <td class ="edit" *ngIf="!(isEditable[0] === material.id && isEditable[1] === 1)" (click)="makeEditable(material.id,1)"  [ngClass] ="editCellClasses(\'edit\',material,\'ST\')" ><jhi-tooltip-cell [oldValue] = "material.newSAPSafetyTime" [generatedValue] = "cellValueGenerator(\'ST\',material)"></jhi-tooltip-cell></td>          <td class ="edit" [ngClass] ="editCellClasses(\'edit\')"><input type="checkbox" [checked]="editCellService.getMaterial(material.id)?.selected" [disabled]="!editCellService.hasMaterial(material.id)" (click)="input($event,\'selected\',material.id)"></td>          <td class ="edit" [ngClass] ="editCellClasses(\'edit\')">            <jhi-flag-modal [material]="material" [checkFlag] = getFlagVal(material.id) (flagDateEmmiter) = "input($event, \'flag\', material.id)"></jhi-flag-modal>          </td>                   <td class ="edit setWidth" [ngClass] ="editCellClasses(\'edit\',material,\'Comment\')" >            <div class="d-flex justify-content-between">              <span class="d-inline-block text-truncate" style="max-width: 200px;" placement="top" ngbTooltip="{{pickComment(material)}}" tooltipClass="setWidth">                {{((editCellService.hasMaterial(material.id) && (editCellService.getMaterial(material.id)?.newComment !== material.comment))) ? editCellService.getMaterial(material.id)?.newComment : material.comment }}              </span>              <jhi-comment-modal [oldComment]="pickComment(material)" [id]="material.id" (commentEmitter)="receiveComment($event)"></jhi-comment-modal>            </div>          </td>          <td *ngIf = "!visibility.get(\'edit\')">            ...          </td>        </tr>      </tbody>    </table>  </div>  <div *ngIf="materials && materials.length > 0">    <div class="d-flex justify-content-center">      <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>    </div>    <div class="d-flex justify-content-center">      <ngb-pagination        [collectionSize]="totalItems"        [page]="page"        [pageSize]="itemsPerPage"        [maxSize]="5"        [rotate]="true"        [boundaryLinks]="true"        (pageChange)="navigateToPage($event)"      ></ngb-pagination>    </div>  </div></div></div>'
-    var COMPONENTS = [{'name': 'ChangesComponent', 'selector': 'jhi-changes-page'},{'name': 'CommentModalComponent', 'selector': 'jhi-comment-modal'},{'name': 'CurrencyToolTipCellComponent', 'selector': 'jhi-currency-tooltip-cell'},{'name': 'ErrorComponent', 'selector': 'jhi-error'},{'name': 'FilterDisplayCellComponent', 'selector': 'jhi-filter-display-cell'},{'name': 'FilterFormComponent', 'selector': 'jhi-filter-form'},{'name': 'FlaggedMaterialComponent', 'selector': 'jhi-flagged-material'},{'name': 'FlaggedMaterialUpdateComponent', 'selector': 'jhi-flagged-material-update'},{'name': 'FlaggedOptionsBarComponent', 'selector': 'jhi-flagged-options-bar'},{'name': 'FlagModalComponent', 'selector': 'jhi-flag-modal'},{'name': 'FooterComponent', 'selector': 'jhi-footer'},{'name': 'HeaderGroupComponent', 'selector': 'jhi-header-group'},{'name': 'MainComponent', 'selector': 'jhi-main'},{'name': 'MaterialComponent', 'selector': 'jhi-material'},{'name': 'NavbarComponent', 'selector': 'jhi-navbar'},{'name': 'OptionsBarComponent', 'selector': 'jhi-options-bar'},{'name': 'PageRibbonComponent', 'selector': 'jhi-page-ribbon'},{'name': 'SubmitModalComponent', 'selector': 'jhi-submit-modal'},{'name': 'ValueCellComponent', 'selector': 'jhi-tooltip-cell'}];
+    var COMPONENTS = [{'name': 'ChangesComponent', 'selector': 'jhi-changes-page'},{'name': 'CommentModalComponent', 'selector': 'jhi-comment-modal'},{'name': 'CurrencyToolTipCellComponent', 'selector': 'jhi-currency-tooltip-cell'},{'name': 'FilterDisplayCellComponent', 'selector': 'jhi-filter-display-cell'},{'name': 'FilterFormComponent', 'selector': 'jhi-filter-form'},{'name': 'FlaggedMaterialComponent', 'selector': 'jhi-flagged-material'},{'name': 'FlaggedMaterialUpdateComponent', 'selector': 'jhi-flagged-material-update'},{'name': 'FlaggedOptionsBarComponent', 'selector': 'jhi-flagged-options-bar'},{'name': 'FlagModalComponent', 'selector': 'jhi-flag-modal'},{'name': 'HeaderGroupComponent', 'selector': 'jhi-header-group'},{'name': 'MaterialComponent', 'selector': 'jhi-material'},{'name': 'OptionsBarComponent', 'selector': 'jhi-options-bar'},{'name': 'SubmitModalComponent', 'selector': 'jhi-submit-modal'},{'name': 'ValueCellComponent', 'selector': 'jhi-tooltip-cell'}];
     var DIRECTIVES = [];
     var ACTUAL_COMPONENT = {'name': 'MaterialComponent'};
 </script>
