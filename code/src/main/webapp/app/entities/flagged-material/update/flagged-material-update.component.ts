@@ -8,19 +8,29 @@ import { FlaggedMaterialFormService, FlaggedMaterialFormGroup } from './flagged-
 import { IFlaggedMaterial } from '../flagged-material.model';
 import { FlaggedMaterialService } from '../service/flagged-material.service';
 import { ABCClassification } from 'app/entities/enumerations/abc-classification.model';
-import { Coin } from 'app/entities/enumerations/coin.model';
 import { Dayjs } from 'dayjs';
 
+/**
+ * Flagged Material Update Page - Change Flag Information
+ */
 @Component({
   selector: 'jhi-flagged-material-update',
   templateUrl: './flagged-material-update.component.html',
 })
 export class FlaggedMaterialUpdateComponent implements OnInit {
   isSaving = false;
+
+  /**
+   * Flagged Material to be updated
+   * @type {IFlaggedMaterial}
+   */
   flaggedMaterial: IFlaggedMaterial | null = null;
   aBCClassificationValues = Object.keys(ABCClassification);
-  coinValues = Object.keys(Coin);
 
+  /**
+   * Variable that checks if the flag date is valid
+   * @type {boolean}
+   */
   flagError = false;
 
   current = new Date();
@@ -30,6 +40,10 @@ export class FlaggedMaterialUpdateComponent implements OnInit {
 	  month: this.current.getMonth() + 1,
 	  day: this.current.getDate()
 	};
+
+  /**
+   * Variable that sets the status of the Save button to Enabled vs Diasabled
+   */
   buttonStatus = false;
 
   editForm: FlaggedMaterialFormGroup = this.flaggedMaterialFormService.createFlaggedMaterialFormGroup();
@@ -56,15 +70,28 @@ export class FlaggedMaterialUpdateComponent implements OnInit {
     });
   }
 
+  /**
+   * Function that is activated every time the information in the update form is changed.
+   * The main goal is to determine if the date chosen is valid
+   */
   onFormChange(): void {
     const formValue = this.editForm.value;
     this.saveButtonStatus(formValue.flagMaterial, formValue.flagExpirationDate)
   }
 
+  /**
+   * Navigates the user to the previous page (Flagged Materials Page)
+   */
   previousState(): void {
     window.history.back();
   }
 
+  /**
+   * Function that determines the visibility of the date picker.
+   * If the user deactivates the flag, it disappears.
+   * If the user activates the flag, it becomes visible.
+   * @returns CSS class that hides or shows the input 
+   */
   inputHideShow() : string {
 		if (!this.editForm.get('flagMaterial')?.value){
       return "tableHide"
@@ -75,6 +102,13 @@ export class FlaggedMaterialUpdateComponent implements OnInit {
 	}
 
   
+  /**
+   * Function that determines the visibility of the Save button.
+   * If the flag is set as true and the date is invalid, it becomes disabled and a error message appears.
+   * Else it becomes enabled.
+   * @param flag Flag status
+   * @param date Date picked by the user
+   */
   saveButtonStatus(flag: boolean | null | undefined, date: Dayjs | null | undefined) : void { 
     this.flagError = false;
     if(flag === true && (date === null || date === undefined)) {
@@ -84,6 +118,11 @@ export class FlaggedMaterialUpdateComponent implements OnInit {
     else {this.buttonStatus = false};
   }
 
+  /**
+   * Main function of this Component. It receives the form content and submits it to the data base.
+   * If the user chooses to disable the flag, a modal pop ups, forcing the user to confirm their option.
+   * @param content Confirmation Modal
+   */
   save(content: TemplateRef<any>): void {
     this.isSaving = true;
     const flaggedMaterial = this.flaggedMaterialFormService.getFlaggedMaterial(this.editForm);
@@ -97,6 +136,11 @@ export class FlaggedMaterialUpdateComponent implements OnInit {
     }
   }
 
+  /**
+   * Function that opens the Modal
+   * @param content Confirmation Modal 
+   * @param flaggedMaterial Flagged Material to Submit
+   */
   open(content: TemplateRef<any>, flaggedMaterial: IFlaggedMaterial): void {
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then(
       (result: string) => {

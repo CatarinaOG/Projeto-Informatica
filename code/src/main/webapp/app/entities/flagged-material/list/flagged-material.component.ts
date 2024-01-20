@@ -11,6 +11,9 @@ import { ASC, DESC, SORT, DEFAULT_SORT_DATA } from 'app/config/navigation.consta
 import { EntityArrayResponseType, FlaggedMaterialService } from '../service/flagged-material.service';
 import { FilterOptions, IFilterOptions, IFilterOption } from 'app/shared/filter/filter.model';
 
+/**
+ * Flagged Material Page
+ */
 @Component({
   selector: 'jhi-flagged-material',
   templateUrl: './flagged-material.component.html',
@@ -70,7 +73,7 @@ export class FlaggedMaterialComponent implements OnInit {
 
   /**
    * Receives the event of Table Size chosen by the user in a child component
-   * @param {any} event - Event from the Child Component, containing the user option
+   * @param {any} event Event from the Child Component, containing the user option
    */
   receiveTableSize(event : any) : void{
       this.itemsPerPage = event;
@@ -85,6 +88,10 @@ export class FlaggedMaterialComponent implements OnInit {
     this.handleNavigation(page, this.predicate, this.ascending, this.filters.filterOptions);
   }
 
+  /**
+   * Function responsabile for processing all the String messages received from the various emmitters used in the jhi-options-bar component
+   * @param {event} event message received
+   */
   receiveStringEvent(event: any): void {
     const filterName: string = event.filterName;
     const filterValue: string = event.filterText;
@@ -117,6 +124,10 @@ export class FlaggedMaterialComponent implements OnInit {
     this.load();
   }
 
+  /**
+   * Function that adds a filter in the ABC Classification Column
+   * @param {any} event
+   */
   filterABCClassification(event: any): void {
     if(event.opType){
       this.filters.addFilter("abcClassification.in", event.filterValue);
@@ -126,6 +137,10 @@ export class FlaggedMaterialComponent implements OnInit {
     }
   }
 
+  /**
+   * Function that receives the message sent by the emitter in the jhi-filter-display-cell component. It removes the filter passed as parameter
+   * @param {IFilterOption} filter filter to be removed
+   */
   receiveFilterRemoveMessage (filter : IFilterOption) : void{
     for(const value of filter.values){
       this.filters.removeFilter(filter.name, value);

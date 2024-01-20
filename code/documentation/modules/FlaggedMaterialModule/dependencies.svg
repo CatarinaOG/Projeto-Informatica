@@ -24,79 +24,79 @@
 <title>cluster_FlaggedMaterialModule</title>
 <polygon fill="none" stroke="black" stroke-dasharray="1,5" points="8,-70 8,-195 1001,-195 1001,-70 8,-70"/>
 </g>
-<g id="clust2" class="cluster">
-<title>cluster_FlaggedMaterialModule_declarations</title>
-<polygon fill="none" stroke="black" points="362,-78 362,-130 993,-130 993,-78 362,-78"/>
-</g>
 <g id="clust6" class="cluster">
 <title>cluster_FlaggedMaterialModule_imports</title>
-<polygon fill="none" stroke="black" points="16,-78 16,-130 354,-130 354,-78 16,-78"/>
+<polygon fill="none" stroke="black" points="655,-78 655,-130 993,-130 993,-78 655,-78"/>
+</g>
+<g id="clust2" class="cluster">
+<title>cluster_FlaggedMaterialModule_declarations</title>
+<polygon fill="none" stroke="black" points="16,-78 16,-130 647,-130 647,-78 16,-78"/>
 </g>
 <!-- FlaggedMaterialComponent -->
 <g id="node1" class="node">
 <title>FlaggedMaterialComponent</title>
-<polygon fill="#ffffb3" stroke="black" points="984.86,-122 811.14,-122 811.14,-86 984.86,-86 984.86,-122"/>
-<text text-anchor="middle" x="898" y="-99.8" font-family="Times,serif" font-size="14.00">FlaggedMaterialComponent</text>
+<polygon fill="#ffffb3" stroke="black" points="638.86,-122 465.14,-122 465.14,-86 638.86,-86 638.86,-122"/>
+<text text-anchor="middle" x="552" y="-99.8" font-family="Times,serif" font-size="14.00">FlaggedMaterialComponent</text>
 </g>
 <!-- FlaggedMaterialModule -->
 <g id="node4" class="node">
 <title>FlaggedMaterialModule</title>
-<polygon fill="#8dd3c7" stroke="black" points="541.07,-187 538.07,-191 517.07,-191 514.07,-187 388.93,-187 388.93,-151 541.07,-151 541.07,-187"/>
-<text text-anchor="middle" x="465" y="-164.8" font-family="Times,serif" font-size="14.00">FlaggedMaterialModule</text>
+<polygon fill="#8dd3c7" stroke="black" points="628.07,-187 625.07,-191 604.07,-191 601.07,-187 475.93,-187 475.93,-151 628.07,-151 628.07,-187"/>
+<text text-anchor="middle" x="552" y="-164.8" font-family="Times,serif" font-size="14.00">FlaggedMaterialModule</text>
 </g>
 <!-- FlaggedMaterialComponent&#45;&gt;FlaggedMaterialModule -->
 <g id="edge1" class="edge">
 <title>FlaggedMaterialComponent&#45;&gt;FlaggedMaterialModule</title>
-<path fill="none" stroke="black" d="M898,-122.28C898,-143.32 898,-175 898,-175 898,-175 551.41,-175 551.41,-175"/>
-<polygon fill="black" stroke="black" points="551.42,-171.5 541.41,-175 551.41,-178.5 551.42,-171.5"/>
+<path fill="none" stroke="black" d="M552,-122.11C552,-122.11 552,-140.99 552,-140.99"/>
+<polygon fill="black" stroke="black" points="548.5,-140.99 552,-150.99 555.5,-140.99 548.5,-140.99"/>
 </g>
 <!-- FlaggedMaterialUpdateComponent -->
 <g id="node2" class="node">
 <title>FlaggedMaterialUpdateComponent</title>
-<polygon fill="#ffffb3" stroke="black" points="793.28,-122 578.72,-122 578.72,-86 793.28,-86 793.28,-122"/>
-<text text-anchor="middle" x="686" y="-99.8" font-family="Times,serif" font-size="14.00">FlaggedMaterialUpdateComponent</text>
+<polygon fill="#ffffb3" stroke="black" points="447.28,-122 232.72,-122 232.72,-86 447.28,-86 447.28,-122"/>
+<text text-anchor="middle" x="340" y="-99.8" font-family="Times,serif" font-size="14.00">FlaggedMaterialUpdateComponent</text>
 </g>
 <!-- FlaggedMaterialUpdateComponent&#45;&gt;FlaggedMaterialModule -->
 <g id="edge2" class="edge">
 <title>FlaggedMaterialUpdateComponent&#45;&gt;FlaggedMaterialModule</title>
-<path fill="none" stroke="black" d="M686,-122.02C686,-139.37 686,-163 686,-163 686,-163 551.06,-163 551.06,-163"/>
-<polygon fill="black" stroke="black" points="551.06,-159.5 541.06,-163 551.06,-166.5 551.06,-159.5"/>
+<path fill="none" stroke="black" d="M340,-122.02C340,-139.37 340,-163 340,-163 340,-163 465.76,-163 465.76,-163"/>
+<polygon fill="black" stroke="black" points="465.76,-166.5 475.76,-163 465.76,-159.5 465.76,-166.5"/>
 </g>
 <!-- FlaggedOptionsBarComponent -->
 <g id="node3" class="node">
 <title>FlaggedOptionsBarComponent</title>
-<polygon fill="#ffffb3" stroke="black" points="560.48,-122 369.52,-122 369.52,-86 560.48,-86 560.48,-122"/>
-<text text-anchor="middle" x="465" y="-99.8" font-family="Times,serif" font-size="14.00">FlaggedOptionsBarComponent</text>
+<polygon fill="#ffffb3" stroke="black" points="214.48,-122 23.52,-122 23.52,-86 214.48,-86 214.48,-122"/>
+<text text-anchor="middle" x="119" y="-99.8" font-family="Times,serif" font-size="14.00">FlaggedOptionsBarComponent</text>
 </g>
 <!-- FlaggedOptionsBarComponent&#45;&gt;FlaggedMaterialModule -->
 <g id="edge3" class="edge">
 <title>FlaggedOptionsBarComponent&#45;&gt;FlaggedMaterialModule</title>
-<path fill="none" stroke="black" d="M465,-122.11C465,-122.11 465,-140.99 465,-140.99"/>
-<polygon fill="black" stroke="black" points="461.5,-140.99 465,-150.99 468.5,-140.99 461.5,-140.99"/>
+<path fill="none" stroke="black" d="M119,-122.28C119,-143.32 119,-175 119,-175 119,-175 465.59,-175 465.59,-175"/>
+<polygon fill="black" stroke="black" points="465.59,-178.5 475.59,-175 465.58,-171.5 465.59,-178.5"/>
 </g>
 <!-- FlaggedMaterialRoutingModule -->
 <g id="node5" class="node">
 <title>FlaggedMaterialRoutingModule</title>
-<polygon fill="#8dd3c7" stroke="black" points="345.69,-122 342.69,-126 321.69,-126 318.69,-122 148.31,-122 148.31,-86 345.69,-86 345.69,-122"/>
-<text text-anchor="middle" x="247" y="-99.8" font-family="Times,serif" font-size="14.00">FlaggedMaterialRoutingModule</text>
+<polygon fill="#8dd3c7" stroke="black" points="984.69,-122 981.69,-126 960.69,-126 957.69,-122 787.31,-122 787.31,-86 984.69,-86 984.69,-122"/>
+<text text-anchor="middle" x="886" y="-99.8" font-family="Times,serif" font-size="14.00">FlaggedMaterialRoutingModule</text>
 </g>
 <!-- FlaggedMaterialRoutingModule&#45;&gt;FlaggedMaterialModule -->
 <g id="edge4" class="edge">
 <title>FlaggedMaterialRoutingModule&#45;&gt;FlaggedMaterialModule</title>
-<path fill="none" stroke="black" d="M247,-122.02C247,-139.37 247,-163 247,-163 247,-163 378.75,-163 378.75,-163"/>
-<polygon fill="black" stroke="black" points="378.75,-166.5 388.75,-163 378.75,-159.5 378.75,-166.5"/>
+<path fill="none" stroke="black" d="M886,-122.28C886,-143.32 886,-175 886,-175 886,-175 638.21,-175 638.21,-175"/>
+<polygon fill="black" stroke="black" points="638.21,-171.5 628.21,-175 638.21,-178.5 638.21,-171.5"/>
 </g>
 <!-- MaterialModule -->
 <g id="node6" class="node">
 <title>MaterialModule</title>
-<polygon fill="#8dd3c7" stroke="black" points="130.47,-122 127.47,-126 106.47,-126 103.47,-122 23.53,-122 23.53,-86 130.47,-86 130.47,-122"/>
-<text text-anchor="middle" x="77" y="-99.8" font-family="Times,serif" font-size="14.00">MaterialModule</text>
+<polygon fill="#8dd3c7" stroke="black" points="769.47,-122 766.47,-126 745.47,-126 742.47,-122 662.53,-122 662.53,-86 769.47,-86 769.47,-122"/>
+<text text-anchor="middle" x="716" y="-99.8" font-family="Times,serif" font-size="14.00">MaterialModule</text>
 </g>
 <!-- MaterialModule&#45;&gt;FlaggedMaterialModule -->
 <g id="edge5" class="edge">
 <title>MaterialModule&#45;&gt;FlaggedMaterialModule</title>
-<path fill="none" stroke="black" d="M77,-122.28C77,-143.32 77,-175 77,-175 77,-175 378.81,-175 378.81,-175"/>
-<polygon fill="black" stroke="black" points="378.81,-178.5 388.81,-175 378.81,-171.5 378.81,-178.5"/>
+<path fill="none" stroke="black" d="M716,-122.02C716,-139.37 716,-163 716,-163 716,-163 638.24,-163 638.24,-163"/>
+<polygon fill="black" stroke="black" points="638.24,-159.5 628.24,-163 638.24,-166.5 638.24,-159.5"/>
 </g>
 </g>
 </svg>
