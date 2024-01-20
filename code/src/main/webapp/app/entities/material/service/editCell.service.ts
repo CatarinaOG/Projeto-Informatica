@@ -114,7 +114,6 @@ export class EditCellService {
         this.materials.forEach((linha) => {
 
             if (linha.selected && filterOp === "Selected"){
-
                 res.push(linha.materialId);
             }
             if (!linha.selected && filterOp === "Unselected"){
