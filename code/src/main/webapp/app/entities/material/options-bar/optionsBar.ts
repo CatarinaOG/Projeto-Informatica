@@ -9,30 +9,136 @@ import { tourMessages } from '../data/tourMessage';
   selector: 'jhi-options-bar',
   templateUrl: './optionsBar.html',
 })
+
+/**
+ * Component responsible for the options bar shown to the user and the functions necessary to support it
+ */
 export class OptionsBarComponent implements OnInit {
 
+  /**
+   * Table size, passed by the jhi-material component
+   * @type {number}
+   */
   @Input() tableSize! : number;
+
+  /**
+   * Current history size, passed by the jhi-material component
+   * @type {number}
+   */
   @Input() historyLength! : number; 
+
+  /**
+   * Number of edited rows, passed by the jhi-material component
+   * @type {number}
+   */
   @Input() changesListLength! : number;
+
+  /**
+   * Number of edited, but unselected, passed by the jhi-material component
+   * @type {number}
+   */
   @Input() unselectedLines! : number;
+
+  /**
+   * Current state of the local currency/euro switch, passed by the jhi-material component
+   * @type {number}
+   */
   @Input() currencyEUR ! : boolean;
+
+  /**
+   * Emitter of string values to jhi-material component
+   * @type {EventEmitter<string>}
+   */
   @Output() stringEmitter = new EventEmitter<string>();
+
+  /**
+   * Emitter to jhi-material component, used to send the file and operation type (true -> replace, false -> add)
+   * @type {EventEmitter<{opType :boolean, file : File}>}
+   */
   @Output() fileEmitter = new EventEmitter<{opType :boolean, file : File}>();
+
+  /**
+   * Emitter to jhi-material component, used to send the name of the column to which the filter will be applied and the filter text itself
+   * @type {EventEmitter<{filterName : string, filterText : string}>}
+   */
   @Output() textFilterEmitter = new EventEmitter<{filterName : string, filterText : string}>();
+
+  /**
+   * Emitter to jhi-material component, used to send which value is to be filtered
+   * @type {EventEmitter<{opType : boolean, filterValue : string}>}
+   */
   @Output() abcFilterEmitter = new EventEmitter<{opType : boolean, filterValue : string}>();
+
+  /**
+   * Emitter to jhi-material component, used to send the name of the column to which the filter will be applied, the operation (less than, greater than, equals etc) and the filter value itself
+   * @type {EventEmitter<{filterName : string, operator : string, value : number}>}
+   */
   @Output() numberFilterEmitter = new EventEmitter<{filterName : string, operator : string, value : number}>();
+
+  /**
+   * Emitter of the dropdown numbered values to jhi-material component. sends the menuName (dropdown or undo) and the dropdown value
+   * @type {EventEmitter<{menuName:string, menuValue : number}>}
+   */
   @Output() dropdownNumberEmitter = new EventEmitter<{menuName:string, menuValue : number}>();
+
+  /**
+   * Emitter of currency switch value
+   * @type {EventEmitter<boolean>}
+   */
   @Output() currencyValEmitter = new EventEmitter<boolean>();
 
+   /**
+   * Reference to the Tooltip used to showcase the Filters step of the guided tour
+   * @type {NgbTooltip}
+   */
   @ViewChild('t8') filtersTooltip!: NgbTooltip;
+
+   /**
+   * Reference to the Tooltip used to showcase the File Options step of the guided tour
+   * @type {NgbTooltip}
+   */
   @ViewChild('t9') fileTooltip!: NgbTooltip; 
+
+   /**
+   * Reference to the Tooltip used to showcase the Table Size options step of the guided tour
+   * @type {NgbTooltip}
+   */
   @ViewChild('t10') tableSizeTooltip!: NgbTooltip; 
+
+   /**
+   * Reference to the Tooltip used to showcase the Undo step of the guided tour
+   * @type {NgbTooltip}
+   */
   @ViewChild('t11') undoTooltip!: NgbTooltip; 
+
+   /**
+   * Reference to the Tooltip used to showcase the Undo options step of the guided tour
+   * @type {NgbTooltip}
+   */
   @ViewChild('t12') undoToolTip2!: NgbTooltip;
-  @ViewChild('t13') switchTooltip!: NgbTooltip; 
+
+   /**
+   * Reference to the Tooltip used to showcase the Currency switch step of the guided tour
+   * @type {NgbTooltip}
+   */
+  @ViewChild('t13') switchTooltip!: NgbTooltip;
+  
+   /**
+   * Reference to the Tooltip used to showcase the Submit step of the guided tour
+   * @type {NgbTooltip}
+   */
   @ViewChild('t14') submitTooltip!: NgbTooltip; 
+
+  /**
+   * Property that stores the Map with all the messages displayed during the Guided Process tutorial, imported from the data/tourMessage.ts file
+   * @type {Map<string,string>}
+   */
   tourMsgs = tourMessages
 
+  /**
+   * Property that keeps track of active filters using a Map that has the filter name as key and boolean values
+   * @type {Map<string,boolean>}
+   */
   filterStatus = new Map<string,boolean>([
     ["Material Name", false],
     ["Material Description",false],
@@ -51,6 +157,10 @@ export class OptionsBarComponent implements OnInit {
     ["Current Inventory", false],
     ["Avg. Inv. Effect After Change", false]
   ]);
+
+  /**
+   * Property that stores
+   */
   index = 0;
 
   undoSize = 10;

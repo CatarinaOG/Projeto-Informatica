@@ -8,6 +8,9 @@ import { EditCellService } from 'app/entities/material/service/editCell.service'
   templateUrl: './changes.component.html',
 })
 
+/**
+ * Component used to show the changes made by the user
+ */
 export class ChangesComponent implements OnInit, OnDestroy {
 
   /**
@@ -39,6 +42,9 @@ export class ChangesComponent implements OnInit, OnDestroy {
   }
 
 
+  /**
+   * Executes when the component initializes. Assigns the result of the getMaterials function in the editCellService to the materials property
+   */
   ngOnInit(): void {
       this.materials = this.editCellService.getMaterials()
 
@@ -47,6 +53,9 @@ export class ChangesComponent implements OnInit, OnDestroy {
       }
   }
 
+  /**
+   * Executes when the component is destroyed. Cleans the materials stored in the editCellService by executing the cleanMaterials function
+   */
   ngOnDestroy(): void {
       this.editCellService.cleanMaterials();
   }
