@@ -133,6 +133,13 @@
         </p>
 
 
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>Interface for the history of changes made</p>
+
+            </p>
 
 
         <section data-compodoc="block-index">
@@ -213,6 +220,12 @@
 
 
 
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>Name of the changed column</p>
+</div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                     <table class="table table-sm table-bordered">
@@ -246,6 +259,12 @@
 
 
 
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>Value after the edit was made</p>
+</div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                     <table class="table table-sm table-bordered">
@@ -279,6 +298,12 @@
 
 
 
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>Id of the changed material</p>
+</div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                     <table class="table table-sm table-bordered">
@@ -312,6 +337,12 @@
 
 
 
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>Value before edit was made</p>
+</div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
             </section>
@@ -320,9 +351,21 @@
 
     <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">export interface IHistoryEntity {
+    /**
+     * Id of the changed material
+     */
     materialId : number,
+    /**
+     * Value before edit was made
+     */
     oldValue: number | string,
+    /**
+     * Value after the edit was made
+     */
     currentValue: number | string,
+    /**
+     * Name of the changed column
+     */
     column: string
 }</code></pre>
     </div>

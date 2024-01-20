@@ -368,7 +368,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr class ="align-middle" *ngFor="let material of materials; trackBy: trackId; let i = index;" data-cy="entityTable" [ngClass] = "func(material.id)">
+        <tr class ="align-middle" *ngFor="let material of materials; trackBy: trackId; let i = index;" data-cy="entityTable" [ngClass] = "rowState(material.id)">
           <td class ="materialInfo" [ngClass] ="editCellClasses('materialInfo')">{{ material.material }}</td>
           <td class ="materialInfo" [ngClass] ="editCellClasses('materialInfo')">{{ material.description }}</td>
           <td class ="materialInfo" [ngClass] ="editCellClasses('materialInfo')">{{ material.abcClassification }}</td>

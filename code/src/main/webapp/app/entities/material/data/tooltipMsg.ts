@@ -1,3 +1,6 @@
+/**
+ * Constant that stores all the tooltip messages shown in the column headers in the table
+ */
 export const MSG : Map<string,string> = new Map<string, string>([
     ["Material", "The material number uniquely identifies a material in the SAP System"],
     ["Material Description", "A short text describing a material"],

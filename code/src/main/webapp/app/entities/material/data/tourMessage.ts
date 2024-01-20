@@ -1,3 +1,6 @@
+/**
+ * Constant that stores all the messages used in the tooltips in the Guided Process
+ */
 export const tourMessages: Map<number, string> = new Map<number, string>([
     [0, "The columns are organized in groups. In this one, you can see basic information about the Material"],
     [1, "Here you can colapse and expand each of the column groups"],

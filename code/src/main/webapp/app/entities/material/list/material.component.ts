@@ -22,7 +22,9 @@ import { TourService } from '../service/tour.service';
 import { tourMessages } from '../data/tourMessage';
 
 
-
+/**
+ * Component responsible for showing the Material Table, and all the logic necessary to support it
+ */
 @Component({
   selector: 'jhi-material',
   templateUrl: './material.component.html',
@@ -101,35 +103,46 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
    */
   currencyEUR  = true;
 
-  
+  /**
+   * Property that stores the list of changes that can be reverted by pressing the Undo button in the user interface.
+   * @type {IHistoryEntity[]}
+   */
   history: IHistoryEntity[] = [];
 
-
-  predicate = 'id';
-  ascending = true;
-  isLoading = false;
-
-  subscription: Subscription = new Subscription();
-
-  itemsPerPage = 10;
-  totalItems = 0;
-  page = 1;
-
-  selectedFilterState = false;
-
+  /**
+   * Property that stores the Map with all the Tooltip messages, imported from the data/tooltipMsg file
+   * @type {Map<string,string>}
+   */
   toolTipMsg = MSG;
+
+  /**
+   * Property that stores the Map with all the currency exchange rates messages, imported from the data/currencyExchangeRates.ts file
+   * @type {Map<string,number>}
+   */
   currencyExchangeRates = currencyExchangeRates;
+
+    /**
+   * Property that stores the Map with all the messages displayed during the Guided Process tutorial, imported from the data/tourMessage.ts file
+   * @type {Map<string,string>}
+   */
   tourMsgs = tourMessages;
 
-  isVisible = true;
-  masterSelected=false;
+   /**
+   * Property that stores the current visibility state of each column group. The keys are the 
+   * @type {Map<string,boolean>}
+   */
   visibility = new Map<string, boolean>();
-  fileName = '';
-  firstTime = true;
 
+   /**
+   * Property that keeps track of if the Submit button has been clicked 
+   * @type {boolean}
+   */
   clickedSubmit = false;
-  message:string | undefined;
 
+  /**
+   * Property that is meant to keep track of  keeps track of what filters are active regarding selected and unselected lines, as well as flagged and unflagged items. It also keeps track of what Material id's fall into each filter. 
+   * @type {specialFilter[]}
+   */
   specialFiltersList : specialFilter[] = [
     {name: "Selected", isActive: false, idList:[]},
     {name: "Unselected", isActive: false, idList:[]},
@@ -138,19 +151,77 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
     {name: "Unflagged", isActive: false, idList:[]},
   ];
 
-  options = {
-    autoClose: false,
-    keepAfterRouteChange: false
-};
-
+  /**
+   * Property that keeps track of what cell is currently open to edit, to aid in the conditional render
+   * @type {number[]}
+   */
   private _isEditable : number[] = [-1,-1];
+
+  /**
+   * Property created by JHipster
+   */
+  trackId = (_index: number, item: IMaterial): number => this.materialService.getMaterialIdentifier(item);
+
+  /**
+   * Property created by JHipster
+   */
+  predicate = 'id';
+
+  /**
+   * Property created by JHipster
+   */
+  ascending = true;
+
+  /**
+   * Property created by JHipster
+   */
+  isLoading = false;
+
+  /**
+   * Property created by JHipster
+   */
+  subscription: Subscription = new Subscription();
+
+  /**
+   * Property created by JHipster. Defines the number of items in each table page
+   */
+  itemsPerPage = 10;
+
+  /**
+   * Property created by JHipster. Defines the number of total items
+   */
+  totalItems = 0;
+
+  /**
+   * Property created by JHipster. Defines the current page
+   */
+  page = 1;
+
+  /**
+   * Getter for the isEditable property
+   * @returns the value of this._isEditable
+   */
   get isEditable(): number[] {
     return this._isEditable;
   }
+
+  /**
+   * Setter for the isEditable property
+   * @param {number[]} value - table position of the editable cell
+   */  
   set isEditable(value: number[]) {
     this._isEditable = [value[0], value[1]]
   }
 
+  /**
+   * @constructor
+   * @param materialService 
+   * @param editCellService 
+   * @param tourService
+   * @param activatedRoute 
+   * @param router 
+   * @param modalService 
+   */
   constructor(
     protected materialService: MaterialService,
     public editCellService: EditCellService,
@@ -169,15 +240,10 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
     ])
   }
 
-  @HostListener('window:beforeunload', ['$event'])
-  unloadNotification($event: any) : void {
-      if (this.editCellService.getSize() > 0 && !this.clickedSubmit) {
-          $event.returnValue = true;
-      }
-  }
-
-  trackId = (_index: number, item: IMaterial): number => this.materialService.getMaterialIdentifier(item);
-
+  /**
+   * Init function of the Material Component, starts by loading the Materials to be shown in this table page and then subscribes to this.filters.filterChanges
+   * Also removes all the filters assigned to id.in and id.notIn
+   */
   ngOnInit(): void {
     this.load();
     this.filters.filterChanges.subscribe({
@@ -190,6 +256,9 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
     this.filters.removeAllFiltersName("id.notIn");
   }
 
+  /**
+   * This function subscribes to the tourService.index value, everytime this value is changed, calls the function defineStepTour with the new value as a parameter.
+   */
   ngAfterViewInit(): void {
     this.subscription = this.tourService.index$.subscribe({
       next: value => this.defineStepTour(value),
@@ -200,8 +269,16 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
 
+
+  @HostListener('window:beforeunload', ['$event'])
+  unloadNotification($event: any) : void {
+      if (this.editCellService.getSize() > 0 && !this.clickedSubmit) {
+          $event.returnValue = true;
+      }
+  }
+
   /**
- * This function decides what tooltip of the page to activate/show
+ * This function decides what tooltip of the page to activate/show.
  * @param {number} value  the number of the step of the tour currently activated
  * 
  */
@@ -265,14 +342,23 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
+  /**
+   * Function that executes when the component is destroyed. Unsubscribes from the subscription property
+   */
   ngOnDestroy(): void {
       this.subscription.unsubscribe()
   }
 
+  /**
+   * This function starts the tourService on input by the user
+   */
   startTour() : void {
     this.tourService.start();
   }
 
+  /**
+   * Function starts a timer, after which, it resets the alertMessage value to "n/a"
+   */
   autoDismissAlert() : void {
     setTimeout(() => {
       this.alertMessage="n/a";
@@ -280,12 +366,22 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
 
+  /**
+   * Upon input by the user, it sends the checkbox value to editCellService
+   * @param {any} event 
+   */
   checkUncheckAll(event:any): void {
     this.editCellService.getUncheckAll(event);
     event.stopPropagation();
   }
 
-  func(id :number): string {
+
+  /**
+   * This function checks if the row in question is selected or not, changing the className of the row accordingly
+   * @param {number} id - id of the Material shown in the row in question
+   * @returns a class name
+   */
+  rowState(id :number): string {
     if (this.editCellService.hasMaterial(id) && this.editCellService.getMaterial(id)?.selected) {
       return "selected-row"
     }
@@ -294,29 +390,37 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  editCellClasses(colName : string,material? : IMaterial,editColName? : string) : string {
+
+  /**
+   * Function that calculates the className a cell.
+   * @param {string} groupName - name of the column group
+   * @param {IMaterial} material - Material name , optional value
+   * @param {string} editColName - column name, optional value
+   * @returns a string value with the className that needs to be assigned to a certain cell
+   */
+  editCellClasses(groupName : string,material? : IMaterial,editColName? : string) : string {
     let returnVal = ""
-    if (colName === "materialInfo" && this.visibility.get('materialInfo') === false){
+    if (groupName === "materialInfo" && this.visibility.get('materialInfo') === false){
       returnVal = "tableHide "
     }
-    else if (colName === "edit" && this.visibility.get('edit') === false){
+    else if (groupName === "edit" && this.visibility.get('edit') === false){
       returnVal = "tableHide "
     }
-    else if (colName === "supplierDelay" && this.visibility.get('supplierDelay') === false){
+    else if (groupName === "supplierDelay" && this.visibility.get('supplierDelay') === false){
       returnVal = "tableHide "
     }
-    else if (colName === "safetyStock" && this.visibility.get('safetyStock') === false){
+    else if (groupName === "safetyStock" && this.visibility.get('safetyStock') === false){
       returnVal = "tableHide "
     }
-    else if (colName === "safetyTime" && this.visibility.get('safetyTime') === false){
+    else if (groupName === "safetyTime" && this.visibility.get('safetyTime') === false){
       returnVal = "tableHide "
     }
-    else if (colName === "inventory" && this.visibility.get('inventory') === false){
+    else if (groupName === "inventory" && this.visibility.get('inventory') === false){
       returnVal = "tableHide "
     }
     else{
       returnVal = ""
-      if (colName!== "header"){
+      if (groupName!== "header"){
         if(material !== undefined && editColName !== undefined){
           returnVal += this.chooseColor(material,editColName);
         }
@@ -325,9 +429,15 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
     return returnVal
   }
   
-  chooseColor(material : IMaterial , valueName : string) : string {
+  /**
+   * Function that assigns a className for a certain cell based on checks regarding the values of the cell.
+   * @param {IMaterial} material - material being checked
+   * @param {string} columnName - name of the column
+   * @returns a className
+   */
+  chooseColor(material : IMaterial , columnName : string) : string {
     let returnVal = ""
-    switch (valueName){
+    switch (columnName){
       case ("SST"):
         if (this.editCellService.hasMaterial(material.id) && (this.editCellService.getMaterial(material.id)?.newSST !== material.newSAPSafetyStock)){
           returnVal = "textBlue"
@@ -356,16 +466,22 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
     return returnVal
   }
 
-  placeholderGeneratorNum(valueName : string, material : IMaterial) : number {
+  /**
+   * Function that generates a placeholder (value shown in the input bar) value for a editable cell.
+   * @param {string} columnName - name of the column
+   * @param {IMaterial} material 
+   * @returns 
+   */
+  placeholderGeneratorNum(columnName : string, material : IMaterial) : number {
     let returnVal = 0;
     const editCell : IEditCell | undefined = this.editCellService.getMaterial(material.id)
-    if (valueName === "SST"){
+    if (columnName === "SST"){
       if ((editCell !== undefined && (this.editCellService.getMaterial(material.id)?.newSST !== material.newSAPSafetyStock ))){
         returnVal = editCell.newSST
       }
       else if (material.newSAPSafetyStock) { returnVal = material.newSAPSafetyStock};
     }
-    else if(valueName === "ST"){
+    else if(columnName === "ST"){
       if ((editCell !== undefined && (this.editCellService.getMaterial(material.id)?.newST !== material.newSAPSafetyTime ))){
         returnVal = editCell.newST
       }
@@ -374,6 +490,11 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
     return returnVal;
   }
 
+  /**
+   * Placeholder generator for the comment cell in the edit column group
+   * @param {IMaterial} material
+   * @returns 
+   */
   placeholderGeneratorString(material : IMaterial) : string {
     let returnVal = "";
     const editCell : IEditCell | undefined = this.editCellService.getMaterial(material.id)
@@ -385,10 +506,19 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
     return returnVal;
   }
 
+  /**
+   * Navigates to the changes page after a submission
+   */
   routeToChangesPage() : void {
     this.router.navigate(['/changes-page']);
   }
 
+  /**
+   * Function that converts monetary values to a certain currency. If the value
+   * @param {number} original - original monetary value
+   * @param {Coin} currency - currency assigned to the line in question
+   * @returns the converted value to be shown in the cell
+   */
   currencyConverter(original: number | undefined | null, currency: Coin | null | undefined) : number {
     let returnVal = 0;
     if (original !== null && original !== undefined && currency !== null && currency !== undefined){
@@ -402,12 +532,18 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
     return returnVal;
   }
 
-  cellValueGenerator(valueName : string, material : IMaterial) : number {
+  /**
+   * Function that chooses which value to shown in the cells in the edit column group. 
+   * @param {string} columnName - name of the column the cell belongs to
+   * @param {IMaterial} material - the material the cell belongs to
+   * @returns 
+   */
+  cellValueGenerator(columnName : string, material : IMaterial) : number {
 
     let returnVal = 0;
     const editCell : IEditCell | undefined = this.editCellService.getMaterial(material.id)
   
-    if (valueName === "SST"){
+    if (columnName === "SST"){
       if(editCell!==undefined && (editCell.newSST) !== material.proposedSST) {returnVal = editCell.newSST}
       else if ( material.newSAPSafetyStock && material.newSAPSafetyStock !== -1 ){
         returnVal = material.newSAPSafetyStock;
@@ -416,7 +552,7 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
         returnVal = material.proposedSST
       }
     }
-    else if (valueName === "ST"){
+    else if (columnName === "ST"){
       if(editCell!==undefined && (editCell.newST) !== material.proposedST) {returnVal = editCell.newST}
       else if ( material.newSAPSafetyTime && material.newSAPSafetyTime !== -1 ){
         returnVal = material.newSAPSafetyTime;
@@ -428,37 +564,39 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
     return returnVal;
   }
 
+  /**
+   * Function responsible for submitting the selected changes to the back-end
+   */
   submitToSAP() : void{
     const list = this.editCellService.mapToSubmit();
     this.clickedSubmit = true;
-    if (list.length === 0) {
-      alert("No lines were selected");
-    }
-    else {
-      this.materialService.submitChanges(list).subscribe({
-        next: (res) => {
-          this.createAndShowDownloadFile(res, "DataChanged.xlsx", "application/vnd.ms-excel");
-          this.load();
-          this.alertMessage = "DATA WAS SUBMITTED SUCCESSFULLY";
-          this.autoDismissAlert();
-          this.routeToChangesPage();
-        },
-        error(){
-          alert('Error on Submit')
-        } 
-      });
-    }
+    this.materialService.submitChanges(list).subscribe({
+      next: (res) => {
+        this.createAndShowDownloadFile(res, "DataChanged.xlsx", "application/vnd.ms-excel");
+        this.load();
+        this.alertMessage = "DATA WAS SUBMITTED SUCCESSFULLY";
+        this.autoDismissAlert();
+        this.routeToChangesPage();
+      },
+      error(){
+        alert('Error on Submit')
+      } 
+    });
   };
 
+
+  /**
+   * Function responsabile for processing all the String messages received from the various emmitters used in the components that are in the material component
+   * @param {string} messageText - message received
+   */
   receiveStringEvent(messageText : string) : void{
-    this.message = messageText;
-    if (this.message === "load"){
+    if (messageText === "load"){
       this.load();
     }
-    if (this.message === "Submit"){
+    if (messageText === "Submit"){
       this.submitToSAP()
     }
-    if (this.message === "Download"){
+    if (messageText === "Download"){
       this.materialService.exportFileAsExcel().subscribe({
         next: (res) => {
           this.createAndShowDownloadFile(res, "download.xlsx", "application/vnd.ms-excel");
@@ -467,31 +605,47 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
           alert('Error on Submit')
         } 
       });  }
-    if (this.message === "Undo"){
+    if (messageText === "Undo"){
       this.undo()
     }
-    if (this.message === "Check unselected"){
+    if (messageText === "Check unselected"){
       this.resetFilters();
       this.receiveSpecialFilter("Unselected");
     }
   }
 
+  /**
+   * Function that asigns to the currencyEur variable the value received from the emitter
+   * @param {boolean} event - boolean received from an emitter in the jhi-options-bar component
+   */
   receiveCurrencyVal(event : boolean) : void{
     this.currencyEUR = event;
   }
 
+
+  /**
+   * Function that asigns to the currencyEur variable the value received from the emitter
+   * @param event - boolean received from an emitter in the jhi-options-bar component
+   */
   receiveComment(event : any) : void{
     this.input(event,"newComment",event.id)
   }
 
+  /**
+   * Function that chooses the comment to be usend in the comment-modal component
+   * @param {IMaterial} material
+   * @returns either the comment present in the back end or the edited value 
+   */
   pickComment(material : IMaterial) : string {
-    // let returnVal : string = this.materials?.find(e => e.id === id)?.comment ?? "";
-    // if (this.editCellService.getMaterial(id)){
-    //   returnVal = this.editCellService.getMaterial(id)?.newComment ?? "";
-    // }
     return (((this.editCellService.hasMaterial(material.id) && (this.editCellService.getMaterial(material.id)?.newComment !== material.comment))) ? this.editCellService.getMaterial(material.id)?.newComment : material.comment) ?? ""
   }
 
+  /**
+   * Function responsible for the download a excel file
+   * @param {any} content 
+   * @param {string} fileName 
+   * @param {string} contentType 
+   */
   createAndShowDownloadFile = (content: any, fileName: string, contentType: string): void => {
     const a = document.createElement('a');
     const file = new Blob([content], { type: contentType });
@@ -503,12 +657,20 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
   };
 
 
+  /**
+   * Function that receives the message sent by the emitter in the jhi-filter-display-cell component. It removes the filter passed as parameter
+   * @param {IFilterOption} filter : filter to be removed
+   */
   receiveFilterRemoveMessage (filter : IFilterOption) : void{
     for(const value of filter.values){
       this.filters.removeFilter(filter.name, value);
     }
   }
 
+  /**
+   * Function that receives the message sent by the emitter in the jhi-filter-display-cell component. It removes the special filter passed as parameter.
+   * @param spFilter 
+   */
   receiveSpFilterRemoveMessage(spFilter : specialFilter) : void {
     this.specialFiltersList.forEach((actSpFilter) => {
       if (actSpFilter.name === spFilter.name){
@@ -520,6 +682,10 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
     this.applySpecialFilters()
   }
 
+  /**
+   * Function that receives the message sent by the emitter in the jhi-options-bar component. It adds a filter in whatever column name has been sent.
+   * @param {any} event - message received, contains the filter name and the filter value, in this case, text  
+   */
   receiveTextFilter(event : any) : void{
     const filterName: string = event.filterName;
     const filterValue: string = event.filterText;
@@ -556,6 +722,10 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
     this.load();
   }
 
+  /**
+   * Function that adds a special filter to the list of filters, according to a string value sent by an emitter in the jhi-options-bar component
+   * @param {string} filterOp - specifies the type of filter 
+   */
   receiveSpecialFilter(filterOp:string) : void{
     this.specialFiltersList.forEach((actSpFilter) => {
       if (actSpFilter.name === filterOp){
@@ -564,25 +734,28 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
           actSpFilter.idList = this.getSelectedList(filterOp)
         }
       }
-      // Ao ativar Unedited, desativar Selected e Unselected
+      // By activating Unedited, Selected and Unselected are deactivated
       if (filterOp === "Unedited" && actSpFilter.name !== filterOp){
         actSpFilter.isActive = false
         actSpFilter.idList = []
       }
-      // Ao ativar Selected ou Unselected, desativar Unedited
+      // By activating either Selected or Unselected, deactivate Unedited
       if ((filterOp === "Selected" || filterOp === "Unselected") && actSpFilter.name === "Unedited"){
         actSpFilter.isActive = false
         actSpFilter.idList = []
       }
-      // Desativa Flagged quando Unflagged e Vice-Versa
+      // Deactivate Flagged when Unflagged is received and vice versa
       if(filterOp === "Flagged" && actSpFilter.name === "Unflagged") {actSpFilter.isActive = false}
       if(filterOp === "Unflagged" && actSpFilter.name === "Flagged") {actSpFilter.isActive = false}
     })
-
     this.applySpecialFilters()
   }
 
 
+  /**
+   * Function that receives a message sent by an emitter on the jhi-options-bar component and, depending on the value of menuName, either changes the cap of undo or the size of the page.
+   * @param {any} event - message sent by the emitter
+   */
   receiveDropdownNumber(event : any) : void{
     if ( event.menuName === "undo"){
       this.undoSize = event.menuValue;
@@ -594,6 +767,9 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
+  /**
+   * Function that adds so called special filters
+   */
   applySpecialFilters() : void{
     this.filters.removeAllFiltersName("flagMaterial.equals")
     this.filters.removeAllFiltersName("id.in")
@@ -621,11 +797,20 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
     })
   }
 
+  /**
+   * Function that executes the getSelectedList function in the editCellService service
+   * @param {string} filterOp 
+   * @returns list of selected material's ids
+   */
   getSelectedList(filterOp : string): number[] {
     return this.editCellService.getSelectedList(filterOp)
   }
 
-
+  /**
+   * Function that assesses the current flag value of a material to be passed to the jhi-flag-modal component
+   * @param {number} id - id of the material the cell refers to
+   * @returns current flag value (edited or not)
+   */
   getFlagVal(id : number) : boolean{
     let returnVal = false;
 		const editedMaterial = this.editCellService.getMaterial(id);
@@ -641,6 +826,10 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
     return returnVal;
   }
 
+  /**
+   * Function that receives a message from an emitter on the jhi-options-bar component. The received message is used to add a filter refering to a numeric operator and a numeric column
+   * @param {any} event - received message 
+   */
   receiveNumberFilter(event : any) : void{
     const filterName: string = event.filterName;
 
@@ -651,7 +840,10 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
     this.load();
   }
 
-
+  /**
+   * Function that receives a message from an emitter on the jhi-options-bar component. The received message is used to activate the upload of the file either with the intent of replacing the data or adding to the already existing data
+   * @param {any} event - contains the opType boolean (true for replace and false for add) and the file itself
+   */
   onFileSelected(event:any): void {
     // true -> replace
     // false -> add
@@ -695,6 +887,11 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
+  /**
+   * Function that changes the value of the property isEditable as to make a certain cell of the table editable for the user
+   * @param {number} a - row 
+   * @param {number} b - column
+   */
   makeEditable(a: number, b: number) : void{
     this._isEditable = [a,b];
 
@@ -702,6 +899,11 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
 
+  /**
+   * Function responsible for calculating the new average. If the row has not been edited, the value is the same as the one from the Backend, if it isn't, further calculations are needed and applied in this function.
+   * @param {IMaterial} material 
+   * @returns the result of the calculation of the new Average
+   */
   calcNewValueAvg(material : IMaterial) : number {
     const editCell: IEditCell | undefined = this.editCellService.getMaterial(material.id)
 
@@ -715,7 +917,11 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
     else{ return Number((material.avgInventoryEffectAfterChange ?? 1).toFixed(2))};
   }
 
-
+  /**
+   * Function that is auxilary to the undo operation. It checks if the lastEntry being reverted means that the edited row reverts to it's original state
+   * @param {IHistoryEntity} lastEntry 
+   * @returns true or false, depending if the undo reverts the row to it's original state or not
+   */
   checkEditCell(lastEntry : IHistoryEntity): boolean{
     const materialValue : IMaterial | undefined = this.materials?.find(e => e.id === lastEntry.materialId);
     switch (lastEntry.column){
@@ -743,7 +949,9 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
     return false;
   }
 
-
+  /**
+   * Function responsible for undoing an edit made, it starts by taking the oldest change currently in the History and then checks if that change being reverted means that the edited row reverts to it's original state. If it does, then that row must be reverted
+   */
   undo() : void{
     if(this.history.length > 0){
       const lastEntry = this.history.pop();
@@ -790,6 +998,9 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
+  /**
+   * Function responsible for the changes that happen after a change in the size of the undo log.
+   */
   undoChangeSize() : void{
     if(this.undoSize < this.history.length){
       for(let i = 0 ; i<this.history.length-this.undoSize;i++){
@@ -805,6 +1016,13 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
 
+  /**
+   * Function that adds an edit to the History, it creates an instance of IHistoryEntity that gets pushed to the history property.
+   * @param {string} col_name 
+   * @param {number | string} new_value 
+   * @param {number | string} old_value 
+   * @param {number} material_id 
+   */
   addToHistory(col_name : string, new_value : number | string, old_value : number | string, material_id : number) : void{
     // - if existe no history && nome da coluna está la
     //   adicionar ao índice e alterar new e old
@@ -830,6 +1048,12 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
+  /**
+   * Function that is responsible for receiving and treating any input that the user makes in any editable cell. If necessary, it creates an IEditCell that gets store via the addMaterial function in add
+   * @param {any} event  - input received
+   * @param {string} col_name - name of the column of the input
+   * @param {number} id - id of the material that was changed
+   */
   input(event: any, col_name : string, id: number): void {
     let editCell: IEditCell | undefined;
     let oldValue: number | string = 0;
@@ -891,7 +1115,10 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-
+  /**
+   * Function responsible for switching the visibility value of a column group based on user input
+   * @param {any} event 
+   */
   switchVisibility(event: any) : void {
     const col_name = event.name;
     if (this.visibility.get(col_name) === false){
@@ -902,11 +1129,18 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
+  /**
+   * Function that executes the getUnselectedLines in the editCellService service, getting the number of lines that have been edited but not selected
+   * @returns number of unselected lines
+   */
   getUnselectedLines() : number{
       return this.editCellService.getUnselectedLines();
   }
 
-
+  /**
+   * Function that adds a filter in the ABCClassification Column
+   * @param {any} event
+   */
   filterABCClassif(event : any): void{
     if(event.opType){
       this.filters.addFilter("abcClassification.in", event.filterValue);
@@ -916,7 +1150,11 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-
+  /**
+   * Builder for the SAP link that is accessible through each cell in the dedicated column
+   * @param materialID
+   * @returns the resulting link
+   */
   sapLinkBuilder (materialID : number) : string {
     let resultValue = "https://rb3p72a4.server.bosch.com:44300/sap/bc/gui/sap/its/webgui?~transaction=md04"
     if(this.materials !== undefined){
@@ -930,6 +1168,9 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
     return resultValue
   }
 
+  /**
+   * Function that resets all the filters upon user request
+   */
   resetFilters(): void{
     this.filters.clear();
     this.specialFiltersList.forEach((spFilters) => {
@@ -939,7 +1180,9 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
     this.load();
   }
 
-
+  /**
+   * Function that loads all the materials in the table page
+   */
   load(): void {
     this.loadFromBackendWithRouteInformations().subscribe({
       next: (res: EntityArrayResponseType) => {
@@ -948,14 +1191,23 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
+  /**
+   * Function created by JHipster
+   */
   navigateToWithComponentValues(): void {
     this.handleNavigation(this.page, this.predicate, this.ascending, this.filters.filterOptions);
   }
 
+  /**
+   * Function created by JHipster
+   */
   navigateToPage(page = this.page): void {
     this.handleNavigation(page, this.predicate, this.ascending, this.filters.filterOptions);
   }
 
+  /**
+   * Function created by JHipster
+   */
   protected loadFromBackendWithRouteInformations(): Observable<EntityArrayResponseType> {
     return combineLatest([this.activatedRoute.queryParamMap, this.activatedRoute.data]).pipe(
       tap(([params, data]) => this.fillComponentAttributeFromRoute(params, data)),
@@ -963,6 +1215,9 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
     );
   }
 
+  /**
+   * Function created by JHipster
+   */
   protected fillComponentAttributeFromRoute(params: ParamMap, data: Data): void {
     const page = params.get(PAGE_HEADER);
     this.page = +(page ?? 1);
@@ -972,20 +1227,32 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
     this.filters.initializeFromParams(params);
   }
 
+  /**
+   * Function created by JHipster
+   */
   protected onResponseSuccess(response: EntityArrayResponseType): void {
     this.fillComponentAttributesFromResponseHeader(response.headers);
     const dataFromBody = this.fillComponentAttributesFromResponseBody(response.body);
     this.materials = dataFromBody;
   }
 
+  /**
+   * Function created by JHipster
+   */
   protected fillComponentAttributesFromResponseBody(data: IMaterial[] | null): IMaterial[] {
     return data ?? [];
   }
 
+  /**
+   * Function created by JHipster
+   */
   protected fillComponentAttributesFromResponseHeader(headers: HttpHeaders): void {
     this.totalItems = Number(headers.get(TOTAL_COUNT_RESPONSE_HEADER));
   }
 
+  /**
+   * Function created by JHipster
+   */
   protected queryBackend(
     page?: number,
     predicate?: string,
@@ -1005,6 +1272,9 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
     return this.materialService.query(queryObject).pipe(tap(() => (this.isLoading = false)));
   }
 
+  /**
+   * Function created by JHipster
+   */
   protected handleNavigation(page = this.page, predicate?: string, ascending?: boolean, filterOptions?: IFilterOption[]): void {
     const queryParamsObj: any = {
       page,
@@ -1022,6 +1292,9 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
+  /**
+   * Function created by JHipster
+   */
   protected getSortQueryParam(predicate = this.predicate, ascending = this.ascending): string[] {
     const ascendingQueryParam = ascending ? ASC : DESC;
     if (predicate === '') {
