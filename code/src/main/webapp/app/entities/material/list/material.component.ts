@@ -1,7 +1,7 @@
-import { Component, OnDestroy, OnInit, ViewChild,ViewChildren,HostListener, QueryList, AfterViewInit, TemplateRef } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { ActivatedRoute, Data, ParamMap, Router } from '@angular/router';
-import { combineLatest, last, Observable, Subscription, switchMap, tap } from 'rxjs';
+import { combineLatest, Observable, Subscription, switchMap, tap } from 'rxjs';
 import { NgbModal, NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
 import { IEditCell } from '../editCell.model'
 import { specialFilter } from '../specialFilters.model'
@@ -14,7 +14,6 @@ import { EditCellService } from '../service/editCell.service';
 import { FilterOptions, IFilterOptions, IFilterOption } from 'app/shared/filter/filter.model';
 import { IHistoryEntity } from '../historyEntity.model';
 import { Coin } from '../../enumerations/coin.model'
-import { NgbAlert } from '@ng-bootstrap/ng-bootstrap';
 import { ABCClassification } from 'app/entities/enumerations/abc-classification.model';
 import { MSG } from '../data/tooltipMsg';
 import { currencyExchangeRates } from '../data/currencyExchangeRates';
@@ -30,11 +29,6 @@ import { tourMessages } from '../data/tourMessage';
   templateUrl: './material.component.html',
 })
 export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
-
-
-  //@ViewChild(NgbAlert, { static: false }) alert!: NgbAlert | undefined;
-  
-  //@ViewChildren(NgbTooltip) tooltips!: QueryList<NgbTooltip>;
 
   /**
    * Reference to the Tooltip used to showcase the Link step of the guided tour
@@ -964,15 +958,12 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
   undoAux(lastEntry : IHistoryEntity) : void { 
     const editCell = this.createEditCell(lastEntry.materialId);
     if (lastEntry.column === "newSST" && typeof lastEntry.oldValue === "number"){
-      // editCell.oldSST = editCell.newSST
       editCell.newSST = lastEntry.oldValue;
     }
     else if (lastEntry.column === "newST" && typeof lastEntry.oldValue === "number"){
-      // editCell.oldST = editCell.newST
       editCell.newST = lastEntry.oldValue;
     }
     else if (lastEntry.column === "newComment" && typeof lastEntry.oldValue === "string"){
-      // editCell.oldComment = editCell.newComment
       editCell.newComment = lastEntry.oldValue;
     }
 
