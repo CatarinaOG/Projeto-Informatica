@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, ViewChild,ViewChildren,HostListener, QueryList, AfterViewInit, TemplateRef } from '@angular/core';
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { ActivatedRoute, Data, ParamMap, Router } from '@angular/router';
-import { combineLatest, Observable, Subscription, switchMap, tap } from 'rxjs';
+import { combineLatest, last, Observable, Subscription, switchMap, tap } from 'rxjs';
 import { NgbModal, NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
 import { IEditCell } from '../editCell.model'
 import { specialFilter } from '../specialFilters.model'
@@ -953,6 +953,35 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
     return false;
   }
 
+
+
+
+  undoAux(lastEntry : IHistoryEntity) : void{
+    const editCell = this.createEditCell(lastEntry.materialId);
+    if (lastEntry.column === "newSST" && typeof lastEntry.oldValue === "number"){
+      editCell.oldSST = editCell.newSST;
+      editCell.newSST = lastEntry.oldValue;
+    }
+    else if (lastEntry.column === "newST" && typeof lastEntry.oldValue === "number"){
+      editCell.oldST = editCell.newST;
+      editCell.newST = lastEntry.oldValue;
+    }
+    else if (lastEntry.column === "newComment" && typeof lastEntry.oldValue === "string"){
+      editCell.oldComment = editCell.newComment;
+      editCell.newComment = lastEntry.oldValue;
+    }
+
+    // checks if the edit cell is different from the material
+    if(this.isEditCellDiffMaterial(editCell, lastEntry.materialId)) {
+      this.editCellService.addMaterial(lastEntry.materialId, editCell)
+    }
+    else {
+      this.editCellService.removeMaterial(lastEntry.materialId)
+    }
+    
+  }
+
+
   /**
    * Function responsible for undoing an edit made, it starts by taking the oldest change currently in the History and then checks if that change being reverted means that the edited row reverts to it's original state. If it does, then that row must be reverted
    */
@@ -964,6 +993,7 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
         if(editCell){
           switch(lastEntry.column){
             case "newSST":
+              const numberOfEntries = this.history.filter(obj => obj.materialId === lastEntry.materialId);
               if(this.checkEditCell(lastEntry)){
                 if ( typeof lastEntry.oldValue === "number"){
                   editCell.newSST = lastEntry.oldValue;
@@ -997,6 +1027,9 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
               }
               break;
           }
+        }
+        else{
+          this.undoAux(lastEntry);
         }
       }
     }
@@ -1040,16 +1073,94 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
       const newEntry = <IHistoryEntity>{materialId : material_id, column : col_name,
                                       oldValue : old_value , currentValue : new_value};
       this.history.push(newEntry);
+      console.log("The following entry was added :", newEntry)
     }
     else{
       const newEntry = <IHistoryEntity>{}; // mudar old value
       newEntry.materialId = material_id;
       newEntry.oldValue = this.history[index].currentValue;
       newEntry.currentValue = new_value;
+      console.log("The following entry was changed :", newEntry)
     }
     if(this.history.length > this.undoSize){
       this.history.shift();
     }
+
+  }
+
+  /**
+   * Function that creates a EditCell 
+   * @param {number} id Material ID
+   * @returns created EditCell eith Material values
+   */
+  createEditCell(id: number): IEditCell{
+    const editCell = <IEditCell>{};
+    const material = this.materials?.find(e => e.id === id)
+    editCell.materialId = material?.id ?? -1;
+    editCell.materialName = material?.material ?? "";
+    editCell.materialDesc = material?.description ?? "";
+    editCell.abcClassification = material?.abcClassification ?? ABCClassification.A;
+    editCell.plant = material?.plant ?? -1;
+    editCell.mrpcontroller = material?.mrpController ?? "";
+    editCell.newSST = material?.newSAPSafetyStock ?? -1;
+    editCell.oldSST = editCell.newSST;
+    editCell.newST = material?.newSAPSafetyTime ?? -1;
+    editCell.oldST = editCell.newST;
+    editCell.newComment = material?.comment ?? null;
+    editCell.oldComment = editCell.newComment;
+    editCell.selected = false;
+    editCell.flag = material?.flagMaterial ?? false;
+    editCell.newFlag = editCell.flag
+
+    return editCell
+  }
+
+  /**
+   * Function that checks if the user input is different from the original Material value
+   * @param {any} event event that contains the new value to compare
+   * @param {string} col_name Column name to compare
+   * @param {number} id Material ID
+   */
+  isOldDiffNew(event: any , col_name : string, id : number): boolean {
+    let returnValue : boolean = false;
+    const material = this.materials?.find(e => e.id === id)
+    switch (col_name){
+      case "newSST" : 
+        if (material?.newSAPSafetyStock !== Math.round(event.target.value)){
+          returnValue = true; 
+        }
+        break;
+      case "newST" : 
+        if (material?.newSAPSafetyTime !== Math.round(event.target.value)){
+          returnValue = true; 
+        }
+        break;
+      case "newComment" : 
+        if (material?.comment !== event.newComment){
+          returnValue = true; 
+        }
+        break;
+      case "flag" : 
+        if (material?.flagMaterial !== event.flag){
+          returnValue = true; 
+        }
+        break;
+    }
+    return returnValue
+  }
+
+
+  /**
+   * Function that checks if the edit cell content is equal to the original material
+   * @param {IEditCell} editCell Editcell variable to compare
+   * @param {number} id Material ID to compare
+   */
+  isEditCellDiffMaterial (editCell: IEditCell, id: number): boolean {
+    const material = this.materials?.find(e => e.id === id);
+    return  (editCell.newST !== material?.newSAPSafetyTime) || 
+            (editCell.newSST !== material?.newSAPSafetyStock) ||
+            (editCell.newComment !== material?.comment) || 
+            (editCell.flag !== material?.flagMaterial)
   }
 
   /**
@@ -1064,26 +1175,11 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
     if (this.editCellService.hasMaterial(id)){
       editCell = this.editCellService.getMaterial(id);
     }
-    else{
-      editCell = <IEditCell>{};
-      const material = this.materials?.find(e => e.id === id)
-      editCell.materialId = material?.id ?? -1;
-      editCell.materialName = material?.material ?? "";
-      editCell.materialDesc = material?.description ?? "";
-      editCell.abcClassification = material?.abcClassification ?? ABCClassification.A;
-      editCell.plant = material?.plant ?? -1;
-      editCell.mrpcontroller = material?.mrpController ?? "";
-      editCell.newSST = material?.newSAPSafetyStock ?? -1;
-      editCell.oldSST = editCell.newSST;
-      editCell.newST = material?.newSAPSafetyTime ?? -1;
-      editCell.oldST = editCell.newST;
-      editCell.newComment = material?.comment ?? null;
-      editCell.oldComment = editCell.newComment;
-      editCell.selected = false;
-      editCell.flag = material?.flagMaterial ?? false;
-      editCell.newFlag = editCell.flag
+    else if (this.isOldDiffNew(event, col_name,id)){
+      editCell = this.createEditCell(id)
     }
-    if (editCell){
+
+    if (editCell !== undefined){
       if (col_name === "newSST"){
         oldValue = editCell.newSST
         editCell.oldSST = editCell.newSST;
@@ -1111,15 +1207,26 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
           editCell.dateFlag = "n/a"
         }
       }
-      this.editCellService.addMaterial(id, editCell)
-      this._isEditable = [-1,-1]
+
+      // add to history
       if (col_name === "newComment"){
         this.addToHistory(col_name,event.newComment, oldValue, id);
       } 
       else if(col_name !== "flag"){
         this.addToHistory(col_name, Math.round(Number(event.target.value)), oldValue, id);
+        console.log("ADICIONEI AO HISTORICO NO INPUT <3")
       } 
+
+      // checks if the edit cell is different from the material
+      if(this.isEditCellDiffMaterial(editCell, id)) {
+        this.editCellService.addMaterial(id, editCell)
+      }
+      else {
+        this.editCellService.removeMaterial(id)
+      }
     }
+    this._isEditable = [-1,-1]
+
   }
 
   /**
