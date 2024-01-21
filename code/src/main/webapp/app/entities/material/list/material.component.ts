@@ -152,17 +152,6 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
   ];
 
   /**
-   * Property that keeps track of what cell is currently open to edit, to aid in the conditional render
-   * @type {number[]}
-   */
-  private _isEditable : number[] = [-1,-1];
-
-  /**
-   * Property created by JHipster
-   */
-  trackId = (_index: number, item: IMaterial): number => this.materialService.getMaterialIdentifier(item);
-
-  /**
    * Property created by JHipster
    */
   predicate = 'id';
@@ -198,20 +187,12 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
   page = 1;
 
   /**
-   * Getter for the isEditable property
-   * @returns the value of this._isEditable
+   * Property that keeps track of what cell is currently open to edit, to aid in the conditional render
+   * @type {number[]}
    */
-  get isEditable(): number[] {
-    return this._isEditable;
-  }
+  private _isEditable : number[] = [-1,-1];
 
-  /**
-   * Setter for the isEditable property
-   * @param {number[]} value - table position of the editable cell
-   */  
-  set isEditable(value: number[]) {
-    this._isEditable = [value[0], value[1]]
-  }
+
 
   /**
    * Constructor for the jhi-material component
@@ -240,6 +221,28 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
       ["edit", false]
     ])
   }
+
+  /**
+   * Property created by JHipster
+   */
+  trackId = (_index: number, item: IMaterial): number => this.materialService.getMaterialIdentifier(item);
+
+  /**
+   * Getter for the isEditable property
+   * @returns the value of this._isEditable
+   */
+  get isEditable(): number[] {
+    return this._isEditable;
+  }
+  
+  /**
+   * Setter for the isEditable property
+   * @param {number[]} value - table position of the editable cell
+   */  
+  set isEditable(value: number[]) {
+    this._isEditable = [value[0], value[1]]
+  }
+
 
   /**
    * Init function of the Material Component, starts by loading the Materials to be shown in this table page and then subscribes to this.filters.filterChanges
@@ -394,9 +397,9 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
 
   /**
    * Function that calculates the className a cell.
-   * @param {string} groupName - name of the column group
-   * @param {IMaterial} material - Material name , optional value
-   * @param {string} editColName - column name, optional value
+   * @param {string} groupName name of the column group
+   * @param {IMaterial} material Material name , optional value
+   * @param {string} editColName column name, optional value
    * @returns a string value with the className that needs to be assigned to a certain cell
    */
   editCellClasses(groupName : string,material? : IMaterial,editColName? : string) : string {
@@ -432,8 +435,8 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
   
   /**
    * Function that assigns a className for a certain cell based on checks regarding the values of the cell.
-   * @param {IMaterial} material - material being checked
-   * @param {string} columnName - name of the column
+   * @param {IMaterial} material material being checked
+   * @param {string} columnName name of the column
    * @returns a className
    */
   chooseColor(material : IMaterial , columnName : string) : string {
@@ -469,7 +472,7 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
 
   /**
    * Function that generates a placeholder (value shown in the input bar) value for a editable cell.
-   * @param {string} columnName - name of the column
+   * @param {string} columnName name of the column
    * @param {IMaterial} material 
    * @returns 
    */
@@ -516,8 +519,8 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
 
   /**
    * Function that converts monetary values to a certain currency. If the value
-   * @param {number} original - original monetary value
-   * @param {Coin} currency - currency assigned to the line in question
+   * @param {number} original original monetary value
+   * @param {Coin} currency currency assigned to the line in question
    * @returns the converted value to be shown in the cell
    */
   currencyConverter(original: number | undefined | null, currency: Coin | null | undefined) : number {
@@ -535,8 +538,8 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
 
   /**
    * Function that chooses which value to shown in the cells in the edit column group. 
-   * @param {string} columnName - name of the column the cell belongs to
-   * @param {IMaterial} material - the material the cell belongs to
+   * @param {string} columnName name of the column the cell belongs to
+   * @param {IMaterial} material the material the cell belongs to
    * @returns 
    */
   cellValueGenerator(columnName : string, material : IMaterial) : number {
@@ -588,7 +591,7 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
 
   /**
    * Function responsabile for processing all the String messages received from the various emmitters used in the components that are in the material component
-   * @param {string} messageText - message received
+   * @param {string} messageText message received
    */
   receiveStringEvent(messageText : string) : void{
     if (messageText === "load"){
@@ -617,7 +620,7 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
 
   /**
    * Function that asigns to the currencyEur variable the value received from the emitter
-   * @param {boolean} event - boolean received from an emitter in the jhi-options-bar component
+   * @param {boolean} event boolean received from an emitter in the jhi-options-bar component
    */
   receiveCurrencyVal(event : boolean) : void{
     this.currencyEUR = event;
@@ -660,7 +663,7 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
 
   /**
    * Function that receives the message sent by the emitter in the jhi-filter-display-cell component. It removes the filter passed as parameter
-   * @param {IFilterOption} filter : filter to be removed
+   * @param {IFilterOption} filter filter to be removed
    */
   receiveFilterRemoveMessage (filter : IFilterOption) : void{
     for(const value of filter.values){
@@ -685,7 +688,7 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
 
   /**
    * Function that receives the message sent by the emitter in the jhi-options-bar component. It adds a filter in whatever column name has been sent.
-   * @param {any} event - message received, contains the filter name and the filter value, in this case, text  
+   * @param {any} event message received, contains the filter name and the filter value, in this case, text  
    */
   receiveTextFilter(event : any) : void{
     const filterName: string = event.filterName;
@@ -725,7 +728,7 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
 
   /**
    * Function that adds a special filter to the list of filters, according to a string value sent by an emitter in the jhi-options-bar component
-   * @param {string} filterOp - specifies the type of filter 
+   * @param {string} filterOp specifies the type of filter 
    */
   receiveSpecialFilter(filterOp:string) : void{
     this.specialFiltersList.forEach((actSpFilter) => {
@@ -755,7 +758,7 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
 
   /**
    * Function that receives a message sent by an emitter on the jhi-options-bar component and, depending on the value of menuName, either changes the cap of undo or the size of the page.
-   * @param {any} event - message sent by the emitter
+   * @param {any} event message sent by the emitter
    */
   receiveDropdownNumber(event : any) : void{
     if ( event.menuName === "undo"){
@@ -809,7 +812,7 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
 
   /**
    * Function that assesses the current flag value of a material to be passed to the jhi-flag-modal component
-   * @param {number} id - id of the material the cell refers to
+   * @param {number} id id of the material the cell refers to
    * @returns current flag value (edited or not)
    */
   getFlagVal(id : number) : boolean{
@@ -829,7 +832,7 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
 
   /**
    * Function that receives a message from an emitter on the jhi-options-bar component. The received message is used to add a filter refering to a numeric operator and a numeric column
-   * @param {any} event - received message 
+   * @param {any} event received message 
    */
   receiveNumberFilter(event : any) : void{
     const filterName: string = event.filterName;
@@ -843,7 +846,7 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
 
   /**
    * Function that receives a message from an emitter on the jhi-options-bar component. The received message is used to activate the upload of the file either with the intent of replacing the data or adding to the already existing data
-   * @param {any} event - contains the opType boolean (true for replace and false for add) and the file itself
+   * @param {any} event contains the opType boolean (true for replace and false for add) and the file itself
    */
   onFileSelected(event:any): void {
     // true -> replace
@@ -890,8 +893,8 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
 
   /**
    * Function that changes the value of the property isEditable as to make a certain cell of the table editable for the user
-   * @param {number} a - row 
-   * @param {number} b - column
+   * @param {number} a row 
+   * @param {number} b column
    */
   makeEditable(a: number, b: number) : void{
     this._isEditable = [a,b];
@@ -1051,9 +1054,9 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
 
   /**
    * Function that is responsible for receiving and treating any input that the user makes in any editable cell. If necessary, it creates an IEditCell that gets store via the addMaterial function in add
-   * @param {any} event  - input received
-   * @param {string} col_name - name of the column of the input
-   * @param {number} id - id of the material that was changed
+   * @param {any} event input received
+   * @param {string} col_name name of the column of the input
+   * @param {number} id id of the material that was changed
    */
   input(event: any, col_name : string, id: number): void {
     let editCell: IEditCell | undefined;

@@ -122,9 +122,6 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                                     </li>
                             </li>
                             <li class="link">
-                                <a href="modules/FlaggedMaterialRoutingModule.html" data-type="entity-link" >FlaggedMaterialRoutingModule</a>
-                            </li>
-                            <li class="link">
                                 <a href="modules/MaterialModule.html" data-type="entity-link" >MaterialModule</a>
                                     <li class="chapter inner">
                                         <div class="simple menu-toggler" data-bs-toggle="collapse" ${ isNormalMode ?
@@ -182,9 +179,6 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                                     <a href="injectables/EditCellService.html" data-type="entity-link" >EditCellService</a>
                                 </li>
                                 <li class="link">
-                                    <a href="injectables/FlaggedMaterialFormService.html" data-type="entity-link" >FlaggedMaterialFormService</a>
-                                </li>
-                                <li class="link">
                                     <a href="injectables/FlaggedMaterialService.html" data-type="entity-link" >FlaggedMaterialService</a>
                                 </li>
                                 <li class="link">
@@ -195,19 +189,6 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                                 </li>
                             </ul>
                         </li>
-                    <li class="chapter">
-                        <div class="simple menu-toggler" data-bs-toggle="collapse" ${ isNormalMode ? 'data-bs-target="#guards-links"' :
-                            'data-bs-target="#xs-guards-links"' }>
-                            <span class="icon ion-ios-lock"></span>
-                            <span>Guards</span>
-                            <span class="icon ion-ios-arrow-down"></span>
-                        </div>
-                        <ul class="links collapse " ${ isNormalMode ? 'id="guards-links"' : 'id="xs-guards-links"' }>
-                            <li class="link">
-                                <a href="guards/FlaggedMaterialRoutingResolveService.html" data-type="entity-link" >FlaggedMaterialRoutingResolveService</a>
-                            </li>
-                        </ul>
-                    </li>
                     <li class="chapter">
                         <div class="simple menu-toggler" data-bs-toggle="collapse" ${ isNormalMode ? 'data-bs-target="#interfaces-links"' :
                             'data-bs-target="#xs-interfaces-links"' }>

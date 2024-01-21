@@ -25,9 +25,20 @@ export class FlaggedMaterialComponent implements OnInit {
    * @type {IFlaggedMaterial[]}
    */
   flaggedMaterials?: IFlaggedMaterial[];
+
+  /**
+   * Property created by JHipster
+   */
   isLoading = false;
 
+  /**
+   * Property created by JHipster
+   */
   predicate = 'id';
+
+  /**
+   * Property created by JHipster
+   */
   ascending = true;
 
   /**
@@ -41,21 +52,42 @@ export class FlaggedMaterialComponent implements OnInit {
    * @type {number}
    */
   itemsPerPage = 10;
-  totalItems = 0;
-  page = 1;
 
   /**
+   * Property created by JHipster
+   */
+  totalItems = 0;
+
+  /**
+   * Property created by JHipster
+   */
+  page = 1;
+
+  
+  /**
+   * Constructor for the jhi-flagged-material component
    * @constructor
+   * @param flaggedMaterialService 
+   * @param activatedRoute 
+   * @param router 
+   * @param modalService 
    */
   constructor(
     protected flaggedMaterialService: FlaggedMaterialService,
     protected activatedRoute: ActivatedRoute,
-    public router: Router,
+    protected router: Router,
     protected modalService: NgbModal
   ) {}
 
+
+  /**
+   * Created by JHipster
+   */
   trackId = (_index: number, item: IFlaggedMaterial): number => this.flaggedMaterialService.getFlaggedMaterialIdentifier(item);
 
+  /**
+   * Function created by JHipster
+   */
   ngOnInit(): void {
     this.load();
 
@@ -63,6 +95,9 @@ export class FlaggedMaterialComponent implements OnInit {
   }
   
 
+  /**
+   * Function created by JHipster
+   */
   load(): void {
     this.loadFromBackendWithRouteInformations().subscribe({
       next: (res: EntityArrayResponseType) => {
@@ -80,10 +115,17 @@ export class FlaggedMaterialComponent implements OnInit {
       this.load()
   }
 
+  /**
+   * Function created by JHipster
+   */
   navigateToWithComponentValues(): void {
     this.handleNavigation(this.page, this.predicate, this.ascending, this.filters.filterOptions);
   }
 
+  /**
+   * Function created by JHipster
+   * @param {number} page
+   */
   navigateToPage(page = this.page): void {
     this.handleNavigation(page, this.predicate, this.ascending, this.filters.filterOptions);
   }
@@ -147,6 +189,9 @@ export class FlaggedMaterialComponent implements OnInit {
     }
   }
 
+  /**
+   * Function created by JHipster
+   */
   protected loadFromBackendWithRouteInformations(): Observable<EntityArrayResponseType> {
     return combineLatest([this.activatedRoute.queryParamMap, this.activatedRoute.data]).pipe(
       tap(([params, data]) => this.fillComponentAttributeFromRoute(params, data)),
@@ -154,6 +199,9 @@ export class FlaggedMaterialComponent implements OnInit {
     );
   }
 
+  /**
+   * Function created by JHipster
+   */
   protected fillComponentAttributeFromRoute(params: ParamMap, data: Data): void {
     const page = params.get(PAGE_HEADER);
     this.page = +(page ?? 1);
@@ -163,20 +211,32 @@ export class FlaggedMaterialComponent implements OnInit {
     this.filters.initializeFromParams(params);
   }
 
+  /**
+   * Function created by JHipster
+   */
   protected onResponseSuccess(response: EntityArrayResponseType): void {
     this.fillComponentAttributesFromResponseHeader(response.headers);
     const dataFromBody = this.fillComponentAttributesFromResponseBody(response.body);
     this.flaggedMaterials = dataFromBody;
   }
 
+  /**
+   * Function created by JHipster
+   */
   protected fillComponentAttributesFromResponseBody(data: IFlaggedMaterial[] | null): IFlaggedMaterial[] {
     return data ?? [];
   }
 
+  /**
+   * Function created by JHipster
+   */
   protected fillComponentAttributesFromResponseHeader(headers: HttpHeaders): void {
     this.totalItems = Number(headers.get(TOTAL_COUNT_RESPONSE_HEADER));
   }
 
+  /**
+   * Function created by JHipster
+   */
   protected queryBackend(
     page?: number,
     predicate?: string,
@@ -196,6 +256,9 @@ export class FlaggedMaterialComponent implements OnInit {
     return this.flaggedMaterialService.query(queryObject).pipe(tap(() => (this.isLoading = false)));
   }
 
+  /**
+   * Function created by JHipster
+   */
   protected handleNavigation(page = this.page, predicate?: string, ascending?: boolean, filterOptions?: IFilterOption[]): void {
     const queryParamsObj: any = {
       page,
@@ -213,6 +276,9 @@ export class FlaggedMaterialComponent implements OnInit {
     });
   }
 
+  /**
+   * Function created by JHipster
+   */
   protected getSortQueryParam(predicate = this.predicate, ascending = this.ascending): string[] {
     const ascendingQueryParam = ascending ? ASC : DESC;
     if (predicate === '') {

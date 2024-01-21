@@ -8,7 +8,7 @@ import { FlaggedMaterialFormService, FlaggedMaterialFormGroup } from './flagged-
 import { IFlaggedMaterial } from '../flagged-material.model';
 import { FlaggedMaterialService } from '../service/flagged-material.service';
 import { ABCClassification } from 'app/entities/enumerations/abc-classification.model';
-import { Dayjs } from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 
 /**
  * Flagged Material Update Page - Change Flag Information
@@ -18,6 +18,9 @@ import { Dayjs } from 'dayjs';
   templateUrl: './flagged-material-update.component.html',
 })
 export class FlaggedMaterialUpdateComponent implements OnInit {
+  /**
+   * Property created by JHipster
+   */
   isSaving = false;
 
   /**
@@ -25,6 +28,11 @@ export class FlaggedMaterialUpdateComponent implements OnInit {
    * @type {IFlaggedMaterial}
    */
   flaggedMaterial: IFlaggedMaterial | null = null;
+
+  /**
+   * ABC Classification Options
+   * @type {string[]}
+   */
   aBCClassificationValues = Object.keys(ABCClassification);
 
   /**
@@ -33,8 +41,22 @@ export class FlaggedMaterialUpdateComponent implements OnInit {
    */
   flagError = false;
 
+  /**
+   * Date of the current day
+   * @type {Date}
+   */
   current = new Date();
+
+  /**
+   * Modal close result
+   * @type {string}
+   */
   closeResult = '';
+
+  /**
+   * Minimum date to input in date picker
+   * @type {dayjs}
+   */
   minDate = {
 	  year: this.current.getFullYear(),
 	  month: this.current.getMonth() + 1,
@@ -46,16 +68,33 @@ export class FlaggedMaterialUpdateComponent implements OnInit {
    */
   buttonStatus = false;
 
+  /**
+   * Property created by JHipster
+   */
   editForm: FlaggedMaterialFormGroup = this.flaggedMaterialFormService.createFlaggedMaterialFormGroup();
 
+  /**
+   * Modal Service to open the Modal
+   */
   private modalService = inject(NgbModal);
 
+  /**
+   * Constrcutor for the jhi-flagged-material-update component
+   * @constructor
+   * @param flaggedMaterialService 
+   * @param flaggedMaterialFormService 
+   * @param activatedRoute 
+   */
   constructor(
     protected flaggedMaterialService: FlaggedMaterialService,
     protected flaggedMaterialFormService: FlaggedMaterialFormService,
     protected activatedRoute: ActivatedRoute
   ) {}
 
+
+  /**
+   * Function created by JHipster
+   */
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ flaggedMaterial }) => {
       this.flaggedMaterial = flaggedMaterial;
@@ -155,6 +194,9 @@ export class FlaggedMaterialUpdateComponent implements OnInit {
 
 	}
 
+  /**
+   * Function created by JHipster
+   */
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IFlaggedMaterial>>): void {
     result.pipe(finalize(() => this.onSaveFinalize())).subscribe({
       next: () => this.onSaveSuccess(),
@@ -162,18 +204,30 @@ export class FlaggedMaterialUpdateComponent implements OnInit {
     });
   }
 
+  /**
+   * Function created by JHipster
+   */
   protected onSaveSuccess(): void {
     this.previousState();
   }
 
+  /**
+   * Function created by JHipster
+   */
   protected onSaveError(): void {
     // Api for inheritance.
   }
 
+  /**
+   * Function created by JHipster
+   */
   protected onSaveFinalize(): void {
     this.isSaving = false;
   }
 
+  /**
+   * Function created by JHipster
+   */
   protected updateForm(flaggedMaterial: IFlaggedMaterial): void {
     this.flaggedMaterial = flaggedMaterial;
     this.flaggedMaterialFormService.resetForm(this.editForm, flaggedMaterial);

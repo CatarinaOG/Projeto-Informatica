@@ -13,6 +13,10 @@ import { IEditCell } from '../editCell.model';
 })
 export class FlagModalComponent implements OnInit{
 	
+	/**
+	 * Variable that binds to the content of the date picker
+	 * @type {NgbDateStruct | undefined}
+	 */
 	model: NgbDateStruct | undefined ;
 
 
@@ -116,6 +120,11 @@ export class FlagModalComponent implements OnInit{
 		return returnValue;
 	}
 
+	/**
+	 * Funcion that transforms a date in string format to a date of type dayjs.
+	 * Sets the date picker model varible with the result.
+	 * @param date input date
+	 */
 	defineModel(date: string) : void{
 		const newDate = new Date(date)
 		this.model = {
