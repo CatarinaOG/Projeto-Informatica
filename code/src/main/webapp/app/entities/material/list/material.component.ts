@@ -932,9 +932,6 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
     switch (lastEntry.column){
       case "newSST":
         if (materialValue?.newSAPSafetyStock === lastEntry.oldValue){
-          console.log("editcell : ", editCell)
-          console.log("materialValue : ", materialValue)
-          console.log("lastEntry : ", lastEntry)
           return (editCell?.newST !== materialValue.newSAPSafetyTime) || (editCell?.newComment !== materialValue.comment) || (editCell?.newFlag !== materialValue.flagMaterial)
         }
         break;
@@ -981,11 +978,9 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // checks if the edit cell is different from the material
     if(this.isEditCellDiffMaterial(editCell, lastEntry.materialId)) {
-      console.log("undoAux adicionei ao editCellService")
       this.editCellService.addMaterial(lastEntry.materialId, editCell)
     }
     else {
-      console.log("undoAux removi do editCellService")
       this.editCellService.removeMaterial(lastEntry.materialId)
     }
     
@@ -997,15 +992,11 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
    */
   undo() : void{
     if(this.history.length > 0){
-      console.log("history is: ", this.history)
       const lastEntry = this.history.pop();
       if(lastEntry){
         const editCell: IEditCell | undefined = this.editCellService.getMaterial(lastEntry.materialId)
-        console.log("lastEntry is: ", lastEntry)
-        console.log("editCell is: ", editCell)
         if(editCell){
           const checkEditCell = this.checkEditCell(lastEntry)
-          console.log("checkEditCell : ", checkEditCell)
           switch(lastEntry.column){
             case "newSST":
               if(checkEditCell){
@@ -1087,14 +1078,12 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
       const newEntry = <IHistoryEntity>{materialId : material_id, column : col_name,
                                       oldValue : old_value , currentValue : new_value};
       this.history.push(newEntry);
-      console.log("The following entry was added :", newEntry)
     }
     else{
       const newEntry = <IHistoryEntity>{}; // mudar old value
       newEntry.materialId = material_id;
       newEntry.oldValue = this.history[index].currentValue;
       newEntry.currentValue = new_value;
-      console.log("The following entry was changed :", newEntry)
     }
     if(this.history.length > this.undoSize){
       this.history.shift();
@@ -1171,13 +1160,11 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
    */
   isEditCellDiffMaterial (editCell: IEditCell, id: number): boolean {
     const material = this.materials?.find(e => e.id === id);
-    let res =  (editCell.newST !== material?.newSAPSafetyTime) || 
-            (editCell.newSST !== material.newSAPSafetyStock) ||
-            (editCell.newComment !== material.comment) || 
-            (editCell.newFlag !== material.flagMaterial)
 
-    console.log("isEditCellDiffMaterial return value was: ", res)
-    return res
+    return (editCell.newST !== material?.newSAPSafetyTime) || 
+           (editCell.newSST !== material.newSAPSafetyStock) ||
+           (editCell.newComment !== material.comment) || 
+           (editCell.newFlag !== material.flagMaterial)
   }
 
   /**
@@ -1238,7 +1225,6 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
         this.editCellService.addMaterial(id, editCell)
       }
       else {
-        console.log("retirei do editCell")
         this.editCellService.removeMaterial(id)
       }
     }
