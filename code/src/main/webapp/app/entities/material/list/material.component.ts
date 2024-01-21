@@ -287,12 +287,12 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
  * 
  */
   defineStepTour(value: number) : void {
-    this.linkTourTooltip.close()
-    this.editMenuTooltip.close()
-    this.sapSafetyStockToolTip.close()
-    this.selectEntryTooltip.close()
-    this.flagTooltip.close()
-    this.commentTooltip.close()
+    if (this.linkTourTooltip) {this.linkTourTooltip.close()}
+    if (this.editMenuTooltip) {this.editMenuTooltip.close()}
+    if (this.sapSafetyStockToolTip) {this.sapSafetyStockToolTip.close()}
+    if (this.selectEntryTooltip) {this.selectEntryTooltip.close()}
+    if (this.flagTooltip) {this.flagTooltip.close()}
+    if (this.commentTooltip) {this.commentTooltip.close()}
 
     switch(value) {
       case 0:  // material info header group 
@@ -928,54 +928,64 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
    */
   checkEditCell(lastEntry : IHistoryEntity): boolean{
     const materialValue : IMaterial | undefined = this.materials?.find(e => e.id === lastEntry.materialId);
+    const editCell: IEditCell | undefined = this.editCellService.getMaterial(lastEntry.materialId)
     switch (lastEntry.column){
       case "newSST":
         if (materialValue?.newSAPSafetyStock === lastEntry.oldValue){
-          return (this.editCellService.getMaterial(lastEntry.materialId)?.newST !== materialValue.newSAPSafetyTime) || (this.editCellService.getMaterial(lastEntry.materialId)?.newComment !== materialValue.comment) || (this.editCellService.getMaterial(lastEntry.materialId)?.flag !== materialValue.flagMaterial)
+          console.log("editcell : ", editCell)
+          console.log("materialValue : ", materialValue)
+          console.log("lastEntry : ", lastEntry)
+          return (editCell?.newST !== materialValue.newSAPSafetyTime) || (editCell?.newComment !== materialValue.comment) || (editCell?.newFlag !== materialValue.flagMaterial)
         }
         break;
         
       case "newST":
         if (materialValue?.newSAPSafetyTime === lastEntry.oldValue){
-          return (this.editCellService.getMaterial(lastEntry.materialId)?.newSST !== materialValue.newSAPSafetyStock) || (this.editCellService.getMaterial(lastEntry.materialId)?.newComment !== materialValue.comment) || (this.editCellService.getMaterial(lastEntry.materialId)?.flag !== materialValue.flagMaterial)
+          return (editCell?.newSST !== materialValue.newSAPSafetyStock) || (editCell?.newComment !== materialValue.comment) || (editCell?.newFlag !== materialValue.flagMaterial)
         }
         break;
 
       case "newComment":
         if (materialValue?.comment === lastEntry.oldValue){
-          return (this.editCellService.getMaterial(lastEntry.materialId)?.newSST !== materialValue.newSAPSafetyStock) || (this.editCellService.getMaterial(lastEntry.materialId)?.newST !== materialValue.newSAPSafetyTime) || (this.editCellService.getMaterial(lastEntry.materialId)?.flag !== materialValue.flagMaterial)
+          return (editCell?.newSST !== materialValue.newSAPSafetyStock) || (editCell?.newST !== materialValue.newSAPSafetyTime) || (editCell?.newFlag !== materialValue.flagMaterial)
         }
         break;
       
       default:
         return false;
     }
-    return false;
+    return true;
   }
 
 
 
 
-  undoAux(lastEntry : IHistoryEntity) : void{
+  /**
+   * Function that creates an EditCell with the previous History values
+   * @param lastEntry Most recent History entry
+   */
+  undoAux(lastEntry : IHistoryEntity) : void { 
     const editCell = this.createEditCell(lastEntry.materialId);
     if (lastEntry.column === "newSST" && typeof lastEntry.oldValue === "number"){
-      editCell.oldSST = editCell.newSST;
+      // editCell.oldSST = editCell.newSST
       editCell.newSST = lastEntry.oldValue;
     }
     else if (lastEntry.column === "newST" && typeof lastEntry.oldValue === "number"){
-      editCell.oldST = editCell.newST;
+      // editCell.oldST = editCell.newST
       editCell.newST = lastEntry.oldValue;
     }
     else if (lastEntry.column === "newComment" && typeof lastEntry.oldValue === "string"){
-      editCell.oldComment = editCell.newComment;
+      // editCell.oldComment = editCell.newComment
       editCell.newComment = lastEntry.oldValue;
     }
 
     // checks if the edit cell is different from the material
     if(this.isEditCellDiffMaterial(editCell, lastEntry.materialId)) {
+      console.log("undoAux adicionei ao editCellService")
       this.editCellService.addMaterial(lastEntry.materialId, editCell)
     }
     else {
+      console.log("undoAux removi do editCellService")
       this.editCellService.removeMaterial(lastEntry.materialId)
     }
     
@@ -987,15 +997,19 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
    */
   undo() : void{
     if(this.history.length > 0){
+      console.log("history is: ", this.history)
       const lastEntry = this.history.pop();
       if(lastEntry){
         const editCell: IEditCell | undefined = this.editCellService.getMaterial(lastEntry.materialId)
+        console.log("lastEntry is: ", lastEntry)
+        console.log("editCell is: ", editCell)
         if(editCell){
+          const checkEditCell = this.checkEditCell(lastEntry)
+          console.log("checkEditCell : ", checkEditCell)
           switch(lastEntry.column){
             case "newSST":
-              const numberOfEntries = this.history.filter(obj => obj.materialId === lastEntry.materialId);
-              if(this.checkEditCell(lastEntry)){
-                if ( typeof lastEntry.oldValue === "number"){
+              if(checkEditCell){
+                if (typeof lastEntry.oldValue === "number") {
                   editCell.newSST = lastEntry.oldValue;
                   this.editCellService.addMaterial(lastEntry.materialId, editCell);
                 }
@@ -1005,7 +1019,7 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
               }
               break;
             case "newST":
-              if(this.checkEditCell(lastEntry)){
+              if(checkEditCell){
                 if ( typeof lastEntry.oldValue === "number"){
                   editCell.newST = lastEntry.oldValue;
                   this.editCellService.addMaterial(lastEntry.materialId, editCell);
@@ -1016,7 +1030,7 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
               }
               break;
             case "newComment":
-              if(this.checkEditCell(lastEntry)){
+              if(checkEditCell){
                 if ( typeof lastEntry.oldValue === "string"){
                   editCell.newComment = lastEntry.oldValue;
                   this.editCellService.addMaterial(lastEntry.materialId, editCell);
@@ -1157,10 +1171,13 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
    */
   isEditCellDiffMaterial (editCell: IEditCell, id: number): boolean {
     const material = this.materials?.find(e => e.id === id);
-    return  (editCell.newST !== material?.newSAPSafetyTime) || 
-            (editCell.newSST !== material?.newSAPSafetyStock) ||
-            (editCell.newComment !== material?.comment) || 
-            (editCell.flag !== material?.flagMaterial)
+    let res =  (editCell.newST !== material?.newSAPSafetyTime) || 
+            (editCell.newSST !== material.newSAPSafetyStock) ||
+            (editCell.newComment !== material.comment) || 
+            (editCell.newFlag !== material.flagMaterial)
+
+    console.log("isEditCellDiffMaterial return value was: ", res)
+    return res
   }
 
   /**
@@ -1214,7 +1231,6 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
       } 
       else if(col_name !== "flag"){
         this.addToHistory(col_name, Math.round(Number(event.target.value)), oldValue, id);
-        console.log("ADICIONEI AO HISTORICO NO INPUT <3")
       } 
 
       // checks if the edit cell is different from the material
@@ -1222,6 +1238,7 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
         this.editCellService.addMaterial(id, editCell)
       }
       else {
+        console.log("retirei do editCell")
         this.editCellService.removeMaterial(id)
       }
     }

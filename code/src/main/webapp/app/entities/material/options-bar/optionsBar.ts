@@ -199,13 +199,13 @@ export class OptionsBarComponent implements OnInit {
     * @param {number} value - current tour step 
     */
    defineStepTour(value: number) : void {
-    this.filtersTooltip.close()
-    this.fileTooltip.close()
-    this.tableSizeTooltip.close()
-    this.undoTooltip.close()
-    this.undoToolTip2.close()
-    this.switchTooltip.close()
-    this.submitTooltip.close()
+    if (this.filtersTooltip) {this.filtersTooltip.close()}
+    if (this.fileTooltip) {this.fileTooltip.close()}
+    if (this.tableSizeTooltip) {this.tableSizeTooltip.close()}
+    if (this.undoTooltip) {this.undoTooltip.close()}
+    if (this.undoToolTip2) {this.undoToolTip2.close()}
+    if (this.switchTooltip) {this.switchTooltip.close()}
+    if (this.submitTooltip) {this.submitTooltip.close()}
 
     switch(value) {
       case 8: // filters dropdown menu
