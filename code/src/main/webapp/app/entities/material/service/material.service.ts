@@ -10,9 +10,14 @@ import { ApplicationConfigService } from 'app/core/config/application-config.ser
 import { createRequestOption } from 'app/core/request/request-util';
 import { IMaterial, NewMaterial } from '../material.model';
 
-
+/**
+ * Type created by JHipster
+ */
 export type PartialUpdateMaterial = Partial<IMaterial> & Pick<IMaterial, 'id'>;
 
+/**
+ * Type created by JHipster
+ */
 type RestOf<T extends IMaterial | NewMaterial> = Omit<
   T,
   'flagExpirationDate' | 'dateNewSS' | 'datNewST' | 'datePreviousSS' | 'datePreviousST'
@@ -24,13 +29,29 @@ type RestOf<T extends IMaterial | NewMaterial> = Omit<
   datePreviousST?: string | null;
 };
 
+/**
+ * Type created by JHipster
+ */
 export type RestMaterial = RestOf<IMaterial>;
 
+/**
+ * Type created by JHipster
+ */
 export type NewRestMaterial = RestOf<NewMaterial>;
 
+/**
+ * Type created by JHipster
+ */
 export type PartialUpdateRestMaterial = RestOf<PartialUpdateMaterial>;
 
+/**
+ * Type created by JHipster
+ */
 export type EntityResponseType = HttpResponse<IMaterial>;
+
+/**
+ * Type created by JHipster
+ */
 export type EntityArrayResponseType = HttpResponse<IMaterial[]>;
 
 /**
@@ -39,10 +60,25 @@ export type EntityArrayResponseType = HttpResponse<IMaterial[]>;
 @Injectable({ providedIn: 'root' })
 export class MaterialService {
 
+  /**
+   * Resource url, created by JHipster
+   */
   protected resourceUrl = this.applicationConfigService.getEndpointFor('api/materials');
 
+  /**
+   * Constructor for the material service
+   * @constructor
+   * @param http 
+   * @param applicationConfigService 
+   */
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
+
+  /**
+   * Function that creates a material, created by JHipster
+   * @param material 
+   * @returns 
+   */
   create(material: NewMaterial): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(material);
     return this.http
@@ -50,6 +86,11 @@ export class MaterialService {
       .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
+  /**
+   * Function that updates a material, created by JHipster
+   * @param material 
+   * @returns 
+   */
   update(material: IMaterial): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(material);
     return this.http
@@ -57,6 +98,11 @@ export class MaterialService {
       .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
+  /**
+   * Function that partially updates the Material, created by JHipster
+   * @param material 
+   * @returns 
+   */
   partialUpdate(material: PartialUpdateMaterial): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(material);
     return this.http
@@ -64,12 +110,22 @@ export class MaterialService {
       .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
+  /**
+   * Function that finds a material
+   * @param id 
+   * @returns 
+   */
   find(id: number): Observable<EntityResponseType> {
     return this.http
       .get<RestMaterial>(`${this.resourceUrl}/${id}`, { observe: 'response' })
       .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
+  /**
+   * Function created by JHipster
+   * @param req 
+   * @returns 
+   */
   query(req?: any): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
     return this.http
@@ -77,18 +133,40 @@ export class MaterialService {
       .pipe(map(res => this.convertResponseArrayFromServer(res)));
   }
 
+  /**
+   * Function that deletes a material, created by JHipster
+   * @param id
+   * @returns 
+   */
   delete(id: number): Observable<HttpResponse<{}>> {
     return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
+  /**
+   * Getter for the material id
+   * @param material 
+   * @returns 
+   */
   getMaterialIdentifier(material: Pick<IMaterial, 'id'>): number {
     return material.id;
   }
 
+  /**
+   * Function created by JHipster
+   * @param o1 
+   * @param o2 
+   * @returns 
+   */
   compareMaterial(o1: Pick<IMaterial, 'id'> | null, o2: Pick<IMaterial, 'id'> | null): boolean {
     return o1 && o2 ? this.getMaterialIdentifier(o1) === this.getMaterialIdentifier(o2) : o1 === o2;
   }
 
+  /**
+   * Function created by JHipster
+   * @param materialCollection 
+   * @param materialsToCheck 
+   * @returns 
+   */
   addMaterialToCollectionIfMissing<Type extends Pick<IMaterial, 'id'>>(
     materialCollection: Type[],
     ...materialsToCheck: (Type | null | undefined)[]
@@ -158,6 +236,11 @@ export class MaterialService {
     });
   }
 
+  /**
+   * Function created by JHipster
+   * @param material 
+   * @returns 
+   */
   protected convertDateFromClient<T extends IMaterial | NewMaterial | PartialUpdateMaterial>(material: T): RestOf<T> {
     return {
       ...material,
@@ -169,6 +252,11 @@ export class MaterialService {
     };
   }
 
+  /**
+   * Function created by JHipster
+   * @param restMaterial 
+   * @returns 
+   */
   protected convertDateFromServer(restMaterial: RestMaterial): IMaterial {
     return {
       ...restMaterial,
@@ -180,12 +268,22 @@ export class MaterialService {
     };
   }
 
+  /**
+   * Function created by JHipster
+   * @param res 
+   * @returns 
+   */
   protected convertResponseFromServer(res: HttpResponse<RestMaterial>): HttpResponse<IMaterial> {
     return res.clone({
       body: res.body ? this.convertDateFromServer(res.body) : null,
     });
   }
 
+  /**
+   * Function created by JHipster
+   * @param res 
+   * @returns 
+   */
   protected convertResponseArrayFromServer(res: HttpResponse<RestMaterial[]>): HttpResponse<IMaterial[]> {
     return res.clone({
       body: res.body ? res.body.map(item => this.convertDateFromServer(item)) : null,

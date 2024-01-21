@@ -1,5 +1,7 @@
 /**
  * Constant that stores the current currency exchange rates using a Map
+ * @type {Map<string,number>}
+ * 
  */
 export const currencyExchangeRates : Map<string,number> = new Map <string, number>([
     ["EUR", 1],

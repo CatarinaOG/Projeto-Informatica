@@ -214,6 +214,7 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   /**
+   * Constructor for the jhi-material component
    * @constructor
    * @param materialService 
    * @param editCellService 
@@ -224,10 +225,10 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
    */
   constructor(
     protected materialService: MaterialService,
-    public editCellService: EditCellService,
-    public tourService: TourService,
+    protected editCellService: EditCellService,
+    protected tourService: TourService,
     protected activatedRoute: ActivatedRoute,
-    public router: Router,
+    protected router: Router,
     protected modalService: NgbModal,
   ) {
     this.visibility = new Map<string, boolean>([
@@ -270,12 +271,12 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
 
-  @HostListener('window:beforeunload', ['$event'])
-  unloadNotification($event: any) : void {
-      if (this.editCellService.getSize() > 0 && !this.clickedSubmit) {
-          $event.returnValue = true;
-      }
-  }
+  // @HostListener('window:beforeunload', ['$event'])
+  // unloadNotification($event: any) : void {
+  //     if (this.editCellService.getSize() > 0 && !this.clickedSubmit) {
+  //         $event.returnValue = true;
+  //     }
+  // }
 
   /**
  * This function decides what tooltip of the page to activate/show.
@@ -1102,6 +1103,9 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
         editCell.newFlag = event.flag
         if (event.flag) {
           editCell.dateFlag = event.date;
+        }
+        else {
+          editCell.dateFlag = "n/a"
         }
       }
       this.editCellService.addMaterial(id, editCell)

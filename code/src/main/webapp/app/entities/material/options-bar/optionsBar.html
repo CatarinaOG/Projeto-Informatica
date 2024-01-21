@@ -448,7 +448,7 @@
     </div>
     </ng-template>
     <div id="switchCurrencyId" class="form-check form-switch" style="display: flex;" placement="right" [ngbTooltip]="switchCurrencyTooltip" [autoClose]="false" #t13="ngbTooltip" triggers="manual" tooltipClass="custom-tooltip">
-      <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" [checked]="currencyEUR" (change)="toggleCheckbox()">
+      <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" [checked]="currencyEUR" (change)="toggleSwitch()">
       <label class="form-check-label" for="flexSwitchCheckChecked" style="margin-left: 10px;">
           {{ currencyEUR ? "Euros €" : "Local Currency"}}
       </label>

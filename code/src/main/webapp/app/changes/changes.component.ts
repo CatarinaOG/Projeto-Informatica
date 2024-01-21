@@ -3,14 +3,13 @@ import { Router } from '@angular/router';
 import { IEditCell } from 'app/entities/material/editCell.model';
 import { EditCellService } from 'app/entities/material/service/editCell.service';
 
+/**
+ * Component used to show the changes made by the user
+ */
 @Component({
   selector: 'jhi-changes-page',
   templateUrl: './changes.component.html',
 })
-
-/**
- * Component used to show the changes made by the user
- */
 export class ChangesComponent implements OnInit, OnDestroy {
 
   /**
@@ -20,9 +19,11 @@ export class ChangesComponent implements OnInit, OnDestroy {
   materials: Map<number, IEditCell> = new Map<number, IEditCell>();
   
   /**
+   * Constructor for the component
    * @constructor
+   * @parameter router - router to be used to change the page back to the materials
    */
-  constructor(public router: Router, private editCellService: EditCellService) { }
+  constructor(protected router: Router, private editCellService: EditCellService) { }
 
 
   /**

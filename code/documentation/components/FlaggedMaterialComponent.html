@@ -1334,7 +1334,7 @@
 
 
                                             <td>
-                                                    <p>: filter to be removed</p>
+                                                    <p>filter to be removed</p>
 
                                             </td>
                                         </tr>
@@ -1408,9 +1408,7 @@
 
 
                                             <td>
-                                                    <ul>
-<li>message received</li>
-</ul>
+                                                    <p>message received</p>
 
                                             </td>
                                         </tr>
@@ -1484,9 +1482,7 @@
 
 
                                             <td>
-                                                    <ul>
-<li>Event from the Child Component, containing the user option</li>
-</ul>
+                                                    <p>Event from the Child Component, containing the user option</p>
 
                                             </td>
                                         </tr>
@@ -1893,7 +1889,7 @@ export class FlaggedMaterialComponent implements OnInit {
 
   /**
    * Receives the event of Table Size chosen by the user in a child component
-   * @param {any} event - Event from the Child Component, containing the user option
+   * @param {any} event Event from the Child Component, containing the user option
    */
   receiveTableSize(event : any) : void{
       this.itemsPerPage &#x3D; event;
@@ -1910,7 +1906,7 @@ export class FlaggedMaterialComponent implements OnInit {
 
   /**
    * Function responsabile for processing all the String messages received from the various emmitters used in the jhi-options-bar component
-   * @param {event} event - message received
+   * @param {event} event message received
    */
   receiveStringEvent(event: any): void {
     const filterName: string &#x3D; event.filterName;
@@ -1959,7 +1955,7 @@ export class FlaggedMaterialComponent implements OnInit {
 
   /**
    * Function that receives the message sent by the emitter in the jhi-filter-display-cell component. It removes the filter passed as parameter
-   * @param {IFilterOption} filter : filter to be removed
+   * @param {IFilterOption} filter filter to be removed
    */
   receiveFilterRemoveMessage (filter : IFilterOption) : void{
     for(const value of filter.values){
@@ -2200,7 +2196,7 @@ export class FlaggedMaterialComponent implements OnInit {
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
         var COMPONENT_TEMPLATE = '<div><div>  <h2 id="page-heading" data-cy="FlaggedMaterialHeading">    <span style="font-weight: bold;">Special Cases</span>  </h2>  <jhi-flagged-options-bar (textFilterEmitter)="receiveStringEvent($event)" (abcFilterEmitter)="filterABCClassification($event)" [tableSize]="itemsPerPage" (tableSizeEmitter)="receiveTableSize($event)"></jhi-flagged-options-bar>  <jhi-alert-error></jhi-alert-error>  <jhi-alert></jhi-alert>  <div *ngIf="this.filters.filterOptions.length > 0" >    <div style="font-weight: bold; text-align: start;">Active Filters:</div>    <div class="d-flex">      <ng-container *ngFor="let filter of this.filters.filterOptions">        <div  *ngIf = "filter.name.split(\'.\')[0] !== \'id\' && filter.name.split(\'.\')[0] !== \'flagMaterial\'" class="activeFilterCell">          <jhi-filter-display-cell [filter]=filter (filterRemoveMessage)="receiveFilterRemoveMessage($event)" ></jhi-filter-display-cell>        </div>      </ng-container>    </div>  </div>  <div class="alert alert-warning" id="no-result" *ngIf="flaggedMaterials?.length === 0">    <span>No Flagged Materials found</span>  </div>  <div class="table-responsive table-entities" id="entities" *ngIf="flaggedMaterials && flaggedMaterials.length > 0">    <table class="table table-striped" aria-describedby="page-heading">      <thead class="navbar-dark">        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()" class="headerRow2">          <th scope="col" jhiSortBy="material" class ="materialInfo headerRowStart">            <div class="d-flex" style="place-content: center;">              <span>Material</span>              <fa-icon class="p-1" icon="sort"></fa-icon>            </div>          </th>                    <th scope="col" jhiSortBy="description" class ="materialInfo headerAlign">            <div class="d-flex" style="place-content: center;">              <span> Material Description</span>              <fa-icon class="p-1" icon="sort"></fa-icon>            </div>          </th>          <th scope="col" jhiSortBy="abcClassification" class ="materialInfo headerAlign">            <div class="d-flex" style="place-content: center;">              <span>ABC Classification</span>              <fa-icon class="p-1" icon="sort"></fa-icon>            </div>          </th>          <th scope="col" jhiSortBy="plant" class ="materialInfo headerAlign">            <div class="d-flex" style="place-content: center;">              <span>Plant</span>              <fa-icon class="p-1" icon="sort"></fa-icon>            </div>          </th>          <th scope="col" jhiSortBy="mrpController" class ="materialInfo headerRowEnd headerAlign">            <div class="d-flex" style="place-content: center;">              <span>MRP Controller</span>              <fa-icon class="p-1" icon="sort"></fa-icon>            </div>          </th>                    <th scope="col" jhiSortBy="flagMaterial" class="edit headerAlign">            <div class="d-flex" style="place-content: center;">              <span>Flag Status</span>            </div>          </th>          <th scope="col" jhiSortBy="flagMaterial" class="edit headerAlign">            <div class="d-flex" style="place-content: center;">              <span>Edit</span>            </div>          </th>                 </tr>      </thead>      <tbody>        <tr *ngFor="let flaggedMaterial of flaggedMaterials; trackBy: trackId" data-cy="entityTable">          <td class ="materialInfo" >{{ flaggedMaterial.material }}</td>          <td class ="materialInfo" >{{ flaggedMaterial.description }}</td>          <td class ="materialInfo" >{{ flaggedMaterial.abcClassification }}</td>          <td class ="materialInfo" >{{ flaggedMaterial.plant }}</td>          <td class ="materialInfo headerRowEnd" >{{ flaggedMaterial.mrpController }}</td>          <td class ="edit">            <fa-icon class="p-1" icon="flag"  [ngStyle]="{\'color\': flaggedMaterial.flagMaterial  ? \'#ff0000\' : \'#999999\'}"></fa-icon>          </td>          <td> <button            type="submit"            [routerLink]="[\'/flagged-material\', flaggedMaterial.id, \'edit\']"            class="buttonNoBorder"            data-cy="entityEditButton">            <fa-icon icon="pencil-alt"></fa-icon>          </button>        </td>        </tr>      </tbody>    </table>  </div>  <div *ngIf="flaggedMaterials && flaggedMaterials.length > 0">    <div class="d-flex justify-content-center">      <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>    </div>    <div class="d-flex justify-content-center">      <ngb-pagination        [collectionSize]="totalItems"        [page]="page"        [pageSize]="itemsPerPage"        [maxSize]="5"        [rotate]="true"        [boundaryLinks]="true"        (pageChange)="navigateToPage($event)"      ></ngb-pagination>    </div>  </div></div></div>'
-    var COMPONENTS = [{'name': 'ChangesComponent', 'selector': 'jhi-changes-page'},{'name': 'CommentModalComponent', 'selector': 'jhi-comment-modal'},{'name': 'CurrencyToolTipCellComponent', 'selector': 'jhi-currency-tooltip-cell'},{'name': 'ErrorComponent', 'selector': 'jhi-error'},{'name': 'FilterDisplayCellComponent', 'selector': 'jhi-filter-display-cell'},{'name': 'FilterFormComponent', 'selector': 'jhi-filter-form'},{'name': 'FlaggedMaterialComponent', 'selector': 'jhi-flagged-material'},{'name': 'FlaggedMaterialUpdateComponent', 'selector': 'jhi-flagged-material-update'},{'name': 'FlaggedOptionsBarComponent', 'selector': 'jhi-flagged-options-bar'},{'name': 'FlagModalComponent', 'selector': 'jhi-flag-modal'},{'name': 'FooterComponent', 'selector': 'jhi-footer'},{'name': 'HeaderGroupComponent', 'selector': 'jhi-header-group'},{'name': 'MainComponent', 'selector': 'jhi-main'},{'name': 'MaterialComponent', 'selector': 'jhi-material'},{'name': 'NavbarComponent', 'selector': 'jhi-navbar'},{'name': 'OptionsBarComponent', 'selector': 'jhi-options-bar'},{'name': 'PageRibbonComponent', 'selector': 'jhi-page-ribbon'},{'name': 'SubmitModalComponent', 'selector': 'jhi-submit-modal'},{'name': 'ValueCellComponent', 'selector': 'jhi-tooltip-cell'}];
+    var COMPONENTS = [{'name': 'ChangesComponent', 'selector': 'jhi-changes-page'},{'name': 'CommentModalComponent', 'selector': 'jhi-comment-modal'},{'name': 'CurrencyToolTipCellComponent', 'selector': 'jhi-currency-tooltip-cell'},{'name': 'FilterDisplayCellComponent', 'selector': 'jhi-filter-display-cell'},{'name': 'FilterFormComponent', 'selector': 'jhi-filter-form'},{'name': 'FlaggedMaterialComponent', 'selector': 'jhi-flagged-material'},{'name': 'FlaggedMaterialUpdateComponent', 'selector': 'jhi-flagged-material-update'},{'name': 'FlaggedOptionsBarComponent', 'selector': 'jhi-flagged-options-bar'},{'name': 'FlagModalComponent', 'selector': 'jhi-flag-modal'},{'name': 'HeaderGroupComponent', 'selector': 'jhi-header-group'},{'name': 'MaterialComponent', 'selector': 'jhi-material'},{'name': 'OptionsBarComponent', 'selector': 'jhi-options-bar'},{'name': 'SubmitModalComponent', 'selector': 'jhi-submit-modal'},{'name': 'ValueCellComponent', 'selector': 'jhi-tooltip-cell'}];
     var DIRECTIVES = [];
     var ACTUAL_COMPONENT = {'name': 'FlaggedMaterialComponent'};
 </script>

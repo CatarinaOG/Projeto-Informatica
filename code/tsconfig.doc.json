@@ -7,9 +7,15 @@
         "src/main/webapp/app/config/**/*.ts", 
         "src/main/webapp/app/core/**/*.ts", 
         "src/main/webapp/app/home/**/*.ts",  
-        "src/main/webapp/app/layout/**/*.ts",  
+        "src/main/webapp/app/layouts/**/*.ts",  
         "src/main/webapp/app/login/**/*.ts",  
         "src/main/webapp/app/shared/**/*.ts",  
+        "src/main/webapp/app/app.constants.ts",  
+        "src/main/webapp/app/entities/user/*.ts",
+        "src/main/webapp/app/entities/entity-navbar-items.ts", 
+        "src/main/webapp/app/entities/material/route/*.ts", 
+        "src/main/webapp/app/entities/material/material.test-samples.ts",
+        "src/main/webapp/app/entities/flagged-material/flagged-material.test-samples.ts", 
         "src/**/*.spec.ts", 
         "src/app/file-to-exclude.ts"]
 }

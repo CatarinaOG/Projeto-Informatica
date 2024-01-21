@@ -5,6 +5,7 @@ import { IEditCell } from '../editCell.model';
  * Service responsible for keeping track of which materials have been edited and all the operations required to manipulate said edited materials
  */
 @Injectable({ providedIn: 'root' })
+
 export class EditCellService {
 
     /**
@@ -14,7 +15,7 @@ export class EditCellService {
     private materials: Map<number, IEditCell>;
 
     /**
-     * 
+     * Constructor for the component, creates the materials map
      * @constructor
      */
     constructor() {

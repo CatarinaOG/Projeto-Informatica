@@ -127,6 +127,13 @@
 </p>
 
 
+    <p class="comment">
+        <h3>Description</h3>
+    </p>
+    <p class="comment">
+        <p>Component responsible for a form for a numeric filter</p>
+
+    </p>
 
 
 
@@ -254,12 +261,14 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="17" class="link-to-prism">src/main/webapp/app/entities/material/filter-form/filterForm.ts:17</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="30" class="link-to-prism">src/main/webapp/app/entities/material/filter-form/filterForm.ts:30</a></div>
                             </td>
                         </tr>
 
                 <tr>
                     <td class="col-md-4">
+                            <div class="io-description"><p>Constructor for the component</p>
+</div>
                             <div>
                                     <b>Parameters :</b>
                                     <table class="params">
@@ -310,9 +319,15 @@
                 </tr>
                         <tr>
                             <td class="col-md-2" colspan="2">
-                                    <div class="io-line">Defined in <a href="" data-line="11" class="link-to-prism">src/main/webapp/app/entities/material/filter-form/filterForm.ts:11</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="17" class="link-to-prism">src/main/webapp/app/entities/material/filter-form/filterForm.ts:17</a></div>
                             </td>
                         </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Property passed by the jhi-options-bar component, name of the column the input filter is going to be applied to</p>
+</div>
+                    </td>
+                </tr>
             </tbody>
         </table>
 </section>
@@ -334,9 +349,15 @@
                 </tr>
                         <tr>
                             <td class="col-md-2" colspan="2">
-                                    <div class="io-line">Defined in <a href="" data-line="12" class="link-to-prism">src/main/webapp/app/entities/material/filter-form/filterForm.ts:12</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="22" class="link-to-prism">src/main/webapp/app/entities/material/filter-form/filterForm.ts:22</a></div>
                             </td>
                         </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Emitter that sends a message containing the name of the column being filtered, the operator and the value of the filter to the jhi-options-bar component</p>
+</div>
+                    </td>
+                </tr>
             </tbody>
         </table>
 </section>
@@ -367,14 +388,16 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="21"
-                                    class="link-to-prism">src/main/webapp/app/entities/material/filter-form/filterForm.ts:21</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="42"
+                                    class="link-to-prism">src/main/webapp/app/entities/material/filter-form/filterForm.ts:42</a></div>
                         </td>
                     </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                        <div class="io-description"><p>Function that executes when the form is submitted, uses the emitter to send the form data to the jhi-options-bar component</p>
+</div>
 
                         <div class="io-description">
                             <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
@@ -411,10 +434,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="14" class="link-to-prism">src/main/webapp/app/entities/material/filter-form/filterForm.ts:14</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="27" class="link-to-prism">src/main/webapp/app/entities/material/filter-form/filterForm.ts:27</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Property that stores the values of the forms where the user inputs the filter data</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -427,23 +456,44 @@
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, EventEmitter, Input, Output } from &#x27;@angular/core&#x27;;
 import { FormBuilder } from &#x27;@angular/forms&#x27;;
 
+/**
+ * Component responsible for a form for a numeric filter
+ */
 @Component({
   selector: &#x27;jhi-filter-form&#x27;,
   templateUrl: &#x27;./filterForm.html&#x27;,
 })
-
 export class FilterFormComponent {
 
+  /**
+   * Property passed by the jhi-options-bar component, name of the column the input filter is going to be applied to 
+   * @type {string}
+   */
   @Input() filterName!: string; 
+
+  /**
+   * Emitter that sends a message containing the name of the column being filtered, the operator and the value of the filter to the jhi-options-bar component
+   */
   @Output() numberFilterEmitter &#x3D; new EventEmitter&lt;{filterName : string, operator : string, value : number}&gt;();
 
+  /**
+   * Property that stores the values of the forms where the user inputs the filter data
+   */
   numberFilterForm &#x3D; this.formBuilder.group({
     selectOption: &#x27;equals&#x27;,
     filterValue: 0
   });
 
+  /**
+   * Constructor for the component
+   * @constructor
+   * @param formBuilder 
+   */
   constructor(private formBuilder: FormBuilder) { }
    
+  /**
+   * Function that executes when the form is submitted, uses the emitter to send the form data to the jhi-options-bar component
+   */
   onSubmit(): void {
         if (this.filterName){
             this.numberFilterEmitter.emit({filterName : this.filterName,
@@ -502,7 +552,7 @@ export class FilterFormComponent {
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
         var COMPONENT_TEMPLATE = '<div><div>    <div class="dropdown-divider"></div>    <form [formGroup]="numberFilterForm" (ngSubmit)="onSubmit()">        <div style="display: flex; flex-direction: row; margin-left: 10px; margin-right: 10px;">            <select required formControlName="selectOption" style="margin-right: 6px;">                <option value="equals" [selected]="true"> == </option>                <option value="notEquals"> != </option>                <option value="lessThan"> &lt; </option>                <option value="greaterThan"> &gt; </option>                <option value="lessThanOrEqual"> &le; </option>                <option value="greaterThanOrEqual"> &ge; </option>            </select>            <input required type="number" formControlName="filterValue" class="inputWidth">        </div>    </form></div></div>'
-    var COMPONENTS = [{'name': 'ChangesComponent', 'selector': 'jhi-changes-page'},{'name': 'CommentModalComponent', 'selector': 'jhi-comment-modal'},{'name': 'CurrencyToolTipCellComponent', 'selector': 'jhi-currency-tooltip-cell'},{'name': 'ErrorComponent', 'selector': 'jhi-error'},{'name': 'FilterDisplayCellComponent', 'selector': 'jhi-filter-display-cell'},{'name': 'FilterFormComponent', 'selector': 'jhi-filter-form'},{'name': 'FlaggedMaterialComponent', 'selector': 'jhi-flagged-material'},{'name': 'FlaggedMaterialUpdateComponent', 'selector': 'jhi-flagged-material-update'},{'name': 'FlaggedOptionsBarComponent', 'selector': 'jhi-flagged-options-bar'},{'name': 'FlagModalComponent', 'selector': 'jhi-flag-modal'},{'name': 'FooterComponent', 'selector': 'jhi-footer'},{'name': 'HeaderGroupComponent', 'selector': 'jhi-header-group'},{'name': 'MainComponent', 'selector': 'jhi-main'},{'name': 'MaterialComponent', 'selector': 'jhi-material'},{'name': 'NavbarComponent', 'selector': 'jhi-navbar'},{'name': 'OptionsBarComponent', 'selector': 'jhi-options-bar'},{'name': 'PageRibbonComponent', 'selector': 'jhi-page-ribbon'},{'name': 'SubmitModalComponent', 'selector': 'jhi-submit-modal'},{'name': 'ValueCellComponent', 'selector': 'jhi-tooltip-cell'}];
+    var COMPONENTS = [{'name': 'ChangesComponent', 'selector': 'jhi-changes-page'},{'name': 'CommentModalComponent', 'selector': 'jhi-comment-modal'},{'name': 'CurrencyToolTipCellComponent', 'selector': 'jhi-currency-tooltip-cell'},{'name': 'FilterDisplayCellComponent', 'selector': 'jhi-filter-display-cell'},{'name': 'FilterFormComponent', 'selector': 'jhi-filter-form'},{'name': 'FlaggedMaterialComponent', 'selector': 'jhi-flagged-material'},{'name': 'FlaggedMaterialUpdateComponent', 'selector': 'jhi-flagged-material-update'},{'name': 'FlaggedOptionsBarComponent', 'selector': 'jhi-flagged-options-bar'},{'name': 'FlagModalComponent', 'selector': 'jhi-flag-modal'},{'name': 'HeaderGroupComponent', 'selector': 'jhi-header-group'},{'name': 'MaterialComponent', 'selector': 'jhi-material'},{'name': 'OptionsBarComponent', 'selector': 'jhi-options-bar'},{'name': 'SubmitModalComponent', 'selector': 'jhi-submit-modal'},{'name': 'ValueCellComponent', 'selector': 'jhi-tooltip-cell'}];
     var DIRECTIVES = [];
     var ACTUAL_COMPONENT = {'name': 'FilterFormComponent'};
 </script>

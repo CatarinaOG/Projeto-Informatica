@@ -133,6 +133,13 @@
         </p>
 
 
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>Interface for keeping track of the edited Materials</p>
+
+            </p>
 
 
         <section data-compodoc="block-index">
@@ -285,6 +292,12 @@
 
 
 
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>ABC Classification of the edited Material</p>
+</div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                     <table class="table table-sm table-bordered">
@@ -318,6 +331,12 @@
 
 
 
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>Flag Date of the edited Material</p>
+</div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                     <table class="table table-sm table-bordered">
@@ -351,6 +370,12 @@
 
 
 
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>Original Flag Value of the edited Material</p>
+</div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                     <table class="table table-sm table-bordered">
@@ -384,6 +409,12 @@
 
 
 
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>Description of the edited Material</p>
+</div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                     <table class="table table-sm table-bordered">
@@ -417,6 +448,12 @@
 
 
 
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>Id of the edited material</p>
+</div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                     <table class="table table-sm table-bordered">
@@ -450,6 +487,12 @@
 
 
 
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>Ñame of the edited Material</p>
+</div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                     <table class="table table-sm table-bordered">
@@ -483,6 +526,12 @@
 
 
 
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>MRP Controller of the edited Material</p>
+</div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                     <table class="table table-sm table-bordered">
@@ -516,6 +565,12 @@
 
 
 
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>Edited comment of the Material</p>
+</div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                     <table class="table table-sm table-bordered">
@@ -549,6 +604,12 @@
 
 
 
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>Edited Flag Value of the Material</p>
+</div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                     <table class="table table-sm table-bordered">
@@ -582,6 +643,12 @@
 
 
 
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>Edited SAP Safety Stock of the Material</p>
+</div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                     <table class="table table-sm table-bordered">
@@ -615,6 +682,12 @@
 
 
 
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>Edited SAP Safety Time of the Material</p>
+</div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                     <table class="table table-sm table-bordered">
@@ -648,6 +721,12 @@
 
 
 
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>Original comment of the edited Material</p>
+</div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                     <table class="table table-sm table-bordered">
@@ -681,6 +760,12 @@
 
 
 
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>Original SST of the edited Material</p>
+</div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                     <table class="table table-sm table-bordered">
@@ -714,6 +799,12 @@
 
 
 
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>Original ST of the edited Material</p>
+</div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                     <table class="table table-sm table-bordered">
@@ -747,6 +838,12 @@
 
 
 
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>Plant of the edited Material</p>
+</div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                     <table class="table table-sm table-bordered">
@@ -780,6 +877,12 @@
 
 
 
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>Checks if the Material has been selected for Submission</p>
+</div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
             </section>
@@ -789,22 +892,73 @@
     <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { ABCClassification } from &quot;../enumerations/abc-classification.model&quot;
 
+/**
+ * Interface for keeping track of the edited Materials
+ */
 export interface IEditCell {
+    /**
+     * Id of the edited material
+     */
     materialId : number,
+    /**
+     * Ñame of the edited Material
+     */
     materialName: string,
+    /**
+     * Description of the edited Material
+     */
     materialDesc: string,
+    /**
+     * ABC Classification of the edited Material
+     */
     abcClassification: ABCClassification,
+    /**
+     * Plant of the edited Material
+     */
     plant: number,
+    /**
+     * MRP Controller of the edited Material
+     */
     mrpcontroller: string,
+    /**
+     * Edited SAP Safety Stock of the Material
+     */
     newSST: number,
+    /**
+     * Original SST of the edited Material
+     */
     oldSST: number,
+    /**
+     * Edited SAP Safety Time of the Material
+     */
     newST: number,
+    /**
+     * Original ST of the edited Material
+     */
     oldST: number,
+    /**
+     * Edited comment of the Material
+     */
     newComment: string | null,
+    /**
+     * Original comment of the edited Material
+     */
     oldComment: string | null,
+    /**
+     * Checks if the Material has been selected for Submission
+     */
     selected: boolean,
+    /**
+     * Original Flag Value of the edited Material
+     */
     flag: boolean,
+    /**
+     * Edited Flag Value of the Material
+     */
     newFlag: boolean,
+    /**
+     * Flag Date of the edited Material
+     */
     dateFlag : string
 }</code></pre>
     </div>
