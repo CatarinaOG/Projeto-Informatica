@@ -15,6 +15,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface FlaggedMaterialRepository extends JpaRepository<FlaggedMaterial, Long>,  JpaSpecificationExecutor<FlaggedMaterial> {
         
+        // Função utilizada para encontrar um material pelo seu nome
         Optional<FlaggedMaterial> findByMaterial(String material);
 
 }

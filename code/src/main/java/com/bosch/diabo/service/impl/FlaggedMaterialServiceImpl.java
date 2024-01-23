@@ -99,6 +99,7 @@ public class FlaggedMaterialServiceImpl implements FlaggedMaterialService {
     }
 
 
+    // Função chamada para atualizar os dados do flagged material quando o material correspondente é alterado
     @Override
     public void updateFlaggedMaterials(Boolean flag, Material material){
         log.debug("Request to update FlaggedMaterial from a Material : {}", material.getId());
@@ -108,6 +109,7 @@ public class FlaggedMaterialServiceImpl implements FlaggedMaterialService {
 
     }
 
+    // Dado um material com a flag definida, o correspondente flagged material terá de ter a sua data atualizada para a nova data. Se o flagged material não existir, este será criado com base na informação do material
     public void createOrUpdateFlagMaterial(Material material){
 
         FlaggedMaterial flaggedMaterial = flaggedMaterialRepository
@@ -135,7 +137,7 @@ public class FlaggedMaterialServiceImpl implements FlaggedMaterialService {
         flaggedMaterialRepository.save(flaggedMaterial);
     }
 
-    
+    // Dado um material, o corresponde flagged material vai ser removido
     public void deleteFlaggedMaterial(String material){
 
         flaggedMaterialRepository
@@ -146,6 +148,7 @@ public class FlaggedMaterialServiceImpl implements FlaggedMaterialService {
 
     }
 
+    // Rotina de remoção de flagged materials cuja data de flag já foi ultrapassada
     @Scheduled(cron = "0 0 1 * * ?")
     public void removeExpiredFlags(){
 
@@ -157,12 +160,14 @@ public class FlaggedMaterialServiceImpl implements FlaggedMaterialService {
             .forEach(material -> flaggedMaterialRepository.delete(material));
     }
 
+    // Função que encontra o flagged material pelo nome do material que lhe corresponde
     @Override
     public Optional<FlaggedMaterial> findByMaterial(String material){
         log.debug("Request to find Material by name");
         return flaggedMaterialRepository.findByMaterial(material);
     }
 
+    // Dado um update de um flagged material, ou este é um pedido de alteração de data da flag ou uma remoção de flag
     @Override
     public void updateFlag(List<Object> data){
 
@@ -181,7 +186,7 @@ public class FlaggedMaterialServiceImpl implements FlaggedMaterialService {
         }
     }
 
-
+    // Função que atualiza a data de flag de um flagged material corresponde ao material fornecido
     private void updateFlaggedDate(String material, LocalDate date){
         flaggedMaterialRepository
             .findByMaterial(material)

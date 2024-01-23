@@ -246,6 +246,7 @@ public class MaterialServiceImpl implements MaterialService {
         return materialRepository.findByMaterial(material);
     }
 
+    // Função auxiliar para eliminar todos os materiais que não se encontram na nova listagem de materiais
     public void deleteEveryMaterialNotSaved(){
         materialRepository
             .findAll()
@@ -256,6 +257,7 @@ public class MaterialServiceImpl implements MaterialService {
             });
     }
 
+    // Função auxiliar para resetar o valor auxiliar de remoção de materiais
     public void setEveryMaterialToNotSave(){
         materialRepository
         .findAll()
@@ -266,7 +268,7 @@ public class MaterialServiceImpl implements MaterialService {
         .forEach(materialRepository::save);
     }
 
-
+    // Função utilizada para identificar o tipo de ficheiro que esta a ser recebido e redirecionar para o seu tratamento na substituição de dados
     @Override
     public void uploadFileReplace(File file) throws Exception {
         log.debug("Request to new source file : {}", file.getName());   
@@ -297,7 +299,7 @@ public class MaterialServiceImpl implements MaterialService {
 
     }
 
-
+    // Função utilizada para identificar o tipo de ficheiro que esta a ser recebido e redirecionar para o seu tratamento na adição de dados
     @Override
     public void uploadFileAddOrUpdate(File file) throws Exception{
 
@@ -325,12 +327,10 @@ public class MaterialServiceImpl implements MaterialService {
 
         setEveryMaterialToNotSave();
 
-        
     }
 
 
-    // ---------- > XLSX < ----------
-
+    // Função que itera todas as linhas do ficheiro XLSX e que após dar parse do material, se este já existir vai ser apenas atualizado com uma flag de save a true. Se este não existir, vai ser criado com a flag de save a true também.
     public void uploadFileXLSX(File file) throws Exception{
 
         FileInputStream fis = new FileInputStream(file);
@@ -359,6 +359,7 @@ public class MaterialServiceImpl implements MaterialService {
         workbook.close();
     }
 
+    // Função auxiliar de criação de um mapa a partir da linha dos headers
     private Map<String, Integer> getHeaderMap(Row headerRow) {
         Map<String, Integer> headerMap = new HashMap<>();
         Iterator<Cell> cellIterator = headerRow.cellIterator();
@@ -373,7 +374,7 @@ public class MaterialServiceImpl implements MaterialService {
         return headerMap;
     }
 
-
+    // A partir de uma dada linha, vai ser feito o parse do material com os correspondentes valores que lhe estão associados
     private Material parseMaterialXLSX(Row row, Map<String, Integer> headerMap) throws Exception{
         Material material = new Material();
         LocalDate current = LocalDate.now();
@@ -421,6 +422,7 @@ public class MaterialServiceImpl implements MaterialService {
 
     }
 
+    // Função auxiliar para persistir os dados relativos a flags entre uploads de ficheiros. Se o flagged material existir, este vai se manter e a data de flag vai ser associada também ao material criado.
     private void setFlagInfo(Material material){
 
         Optional<FlaggedMaterial> flaggedMaterial = flaggedMaterialServiceImpl.findByMaterial(material.getMaterial());
@@ -436,12 +438,14 @@ public class MaterialServiceImpl implements MaterialService {
 
     }
     
+    // Função auxiliar que permitir obter o valor em String de uma célula
     private String getStringCellValue(Row row, Map<String, Integer> headerMap, String headerName) throws Exception {
         int columnIndex = headerMap.get(headerName);
         Cell cell = row.getCell(columnIndex);
         return cell != null ? cell.getStringCellValue() : null;
     }
     
+    // Função auxiliar que permitir obter o valor em Float de uma célula
     private float getFloatCellValue(Row row, Map<String, Integer> headerMap, String headerName) throws Exception {
         int columnIndex = headerMap.get(headerName);
         Cell cell = row.getCell(columnIndex);
@@ -449,6 +453,7 @@ public class MaterialServiceImpl implements MaterialService {
         return cell != null ? (float) cell.getNumericCellValue() : 0.0f; // Set a default value if the cell is null
     }
     
+    // Função auxiliar que permitir obter o valor em Int de uma célula
     private int getIntCellValue(Row row, Map<String, Integer> headerMap, String headerName) throws Exception {
         int columnIndex = headerMap.get(headerName);
         Cell cell = row.getCell(columnIndex);
@@ -456,8 +461,8 @@ public class MaterialServiceImpl implements MaterialService {
     }
     
 
-    // ---------- > XLS < ----------
 
+    // Função que itera todas as linhas do ficheiro XLSX e que após dar parse do material, se este já existir vai ser apenas atualizado com uma flag de save a true. Se este não existir, vai ser criado com a flag de save a true também.
     public void uploadFileXLS(File file) throws Exception {
         
         FileInputStream fis = new FileInputStream(file);
@@ -488,8 +493,7 @@ public class MaterialServiceImpl implements MaterialService {
     }
 
 
-    // ---------- > CSV < ----------
-
+    // Função que itera todas as linhas do ficheiro XLSX e que após dar parse do material, se este já existir vai ser apenas atualizado com uma flag de save a true. Se este não existir, vai ser criado com a flag de save a true também.
     public void uploadFileCSV(File file) throws Exception {
         CSVReader csvReader = new CSVReader(new FileReader(file));
         String[] header = csvReader.readNext(); // Assuming the first row is the header
@@ -502,11 +506,14 @@ public class MaterialServiceImpl implements MaterialService {
 
             if (opcMaterial.isPresent())
                 updateByMaterialName(material);
-            else
+            else{
+                material.setToSaveUpdates(true);
                 save(material);
+            }
         }
     }
 
+    // A partir de uma dada linha, vai ser feito o parse do material com os correspondentes valores que lhe estão associados
     public Material parseMaterialCSV(String[] header, String[] nextRecord) throws Exception {
         Material material = new Material();
         LocalDate current = LocalDate.now();
@@ -553,7 +560,7 @@ public class MaterialServiceImpl implements MaterialService {
         return material;
     }
 
-
+    // Função auxiliar para obter facilmente o valor de uma célula de uma dada coluna
     private int getIndex(String[] header, String columnName) {
         for (int i = 0; i < header.length; i++) {
             if (header[i].equals(columnName)) {
@@ -563,13 +570,14 @@ public class MaterialServiceImpl implements MaterialService {
         return -1; // Column not found
     }
 
+    // Função auxiliar que permitir obter o valor em Float de uma célula
     private float parseNumericValue(String cellValue) throws Exception {
         String numericValue = cellValue.replaceAll("[^\\d.]", "");
         return Float.parseFloat(numericValue);
     }
 
-    // -------------> ODS <-------------
 
+    // Função que itera todas as linhas do ficheiro XLSX e que após dar parse do material, se este já existir vai ser apenas atualizado com uma flag de save a true. Se este não existir, vai ser criado com a flag de save a true também.
     public void uploadFileODS(File file) throws Exception {
 
         com.github.miachm.sods.Sheet sheet = new SpreadSheet(file).getSheet(0);
@@ -591,6 +599,8 @@ public class MaterialServiceImpl implements MaterialService {
 
     }
 
+
+    // A partir de uma dada linha, vai ser feito o parse do material com os correspondentes valores que lhe estão associados
     public Material parseMaterialODS(Object[] row, Object[] header) throws Exception {
         Material material = new Material();
 
@@ -641,6 +651,7 @@ public class MaterialServiceImpl implements MaterialService {
         return material;
     }
 
+    // Função auxiliar para obter facilmente o valor de uma célula de uma dada coluna
     private int getIndexOBJ(Object[] header, String columnName) {
         for (int i = 0; i < header.length; i++) {
             if (header[i].toString().equals(columnName)) {
@@ -651,8 +662,8 @@ public class MaterialServiceImpl implements MaterialService {
     }
 
 
-    /* --------------------------- SUBMIT CHANGES --------------------------- */
-
+    
+    // Dada um conjunto de informação atualizada, esta vai ser atualizada no material correspondente
     @Override
     public void submitChanges(List<Object> data){
 
@@ -688,6 +699,7 @@ public class MaterialServiceImpl implements MaterialService {
         }
     }
 
+    // Retorna a lista de materiais alterados por uma submissão
     public List<Material> getMaterialChanged(List<Object> data){
         ArrayList<Material> l = new ArrayList<>();
         for (Object item : data) {
@@ -700,8 +712,8 @@ public class MaterialServiceImpl implements MaterialService {
         return l;
     }
 
+    // Função auxiliar, que atualiza os valores "new" como também os "previous" do safety stock e safety time como também atualizar o flagged material se existir associado ao material que foi fornecido
     public void updateObject(Long materialId, int newSST, int newST, String newComment, Boolean flag, LocalDate flagDate){
-
 
         materialRepository
         .findById(materialId)
@@ -738,6 +750,7 @@ public class MaterialServiceImpl implements MaterialService {
 
     }
 
+    // Função auxiliar que permitir obter o valor em Float de um objeto
     private Long extractLong(Object value) {
 
         if (value instanceof Number) {
@@ -748,6 +761,7 @@ public class MaterialServiceImpl implements MaterialService {
         throw new IllegalArgumentException("Invalid type for key " + value);
     }
     
+    // Função auxiliar que permitir obter o valor em Int de um objeto
     private int extractInt(Object value) {
 
         if (value instanceof Number) {
@@ -758,9 +772,9 @@ public class MaterialServiceImpl implements MaterialService {
         throw new IllegalArgumentException("Invalid type for key " + value);
     }
 
-    /* --------------------------- FLAG ROUTINE --------------------------- */
 
-    
+
+    // Rotina que remove a flag de todos os materiais cuja data de expiração já foi ultrapassada
     @Scheduled(cron = "0 0 1 * * ?")
     public void removeExpiredFlags(){
 
@@ -780,13 +794,13 @@ public class MaterialServiceImpl implements MaterialService {
     }
 
 
+    // Função utilizada para atualizar o material após a alteração do correspondente flagged material
     @Override
     public void updateCorrespondingMaterial(List<Object> data){
 
         for (Object item : data) {
             if (item instanceof Map) {
                 Map<String, Object> dataMap = (Map<String, Object>) item;
-
 
                 String material = (String) dataMap.get("material");
                 LocalDate flagDate = LocalDate.parse((String) dataMap.get("dateFlag"));
@@ -799,6 +813,7 @@ public class MaterialServiceImpl implements MaterialService {
         }
     }
 
+    // Função utilizada para o material se for alterada a data de expiração
     private void updateFlaggedDate(String material, LocalDate flagDate){
         materialRepository
             .findByMaterial(material)
@@ -808,7 +823,7 @@ public class MaterialServiceImpl implements MaterialService {
             });
     }
 
-
+    // Função utilizada para eliminar a flag e a data se o flagged material for removido
     public void removeFlag(String material){
         materialRepository
             .findByMaterial(material)

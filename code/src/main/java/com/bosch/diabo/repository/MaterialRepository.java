@@ -12,6 +12,7 @@ import java.util.Optional;
 @Repository
 public interface MaterialRepository extends JpaRepository<Material, Long>, JpaSpecificationExecutor<Material> {
 
+    // Função utilizada para encontrar um material pelo seu nome
     Optional<Material> findByMaterial(String material);
 
 }
