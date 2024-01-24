@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild,ViewChildren,HostListener, QueryList, AfterViewInit, TemplateRef } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { ActivatedRoute, Data, ParamMap, Router } from '@angular/router';
 import { combineLatest, last, Observable, Subscription, switchMap, tap } from 'rxjs';
@@ -14,7 +14,6 @@ import { EditCellService } from '../service/editCell.service';
 import { FilterOptions, IFilterOptions, IFilterOption } from 'app/shared/filter/filter.model';
 import { IHistoryEntity } from '../historyEntity.model';
 import { Coin } from '../../enumerations/coin.model'
-import { NgbAlert } from '@ng-bootstrap/ng-bootstrap';
 import { ABCClassification } from 'app/entities/enumerations/abc-classification.model';
 import { MSG } from '../data/tooltipMsg';
 import { currencyExchangeRates } from '../data/currencyExchangeRates';
@@ -132,6 +131,8 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
    * @type {Map<string,boolean>}
    */
   visibility = new Map<string, boolean>();
+  visibilityClass = new Map<string, string>();
+
 
    /**
    * Property that keeps track of if the Submit button has been clicked 
@@ -221,6 +222,8 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
       ["edit", false]
     ])
   }
+
+
 
   /**
    * Property created by JHipster
@@ -404,31 +407,40 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
    */
   editCellClasses(groupName : string,material? : IMaterial,editColName? : string) : string {
     let returnVal = ""
-    if (groupName === "materialInfo" && this.visibility.get('materialInfo') === false){
-      returnVal = "tableHide "
-    }
-    else if (groupName === "edit" && this.visibility.get('edit') === false){
-      returnVal = "tableHide "
-    }
-    else if (groupName === "supplierDelay" && this.visibility.get('supplierDelay') === false){
-      returnVal = "tableHide "
-    }
-    else if (groupName === "safetyStock" && this.visibility.get('safetyStock') === false){
-      returnVal = "tableHide "
-    }
-    else if (groupName === "safetyTime" && this.visibility.get('safetyTime') === false){
-      returnVal = "tableHide "
-    }
-    else if (groupName === "inventory" && this.visibility.get('inventory') === false){
-      returnVal = "tableHide "
-    }
-    else{
-      returnVal = ""
-      if (groupName!== "header"){
-        if(material !== undefined && editColName !== undefined){
-          returnVal += this.chooseColor(material,editColName);
+    switch (groupName){
+      case "materialInfo":
+        if (this.visibility.get('materialInfo') === false){
+          returnVal = "tableHide "
         }
-      }
+        break;
+      case "edit":
+        if (this.visibility.get('edit') === false){
+          returnVal = "tableHide "
+        }
+        if(material !== undefined && editColName !== undefined){
+            returnVal += this.chooseColor(material,editColName);
+        }
+        break;
+      case "supplierDelay":
+        if (this.visibility.get('supplierDelay') === false){
+          returnVal = "tableHide "
+        }
+        break;
+      case "safetyStock":
+        if (this.visibility.get('safetyStock') === false){
+          returnVal = "tableHide "
+        }
+        break;
+      case "safetyTime":
+        if (this.visibility.get('safetyTime') === false){
+          returnVal = "tableHide "
+        }
+        break;
+      case "inventory":
+        if (this.visibility.get('inventory') === false){
+          returnVal = "tableHide "
+        }
+        break;
     }
     return returnVal
   }
@@ -466,6 +478,7 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
           returnVal = "textBlack"
         }
         break;
+
     }
     return returnVal
   }
