@@ -127,7 +127,6 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
    * @type {Map<string,boolean>}
    */
   visibility = new Map<string, boolean>();
-  visibilityClass = new Map<string, string>();
 
 
    /**
