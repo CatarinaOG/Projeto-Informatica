@@ -387,7 +387,7 @@
 
           <td class ="safetyStock" [ngClass] ="editCellClasses('safetyStock')">
             <ng-template #safetyStockContent>   
-              Changed on: {{material.datePreviousSS}}  
+              Changed on: {{convertDateToString(material?.dateNewSS)}}  
               <p>Previous Safety Stock: {{material.previousSS}}</p>
             </ng-template>
             <span placement="top" tooltipClass="custom-tooltip-smaller" [ngbTooltip]="safetyStockContent">{{ material.currSAPSafetyStock }}</span>
@@ -399,7 +399,7 @@
 
           <td class ="safetyTime" [ngClass] ="editCellClasses('safetyTime')">
             <ng-template #safetyTimeContent>   
-              Changed on: {{material.datePreviousST}}  
+              Changed on: {{convertDateToString(material?.datNewST)}}  
               <p>Previous Safety Time: {{material.previousST}}</p>
             </ng-template>
             <span placement="top" tooltipClass="custom-tooltip-smaller" [ngbTooltip]="safetyTimeContent">{{ material.currentSAPSafeTime }}</span>

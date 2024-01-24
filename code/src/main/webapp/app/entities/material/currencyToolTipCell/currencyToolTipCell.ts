@@ -57,7 +57,7 @@ export class CurrencyToolTipCellComponent implements OnInit , OnChanges{
         if ('currencyEUR' in changes) {
           this.updateMessage();
         }
-      }
+    }
 
     /**
      * Function that executes when the component is initialized, executes updateMessage

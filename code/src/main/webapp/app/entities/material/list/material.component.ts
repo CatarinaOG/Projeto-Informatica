@@ -19,6 +19,7 @@ import { MSG } from '../data/tooltipMsg';
 import { currencyExchangeRates } from '../data/currencyExchangeRates';
 import { TourService } from '../service/tour.service';
 import { tourMessages } from '../data/tourMessage';
+import dayjs from 'dayjs';
 
 
 /**
@@ -126,6 +127,8 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
    * @type {Map<string,boolean>}
    */
   visibility = new Map<string, boolean>();
+  visibilityClass = new Map<string, string>();
+
 
    /**
    * Property that keeps track of if the Submit button has been clicked 
@@ -215,6 +218,8 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
       ["edit", false]
     ])
   }
+
+
 
   /**
    * Property created by JHipster
@@ -398,31 +403,40 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
    */
   editCellClasses(groupName : string,material? : IMaterial,editColName? : string) : string {
     let returnVal = ""
-    if (groupName === "materialInfo" && this.visibility.get('materialInfo') === false){
-      returnVal = "tableHide "
-    }
-    else if (groupName === "edit" && this.visibility.get('edit') === false){
-      returnVal = "tableHide "
-    }
-    else if (groupName === "supplierDelay" && this.visibility.get('supplierDelay') === false){
-      returnVal = "tableHide "
-    }
-    else if (groupName === "safetyStock" && this.visibility.get('safetyStock') === false){
-      returnVal = "tableHide "
-    }
-    else if (groupName === "safetyTime" && this.visibility.get('safetyTime') === false){
-      returnVal = "tableHide "
-    }
-    else if (groupName === "inventory" && this.visibility.get('inventory') === false){
-      returnVal = "tableHide "
-    }
-    else{
-      returnVal = ""
-      if (groupName!== "header"){
-        if(material !== undefined && editColName !== undefined){
-          returnVal += this.chooseColor(material,editColName);
+    switch (groupName){
+      case "materialInfo":
+        if (this.visibility.get('materialInfo') === false){
+          returnVal = "tableHide "
         }
-      }
+        break;
+      case "edit":
+        if (this.visibility.get('edit') === false){
+          returnVal = "tableHide "
+        }
+        if(material !== undefined && editColName !== undefined){
+            returnVal += this.chooseColor(material,editColName);
+        }
+        break;
+      case "supplierDelay":
+        if (this.visibility.get('supplierDelay') === false){
+          returnVal = "tableHide "
+        }
+        break;
+      case "safetyStock":
+        if (this.visibility.get('safetyStock') === false){
+          returnVal = "tableHide "
+        }
+        break;
+      case "safetyTime":
+        if (this.visibility.get('safetyTime') === false){
+          returnVal = "tableHide "
+        }
+        break;
+      case "inventory":
+        if (this.visibility.get('inventory') === false){
+          returnVal = "tableHide "
+        }
+        break;
     }
     return returnVal
   }
@@ -460,6 +474,7 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
           returnVal = "textBlack"
         }
         break;
+
     }
     return returnVal
   }
@@ -719,6 +734,22 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
     }
     this.load();
   }
+
+  /**
+   * Function that converts the dayjs.Dayjs values received from the backend to the correct string format
+   * @param dateToConvert
+   * @returns 
+   */
+  convertDateToString(dateToConvert :  dayjs.Dayjs | null | undefined) : string {
+    let month = 0;
+    let returnVal = "n/a"
+    if(dateToConvert !== undefined && dateToConvert !== null){
+       month = dateToConvert.month() + 1
+       returnVal = dateToConvert?.date() + "-" + month + "-"+ dateToConvert?.year(); 
+    }
+    return returnVal
+  }
+
 
   /**
    * Function that adds a special filter to the list of filters, according to a string value sent by an emitter in the jhi-options-bar component
