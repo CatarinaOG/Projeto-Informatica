@@ -19,6 +19,7 @@ import { MSG } from '../data/tooltipMsg';
 import { currencyExchangeRates } from '../data/currencyExchangeRates';
 import { TourService } from '../service/tour.service';
 import { tourMessages } from '../data/tourMessage';
+import dayjs from 'dayjs';
 
 
 /**
@@ -738,6 +739,22 @@ export class MaterialComponent implements OnInit, OnDestroy, AfterViewInit {
     }
     this.load();
   }
+
+  /**
+   * Function that converts the dayjs.Dayjs values received from the backend to the correct string format
+   * @param dateToConvert
+   * @returns 
+   */
+  convertDateToString(dateToConvert :  dayjs.Dayjs | null | undefined) : string {
+    let month = 0;
+    let returnVal = "n/a"
+    if(dateToConvert !== undefined && dateToConvert !== null){
+       month = dateToConvert.month() + 1
+       returnVal = dateToConvert?.date() + "-" + month + "-"+ dateToConvert?.year(); 
+    }
+    return returnVal
+  }
+
 
   /**
    * Function that adds a special filter to the list of filters, according to a string value sent by an emitter in the jhi-options-bar component
